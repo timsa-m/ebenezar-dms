@@ -7,6 +7,7 @@ import {
   Search,
   PackageOpen,
   Loader2,
+  X,
 } from 'lucide-react';
 import { getVehicles } from '../services/vehicleApi';
 
@@ -14,6 +15,220 @@ const FORMAT_KSH = (amount) => {
   if (amount === undefined || amount === null || isNaN(amount)) return 'Price on Request';
   return `KSh ${Number(amount).toLocaleString('en-KE')}`;
 };
+
+// Reusable Filter Form Controls for both Desktop Sidebar and Mobile Floating Drawer
+const FilterControls = ({
+  searchQuery,
+  setSearchQuery,
+  brand,
+  setBrand,
+  model,
+  setModel,
+  condition,
+  setCondition,
+  status,
+  setStatus,
+  bodyType,
+  setBodyType,
+  priceRange,
+  setPriceRange,
+  mileageRange,
+  setMileageRange,
+  fuelType,
+  setFuelType,
+  transmission,
+  setTransmission,
+  availableBrands,
+  availableModels,
+  availableConditions,
+  availableStatuses,
+  availableBodyTypes,
+  availableFuels,
+  availableTransmissions,
+}) => (
+  <div className="space-y-4">
+    {/* Quick Keyword Search inside filters */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        SEARCH
+      </label>
+      <div className="relative">
+        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <input
+          type="text"
+          placeholder="Model or keyword..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 bg-white"
+        />
+      </div>
+    </div>
+
+    {/* 1. BRAND */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        BRAND
+      </label>
+      <select
+        value={brand}
+        onChange={(e) => {
+          setBrand(e.target.value);
+          setModel('All');
+        }}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableBrands.map((b) => (
+          <option key={b} value={b}>
+            {b === 'All' ? 'All Brands' : b}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 2. MODEL */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        MODEL
+      </label>
+      <select
+        value={model}
+        onChange={(e) => setModel(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableModels.map((m) => (
+          <option key={m} value={m}>
+            {m === 'All' ? 'All Models' : m}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 3. CONDITION */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        CONDITION
+      </label>
+      <select
+        value={condition}
+        onChange={(e) => setCondition(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableConditions.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 4. STOCK STATUS */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        STOCK STATUS
+      </label>
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableStatuses.map((s) => (
+          <option key={s} value={s}>
+            {s === 'All' ? 'All Statuses' : s}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 5. BODY TYPE */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        BODY TYPE
+      </label>
+      <select
+        value={bodyType}
+        onChange={(e) => setBodyType(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableBodyTypes.map((bt) => (
+          <option key={bt} value={bt}>
+            {bt === 'All' ? 'All Types' : bt}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 6. PRICE RANGE */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        PRICE RANGE
+      </label>
+      <select
+        value={priceRange}
+        onChange={(e) => setPriceRange(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        <option value="All">Any Price</option>
+        <option value="under-4m">Under KSh 4M</option>
+        <option value="4m-8m">KSh 4M - KSh 8M</option>
+        <option value="8m-15m">KSh 8M - KSh 15M</option>
+        <option value="above-15m">Above KSh 15M</option>
+      </select>
+    </div>
+
+    {/* 7. MILEAGE */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        MILEAGE
+      </label>
+      <select
+        value={mileageRange}
+        onChange={(e) => setMileageRange(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        <option value="All">Any Mileage</option>
+        <option value="under-20k">Under 20,000 km</option>
+        <option value="under-50k">Under 50,000 km</option>
+        <option value="under-100k">Under 100,000 km</option>
+      </select>
+    </div>
+
+    {/* 8. FUEL TYPE */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        FUEL TYPE
+      </label>
+      <select
+        value={fuelType}
+        onChange={(e) => setFuelType(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableFuels.map((f) => (
+          <option key={f} value={f}>
+            {f}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* 9. TRANSMISSION */}
+    <div>
+      <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
+        TRANSMISSION
+      </label>
+      <select
+        value={transmission}
+        onChange={(e) => setTransmission(e.target.value)}
+        className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+      >
+        {availableTransmissions.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+);
 
 export const Inventory = ({
   onSelectVehicle,
@@ -47,6 +262,48 @@ export const Inventory = ({
   const [transmission, setTransmission] = useState('All');
   const [searchQuery, setSearchQuery] = useState(queryParam);
   const [sortBy, setSortBy] = useState('default');
+
+  // Mobile floating filter drawer state
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Active filter count
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (searchQuery.trim()) count++;
+    if (brand !== 'All') count++;
+    if (model !== 'All') count++;
+    if (condition !== 'All') count++;
+    if (status !== 'All') count++;
+    if (bodyType !== 'All') count++;
+    if (priceRange !== 'All') count++;
+    if (mileageRange !== 'All') count++;
+    if (fuelType !== 'All') count++;
+    if (transmission !== 'All') count++;
+    return count;
+  }, [
+    searchQuery,
+    brand,
+    model,
+    condition,
+    status,
+    bodyType,
+    priceRange,
+    mileageRange,
+    fuelType,
+    transmission,
+  ]);
+
+  // Lock body scroll when mobile filter drawer is open
+  useEffect(() => {
+    if (isMobileFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileFilterOpen]);
 
   // Synchronize URL search params with state whenever URL parameters change
   useEffect(() => {
@@ -295,203 +552,167 @@ export const Inventory = ({
           </div>
         )}
 
+        {/* Active Filter Chips (Instant dismissal for mobile and desktop) */}
+        {activeFilterCount > 0 && (
+          <div className="flex items-center gap-1.5 flex-wrap mb-5 pt-1">
+            <span className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mr-1">
+              Active Filters:
+            </span>
+            {searchQuery.trim() && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>"{searchQuery.trim()}"</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setSearchQuery('')}
+                />
+              </span>
+            )}
+            {brand !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{brand}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => {
+                    setBrand('All');
+                    setModel('All');
+                  }}
+                />
+              </span>
+            )}
+            {model !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{model}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setModel('All')}
+                />
+              </span>
+            )}
+            {condition !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{condition}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setCondition('All')}
+                />
+              </span>
+            )}
+            {status !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>Status: {status}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setStatus('All')}
+                />
+              </span>
+            )}
+            {bodyType !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{bodyType}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setBodyType('All')}
+                />
+              </span>
+            )}
+            {priceRange !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>Price: {priceRange}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setPriceRange('All')}
+                />
+              </span>
+            )}
+            {mileageRange !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>Mileage: {mileageRange}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setMileageRange('All')}
+                />
+              </span>
+            )}
+            {fuelType !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{fuelType}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setFuelType('All')}
+                />
+              </span>
+            )}
+            {transmission !== 'All' && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#0B4DB7] border border-blue-200">
+                <span>{transmission}</span>
+                <X
+                  className="w-3.5 h-3.5 cursor-pointer hover:text-blue-900"
+                  onClick={() => setTransmission('All')}
+                />
+              </span>
+            )}
+            <button
+              onClick={handleClearAll}
+              className="text-xs font-bold text-red-600 hover:text-red-700 hover:underline cursor-pointer ml-1"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
+
         {/* Main Content Layout with Left Sidebar + Right Results */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Sidebar (Filter Panel) - 3 cols */}
-          <aside className="lg:col-span-3 bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
+          {/* Left Sidebar (Filter Panel) - 3 cols (Hidden on mobile, floating button used instead) */}
+          <aside className="hidden lg:block lg:col-span-3 bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <SlidersHorizontal className="w-4 h-4 text-slate-700" />
                 <h3 className="font-extrabold text-slate-900 text-sm">Filters</h3>
+                {activeFilterCount > 0 && (
+                  <span className="w-5 h-5 rounded-full bg-blue-100 text-[#0B4DB7] text-[11px] font-bold flex items-center justify-center">
+                    {activeFilterCount}
+                  </span>
+                )}
               </div>
-              <button
-                onClick={handleClearAll}
-                className="text-xs font-bold text-red-600 hover:text-red-700 hover:underline cursor-pointer"
-              >
-                Clear all
-              </button>
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={handleClearAll}
+                  className="text-xs font-bold text-red-600 hover:text-red-700 hover:underline cursor-pointer"
+                >
+                  Clear all
+                </button>
+              )}
             </div>
 
-            {/* Quick Keyword Search inside filters */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                SEARCH
-              </label>
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Model or keyword..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            {/* 1. BRAND */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                BRAND
-              </label>
-              <select
-                value={brand}
-                onChange={(e) => {
-                  setBrand(e.target.value);
-                  setModel('All');
-                }}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableBrands.map((b) => (
-                  <option key={b} value={b}>
-                    {b === 'All' ? 'All Brands' : b}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 2. MODEL */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                MODEL
-              </label>
-              <select
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableModels.map((m) => (
-                  <option key={m} value={m}>
-                    {m === 'All' ? 'All Models' : m}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 3. CONDITION */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                CONDITION
-              </label>
-              <select
-                value={condition}
-                onChange={(e) => setCondition(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableConditions.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 4. STOCK STATUS */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                STOCK STATUS
-              </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableStatuses.map((s) => (
-                  <option key={s} value={s}>
-                    {s === 'All' ? 'All Statuses' : s}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 5. BODY TYPE */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                BODY TYPE
-              </label>
-              <select
-                value={bodyType}
-                onChange={(e) => setBodyType(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableBodyTypes.map((bt) => (
-                  <option key={bt} value={bt}>
-                    {bt === 'All' ? 'All Types' : bt}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 6. PRICE RANGE */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                PRICE RANGE
-              </label>
-              <select
-                value={priceRange}
-                onChange={(e) => setPriceRange(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                <option value="All">Any Price</option>
-                <option value="under-4m">Under KSh 4M</option>
-                <option value="4m-8m">KSh 4M - KSh 8M</option>
-                <option value="8m-15m">KSh 8M - KSh 15M</option>
-                <option value="above-15m">Above KSh 15M</option>
-              </select>
-            </div>
-
-            {/* 7. MILEAGE */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                MILEAGE
-              </label>
-              <select
-                value={mileageRange}
-                onChange={(e) => setMileageRange(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                <option value="All">Any Mileage</option>
-                <option value="under-20k">Under 20,000 km</option>
-                <option value="under-50k">Under 50,000 km</option>
-                <option value="under-100k">Under 100,000 km</option>
-              </select>
-            </div>
-
-            {/* 8. FUEL TYPE */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                FUEL TYPE
-              </label>
-              <select
-                value={fuelType}
-                onChange={(e) => setFuelType(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableFuels.map((f) => (
-                  <option key={f} value={f}>
-                    {f}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* 9. TRANSMISSION */}
-            <div>
-              <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">
-                TRANSMISSION
-              </label>
-              <select
-                value={transmission}
-                onChange={(e) => setTransmission(e.target.value)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-              >
-                {availableTransmissions.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <FilterControls
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              brand={brand}
+              setBrand={setBrand}
+              model={model}
+              setModel={setModel}
+              condition={condition}
+              setCondition={setCondition}
+              status={status}
+              setStatus={setStatus}
+              bodyType={bodyType}
+              setBodyType={setBodyType}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              mileageRange={mileageRange}
+              setMileageRange={setMileageRange}
+              fuelType={fuelType}
+              setFuelType={setFuelType}
+              transmission={transmission}
+              setTransmission={setTransmission}
+              availableBrands={availableBrands}
+              availableModels={availableModels}
+              availableConditions={availableConditions}
+              availableStatuses={availableStatuses}
+              availableBodyTypes={availableBodyTypes}
+              availableFuels={availableFuels}
+              availableTransmissions={availableTransmissions}
+            />
           </aside>
 
           {/* Main Inventory Content (9 cols) */}
@@ -910,6 +1131,122 @@ export const Inventory = ({
           </main>
         </div>
       </div>
+
+      {/* Floating Mobile Filter Action Button (FAB) */}
+      <div className="fixed bottom-6 right-6 z-40 lg:hidden">
+        <button
+          onClick={() => setIsMobileFilterOpen(true)}
+          aria-label="Open Filters"
+          className="group flex items-center gap-2.5 px-5 py-3.5 bg-[#0B4DB7] hover:bg-blue-700 active:scale-95 text-white rounded-full shadow-2xl shadow-blue-950/40 border border-white/20 transition-all cursor-pointer font-bold text-xs"
+        >
+          <SlidersHorizontal className="w-4 h-4 shrink-0 transition-transform group-hover:rotate-12" />
+          <span>Filters</span>
+          {activeFilterCount > 0 && (
+            <span className="w-5 h-5 rounded-full bg-white text-[#0B4DB7] text-[11px] font-black flex items-center justify-center shrink-0 shadow-xs">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Filter Drawer / Bottom Sheet */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+            onClick={() => setIsMobileFilterOpen(false)}
+          />
+
+          {/* Drawer Sheet */}
+          <div className="relative w-full bg-white rounded-t-3xl max-h-[85vh] flex flex-col shadow-2xl z-10 animate-in slide-in-from-bottom duration-250">
+            {/* Drag Pill */}
+            <div className="pt-3 pb-1 flex justify-center">
+              <div className="w-10 h-1 bg-slate-300 rounded-full" />
+            </div>
+
+            {/* Header */}
+            <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-[#0B4DB7]" />
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-sm">Filter Inventory</h3>
+                  <p className="text-[11px] text-slate-500 font-medium">
+                    {filteredVehicles.length} {filteredVehicles.length === 1 ? 'vehicle' : 'vehicles'} match
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={handleClearAll}
+                    className="text-xs font-bold text-red-600 hover:text-red-700 px-2 py-1 rounded hover:bg-red-50 cursor-pointer"
+                  >
+                    Clear all ({activeFilterCount})
+                  </button>
+                )}
+                <button
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  aria-label="Close filters"
+                  className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Filter Form Controls */}
+            <div className="px-5 py-4 overflow-y-auto space-y-4 flex-1">
+              <FilterControls
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                brand={brand}
+                setBrand={setBrand}
+                model={model}
+                setModel={setModel}
+                condition={condition}
+                setCondition={setCondition}
+                status={status}
+                setStatus={setStatus}
+                bodyType={bodyType}
+                setBodyType={setBodyType}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                mileageRange={mileageRange}
+                setMileageRange={setMileageRange}
+                fuelType={fuelType}
+                setFuelType={setFuelType}
+                transmission={transmission}
+                setTransmission={setTransmission}
+                availableBrands={availableBrands}
+                availableModels={availableModels}
+                availableConditions={availableConditions}
+                availableStatuses={availableStatuses}
+                availableBodyTypes={availableBodyTypes}
+                availableFuels={availableFuels}
+                availableTransmissions={availableTransmissions}
+              />
+            </div>
+
+            {/* Sticky Action Footer */}
+            <div className="p-4 bg-white border-t border-slate-100 flex items-center gap-3">
+              <button
+                onClick={handleClearAll}
+                className="px-4 py-3 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer"
+              >
+                Reset
+              </button>
+              <button
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="flex-1 py-3 bg-[#0B4DB7] hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-900/10 cursor-pointer text-center"
+              >
+                Show {filteredVehicles.length} Vehicles
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
