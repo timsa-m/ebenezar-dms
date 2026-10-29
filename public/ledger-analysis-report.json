@@ -1,0 +1,1380 @@
+{
+  "301133": {
+    "loanKey": "301133",
+    "nationalId": "301133",
+    "suffix": null,
+    "clientName": "OKECH CHARLES OWINO",
+    "paymentsIn": 14000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-11",
+      "last": "2026-05-11"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "1713603": {
+    "loanKey": "1713603",
+    "nationalId": "1713603",
+    "suffix": null,
+    "clientName": "--------------------",
+    "paymentsIn": 0,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 92400,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-02-02",
+      "last": "2026-02-02"
+    },
+    "paymentMethods": [],
+    "flags": []
+  },
+  "3504901": {
+    "loanKey": "3504901",
+    "nationalId": "3504901",
+    "suffix": null,
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "paymentsIn": 22850,
+    "penaltiesAdded": 12738,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 13,
+    "missingDateCount": 7,
+    "dateRange": {
+      "first": "2025-10-10",
+      "last": "2026-04-16"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  7 row(s) with no date"
+    ]
+  },
+  "4829907": {
+    "loanKey": "4829907",
+    "nationalId": "4829907",
+    "suffix": null,
+    "clientName": "RABURU DAN OMONDI",
+    "paymentsIn": 150000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-04-30",
+      "last": "2026-04-30"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "8533752": {
+    "loanKey": "8533752",
+    "nationalId": "8533752",
+    "suffix": null,
+    "clientName": "MOREKA OTUNDU RICHARD BROWN",
+    "paymentsIn": 7700,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-12-17",
+      "last": "2025-12-17"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "8606575": {
+    "loanKey": "8606575",
+    "nationalId": "8606575",
+    "suffix": null,
+    "clientName": "ABONYO ISAAC BILO",
+    "paymentsIn": 1600,
+    "penaltiesAdded": 3840,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 5,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2025-04-23",
+      "last": "2025-05-13"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "11229413": {
+    "loanKey": "11229413",
+    "nationalId": "11229413",
+    "suffix": null,
+    "clientName": "OKECH PAUL MBOYA",
+    "paymentsIn": 0,
+    "penaltiesAdded": 60000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-03-27",
+      "last": "2026-04-27"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "11663818": {
+    "loanKey": "11663818",
+    "nationalId": "11663818",
+    "suffix": null,
+    "clientName": "OKOTH JARED MBOYA",
+    "paymentsIn": 20000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-10-23",
+      "last": "2025-10-23"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "12537007": {
+    "loanKey": "12537007",
+    "nationalId": "12537007",
+    "suffix": null,
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "paymentsIn": 3750,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 17,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-02-18",
+      "last": "2026-05-21"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "13598141": {
+    "loanKey": "13598141",
+    "nationalId": "13598141",
+    "suffix": null,
+    "clientName": "OKACH MAURICE AUSI",
+    "paymentsIn": 30000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-25",
+      "last": "2026-05-25"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "13892618": {
+    "loanKey": "13892618",
+    "nationalId": "13892618",
+    "suffix": null,
+    "clientName": "WERE JAMES OYUGI",
+    "paymentsIn": 0,
+    "penaltiesAdded": 56000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "14643192": {
+    "loanKey": "14643192",
+    "nationalId": "14643192",
+    "suffix": null,
+    "clientName": "AWIMBO SAMUEL OMBOK",
+    "paymentsIn": 0,
+    "penaltiesAdded": 53600,
+    "feesAdded": 50000,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [],
+    "flags": [
+      "⚠️  2 row(s) with no date",
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "20154526": {
+    "loanKey": "20154526",
+    "nationalId": "20154526",
+    "suffix": null,
+    "clientName": "JOSHUA AMUKHOBE MATENDECHERE",
+    "paymentsIn": 4970,
+    "penaltiesAdded": 4280,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 3,
+    "dateRange": {
+      "first": "2025-10-08",
+      "last": "2025-10-08"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  3 row(s) with no date"
+    ]
+  },
+  "20191848": {
+    "loanKey": "20191848",
+    "nationalId": "20191848",
+    "suffix": null,
+    "clientName": "ASIRO BENARD OCHIENG",
+    "paymentsIn": 16900,
+    "penaltiesAdded": 9900,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 21,
+    "missingDateCount": 9,
+    "dateRange": {
+      "first": "2025-08-14",
+      "last": "2026-05-28"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  9 row(s) with no date"
+    ]
+  },
+  "20436309": {
+    "loanKey": "20436309",
+    "nationalId": "20436309",
+    "suffix": null,
+    "clientName": "NDAYALA JONSON ANDELE",
+    "paymentsIn": 611000,
+    "penaltiesAdded": 260000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 7,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-04-30",
+      "last": "2026-05-30"
+    },
+    "paymentMethods": [
+      "M-PESA",
+      "Cheque"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "20660807": {
+    "loanKey": "20660807",
+    "nationalId": "20660807",
+    "suffix": null,
+    "clientName": "OKUMU DOROTHY AUMA",
+    "paymentsIn": 30000,
+    "penaltiesAdded": 44000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-02-10",
+      "last": "2026-02-10"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "20807070": {
+    "loanKey": "20807070",
+    "nationalId": "20807070",
+    "suffix": null,
+    "clientName": "MAURICE OTIENO NGETA",
+    "paymentsIn": 50000,
+    "penaltiesAdded": 50000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2026-03-03",
+      "last": "2026-04-07"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date"
+    ]
+  },
+  "20900263": {
+    "loanKey": "20900263",
+    "nationalId": "20900263",
+    "suffix": null,
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "paymentsIn": 0,
+    "penaltiesAdded": 360000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 9,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-05-28",
+      "last": "2026-01-28"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "21838232": {
+    "loanKey": "21838232",
+    "nationalId": "21838232",
+    "suffix": null,
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "paymentsIn": 12500,
+    "penaltiesAdded": 58651,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 5,
+    "missingDateCount": 3,
+    "dateRange": {
+      "first": "2024-12-02",
+      "last": "2025-02-07"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  3 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "21942199": {
+    "loanKey": "21942199",
+    "nationalId": "21942199",
+    "suffix": null,
+    "clientName": "WILLIAM MISEDA",
+    "paymentsIn": 88180,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 35,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-06-14",
+      "last": "2026-05-31"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "22089437": {
+    "loanKey": "22089437",
+    "nationalId": "22089437",
+    "suffix": null,
+    "clientName": "ONSOTI NICODEMUS",
+    "paymentsIn": 8000,
+    "penaltiesAdded": 8000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-05-24",
+      "last": "2026-05-24"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "22151401": {
+    "loanKey": "22151401",
+    "nationalId": "22151401",
+    "suffix": null,
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "paymentsIn": 17200,
+    "penaltiesAdded": 19238,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 7,
+    "missingDateCount": 4,
+    "dateRange": {
+      "first": "2026-02-07",
+      "last": "2026-04-13"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  4 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "22156768": {
+    "loanKey": "22156768",
+    "nationalId": "22156768",
+    "suffix": null,
+    "clientName": "RASHID OKOTH OSANO",
+    "paymentsIn": 15800,
+    "penaltiesAdded": 5000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 10,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2024-11-07",
+      "last": "2024-12-16"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "22526478": {
+    "loanKey": "22526478",
+    "nationalId": "22526478",
+    "suffix": null,
+    "clientName": "ONGELE FREDRICK AWITI",
+    "paymentsIn": 106000,
+    "penaltiesAdded": 67400,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 6,
+    "missingDateCount": 3,
+    "dateRange": {
+      "first": "2025-09-22",
+      "last": "2025-11-05"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  3 row(s) with no date"
+    ]
+  },
+  "22611797": {
+    "loanKey": "22611797",
+    "nationalId": "22611797",
+    "suffix": null,
+    "clientName": "OMONDI ANTHONY NAAMAN OUMA",
+    "paymentsIn": 0,
+    "penaltiesAdded": 20000,
+    "feesAdded": 74375,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-04-20",
+      "last": "2026-04-20"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "22614530": {
+    "loanKey": "22614530",
+    "nationalId": "22614530",
+    "suffix": null,
+    "clientName": "OLIECH KENNEDY OUMA",
+    "paymentsIn": 4400,
+    "penaltiesAdded": 2608,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2026-04-20",
+      "last": "2026-06-02"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date"
+    ]
+  },
+  "22676602": {
+    "loanKey": "22676602",
+    "nationalId": "22676602",
+    "suffix": null,
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "paymentsIn": 0,
+    "penaltiesAdded": 168000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 6,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-11-02",
+      "last": "2026-04-02"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "22879681": {
+    "loanKey": "22879681",
+    "nationalId": "22879681",
+    "suffix": null,
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "paymentsIn": 6500,
+    "penaltiesAdded": 9548,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 9,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2025-08-11",
+      "last": "2026-03-24"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "22883717": {
+    "loanKey": "22883717",
+    "nationalId": "22883717",
+    "suffix": null,
+    "clientName": "REJE DENIS OCHIENG",
+    "paymentsIn": 0,
+    "penaltiesAdded": 0,
+    "feesAdded": 44850,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-11-08",
+      "last": "2025-12-08"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "23558576": {
+    "loanKey": "23558576",
+    "nationalId": "23558576",
+    "suffix": null,
+    "clientName": "APAKA GEORGE ODERO",
+    "paymentsIn": 14000,
+    "penaltiesAdded": 9120,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-06-02",
+      "last": "2026-06-02"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "23636722": {
+    "loanKey": "23636722",
+    "nationalId": "23636722",
+    "suffix": null,
+    "clientName": "ODIAGA RONALD AGUMBA",
+    "paymentsIn": 112000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-19",
+      "last": "2026-05-19"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "23753593": {
+    "loanKey": "23753593",
+    "nationalId": "23753593",
+    "suffix": null,
+    "clientName": "OWANG DANIEL ODHIAMBO",
+    "paymentsIn": 20000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-04-21",
+      "last": "2026-04-21"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "23978608": {
+    "loanKey": "23978608",
+    "nationalId": "23978608",
+    "suffix": null,
+    "clientName": "ORAO ODUL DAVID",
+    "paymentsIn": 7000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 7,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-03-09",
+      "last": "2026-05-14"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "24059058": {
+    "loanKey": "24059058",
+    "nationalId": "24059058",
+    "suffix": null,
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "paymentsIn": 40000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 7,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-12-22",
+      "last": "2026-06-09"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "24179061": {
+    "loanKey": "24179061",
+    "nationalId": "24179061",
+    "suffix": null,
+    "clientName": "ORIEDO VICTOR OKOTH",
+    "paymentsIn": 0,
+    "penaltiesAdded": 11200,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "24183665": {
+    "loanKey": "24183665",
+    "nationalId": "24183665",
+    "suffix": null,
+    "clientName": "AMOLO MATHEWS OWUOR",
+    "paymentsIn": 6500,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-02-10",
+      "last": "2026-03-13"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "24688926": {
+    "loanKey": "24688926",
+    "nationalId": "24688926",
+    "suffix": null,
+    "clientName": "OTIENO JARED OWITI",
+    "paymentsIn": 15000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-01-14",
+      "last": "2026-01-14"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "24692999": {
+    "loanKey": "24692999",
+    "nationalId": "24692999",
+    "suffix": null,
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "paymentsIn": 30000,
+    "penaltiesAdded": 37200,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 24,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2025-06-06",
+      "last": "2026-04-13"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "24803451": {
+    "loanKey": "24803451",
+    "nationalId": "24803451",
+    "suffix": null,
+    "clientName": "DANGA FREDRICK OMONDI",
+    "paymentsIn": 30000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-11-28",
+      "last": "2025-11-28"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "25116367": {
+    "loanKey": "25116367",
+    "nationalId": "25116367",
+    "suffix": null,
+    "clientName": "LIECH JOB MICHAEL",
+    "paymentsIn": 250000,
+    "penaltiesAdded": 80000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-04-02",
+      "last": "2026-04-02"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "25698363": {
+    "loanKey": "25698363",
+    "nationalId": "25698363",
+    "suffix": null,
+    "clientName": "ASINDI JOHN ONYANGO",
+    "paymentsIn": 5000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-03-23",
+      "last": "2026-03-23"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "25712743": {
+    "loanKey": "25712743",
+    "nationalId": "25712743",
+    "suffix": null,
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "paymentsIn": 800000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 25,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-08-05",
+      "last": "2026-05-13"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "25770919": {
+    "loanKey": "25770919",
+    "nationalId": "25770919",
+    "suffix": null,
+    "clientName": "ODHIAMBO ERIC AKECH",
+    "paymentsIn": 1500,
+    "penaltiesAdded": 1707,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-05-28",
+      "last": "2026-05-28"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "26017555": {
+    "loanKey": "26017555",
+    "nationalId": "26017555",
+    "suffix": null,
+    "clientName": "OTIENO COLLINS ODUOR",
+    "paymentsIn": 135000,
+    "penaltiesAdded": 52650,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2024-07-15",
+      "last": "2024-08-02"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date"
+    ]
+  },
+  "26811089": {
+    "loanKey": "26811089",
+    "nationalId": "26811089",
+    "suffix": null,
+    "clientName": "WANDEY JUSTO WILLIAM",
+    "paymentsIn": 6000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-02-11",
+      "last": "2026-03-31"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "26887070": {
+    "loanKey": "26887070",
+    "nationalId": "26887070",
+    "suffix": null,
+    "clientName": "OWUOR GEOFFREY OTIENO",
+    "paymentsIn": 13000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 3,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-02-16",
+      "last": "2026-03-06"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "27673353": {
+    "loanKey": "27673353",
+    "nationalId": "27673353",
+    "suffix": null,
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "paymentsIn": 0,
+    "penaltiesAdded": 120000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 10,
+    "missingDateCount": 10,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [],
+    "flags": [
+      "⚠️  10 row(s) with no date",
+      "🔴 No payments received — only penalties/fees"
+    ]
+  },
+  "28408520": {
+    "loanKey": "28408520",
+    "nationalId": "28408520",
+    "suffix": null,
+    "clientName": "WASWA WALTER JAMES",
+    "paymentsIn": 48000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-19",
+      "last": "2026-05-19"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "28425326": {
+    "loanKey": "28425326",
+    "nationalId": "28425326",
+    "suffix": null,
+    "clientName": "OUKO STEPHEN OMONDI",
+    "paymentsIn": 10000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date"
+    ]
+  },
+  "28969589": {
+    "loanKey": "28969589",
+    "nationalId": "28969589",
+    "suffix": null,
+    "clientName": "OPONDO FAITH AKINYI",
+    "paymentsIn": 16000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 3,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-05-08",
+      "last": "2025-07-29"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "29404046": {
+    "loanKey": "29404046",
+    "nationalId": "29404046",
+    "suffix": null,
+    "clientName": "OYUGI HEZBON OMONDI",
+    "paymentsIn": 75000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 12,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-04-27",
+      "last": "2026-05-25"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "30403266": {
+    "loanKey": "30403266",
+    "nationalId": "30403266",
+    "suffix": null,
+    "clientName": "ODOYO MAXWEL OYUGA",
+    "paymentsIn": 5000,
+    "penaltiesAdded": 5600,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "30427410": {
+    "loanKey": "30427410",
+    "nationalId": "30427410",
+    "suffix": null,
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "paymentsIn": 21720,
+    "penaltiesAdded": 11920,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 11,
+    "missingDateCount": 5,
+    "dateRange": {
+      "first": "2025-12-23",
+      "last": "2026-05-25"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  5 row(s) with no date"
+    ]
+  },
+  "30539375": {
+    "loanKey": "30539375",
+    "nationalId": "30539375",
+    "suffix": null,
+    "clientName": "OUDU JANET AWUOR",
+    "paymentsIn": 17000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 7,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2025-12-06",
+      "last": "2026-04-04"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "31217654": {
+    "loanKey": "31217654",
+    "nationalId": "31217654",
+    "suffix": null,
+    "clientName": "OSORE DANIEL MBINJI",
+    "paymentsIn": 20000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 2,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-03-09",
+      "last": "2026-03-10"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "31316469": {
+    "loanKey": "31316469",
+    "nationalId": "31316469",
+    "suffix": null,
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "paymentsIn": 13700,
+    "penaltiesAdded": 9471,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 15,
+    "missingDateCount": 9,
+    "dateRange": {
+      "first": "2025-09-29",
+      "last": "2026-05-15"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  9 row(s) with no date"
+    ]
+  },
+  "32010957": {
+    "loanKey": "32010957",
+    "nationalId": "32010957",
+    "suffix": null,
+    "clientName": "WACHARA STEVEN OMONDI",
+    "paymentsIn": 11030,
+    "penaltiesAdded": 5437,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 23,
+    "missingDateCount": 3,
+    "dateRange": {
+      "first": "2026-02-24",
+      "last": "2026-05-22"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  3 row(s) with no date"
+    ]
+  },
+  "33703548": {
+    "loanKey": "33703548",
+    "nationalId": "33703548",
+    "suffix": null,
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "paymentsIn": 9500,
+    "penaltiesAdded": 40608,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 6,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2024-07-19",
+      "last": "2024-07-29"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date",
+      "⚠️  Total penalties exceed total payments"
+    ]
+  },
+  "35919228": {
+    "loanKey": "35919228",
+    "nationalId": "35919228",
+    "suffix": null,
+    "clientName": "OOKO DYLAN OCHIENG",
+    "paymentsIn": 4000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 3,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-21",
+      "last": "2026-05-24"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": []
+  },
+  "36288108": {
+    "loanKey": "36288108",
+    "nationalId": "36288108",
+    "suffix": null,
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "paymentsIn": 4000,
+    "penaltiesAdded": 4000,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 6,
+    "missingDateCount": 2,
+    "dateRange": {
+      "first": "2026-04-27",
+      "last": "2026-05-25"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  2 row(s) with no date"
+    ]
+  },
+  "4829907-L1": {
+    "loanKey": "4829907-L1",
+    "nationalId": "4829907",
+    "suffix": "-L1",
+    "clientName": "RABURU DAN OMONDI",
+    "paymentsIn": 0,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 0,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": null,
+      "last": null
+    },
+    "paymentMethods": [],
+    "flags": [
+      "ℹ️  Second/subsequent loan (-L1)"
+    ]
+  },
+  "22883717-L1": {
+    "loanKey": "22883717-L1",
+    "nationalId": "22883717",
+    "suffix": "-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "paymentsIn": 105000,
+    "penaltiesAdded": 0,
+    "feesAdded": 59925,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2025-09-10",
+      "last": "2025-12-24"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "ℹ️  Second/subsequent loan (-L1)"
+    ]
+  },
+  "13892618-L1": {
+    "loanKey": "13892618-L1",
+    "nationalId": "13892618",
+    "suffix": "-L1",
+    "clientName": "WERE JAMES OYUGI",
+    "paymentsIn": 80000,
+    "penaltiesAdded": 94112,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 4,
+    "missingDateCount": 3,
+    "dateRange": {
+      "first": "2026-04-07",
+      "last": "2026-04-07"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  3 row(s) with no date",
+      "⚠️  Total penalties exceed total payments",
+      "ℹ️  Second/subsequent loan (-L1)"
+    ]
+  },
+  "1713603-R1": {
+    "loanKey": "1713603-R1",
+    "nationalId": "1713603",
+    "suffix": "-R1",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "paymentsIn": 60000,
+    "penaltiesAdded": 0,
+    "feesAdded": 0,
+    "restructureAmount": 124800,
+    "transactionCount": 2,
+    "missingDateCount": 1,
+    "dateRange": {
+      "first": "2026-02-02",
+      "last": "2026-02-02"
+    },
+    "paymentMethods": [
+      "M-PESA"
+    ],
+    "flags": [
+      "⚠️  1 row(s) with no date",
+      "ℹ️  Restructured loan (-R1)"
+    ]
+  },
+  "1713603-R2": {
+    "loanKey": "1713603-R2",
+    "nationalId": "1713603",
+    "suffix": "-R2",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "paymentsIn": 0,
+    "penaltiesAdded": 124800,
+    "feesAdded": 0,
+    "restructureAmount": 0,
+    "transactionCount": 1,
+    "missingDateCount": 0,
+    "dateRange": {
+      "first": "2026-05-29",
+      "last": "2026-05-29"
+    },
+    "paymentMethods": [],
+    "flags": [
+      "🔴 No payments received — only penalties/fees",
+      "ℹ️  Restructured loan (-R2)"
+    ]
+  }
+}

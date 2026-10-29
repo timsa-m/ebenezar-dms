@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Elelyon Mobile",
+    "slug": "elelyon-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.elelyon.mobile"
+    },
+    "android": {
+      "package": "com.elelyon.mobile"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "elelyon-mobile"
+  }
+}

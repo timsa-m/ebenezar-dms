@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+#root {
+  min-height: 100vh;
+  isolation: isolate;
+}

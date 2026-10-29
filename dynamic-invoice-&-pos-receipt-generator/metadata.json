@@ -1,0 +1,6 @@
+{
+  "name": "eTIMS Dynamic Invoice & POS Receipt Generator",
+  "description": "High-fidelity eTIMS invoice & receipt replica with mobile and POS thermal printer layouts, dynamic data binding, date filters, and PDF/CSV export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

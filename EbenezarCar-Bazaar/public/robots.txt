@@ -1,0 +1,26 @@
+# robots.txt for Ebenezer Car Bazaar & Hire (carbazaar.ebenezarenterprises.com)
+User-agent: *
+Allow: /
+Allow: /inventory
+Allow: /vehicle/
+Allow: /trade-in
+Allow: /contact
+
+# Allow prominent search crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap Index
+Sitemap: https://carbazaar.ebenezarenterprises.com/sitemap.xml

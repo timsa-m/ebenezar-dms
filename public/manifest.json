@@ -1,0 +1,16 @@
+{
+  "name": "Ebenezar Enterprises Car Bazaar",
+  "short_name": "Ebenezar Car Bazaar",
+  "description": "Ebenezar Enterprises Car Bazaar — Dealer Management System & Auto Financing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    {
+      "src": "/icons/logo.png",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

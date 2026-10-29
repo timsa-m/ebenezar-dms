@@ -1,0 +1,70 @@
+# Dependencies & Package Managers
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Next.js & Build Outputs
+.next/
+out/
+build/
+dist/
+.swc/
+.turbo/
+.vercel/
+
+# Environment & Secrets (Crucial for Token Security)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Data Files & Spreadsheets (Protects PII & Saves Massive Token Context)
+*.xlsx
+*.xls
+*.csv
+*.tsv
+ebenezar_data.xlsx
+*.sql
+!supabase/migrations/*.sql   # Allow version-controlled schema migrations
+
+# Media, Static Assets & Vehicle Photos
+public/uploads/
+public/vehicles/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.avif
+*.gif
+*.svg
+*.ico
+*.pdf
+
+# Git & System Files
+.git/
+.gitignore
+.DS_Store
+Thumbs.db
+
+# Logs & Debugging
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test & Coverage Outputs
+coverage/
+.nyc_output/
+cypress/videos/
+cypress/screenshots/
+
+# Temporary & Legacy Backups
+backedupfiles/
+*.bak
+*.tmp

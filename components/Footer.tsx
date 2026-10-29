@@ -1,0 +1,56 @@
+import { logoutAccount } from '@/lib/actions/user.actions'
+import Image from "next/image"
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { cn } from '@/lib/utils'
+
+const Footer = ({ user, type = 'desktop' }: FooterProps) => {
+  const router = useRouter();
+
+  const handleLogOut = async () => {
+    const loggedOut = await logoutAccount();
+    if (loggedOut) router.push('/sign-in')
+  }
+
+  return (
+    <footer className="footer">
+      <div className={cn(type === 'mobile' ? 'footer_name-mobile' : 'footer_name', 'overflow-hidden')}>
+        {user?.avatarUrl ? (
+          <Image 
+            src={user.avatarUrl} 
+            alt={user.firstName} 
+            width={40} 
+            height={40} 
+            className="w-full h-full object-cover rounded-full" 
+          />
+        ) : (
+          <p className="text-14 font-bold text-gray-900">
+            {user?.firstName[0]}
+          </p>
+        )}
+      </div>
+      <div className={type === 'mobile' ? 'footer_email-mobile' : 'footer_email'}>
+        <h1 className="text-14 truncate text-gray-900 font-bold">
+          {user?.firstName} {user?.lastName}
+        </h1>
+        <p className="text-12 truncate font-medium text-gray-500">
+          {user?.email}
+        </p>
+      </div>
+      <div className="footer_image" onClick={handleLogOut}>
+        <Image
+          src="/icons/logout.svg"
+          width={20}
+          height={20}
+          alt="logout"
+          className="opacity-50"
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
+      </div>
+    </footer>
+  );
+}
+
+export default Footer

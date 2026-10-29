@@ -1,0 +1,3476 @@
+[
+  {
+    "rowIndex": 2,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2025-12-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 3,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2025-12-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 4,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 3500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2025-12-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 5,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2026-02-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 6,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2026-03-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 7,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2026-03-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 8,
+    "clientId": "30539375",
+    "clientName": "OUDU JANET AWUOR",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 26146f36-fca6-4e2c-80bc-3c9304b9f3d5 on 2026-04-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 9,
+    "clientId": "26811089",
+    "clientName": "WANDEY JUSTO WILLIAM",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 655163be-bdf5-453f-acd3-32a6de72f244 on 2026-02-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 10,
+    "clientId": "26811089",
+    "clientName": "WANDEY JUSTO WILLIAM",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 655163be-bdf5-453f-acd3-32a6de72f244 on 2026-03-31T00:00:00Z"
+  },
+  {
+    "rowIndex": 11,
+    "clientId": "4829907",
+    "clientName": "RABURU DAN OMONDI",
+    "action": "Repayment",
+    "amount": 150000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e344c5d4-208b-49d9-814f-cb24564c7f68 on 2026-04-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 12,
+    "clientId": "4829907-L1",
+    "clientName": "RABURU DAN OMONDI",
+    "action": "SKIP",
+    "amount": 0,
+    "status": "SKIPPED",
+    "detail": "Marker/commence row — no financial transaction"
+  },
+  {
+    "rowIndex": 13,
+    "clientId": "11229413",
+    "clientName": "OKECH PAUL MBOYA",
+    "action": "Manual Penalty",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1624305c-db28-4067-84a2-6aa41730e512 on 2026-03-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 14,
+    "clientId": "11229413",
+    "clientName": "OKECH PAUL MBOYA",
+    "action": "Manual Penalty",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1624305c-db28-4067-84a2-6aa41730e512 on 2026-04-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 15,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-02-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 16,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 17,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-02-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 18,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-02-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 19,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-02-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 20,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-02-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 21,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-07-02T07:53:15.245Z"
+  },
+  {
+    "rowIndex": 22,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-05T00:00:00Z"
+  },
+  {
+    "rowIndex": 23,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 24,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 150,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-12T00:00:00Z"
+  },
+  {
+    "rowIndex": 25,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 26,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 27,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 28,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-03-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 29,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-04-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 30,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-04-17T00:00:00Z"
+  },
+  {
+    "rowIndex": 31,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-04-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 32,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-03T00:00:00Z"
+  },
+  {
+    "rowIndex": 33,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-01T00:00:00Z"
+  },
+  {
+    "rowIndex": 34,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 35,
+    "clientId": "22883717",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "SKIP",
+    "amount": 0,
+    "status": "SKIPPED",
+    "detail": "Marker/commence row — no financial transaction"
+  },
+  {
+    "rowIndex": 36,
+    "clientId": "22611797",
+    "clientName": "OMONDI ANTHONY NAAMAN OUMA",
+    "action": "Manual Penalty",
+    "amount": 74375,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 41f497f7-98b7-47d7-83dc-8a86bcdd7263 on 2026-04-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 37,
+    "clientId": "22611797",
+    "clientName": "OMONDI ANTHONY NAAMAN OUMA",
+    "action": "Manual Penalty",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 41f497f7-98b7-47d7-83dc-8a86bcdd7263 on 2026-07-02T07:53:19.847Z"
+  },
+  {
+    "rowIndex": 38,
+    "clientId": "22883717",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 19500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5a1601c5-3f3e-493f-86ac-cc74dbea094f on 2025-11-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 39,
+    "clientId": "22883717",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 25350,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5a1601c5-3f3e-493f-86ac-cc74dbea094f on 2025-12-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 40,
+    "clientId": "22883717-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "SKIP",
+    "amount": 0,
+    "status": "SKIPPED",
+    "detail": "Marker/commence row — no financial transaction"
+  },
+  {
+    "rowIndex": 41,
+    "clientId": "22883717-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Repayment",
+    "amount": 70000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 392f625d-85c6-4e28-996b-7945d8d6124d on 2025-09-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 42,
+    "clientId": "22883717-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 392f625d-85c6-4e28-996b-7945d8d6124d on 2025-12-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 43,
+    "clientId": "22883717-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Repayment",
+    "amount": 15000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 392f625d-85c6-4e28-996b-7945d8d6124d on 2025-12-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 44,
+    "clientId": "22883717-L1",
+    "clientName": "REJE DENIS OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 59925,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 392f625d-85c6-4e28-996b-7945d8d6124d on 2026-07-02T07:53:22.483Z"
+  },
+  {
+    "rowIndex": 45,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-05-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 46,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-06-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 47,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-07-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 48,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-08-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 49,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-09-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 50,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-10-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 51,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-11-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 52,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2025-12-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 53,
+    "clientId": "20900263",
+    "clientName": "OKUOGA POLYCAP ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bb47c03-d8e7-4c5e-9b81-17cb3d921608 on 2026-01-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 54,
+    "clientId": "25698363",
+    "clientName": "ASINDI JOHN ONYANGO",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f9be14cd-2676-42a3-8246-ad59234a0bd3 on 2026-03-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 55,
+    "clientId": "24183665",
+    "clientName": "AMOLO MATHEWS OWUOR",
+    "action": "Repayment",
+    "amount": 3500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f00160bb-d7fb-4d8c-bcdc-8d1b439e5e50 on 2026-03-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 56,
+    "clientId": "24183665",
+    "clientName": "AMOLO MATHEWS OWUOR",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f00160bb-d7fb-4d8c-bcdc-8d1b439e5e50 on 2026-02-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 57,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 6800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2025-10-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 58,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 2880,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:29.698Z"
+  },
+  {
+    "rowIndex": 59,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 4000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2025-11-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 60,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 2432,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:30.343Z"
+  },
+  {
+    "rowIndex": 61,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 4050,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2025-12-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 62,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 1785,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:30.982Z"
+  },
+  {
+    "rowIndex": 63,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 2200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-01-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 64,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 1619,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:31.625Z"
+  },
+  {
+    "rowIndex": 65,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 1800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-01-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 66,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 1546,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:32.303Z"
+  },
+  {
+    "rowIndex": 67,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:32.833Z"
+  },
+  {
+    "rowIndex": 68,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-04-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 69,
+    "clientId": "3504901",
+    "clientName": "KOECH JAMES KIPLANGAT",
+    "action": "Manual Penalty",
+    "amount": 2476,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan e3a44665-e55e-4a40-b788-ec104b4d90ff on 2026-07-02T07:53:33.286Z"
+  },
+  {
+    "rowIndex": 70,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:33.748Z"
+  },
+  {
+    "rowIndex": 71,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:34.705Z"
+  },
+  {
+    "rowIndex": 72,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:35.153Z"
+  },
+  {
+    "rowIndex": 73,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:35.601Z"
+  },
+  {
+    "rowIndex": 74,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:36.046Z"
+  },
+  {
+    "rowIndex": 75,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:36.499Z"
+  },
+  {
+    "rowIndex": 76,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:36.954Z"
+  },
+  {
+    "rowIndex": 77,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:37.402Z"
+  },
+  {
+    "rowIndex": 78,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:37.861Z"
+  },
+  {
+    "rowIndex": 79,
+    "clientId": "27673353",
+    "clientName": "ONYONA DANIEL KEPHA OLANG'",
+    "action": "Manual Penalty",
+    "amount": 12000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8b824278-45fa-4a86-8b24-57421fd0886c on 2026-07-02T07:53:38.314Z"
+  },
+  {
+    "rowIndex": 80,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-04-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 81,
+    "clientId": "8533752",
+    "clientName": "MOREKA OTUNDU RICHARD BROWN",
+    "action": "Repayment",
+    "amount": 7500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f25c2bba-a63c-4038-a1f2-5f3712753c56 on 2025-12-17T00:00:00Z"
+  },
+  {
+    "rowIndex": 82,
+    "clientId": "8533752",
+    "clientName": "MOREKA OTUNDU RICHARD BROWN",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f25c2bba-a63c-4038-a1f2-5f3712753c56 on 2025-12-17T00:00:00Z"
+  },
+  {
+    "rowIndex": 83,
+    "clientId": "20660807",
+    "clientName": "OKUMU DOROTHY AUMA",
+    "action": "Repayment",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan a371ece7-3cc4-44c5-b15f-a7f376103473 on 2026-02-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 84,
+    "clientId": "20660807",
+    "clientName": "OKUMU DOROTHY AUMA",
+    "action": "Manual Penalty",
+    "amount": 44000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan a371ece7-3cc4-44c5-b15f-a7f376103473 on 2026-07-02T07:53:40.932Z"
+  },
+  {
+    "rowIndex": 85,
+    "clientId": "22614530",
+    "clientName": "OLIECH KENNEDY OUMA",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan bc2e6516-1ac2-45d9-81cc-2bae8ef322be on 2026-04-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 86,
+    "clientId": "22614530",
+    "clientName": "OLIECH KENNEDY OUMA",
+    "action": "Manual Penalty",
+    "amount": 1320,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan bc2e6516-1ac2-45d9-81cc-2bae8ef322be on 2026-07-02T07:53:42.006Z"
+  },
+  {
+    "rowIndex": 87,
+    "clientId": "26887070",
+    "clientName": "OWUOR GEOFFREY OTIENO",
+    "action": "Repayment",
+    "amount": 6000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan a85bbc22-da0e-461c-8a86-973319289816 on 2026-02-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 88,
+    "clientId": "26887070",
+    "clientName": "OWUOR GEOFFREY OTIENO",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan a85bbc22-da0e-461c-8a86-973319289816 on 2026-02-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 89,
+    "clientId": "26887070",
+    "clientName": "OWUOR GEOFFREY OTIENO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan a85bbc22-da0e-461c-8a86-973319289816 on 2026-03-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 90,
+    "clientId": "20807070",
+    "clientName": "MAURICE OTIENO NGETA",
+    "action": "Repayment",
+    "amount": 25000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b1a3606d-0f6f-4acb-93bc-d26e23aa2597 on 2026-03-03T00:00:00Z"
+  },
+  {
+    "rowIndex": 91,
+    "clientId": "20807070",
+    "clientName": "MAURICE OTIENO NGETA",
+    "action": "Manual Penalty",
+    "amount": 25000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b1a3606d-0f6f-4acb-93bc-d26e23aa2597 on 2026-07-02T07:53:44.165Z"
+  },
+  {
+    "rowIndex": 92,
+    "clientId": "20807070",
+    "clientName": "MAURICE OTIENO NGETA",
+    "action": "Repayment",
+    "amount": 25000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b1a3606d-0f6f-4acb-93bc-d26e23aa2597 on 2026-04-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 93,
+    "clientId": "20807070",
+    "clientName": "MAURICE OTIENO NGETA",
+    "action": "Manual Penalty",
+    "amount": 25000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b1a3606d-0f6f-4acb-93bc-d26e23aa2597 on 2026-07-02T07:53:44.831Z"
+  },
+  {
+    "rowIndex": 94,
+    "clientId": "13892618-L1",
+    "clientName": "WERE JAMES OYUGI",
+    "action": "Manual Penalty",
+    "amount": 39200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 9e8906b4-a33b-4d36-93c0-9b14b83d4a27 on 2026-07-02T07:53:45.296Z"
+  },
+  {
+    "rowIndex": 95,
+    "clientId": "13892618-L1",
+    "clientName": "WERE JAMES OYUGI",
+    "action": "Repayment",
+    "amount": 80000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 9e8906b4-a33b-4d36-93c0-9b14b83d4a27 on 2026-04-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 96,
+    "clientId": "13892618-L1",
+    "clientName": "WERE JAMES OYUGI",
+    "action": "Manual Penalty",
+    "amount": 22880,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 9e8906b4-a33b-4d36-93c0-9b14b83d4a27 on 2026-07-02T07:53:46.371Z"
+  },
+  {
+    "rowIndex": 97,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Manual Penalty",
+    "amount": 5600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-07-02T07:53:46.815Z"
+  },
+  {
+    "rowIndex": 98,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Repayment",
+    "amount": 8000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-02-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 99,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Manual Penalty",
+    "amount": 4640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-07-02T07:53:47.911Z"
+  },
+  {
+    "rowIndex": 100,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Repayment",
+    "amount": 5200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-03-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 101,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Manual Penalty",
+    "amount": 4416,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-07-02T07:53:48.561Z"
+  },
+  {
+    "rowIndex": 102,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Repayment",
+    "amount": 4000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-04-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 103,
+    "clientId": "22151401",
+    "clientName": "OMEGA DOMINIC ASUMU",
+    "action": "Manual Penalty",
+    "amount": 4582,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b17a9518-47f2-4899-b22c-2153314d51ee on 2026-07-02T07:53:49.187Z"
+  },
+  {
+    "rowIndex": 104,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2025-12-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 105,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-07-02T07:53:50.359Z"
+  },
+  {
+    "rowIndex": 106,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-01-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 107,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-07-02T07:53:51.016Z"
+  },
+  {
+    "rowIndex": 108,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-02-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 109,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-07-02T07:53:51.667Z"
+  },
+  {
+    "rowIndex": 110,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-03-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 111,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 2800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-07-02T07:53:52.336Z"
+  },
+  {
+    "rowIndex": 112,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 8000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-04-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 113,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 720,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-07-02T07:53:52.985Z"
+  },
+  {
+    "rowIndex": 114,
+    "clientId": "28425326",
+    "clientName": "OUKO STEPHEN OMONDI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 82148241-976a-4417-b49e-651effff3da4 on 2026-07-02T07:53:53.435Z"
+  },
+  {
+    "rowIndex": 115,
+    "clientId": "301133",
+    "clientName": "OKECH CHARLES OWINO",
+    "action": "Repayment",
+    "amount": 14000,
+    "status": "ERROR",
+    "detail": "Client not found in DB for national_id=301133"
+  },
+  {
+    "rowIndex": 116,
+    "clientId": "31217654",
+    "clientName": "OSORE DANIEL MBINJI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bf257b8-a7aa-4c5e-852b-af071e020e93 on 2026-03-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 117,
+    "clientId": "31217654",
+    "clientName": "OSORE DANIEL MBINJI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4bf257b8-a7aa-4c5e-852b-af071e020e93 on 2026-03-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 118,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-03-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 119,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-03-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 120,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-04-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 121,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-04-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 122,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 900,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-05-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 123,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 100,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-05-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 124,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-04-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 125,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-04-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 126,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Manual Penalty",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-07-02T07:53:57.995Z"
+  },
+  {
+    "rowIndex": 127,
+    "clientId": "30403266",
+    "clientName": "ODOYO MAXWEL OYUGA",
+    "action": "Manual Penalty",
+    "amount": 5600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 977e3d5b-cb02-4244-a561-dff5b8b04ce4 on 2026-07-02T07:53:58.451Z"
+  },
+  {
+    "rowIndex": 128,
+    "clientId": "30403266",
+    "clientName": "ODOYO MAXWEL OYUGA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 977e3d5b-cb02-4244-a561-dff5b8b04ce4 on 2026-07-02T07:53:59.358Z"
+  },
+  {
+    "rowIndex": 129,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2025-09-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 130,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 1280,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:00.208Z"
+  },
+  {
+    "rowIndex": 131,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2025-10-31T00:00:00Z"
+  },
+  {
+    "rowIndex": 132,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 1272,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:00.876Z"
+  },
+  {
+    "rowIndex": 133,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2025-12-01T00:00:00Z"
+  },
+  {
+    "rowIndex": 134,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 1621,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:01.516Z"
+  },
+  {
+    "rowIndex": 135,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2025-12-17T00:00:00Z"
+  },
+  {
+    "rowIndex": 136,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 1669,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:02.149Z"
+  },
+  {
+    "rowIndex": 137,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 2337,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:02.690Z"
+  },
+  {
+    "rowIndex": 138,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 6000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-02-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 139,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 872,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:03.364Z"
+  },
+  {
+    "rowIndex": 140,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:03.825Z"
+  },
+  {
+    "rowIndex": 141,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:04.024Z"
+  },
+  {
+    "rowIndex": 142,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-08-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 143,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:04.929Z"
+  },
+  {
+    "rowIndex": 144,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-09-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 145,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:05.582Z"
+  },
+  {
+    "rowIndex": 146,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-10-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 147,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 1600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:06.227Z"
+  },
+  {
+    "rowIndex": 148,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-11-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 149,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-11-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 150,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 1200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:07.137Z"
+  },
+  {
+    "rowIndex": 151,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1900,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-12-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 152,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2025-12-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 153,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:08.042Z"
+  },
+  {
+    "rowIndex": 154,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-01-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 155,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:08.699Z"
+  },
+  {
+    "rowIndex": 156,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-02-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 157,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 390,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:09.327Z"
+  },
+  {
+    "rowIndex": 158,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-05-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 159,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:09.970Z"
+  },
+  {
+    "rowIndex": 160,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Manual Penalty",
+    "amount": 710,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-07-02T07:54:10.422Z"
+  },
+  {
+    "rowIndex": 161,
+    "clientId": "1713603",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "action": "Restructure Adjustment",
+    "amount": 92400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3ad28c81-aae7-49c0-b76b-1649cac83021 on 2026-02-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 162,
+    "clientId": "1713603",
+    "clientName": "--------------------",
+    "action": "SKIP",
+    "amount": 0,
+    "status": "SKIPPED",
+    "detail": "Marker/commence row — no financial transaction"
+  },
+  {
+    "rowIndex": 163,
+    "clientId": "1713603-R1",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "action": "Repayment",
+    "amount": 60000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6754e3c1-577b-4fc1-b179-9296e694a09c on 2026-02-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 164,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 165,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 166,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 167,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Repayment",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2025-09-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 168,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Repayment",
+    "amount": 6000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2025-10-01T00:00:00Z"
+  },
+  {
+    "rowIndex": 169,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Manual Penalty",
+    "amount": 26000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2026-07-02T07:54:13.583Z"
+  },
+  {
+    "rowIndex": 170,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Repayment",
+    "amount": 70000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2025-11-05T00:00:00Z"
+  },
+  {
+    "rowIndex": 171,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Manual Penalty",
+    "amount": 8000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2026-07-02T07:54:14.230Z"
+  },
+  {
+    "rowIndex": 172,
+    "clientId": "22526478",
+    "clientName": "ONGELE FREDRICK AWITI",
+    "action": "Manual Penalty",
+    "amount": 33400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 83471bbc-1d93-43dc-b8d8-170ded6f3bf3 on 2026-07-02T07:54:14.679Z"
+  },
+  {
+    "rowIndex": 173,
+    "clientId": "24803451",
+    "clientName": "DANGA FREDRICK OMONDI",
+    "action": "Repayment",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 798bbe97-d2bb-4173-aef0-bda0729cb2f3 on 2025-11-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 174,
+    "clientId": "23753593",
+    "clientName": "OWANG DANIEL ODHIAMBO",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 60c7e07a-16a1-4699-acdf-ad6da9b4467c on 2026-04-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 175,
+    "clientId": "25116367",
+    "clientName": "LIECH JOB MICHAEL",
+    "action": "Manual Penalty",
+    "amount": 80000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7e6574b0-7f5d-4984-ad42-5b415bb74c7b on 2026-07-02T07:54:16.426Z"
+  },
+  {
+    "rowIndex": 176,
+    "clientId": "25116367",
+    "clientName": "LIECH JOB MICHAEL",
+    "action": "Repayment",
+    "amount": 250000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7e6574b0-7f5d-4984-ad42-5b415bb74c7b on 2026-04-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 177,
+    "clientId": "23978608",
+    "clientName": "ORAO ODUL DAVID",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5c3fc16b-85d1-45f3-b9d4-28de7be2bd9d on 2026-05-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 178,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Manual Penalty",
+    "amount": 420,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-07-02T07:54:17.782Z"
+  },
+  {
+    "rowIndex": 179,
+    "clientId": "31316469",
+    "clientName": "OBWANDA JAMES ODHIAMBO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6f602f3c-5a02-482f-be6e-ed84d87cb85c on 2026-05-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 180,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 181,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 182,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 183,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 184,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 185,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 260,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-02-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 186,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-02-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 187,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 250,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-02-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 188,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 260,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-02-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 189,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 150,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 190,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 230,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 191,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 180,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 192,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 150,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 193,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 100,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 194,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 100,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-03-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 195,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Manual Penalty",
+    "amount": 2348,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-07-02T07:54:22.346Z"
+  },
+  {
+    "rowIndex": 196,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-04-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 197,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 2500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-04-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 198,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-04-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 199,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Manual Penalty",
+    "amount": 2087,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-07-02T07:54:23.512Z"
+  },
+  {
+    "rowIndex": 200,
+    "clientId": "23636722",
+    "clientName": "ODIAGA RONALD AGUMBA",
+    "action": "Repayment",
+    "amount": 112000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7ce7ee91-3004-4228-867a-101420b742fb on 2026-05-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 201,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 202,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 203,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-05T00:00:00Z"
+  },
+  {
+    "rowIndex": 204,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 205,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-08-12T00:00:00Z"
+  },
+  {
+    "rowIndex": 206,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-08-05T00:00:00Z"
+  },
+  {
+    "rowIndex": 207,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 40000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-08-05T00:00:00Z"
+  },
+  {
+    "rowIndex": 208,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 209,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-09-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 210,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 80000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2025-11-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 211,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-01-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 212,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-01-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 213,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-01-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 214,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-02-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 215,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 60000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-02-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 216,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-02-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 217,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-03-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 218,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-03-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 219,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-03-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 220,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-03-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 221,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-04-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 222,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 70000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-04-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 223,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-04-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 224,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-04-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 225,
+    "clientId": "25712743",
+    "clientName": "BEATRICE ATIENO OMONDI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 316e2d21-dc93-411d-a26c-be2fd46dd5a8 on 2026-05-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 226,
+    "clientId": "24688926",
+    "clientName": "OTIENO JARED OWITI",
+    "action": "Repayment",
+    "amount": 15000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 68c5c44e-7a79-43e0-b49a-a1f2796607c6 on 2026-01-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 227,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 228,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 229,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 230,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 231,
+    "clientId": "12537007",
+    "clientName": "AYIEKO GEORGE ODHIAMBO",
+    "action": "Repayment",
+    "amount": 400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 4b2bec62-5fa3-4e04-b48b-253e3cf4d1c4 on 2026-05-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 232,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 110000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-05-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 233,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 100000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-05-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 234,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Manual Penalty",
+    "amount": 260000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-07-02T07:54:33.210Z"
+  },
+  {
+    "rowIndex": 235,
+    "clientId": "28408520",
+    "clientName": "WASWA WALTER JAMES",
+    "action": "Repayment",
+    "amount": 48000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan f5dfbd1c-fa51-4e9f-951c-0242696666c5 on 2026-05-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 236,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-05-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 237,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-05-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 238,
+    "clientId": "36288108",
+    "clientName": "OTIENO ISAIAH OMOLLO",
+    "action": "Manual Penalty",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ae651bac-1b4e-4a16-b362-b551fbb3cd87 on 2026-07-02T07:54:34.793Z"
+  },
+  {
+    "rowIndex": 239,
+    "clientId": "13598141",
+    "clientName": "OKACH MAURICE AUSI",
+    "action": "Repayment",
+    "amount": 30000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 98f2dfcc-2a2a-4c01-87aa-120cc76be7a8 on 2026-05-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 240,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 70000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-05-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 241,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 126000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-05-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 242,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 3800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-05-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 243,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-05-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 244,
+    "clientId": "32010957",
+    "clientName": "WACHARA STEVEN OMONDI",
+    "action": "Manual Penalty",
+    "amount": 1002,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 7f93e4dc-ccd3-4b58-a119-c609d7b9c663 on 2026-07-02T07:54:36.803Z"
+  },
+  {
+    "rowIndex": 245,
+    "clientId": "30427410",
+    "clientName": "MUNGOMA VICTOR OKOTH",
+    "action": "Repayment",
+    "amount": 2520,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b214e9d-38fb-4d4e-a8b5-191443068eaa on 2026-05-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 246,
+    "clientId": "29404046",
+    "clientName": "OYUGI HEZBON OMONDI",
+    "action": "Repayment",
+    "amount": 15000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 338856f2-e29e-498a-ab57-daadce283454 on 2026-05-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 247,
+    "clientId": "22089437",
+    "clientName": "ONSOTI NICODEMUS",
+    "action": "Repayment",
+    "amount": 8000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 19a9a025-8f46-4633-9bbb-ea8b0507ae1e on 2026-05-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 248,
+    "clientId": "22089437",
+    "clientName": "ONSOTI NICODEMUS",
+    "action": "Manual Penalty",
+    "amount": 8000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 19a9a025-8f46-4633-9bbb-ea8b0507ae1e on 2026-07-02T07:54:38.357Z"
+  },
+  {
+    "rowIndex": 249,
+    "clientId": "13892618-L1",
+    "clientName": "WERE JAMES OYUGI",
+    "action": "Manual Penalty",
+    "amount": 32032,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 9e8906b4-a33b-4d36-93c0-9b14b83d4a27 on 2026-07-02T07:54:38.804Z"
+  },
+  {
+    "rowIndex": 250,
+    "clientId": "13892618",
+    "clientName": "WERE JAMES OYUGI",
+    "action": "Manual Penalty",
+    "amount": 56000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b05299f-f7da-484a-b757-b052c6345170 on 2026-07-02T07:54:39.247Z"
+  },
+  {
+    "rowIndex": 251,
+    "clientId": "35919228",
+    "clientName": "OOKO DYLAN OCHIENG",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6488cbca-9f5a-45e0-b7ac-ee40dceeb704 on 2026-05-21T00:00:00Z"
+  },
+  {
+    "rowIndex": 252,
+    "clientId": "35919228",
+    "clientName": "OOKO DYLAN OCHIENG",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6488cbca-9f5a-45e0-b7ac-ee40dceeb704 on 2026-05-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 253,
+    "clientId": "35919228",
+    "clientName": "OOKO DYLAN OCHIENG",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6488cbca-9f5a-45e0-b7ac-ee40dceeb704 on 2026-05-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 254,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-05-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 255,
+    "clientId": "20191848",
+    "clientName": "ASIRO BENARD OCHIENG",
+    "action": "Repayment",
+    "amount": 400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c5da4413-3262-4aef-8af8-086574b242c3 on 2026-05-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 256,
+    "clientId": "25770919",
+    "clientName": "ODHIAMBO ERIC AKECH",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 983b84e3-2554-44ad-b16b-dc927f7a401e on 2026-05-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 257,
+    "clientId": "25770919",
+    "clientName": "ODHIAMBO ERIC AKECH",
+    "action": "Manual Penalty",
+    "amount": 1707,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 983b84e3-2554-44ad-b16b-dc927f7a401e on 2026-07-02T07:54:42.061Z"
+  },
+  {
+    "rowIndex": 258,
+    "clientId": "1713603-R1",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "action": "Restructure Adjustment",
+    "amount": 124800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 6754e3c1-577b-4fc1-b179-9296e694a09c on 2026-07-02T07:54:42.507Z"
+  },
+  {
+    "rowIndex": 259,
+    "clientId": "1713603-R2",
+    "clientName": "--------------------",
+    "action": "SKIP",
+    "amount": 0,
+    "status": "SKIPPED",
+    "detail": "Marker/commence row — no financial transaction"
+  },
+  {
+    "rowIndex": 260,
+    "clientId": "1713603-R2",
+    "clientName": "OGUMBO LUKAS ONGARO",
+    "action": "Manual Penalty",
+    "amount": 124800,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan c4895ea0-b708-44f3-a02c-6c84e8bba9fa on 2026-05-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 261,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2025-11-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 262,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2025-12-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 263,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2026-01-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 264,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2026-02-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 265,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2026-03-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 266,
+    "clientId": "22676602",
+    "clientName": "MASORE ANTONINAH ATIENO",
+    "action": "Manual Penalty",
+    "amount": 28000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fd6b1592-08f9-4b13-be51-09625144c753 on 2026-04-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 267,
+    "clientId": "8606575",
+    "clientName": "ABONYO ISAAC BILO",
+    "action": "Repayment",
+    "amount": 1100,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 622de518-2593-41e0-b3a5-48532333212d on 2025-04-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 268,
+    "clientId": "8606575",
+    "clientName": "ABONYO ISAAC BILO",
+    "action": "Repayment",
+    "amount": 200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 622de518-2593-41e0-b3a5-48532333212d on 2025-04-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 269,
+    "clientId": "8606575",
+    "clientName": "ABONYO ISAAC BILO",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 622de518-2593-41e0-b3a5-48532333212d on 2025-05-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 270,
+    "clientId": "8606575",
+    "clientName": "ABONYO ISAAC BILO",
+    "action": "Manual Penalty",
+    "amount": 1600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 622de518-2593-41e0-b3a5-48532333212d on 2026-07-02T07:54:47.683Z"
+  },
+  {
+    "rowIndex": 271,
+    "clientId": "8606575",
+    "clientName": "ABONYO ISAAC BILO",
+    "action": "Manual Penalty",
+    "amount": 2240,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 622de518-2593-41e0-b3a5-48532333212d on 2026-07-02T07:54:48.130Z"
+  },
+  {
+    "rowIndex": 272,
+    "clientId": "23558576",
+    "clientName": "APAKA GEORGE ODERO",
+    "action": "Manual Penalty",
+    "amount": 9120,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 314ae785-42b5-4ddb-8f25-4aa1314a8040 on 2026-07-02T07:54:48.577Z"
+  },
+  {
+    "rowIndex": 273,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-07-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 274,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-07-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 275,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-06-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 276,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-06-12T00:00:00Z"
+  },
+  {
+    "rowIndex": 277,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-06-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 278,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-06-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 279,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-06-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 280,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-07-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 281,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-08-18T00:00:00Z"
+  },
+  {
+    "rowIndex": 282,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-08-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 283,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-08-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 284,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Manual Penalty",
+    "amount": 37200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-07-02T07:54:52.411Z"
+  },
+  {
+    "rowIndex": 285,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-10-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 286,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-11-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 287,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-11-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 288,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-11-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 289,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-12-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 290,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2025-12-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 291,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-01-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 292,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-01-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 293,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-03-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 294,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-03-25T00:00:00Z"
+  },
+  {
+    "rowIndex": 295,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-04-13T00:00:00Z"
+  },
+  {
+    "rowIndex": 296,
+    "clientId": "24692999",
+    "clientName": "MWALO KENNEDY ONYANGO",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 8603b4ba-63d1-4305-b1c3-a6712c1e0799 on 2026-04-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 297,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Manual Penalty",
+    "amount": 2520,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2026-03-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 298,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-09-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 299,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-08-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 300,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-08-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 301,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-09-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 302,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Manual Penalty",
+    "amount": 7028,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2026-07-02T07:54:57.407Z"
+  },
+  {
+    "rowIndex": 303,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-09-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 304,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-08-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 305,
+    "clientId": "22879681",
+    "clientName": "SAMUEL ODHIAMBO NYESI",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 97ebffdd-9c3b-413d-ab53-3b13bcb7e1d9 on 2025-08-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 306,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 307,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 2500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 308,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-12T00:00:00Z"
+  },
+  {
+    "rowIndex": 309,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 310,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-27T00:00:00Z"
+  },
+  {
+    "rowIndex": 311,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-11-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 312,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-12-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 313,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-12-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 314,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Repayment",
+    "amount": 300,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2024-12-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 315,
+    "clientId": "22156768",
+    "clientName": "RASHID OKOTH OSANO",
+    "action": "Manual Penalty",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 5b543882-fd9f-44f2-adbd-7b6fdf8e5aca on 2026-07-02T07:55:00.967Z"
+  },
+  {
+    "rowIndex": 316,
+    "clientId": "26017555",
+    "clientName": "OTIENO COLLINS ODUOR",
+    "action": "Manual Penalty",
+    "amount": 40500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan cfc2e031-1b28-41b5-8c41-102e5595eacb on 2026-07-02T07:55:01.439Z"
+  },
+  {
+    "rowIndex": 317,
+    "clientId": "26017555",
+    "clientName": "OTIENO COLLINS ODUOR",
+    "action": "Repayment",
+    "amount": 100000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan cfc2e031-1b28-41b5-8c41-102e5595eacb on 2024-07-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 318,
+    "clientId": "26017555",
+    "clientName": "OTIENO COLLINS ODUOR",
+    "action": "Repayment",
+    "amount": 35000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan cfc2e031-1b28-41b5-8c41-102e5595eacb on 2024-08-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 319,
+    "clientId": "26017555",
+    "clientName": "OTIENO COLLINS ODUOR",
+    "action": "Manual Penalty",
+    "amount": 12150,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan cfc2e031-1b28-41b5-8c41-102e5595eacb on 2026-07-02T07:55:02.831Z"
+  },
+  {
+    "rowIndex": 320,
+    "clientId": "14643192",
+    "clientName": "AWIMBO SAMUEL OMBOK",
+    "action": "Manual Penalty",
+    "amount": 50000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 382b4d13-e4b6-4a65-bdf9-8a641a03bb5e on 2026-07-02T07:55:03.334Z"
+  },
+  {
+    "rowIndex": 321,
+    "clientId": "14643192",
+    "clientName": "AWIMBO SAMUEL OMBOK",
+    "action": "Manual Penalty",
+    "amount": 53600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 382b4d13-e4b6-4a65-bdf9-8a641a03bb5e on 2026-07-02T07:55:04.255Z"
+  },
+  {
+    "rowIndex": 322,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-07-01T00:00:00Z"
+  },
+  {
+    "rowIndex": 323,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-06-14T00:00:00Z"
+  },
+  {
+    "rowIndex": 324,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1240,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-07-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 325,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 4000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-09-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 326,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-09-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 327,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-09-11T00:00:00Z"
+  },
+  {
+    "rowIndex": 328,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 4000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-09-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 329,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2140,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-10-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 330,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-10-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 331,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 7640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-08-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 332,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-11-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 333,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 3240,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-11-12T00:00:00Z"
+  },
+  {
+    "rowIndex": 334,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-11-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 335,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-12-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 336,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 3640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-12-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 337,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-01-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 338,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-01-15T00:00:00Z"
+  },
+  {
+    "rowIndex": 339,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1140,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-01-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 340,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-01-31T00:00:00Z"
+  },
+  {
+    "rowIndex": 341,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2140,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-02-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 342,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-02-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 343,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-03-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 344,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-03-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 345,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-03-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 346,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-04-03T00:00:00Z"
+  },
+  {
+    "rowIndex": 347,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-04-04T00:00:00Z"
+  },
+  {
+    "rowIndex": 348,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 3640,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-04-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 349,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-04-16T00:00:00Z"
+  },
+  {
+    "rowIndex": 350,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-04-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 351,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-05-06T00:00:00Z"
+  },
+  {
+    "rowIndex": 352,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1140,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-05-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 353,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 5500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-05-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 354,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 4140,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-05-31T00:00:00Z"
+  },
+  {
+    "rowIndex": 355,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 1000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2026-05-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 356,
+    "clientId": "21942199",
+    "clientName": "WILLIAM MISEDA",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 0f9c1026-4c4b-42a8-9cd0-e1c5427ac55b on 2025-10-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 357,
+    "clientId": "20154526",
+    "clientName": "JOSHUA AMUKHOBE MATENDECHERE",
+    "action": "Repayment",
+    "amount": 1900,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b366b36-4dd2-4559-9118-9b19d9260804 on 2026-07-02T07:55:13.093Z"
+  },
+  {
+    "rowIndex": 358,
+    "clientId": "20154526",
+    "clientName": "JOSHUA AMUKHOBE MATENDECHERE",
+    "action": "Manual Penalty",
+    "amount": 4280,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b366b36-4dd2-4559-9118-9b19d9260804 on 2026-07-02T07:55:13.877Z"
+  },
+  {
+    "rowIndex": 359,
+    "clientId": "20154526",
+    "clientName": "JOSHUA AMUKHOBE MATENDECHERE",
+    "action": "Repayment",
+    "amount": 1070,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b366b36-4dd2-4559-9118-9b19d9260804 on 2026-07-02T07:55:14.383Z"
+  },
+  {
+    "rowIndex": 360,
+    "clientId": "20154526",
+    "clientName": "JOSHUA AMUKHOBE MATENDECHERE",
+    "action": "Repayment",
+    "amount": 2000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 1b366b36-4dd2-4559-9118-9b19d9260804 on 2025-10-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 361,
+    "clientId": "28969589",
+    "clientName": "OPONDO FAITH AKINYI",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fe5080a3-efcb-42a8-9976-f918b0db63d8 on 2025-05-08T00:00:00Z"
+  },
+  {
+    "rowIndex": 362,
+    "clientId": "28969589",
+    "clientName": "OPONDO FAITH AKINYI",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fe5080a3-efcb-42a8-9976-f918b0db63d8 on 2025-06-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 363,
+    "clientId": "28969589",
+    "clientName": "OPONDO FAITH AKINYI",
+    "action": "Repayment",
+    "amount": 3000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan fe5080a3-efcb-42a8-9976-f918b0db63d8 on 2025-07-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 364,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 10000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2025-12-22T00:00:00Z"
+  },
+  {
+    "rowIndex": 365,
+    "clientId": "24179061",
+    "clientName": "ORIEDO VICTOR OKOTH",
+    "action": "Manual Penalty",
+    "amount": 11200,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 9022e71d-d228-4cd3-a730-e17f8637bf96 on 2026-07-02T07:55:16.609Z"
+  },
+  {
+    "rowIndex": 366,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-01-20T00:00:00Z"
+  },
+  {
+    "rowIndex": 367,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-03-03T00:00:00Z"
+  },
+  {
+    "rowIndex": 368,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-04-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 369,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-03-10T00:00:00Z"
+  },
+  {
+    "rowIndex": 370,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-02-24T00:00:00Z"
+  },
+  {
+    "rowIndex": 371,
+    "clientId": "24059058",
+    "clientName": "ABDALLA MOHAMMED MUSA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 39e9dd92-3041-4ed5-9cde-f503c68f2916 on 2026-06-09T00:00:00Z"
+  },
+  {
+    "rowIndex": 372,
+    "clientId": "11663818",
+    "clientName": "OKOTH JARED MBOYA",
+    "action": "Repayment",
+    "amount": 20000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan b931339b-ce52-427c-9639-92852ec532cb on 2025-10-23T00:00:00Z"
+  },
+  {
+    "rowIndex": 373,
+    "clientId": "20436309",
+    "clientName": "NDAYALA JONSON ANDELE",
+    "action": "Repayment",
+    "amount": 155000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan ec33a159-bc66-46d4-8162-3584cb6f2f11 on 2026-05-30T00:00:00Z"
+  },
+  {
+    "rowIndex": 374,
+    "clientId": "22614530",
+    "clientName": "OLIECH KENNEDY OUMA",
+    "action": "Repayment",
+    "amount": 1400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan bc2e6516-1ac2-45d9-81cc-2bae8ef322be on 2026-06-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 375,
+    "clientId": "22614530",
+    "clientName": "OLIECH KENNEDY OUMA",
+    "action": "Manual Penalty",
+    "amount": 1288,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan bc2e6516-1ac2-45d9-81cc-2bae8ef322be on 2026-07-02T07:55:19.956Z"
+  },
+  {
+    "rowIndex": 376,
+    "clientId": "23558576",
+    "clientName": "APAKA GEORGE ODERO",
+    "action": "Repayment",
+    "amount": 14000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 314ae785-42b5-4ddb-8f25-4aa1314a8040 on 2026-06-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 377,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Repayment",
+    "amount": 5000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2024-07-19T00:00:00Z"
+  },
+  {
+    "rowIndex": 378,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Repayment",
+    "amount": 1400,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2024-07-26T00:00:00Z"
+  },
+  {
+    "rowIndex": 379,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Repayment",
+    "amount": 1600,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2024-07-28T00:00:00Z"
+  },
+  {
+    "rowIndex": 380,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Repayment",
+    "amount": 1500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2024-07-29T00:00:00Z"
+  },
+  {
+    "rowIndex": 381,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Manual Penalty",
+    "amount": 16920,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2026-07-02T07:55:21.947Z"
+  },
+  {
+    "rowIndex": 382,
+    "clientId": "33703548",
+    "clientName": "OBAGO BOAZ KAUNDA",
+    "action": "Manual Penalty",
+    "amount": 23688,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan dc7af78e-8d0f-4bed-8d63-253307458ec5 on 2026-07-02T07:55:22.397Z"
+  },
+  {
+    "rowIndex": 383,
+    "clientId": "21838232",
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "action": "Manual Penalty",
+    "amount": 15910,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3bb2f6fe-be90-45b4-8e20-e8df39c6b91f on 2026-07-02T07:55:22.852Z"
+  },
+  {
+    "rowIndex": 384,
+    "clientId": "21838232",
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "action": "Repayment",
+    "amount": 7000,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3bb2f6fe-be90-45b4-8e20-e8df39c6b91f on 2024-12-02T00:00:00Z"
+  },
+  {
+    "rowIndex": 385,
+    "clientId": "21838232",
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "action": "Repayment",
+    "amount": 5500,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3bb2f6fe-be90-45b4-8e20-e8df39c6b91f on 2025-02-07T00:00:00Z"
+  },
+  {
+    "rowIndex": 386,
+    "clientId": "21838232",
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "action": "Manual Penalty",
+    "amount": 18583,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3bb2f6fe-be90-45b4-8e20-e8df39c6b91f on 2026-07-02T07:55:24.226Z"
+  },
+  {
+    "rowIndex": 387,
+    "clientId": "21838232",
+    "clientName": "WEKESA ROBERT NAMBALU",
+    "action": "Manual Penalty",
+    "amount": 24158,
+    "status": "SUCCESS",
+    "detail": "Recorded for loan 3bb2f6fe-be90-45b4-8e20-e8df39c6b91f on 2026-07-02T07:55:24.680Z"
+  }
+]
