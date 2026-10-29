@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, Gauge, Fuel, Zap, Settings, 
   Check, Phone, MessageCircle, MapPin, Fingerprint, Info 
@@ -12,6 +12,7 @@ import { getMappedColorHex } from '../utils/colorUtils';
 
 const VehicleDetailsHire = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeImage, setActiveImage] = useState(0);
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,9 +34,15 @@ const VehicleDetailsHire = () => {
         setLoading(true);
         const response = await getVehicleById(id);
         if (isMounted) {
-          setVehicle(response?.data || null);
+          const raw = (response && !response.error)
+            ? (response._id || response.id ? response : (response.data || response))
+            : null;
+          setVehicle(raw);
           setLoadError("");
           setActiveImage(0);
+          if (raw?.slug && id !== raw.slug) {
+            navigate(`/vehicle/hire/${raw.slug}`, { replace: true });
+          }
         }
       } catch (error) {
         if (isMounted) {

@@ -180,6 +180,9 @@ export default function VehicleDetails() {
             ? (targetVehicle._id || targetVehicle.id ? targetVehicle : (targetVehicle.data || targetVehicle.vehicle || targetVehicle))
             : null;
           setVehicleRaw(raw);
+          if (raw?.slug && id !== raw.slug) {
+            navigate(`/vehicle/${raw.slug}`, { replace: true });
+          }
           const list = Array.isArray(allVehicles)
             ? allVehicles
             : (allVehicles?.data || allVehicles?.vehicles || []);
@@ -643,7 +646,7 @@ export default function VehicleDetails() {
                   Negotiate
                 </button>
                 <span className="text-slate-400">·</span>
-                <span className="text-slate-600">Financing from 12% APR</span>
+                <span className="text-slate-600">Financing from 70% </span>
                 <span className="text-slate-400">·</span>
                 <button
                   type="button"
@@ -1142,8 +1145,8 @@ export default function VehicleDetails() {
                     type="button"
                     onClick={() => setActiveImageIndex(idx)}
                     className={`relative w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${activeImageIndex === idx
-                        ? 'border-blue-500 scale-105 opacity-100 shadow-md ring-2 ring-blue-400/40'
-                        : 'border-white/20 opacity-50 hover:opacity-80'
+                      ? 'border-blue-500 scale-105 opacity-100 shadow-md ring-2 ring-blue-400/40'
+                      : 'border-white/20 opacity-50 hover:opacity-80'
                       }`}
                   >
                     <img

@@ -96,15 +96,39 @@ export interface AddVehicleParams {
   purchaseDate?: string;
 }
 
+function slugify(text: string): string {
+  return String(text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export async function addVehicle(params: AddVehicleParams) {
   try {
     await requireManagerRole();
     const supabase = createAdminClient();
     const regNo = params.registrationNo.trim().toUpperCase();
 
+    const makePart = slugify(params.makeModel || 'vehicle');
+    const yearPart = params.year ? `-${params.year}` : '';
+    const regPart = regNo ? `-${slugify(regNo)}` : `-${Math.random().toString(36).substring(2, 7)}`;
+    let generatedSlug = `${makePart}${yearPart}${regPart}`;
+
+    const { data: existingSlug } = await supabase
+      .from('vehicles')
+      .select('id')
+      .eq('slug', generatedSlug)
+      .maybeSingle();
+
+    if (existingSlug) {
+      generatedSlug = `${generatedSlug}-${Date.now().toString(36).slice(-4)}`;
+    }
+
     const insertPayload: any = {
       registration_no: regNo,
       make_model: params.makeModel.trim(),
+      slug: generatedSlug,
       type: params.type || null,
       year: params.year ? Number(params.year) : null,
       color: params.color || null,
@@ -221,6 +245,7 @@ export async function updateVehicle(id: string, params: Partial<AddVehicleParams
     if (params.features !== undefined) updateData.features = params.features || null;
     if (params.description !== undefined) updateData.description = params.description?.trim() || null;
     if (params.condition !== undefined) updateData.condition = params.condition || null;
+    if (params.slug !== undefined) updateData.slug = slugify(params.slug);
     
     const isNew = params.is_new_arrival ?? params.isNewArrival;
     if (isNew !== undefined) updateData.is_new_arrival = Boolean(isNew);
