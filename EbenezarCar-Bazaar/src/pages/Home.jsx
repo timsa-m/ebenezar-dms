@@ -325,11 +325,11 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
       });
   }, [vehicles]);
 
-  // Filtered vehicles for Budget section (Above 1M means > 1,000,000)
+  // Filtered vehicles for Budget section (Above 1M means > 1,000,000 or Price on Request)
   const budgetVehicles = useMemo(() => {
     if (normalizedVehicles.length === 0) return [];
 
-    return normalizedVehicles.filter((v) => {
+    const filtered = normalizedVehicles.filter((v) => {
       if (selectedBudget === 'KSh 300,000 - 500,000') {
         return v.price >= 300000 && v.price <= 500000;
       }
@@ -337,25 +337,25 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
         return v.price > 500000 && v.price <= 1000000;
       }
       if (selectedBudget === 'Above 1M') {
-        return v.price > 1000000;
+        return v.price > 1000000 || v.price === 0;
       }
       return true;
     });
+
+    // If no vehicles strictly match the current tab (e.g. prices are 0 / Price on Request), fall back to all vehicles
+    return filtered.length > 0 ? filtered : normalizedVehicles;
   }, [normalizedVehicles, selectedBudget]);
 
   // Filtered vehicles for Lifestyle section
-  // 1. Family SUVs: ONLY shows SUVs
-  // 2. Executive Saloon Cars: Saloon cars that are over 800,000 KSh asking price
-  // 3. Fuel Efficient: Hybrid OR 1300cc and below
   const lifestyleVehicles = useMemo(() => {
     if (normalizedVehicles.length === 0) return [];
 
-    return normalizedVehicles.filter((v) => {
+    const filtered = normalizedVehicles.filter((v) => {
       if (selectedLifestyle === 'Family SUVs') {
         return isVehicleSuv(v);
       }
       if (selectedLifestyle === 'Executive Saloon Cars') {
-        return isVehicleSaloon(v) && v.price > 800000;
+        return isVehicleSaloon(v);
       }
       if (selectedLifestyle === 'Fuel Efficient') {
         const fuelStr = (v.fuel || '').toLowerCase();
@@ -364,8 +364,10 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
         const isSmallEngine = v.engineCc !== null && v.engineCc <= 1300;
         return isHybrid || isSmallEngine;
       }
-      return false;
+      return true;
     });
+
+    return filtered.length > 0 ? filtered : normalizedVehicles;
   }, [normalizedVehicles, selectedLifestyle]);
 
   // Budget carousel pagination

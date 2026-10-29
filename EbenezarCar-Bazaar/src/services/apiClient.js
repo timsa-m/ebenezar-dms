@@ -1,4 +1,5 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "" : "http://localhost:3000");
+const API_BASE_URL = RAW_BASE.replace(/\/$/, "");
 
 const buildUrl = (path) => {
   if (path.startsWith("http")) {

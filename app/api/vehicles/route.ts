@@ -50,7 +50,8 @@ export async function GET(request: Request) {
       features: v.features || [],
       isNewArrival: v.is_new_arrival,
       forHire: v.for_hire,
-      isSold: v.status !== 'in_stock',
+      status: v.status || 'in_stock',
+      isSold: ['sold', 'cash_sale', 'financed', 'credit', 'repossessed', 'deleted'].includes(String(v.status || '').toLowerCase()),
       images: v.images || [],
       slug: v.slug || v.id
     }));
