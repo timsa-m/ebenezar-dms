@@ -8,20 +8,20 @@ const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 const redisConnection = new Redis(REDIS_URL, {
   maxRetriesPerRequest: null, // Required for BullMQ
   retryStrategy: (times) => {
-    const delay = Math.min(times * 50, 2000);
-    return delay;
+    // Progressive backoff (up to 30s) when Redis is offline to reduce socket churn and CPU load
+    return Math.min(times * 500, 30000);
   },
+  enableOfflineQueue: false, // Don't build up infinite in-memory buffer if Redis is offline
 });
 
-let lastErrorTime = 0;
+let hasLoggedRefusal = false;
 
 redisConnection.on('error', (err: any) => {
-  const now = Date.now();
-  // Rate-limit connection refused warnings to once every 10 seconds to prevent console spam
+  // Rate-limit connection refused warnings so console remains readable during local development
   if (err.code === 'ECONNREFUSED' || err.message?.includes('ECONNREFUSED')) {
-    if (now - lastErrorTime > 10000) {
-      console.warn(`[Redis] ⚠️ Connection refused at ${REDIS_URL}. Please ensure Redis is running.`);
-      lastErrorTime = now;
+    if (!hasLoggedRefusal) {
+      console.warn(`[Redis] ℹ️ Optional Redis offline at ${REDIS_URL}. Continuing in local mode.`);
+      hasLoggedRefusal = true;
     }
   } else {
     console.error('[Redis] Connection Error:', err);
@@ -29,6 +29,7 @@ redisConnection.on('error', (err: any) => {
 });
 
 redisConnection.on('connect', () => {
+  hasLoggedRefusal = false;
   console.log('[Redis] ✅ Connected to:', REDIS_URL);
 });
 

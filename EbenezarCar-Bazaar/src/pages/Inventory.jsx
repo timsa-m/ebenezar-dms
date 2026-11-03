@@ -511,7 +511,7 @@ export const Inventory = ({
 
   return (
     <div className="bg-white min-h-screen pb-24 font-body">
-      {/* 1. Top Announcement Marquee */}
+      {/* 1. Top Announcement Marquee 
       <div className="bg-slate-950 text-white overflow-hidden py-3 border-b border-slate-800">
         <div className="animate-marquee whitespace-nowrap text-xs font-bold tracking-wider uppercase text-slate-200 flex items-center">
           <span className="mx-6">CURATED PREMIUM VEHICLES IN STOCK</span>
@@ -525,6 +525,7 @@ export const Inventory = ({
           <span className="mx-6">FINANCING & TRADE-IN OPTIONS AVAILABLE</span>
           <span className="text-blue-400">•</span>
           {/* Loop repeat */}
+      {/*
           <span className="mx-6">CURATED PREMIUM VEHICLES IN STOCK</span>
           <span className="text-blue-400">•</span>
           <span className="mx-6">DIRECT IMPORTS FROM JAPAN, UK & UAE</span>
@@ -535,14 +536,14 @@ export const Inventory = ({
           <span className="text-blue-400">•</span>
           <span className="mx-6">FINANCING & TRADE-IN OPTIONS AVAILABLE</span>
         </div>
-      </div>
+      </div>*/}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {/* Page Title & Subtitle */}
         <div className="mb-6">
           <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Our Inventory</h1>
           <p className="text-sm font-medium text-slate-500 mt-1">
-            Browse our verified inventory in Nairobi
+            Browse through our inventory
           </p>
         </div>
 
@@ -759,11 +760,10 @@ export const Inventory = ({
                     onClick={() => setViewMode('wide')}
                     title="Wide Horizontal Stack (2 Columns)"
                     aria-label="Wide Horizontal Stack"
-                    className={`p-1.5 rounded-md transition-all cursor-pointer ${
-                      viewMode === 'wide'
+                    className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'wide'
                         ? 'bg-[#0B4DB7] text-white shadow-xs'
                         : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
+                      }`}
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16">
                       <rect x="2" y="3" width="12" height="4" rx="1" />
@@ -776,11 +776,10 @@ export const Inventory = ({
                     onClick={() => setViewMode('grid')}
                     title="Standard Grid Stack (3 Columns)"
                     aria-label="Standard Grid Stack"
-                    className={`p-1.5 rounded-md transition-all cursor-pointer ${
-                      viewMode === 'grid'
+                    className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'grid'
                         ? 'bg-[#0B4DB7] text-white shadow-xs'
                         : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
+                      }`}
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16">
                       <rect x="2" y="2" width="3.5" height="3.5" rx="0.5" />
@@ -800,11 +799,10 @@ export const Inventory = ({
                     onClick={() => setViewMode('compact')}
                     title="Compact Dense Stack (5 Columns)"
                     aria-label="Compact Dense Stack"
-                    className={`p-1.5 rounded-md transition-all cursor-pointer ${
-                      viewMode === 'compact'
+                    className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'compact'
                         ? 'bg-[#0B4DB7] text-white shadow-xs'
                         : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
+                      }`}
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 16 16">
                       <rect x="1.5" y="2" width="2" height="12" rx="0.5" />
@@ -819,11 +817,10 @@ export const Inventory = ({
                 {/* Sheet View Toggle */}
                 <button
                   onClick={() => setViewMode('sheet')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                    viewMode === 'sheet'
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${viewMode === 'sheet'
                       ? 'bg-[#0B4DB7] text-white border-[#0B4DB7]'
                       : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <Table2 className="w-3.5 h-3.5" />
                   Sheet View

@@ -48,18 +48,22 @@ export const deleteClientAsset = async (path: string): Promise<boolean> => {
 };
 
 function mapClientRow(row: any) {
+  const parts = row.full_name ? String(row.full_name).trim().split(' ') : [];
+  const fName = parts.length > 0 ? parts[0] : (row.first_name || 'Unknown');
+  const lName = parts.length > 1 ? parts.slice(1).join(' ') : (row.last_name || '');
+
   return {
     $id: row.id,
-    firstName: row.first_name,
-    lastName: row.last_name,
-    nationalId: row.national_id,
+    firstName: fName,
+    lastName: lName,
+    nationalId: row.client_id_number ?? row.national_id,
     email: row.email,
     phone: row.phone,
-    address: row.address,
+    address: row.notes ?? row.address ?? '',
     totalBorrowed: row.total_borrowed ?? 0,
     outstandingBalance: row.outstanding_balance ?? 0,
-    profilePhotoUrl: row.profile_photo_url,
-    profilePhotoPath: row.profile_photo_path,
+    profilePhotoUrl: row.profile_photo_url ?? null,
+    profilePhotoPath: row.profile_photo_path ?? null,
     $createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -67,19 +71,15 @@ function mapClientRow(row: any) {
 
 export const createClient = async (clientData: any) => {
   try {
+    const fullName = `${clientData.firstName || ''} ${clientData.lastName || ''}`.trim().toUpperCase();
     const { data, error } = await supabase
       .from('clients')
       .insert({
-        first_name: clientData.firstName,
-        last_name: clientData.lastName,
-        national_id: clientData.nationalId,
-        email: clientData.email,
-        phone: clientData.phone,
-        address: clientData.address,
-        total_borrowed: 0,
-        outstanding_balance: 0,
-        profile_photo_url: clientData.profilePhotoUrl,
-        profile_photo_path: clientData.profilePhotoPath,
+        full_name: fullName,
+        client_id_number: clientData.nationalId ? String(clientData.nationalId).trim() : null,
+        email: clientData.email ? String(clientData.email).trim() : null,
+        phone: clientData.phone ? String(clientData.phone).trim() : null,
+        notes: clientData.address ? String(clientData.address).trim().toUpperCase() : null,
       })
       .select()
       .single();
@@ -175,23 +175,52 @@ export const getClientFullProfile = async (clientId: string) => {
 export const updateClient = async (clientId: string, clientData: any) => {
   try {
     const payload: Record<string, any> = {};
-    if (clientData.firstName !== undefined) payload.first_name = clientData.firstName;
-    if (clientData.lastName !== undefined) payload.last_name = clientData.lastName;
-    if (clientData.nationalId !== undefined) payload.national_id = clientData.nationalId;
-    if (clientData.email !== undefined) payload.email = clientData.email;
-    if (clientData.phone !== undefined) payload.phone = clientData.phone;
-    if (clientData.address !== undefined) payload.address = clientData.address;
-    if (clientData.totalBorrowed !== undefined) payload.total_borrowed = clientData.totalBorrowed;
-    if (clientData.outstandingBalance !== undefined) payload.outstanding_balance = clientData.outstandingBalance;
-    if (clientData.profilePhotoUrl !== undefined) payload.profile_photo_url = clientData.profilePhotoUrl;
-    if (clientData.profilePhotoPath !== undefined) payload.profile_photo_path = clientData.profilePhotoPath;
+
+    if (clientData.fullName !== undefined) {
+      payload.full_name = clientData.fullName ? String(clientData.fullName).trim().toUpperCase() : '';
+    } else if (clientData.firstName !== undefined || clientData.lastName !== undefined) {
+      if (clientData.firstName !== undefined && clientData.lastName !== undefined) {
+        payload.full_name = `${clientData.firstName || ''} ${clientData.lastName || ''}`.trim().toUpperCase();
+      } else {
+        const { data: currentClient } = await supabase
+          .from('clients')
+          .select('full_name')
+          .eq('id', clientId)
+          .single();
+        const parts = currentClient?.full_name ? String(currentClient.full_name).trim().split(' ') : [];
+        const currentFirst = parts[0] || '';
+        const currentLast = parts.slice(1).join(' ') || '';
+        const fName = clientData.firstName !== undefined ? clientData.firstName : currentFirst;
+        const lName = clientData.lastName !== undefined ? clientData.lastName : currentLast;
+        payload.full_name = `${fName || ''} ${lName || ''}`.trim().toUpperCase();
+      }
+    }
+
+    if (clientData.nationalId !== undefined) {
+      payload.client_id_number = clientData.nationalId ? String(clientData.nationalId).trim() : null;
+    } else if (clientData.clientIdNumber !== undefined) {
+      payload.client_id_number = clientData.clientIdNumber ? String(clientData.clientIdNumber).trim() : null;
+    }
+
+    if (clientData.email !== undefined) {
+      payload.email = clientData.email ? String(clientData.email).trim() : null;
+    }
+
+    if (clientData.phone !== undefined) {
+      payload.phone = clientData.phone ? String(clientData.phone).trim() : null;
+    }
+
+    if (clientData.address !== undefined) {
+      payload.notes = clientData.address ? String(clientData.address).trim().toUpperCase() : null;
+    } else if (clientData.notes !== undefined) {
+      payload.notes = clientData.notes ? String(clientData.notes).trim() : null;
+    }
+
+    payload.updated_at = new Date().toISOString();
 
     const { data, error } = await supabase
       .from('clients')
-      .update({
-        ...payload,
-        updated_at: new Date().toISOString(),
-      })
+      .update(payload)
       .eq('id', clientId)
       .select()
       .single();

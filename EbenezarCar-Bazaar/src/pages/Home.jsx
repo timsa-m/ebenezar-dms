@@ -206,7 +206,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
   const [error, setError] = useState('');
 
   // Budget Tabs state (Shop by Budget comes first)
-  const [selectedBudget, setSelectedBudget] = useState('Above 1M');
+  const [selectedBudget, setSelectedBudget] = useState('500,000 - 1M');
   const [budgetIndex, setBudgetIndex] = useState(0);
 
   // Lifestyle Tabs state (Family SUVs, Executive Saloon Cars, Fuel Efficient)
@@ -398,7 +398,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
     <div className="bg-white min-h-screen pb-24 font-body">
       {/* 1. HERO SECTION */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div className="relative rounded-3xl overflow-hidden shadow-lg bg-slate-900 border border-slate-200/80 aspect-[21/9] sm:aspect-[2.4/1] max-h-[520px] group">
+        <div className="relative rounded-3xl overflow-hidden shadow-lg bg-slate-900  aspect-[21/9] sm:aspect-[2.4/1] max-h-[520px] group">
           {/* Main Hero Image */}
           <div className="relative w-full h-full overflow-hidden">
             <img
@@ -467,7 +467,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
             {/* Filter Tabs + Navigation Arrows Row */}
             <div className="flex items-center justify-between gap-2 pt-1">
               <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                {['KSh 300,000 - 500,000', '500,000 - 1M', 'Above 1M'].map((tab) => (
+                {['Ksh 300,000 - 500,000', '500,000 - 1M', 'Above 1M'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => {
@@ -758,11 +758,11 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-xl sm:text-2xl font-black tracking-tight">
               {normalizedVehicles.length > 0
-                ? `Explore ${normalizedVehicles.length}+ Verified Second-Hand Cars in Kenya`
+                ? `Explore ${normalizedVehicles.length}+ Verified Second-Hand Cars`
                 : 'Explore Verified Second-Hand Cars in Kenya'}
             </h3>
             <p className="text-xs sm:text-sm text-slate-300">
-              Browse top deals on certified used cars with nationwide delivery to Nairobi, Mombasa, Nakuru, Eldoret & beyond.
+              Browse top deals on our used cars.
             </p>
           </div>
           <button
@@ -816,39 +816,23 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
         {/* 5. Kenya Regional Vehicle Sales & Nationwide Delivery Hubs */}
         <section className="mt-16 pt-12 border-t border-slate-200">
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <span className="text-emerald-700 font-bold tracking-[0.2em] uppercase text-xs flex items-center justify-center gap-1.5">
-              <Truck className="w-4 h-4 text-emerald-600" />
-              Nationwide Delivery Across All 47 Counties
-            </span>
+
             <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold text-slate-950">
               Vehicle Sales in All Regions of Kenya
             </h2>
             <p className="mt-2 text-slate-500 text-sm leading-relaxed">
-              Whether you are buying a personal family vehicle, an executive sedan, or a commercial fleet, we coordinate safe vehicle transit, verified NTSA TIMS logbook transfer, and asset financing directly to your town.
+              Whether you are buying a personal family vehicle, an executive sedan, or a commercial fleet, we coordinate safe vehicle transit, verified NTSA logbook transfer, and asset financing directly to you.
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs hover:shadow-md transition-all">
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-red-600 shrink-0" />
-                <h3 className="font-extrabold text-slate-900 text-sm">Nairobi & Central</h3>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed font-medium mb-3">
-                Serving Nairobi CBD, Westlands, Karen, Kilimani, Thika, Kiambu, Nyeri, and Meru with insured doorstep delivery.
-              </p>
-              <span className="inline-block text-[10px] font-bold text-[#0B4DB7] bg-blue-50 px-2 py-0.5 rounded">
-                24-48h Delivery Available
-              </span>
-            </div>
-
+          <div className="grid items-center justify-center gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs hover:shadow-md transition-all">
               <div className="flex items-center gap-2 mb-2">
                 <MapPin className="w-4 h-4 text-red-600 shrink-0" />
                 <h3 className="font-extrabold text-slate-900 text-sm">Western & Nyanza</h3>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed font-medium mb-3">
-                Main showroom in Kisumu (Ondiek Hwy). Immediate test drives for Kisii, Kakamega, Bungoma, Busia, and Homabay.
+                Main showroom in Kisumu (Ondiek Hwy). Immediate test drives for desired location with a sales person.
               </p>
               <span className="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
                 Same-Day Viewing & Drive
@@ -868,18 +852,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
               </span>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-2xs hover:shadow-md transition-all">
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-red-600 shrink-0" />
-                <h3 className="font-extrabold text-slate-900 text-sm">Coast & Eastern</h3>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed font-medium mb-3">
-                Direct vehicle freight to Mombasa, Nyali, Malindi, Machakos, and Kitui with comprehensive mechanical warranties.
-              </p>
-              <span className="inline-block text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">
-                Insured Transit Guaranteed
-              </span>
-            </div>
+
           </div>
         </section>
 
@@ -923,9 +896,9 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
                 <FileCheck className="h-5 w-5 text-[#0B4DB7]" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900 mb-1">NTSA Verified & Clean Title</h3>
+                <h3 className="text-base font-bold text-slate-900 mb-1">NTSA Verified</h3>
                 <p className="text-xs text-slate-500 leading-relaxed font-medium">
-                  Guaranteed genuine logbooks with clean records verified on NTSA TIMS. No encumbrances or hidden caveats.
+                  Guaranteed genuine logbooks with clean records verified by NTSA. No encumbrances or hidden caveats.
                 </p>
               </div>
             </div>
@@ -980,7 +953,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
                 How long does the NTSA logbook transfer take?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Once payment is finalized, the logbook transfer is initiated immediately on the official NTSA TIMS portal. You receive SMS verification and transfer confirmation within 24 to 72 hours.
+                Once payment is finalized, the logbook transfer is initiated immediately on the official NTSA portal. You receive SMS verification and transfer confirmation within 24 to 72 hours.
               </p>
             </div>
           </div>

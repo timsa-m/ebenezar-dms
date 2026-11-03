@@ -4,6 +4,64 @@ import { createAdminClient } from '@/src/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { requireManagerRole } from './user.actions';
 import type { Vehicle, VehicleCost, VehicleStatus, VehicleCostType } from '@/src/types/database.types';
+import { invalidateVehiclesApiCache } from '@/lib/cache/vehicleApiCache';
+
+/**
+ * Automatically uploads any Base64 data URLs to Supabase Storage 'vehicle-assets'
+ * and returns public CDN URLs. If an image is already a URL, it is kept as-is.
+ */
+async function ensureHostedImages(
+  images: string[] | null | undefined,
+  identifier: string
+): Promise<string[] | null> {
+  if (!images || !Array.isArray(images) || images.length === 0) return images || null;
+  const hasBase64 = images.some(img => typeof img === 'string' && img.startsWith('data:image'));
+  if (!hasBase64) return images;
+
+  const supabase = createAdminClient();
+  const processed: string[] = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const img = images[i];
+    if (typeof img === 'string' && img.startsWith('data:image')) {
+      try {
+        const match = img.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,(.+)$/);
+        if (!match) {
+          processed.push(img);
+          continue;
+        }
+
+        const mimeType = match[1];
+        const base64Data = match[2];
+        const buffer = Buffer.from(base64Data, 'base64');
+        const ext = mimeType.includes('png') ? 'png' : mimeType.includes('webp') ? 'webp' : 'jpg';
+        const filename = `vehicles/${identifier}/gallery/img_${Date.now()}_${i}.${ext}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('vehicle-assets')
+          .upload(filename, buffer, { contentType: mimeType, upsert: true });
+
+        if (uploadError) {
+          console.error('[ensureHostedImages] Storage upload error:', uploadError.message);
+          processed.push(img);
+        } else {
+          const { data: pubData } = supabase.storage
+            .from('vehicle-assets')
+            .getPublicUrl(filename);
+          processed.push(pubData.publicUrl);
+        }
+      } catch (err) {
+        console.error('[ensureHostedImages] Processing error:', err);
+        processed.push(img);
+      }
+    } else {
+      processed.push(img);
+    }
+  }
+
+  return processed;
+}
+
 
 export async function getAllVehicles(): Promise<Vehicle[]> {
   const supabase = createAdminClient();
@@ -125,6 +183,8 @@ export async function addVehicle(params: AddVehicleParams) {
       generatedSlug = `${generatedSlug}-${Date.now().toString(36).slice(-4)}`;
     }
 
+    const processedImages = await ensureHostedImages(params.images, generatedSlug);
+
     const insertPayload: any = {
       registration_no: regNo,
       make_model: params.makeModel.trim(),
@@ -143,7 +203,7 @@ export async function addVehicle(params: AddVehicleParams) {
       sale_price: Number(params.salePrice) || 0,
       status: 'in_stock',
       is_published: params.isPublished ?? true,
-      images: params.images || null,
+      images: processedImages || null,
       features: params.features || null,
       description: params.description?.trim() || null,
       condition: params.condition || null,
@@ -207,6 +267,7 @@ export async function addVehicle(params: AddVehicleParams) {
     revalidatePath('/admin/inventory');
     revalidatePath('/inventory');
     revalidatePath('/vehicles');
+    invalidateVehiclesApiCache();
     return { success: true, vehicle: data, purchaseId };
   } catch (err: any) {
     console.error('[addVehicle] Error:', err);
@@ -241,7 +302,7 @@ export async function updateVehicle(id: string, params: Partial<AddVehicleParams
     if (params.basePrice !== undefined) updateData.base_price = Number(params.basePrice) || 0;
     if (params.salePrice !== undefined) updateData.sale_price = Number(params.salePrice) || 0;
     if (params.isPublished !== undefined) updateData.is_published = Boolean(params.isPublished);
-    if (params.images !== undefined) updateData.images = params.images || null;
+    if (params.images !== undefined) updateData.images = await ensureHostedImages(params.images, id);
     if (params.features !== undefined) updateData.features = params.features || null;
     if (params.description !== undefined) updateData.description = params.description?.trim() || null;
     if (params.condition !== undefined) updateData.condition = params.condition || null;
@@ -285,6 +346,7 @@ export async function updateVehicle(id: string, params: Partial<AddVehicleParams
     revalidatePath(`/vehicles/${id}`);
     revalidatePath('/vehicles');
     revalidatePath('/', 'layout'); // Revalidate all pages to ensure contracts/loans pick up vehicle updates
+    invalidateVehiclesApiCache();
     
     return { success: true, vehicle: data };
   } catch (err: any) {
@@ -375,6 +437,36 @@ export async function updateVehicleStatusAction(vehicleId: string, status: Vehic
   } catch (err: any) {
     console.error('[updateVehicleStatusAction] Error:', err);
     return { success: false, error: err?.message || 'Failed to update vehicle status.' };
+  }
+}
+
+export async function toggleVehiclePublishAction(vehicleId: string, isPublished: boolean) {
+  try {
+    await requireManagerRole();
+    const supabase = createAdminClient();
+
+    const { data, error } = await supabase
+      .from('vehicles')
+      .update({
+        is_published: isPublished,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', vehicleId)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    revalidatePath('/admin/inventory');
+    revalidatePath('/inventory');
+    revalidatePath(`/vehicles/${vehicleId}`);
+    revalidatePath('/vehicles');
+    revalidatePath('/', 'layout');
+
+    return { success: true, vehicle: data as Vehicle };
+  } catch (err: any) {
+    console.error('[toggleVehiclePublishAction] Error:', err);
+    return { success: false, error: err?.message || 'Failed to update website publish status.' };
   }
 }
 
@@ -492,6 +584,7 @@ export async function softDeleteVehicle(id: string): Promise<{ success: boolean;
     revalidatePath(`/vehicles/${id}`);
     revalidatePath('/inventory');
     revalidatePath('/', 'layout');
+    invalidateVehiclesApiCache();
 
     return { success: true, vehicle: updated as Vehicle };
   } catch (err: any) {
@@ -556,6 +649,7 @@ export async function restoreVehicle(id: string): Promise<{ success: boolean; er
     revalidatePath(`/vehicles/${id}`);
     revalidatePath('/inventory');
     revalidatePath('/', 'layout');
+    invalidateVehiclesApiCache();
 
     return { success: true, vehicle: restored as Vehicle };
   } catch (err: any) {

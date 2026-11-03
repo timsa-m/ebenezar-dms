@@ -243,31 +243,78 @@ export const updateClient = async (clientId: string, clientData: any) => {
   try {
     const supabase = createSupabaseAdminClient();
     const payload: Record<string, any> = {};
-    if (clientData.firstName !== undefined) payload.first_name = clientData.firstName ? String(clientData.firstName).trim().toUpperCase() : "";
-    if (clientData.lastName !== undefined) payload.last_name = clientData.lastName ? String(clientData.lastName).trim().toUpperCase() : "";
-    if (clientData.nationalId !== undefined) payload.national_id = clientData.nationalId ? String(clientData.nationalId).trim() : null;
-    if (clientData.email !== undefined) payload.email = clientData.email ? String(clientData.email).trim() : null;
-    if (clientData.phone !== undefined) payload.phone = clientData.phone ? String(clientData.phone).trim() : null;
-    if (clientData.address !== undefined) payload.address = clientData.address ? String(clientData.address).trim().toUpperCase() : null;
-    if (clientData.totalBorrowed !== undefined) payload.total_borrowed = clientData.totalBorrowed;
-    if (clientData.outstandingBalance !== undefined) payload.outstanding_balance = clientData.outstandingBalance;
-    if (clientData.profilePhotoUrl !== undefined) payload.profile_photo_url = clientData.profilePhotoUrl;
-    if (clientData.profilePhotoPath !== undefined) payload.profile_photo_path = clientData.profilePhotoPath;
+
+    // 1. Full Name
+    if (clientData.fullName !== undefined) {
+      payload.full_name = clientData.fullName ? String(clientData.fullName).trim().toUpperCase() : "";
+    } else if (clientData.firstName !== undefined || clientData.lastName !== undefined) {
+      if (clientData.firstName !== undefined && clientData.lastName !== undefined) {
+        payload.full_name = `${clientData.firstName || ""} ${clientData.lastName || ""}`.trim().toUpperCase();
+      } else {
+        const { data: currentClient } = await supabase
+          .from("clients")
+          .select("full_name")
+          .eq("id", clientId)
+          .single();
+        const parts = currentClient?.full_name ? String(currentClient.full_name).trim().split(" ") : [];
+        const currentFirst = parts[0] || "";
+        const currentLast = parts.slice(1).join(" ") || "";
+        const fName = clientData.firstName !== undefined ? clientData.firstName : currentFirst;
+        const lName = clientData.lastName !== undefined ? clientData.lastName : currentLast;
+        payload.full_name = `${fName || ""} ${lName || ""}`.trim().toUpperCase();
+      }
+    }
+
+    // 2. National ID / Client ID number
+    if (clientData.nationalId !== undefined) {
+      payload.client_id_number = clientData.nationalId ? String(clientData.nationalId).trim() : null;
+    } else if (clientData.clientIdNumber !== undefined) {
+      payload.client_id_number = clientData.clientIdNumber ? String(clientData.clientIdNumber).trim() : null;
+    } else if (clientData.client_id_number !== undefined) {
+      payload.client_id_number = clientData.client_id_number ? String(clientData.client_id_number).trim() : null;
+    }
+
+    // 3. Email
+    if (clientData.email !== undefined) {
+      payload.email = clientData.email ? String(clientData.email).trim() : null;
+    }
+
+    // 4. Phone
+    if (clientData.phone !== undefined) {
+      payload.phone = clientData.phone ? String(clientData.phone).trim() : null;
+    }
+
+    // 5. Physical Address / Notes
+    if (clientData.address !== undefined) {
+      payload.notes = clientData.address ? String(clientData.address).trim().toUpperCase() : null;
+    } else if (clientData.notes !== undefined) {
+      payload.notes = clientData.notes ? String(clientData.notes).trim() : null;
+    }
+
+    // 6. Conflict flag (if specified)
+    if (clientData.conflictFlag !== undefined) {
+      payload.conflict_flag = Boolean(clientData.conflictFlag);
+    } else if (clientData.conflict_flag !== undefined) {
+      payload.conflict_flag = Boolean(clientData.conflict_flag);
+    }
+
+    payload.updated_at = new Date().toISOString();
 
     const { data, error } = await supabase
       .from("clients")
-      .update({
-        ...payload,
-        updated_at: new Date().toISOString(),
-      })
+      .update(payload)
       .eq("id", clientId)
       .select()
       .single();
 
     if (error) throw error;
-    revalidatePath("/clients");
-    revalidatePath(`/clients/${clientId}`);
-    revalidatePath("/");
+    try {
+      revalidatePath("/clients");
+      revalidatePath(`/clients/${clientId}`);
+      revalidatePath("/");
+    } catch {
+      // Ignored outside Next.js server request context
+    }
     return parseStringify(mapClientRow(data));
   } catch (error) {
     console.error("Error updating client", error);

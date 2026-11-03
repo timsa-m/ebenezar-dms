@@ -1,5 +1,5 @@
 import { apiRequest } from "./apiClient";
-import { getCachedVehicles } from "./vehicleCache";
+import { getCachedVehicles, invalidateVehicleCache } from "./vehicleCache";
 
 const buildQuery = (params = {}) => {
   const query = new URLSearchParams();
@@ -15,7 +15,7 @@ const buildQuery = (params = {}) => {
 
 export const getVehicles = async (params = {}) => {
   const query = buildQuery(params);
-  return apiRequest(`/api/vehicles${query}`);
+  return getCachedVehicles(query, () => apiRequest(`/api/vehicles${query}`));
 };
 
 export const getVehicleById = async (id) => {
@@ -23,14 +23,17 @@ export const getVehicleById = async (id) => {
 };
 
 export const createVehicle = async (payload) => {
+  invalidateVehicleCache();
   return apiRequest("/api/vehicles", { method: "POST", body: payload, auth: true });
 };
 
 export const updateVehicle = async (id, payload) => {
+  invalidateVehicleCache();
   return apiRequest(`/api/vehicles/${id}`, { method: "PUT", body: payload, auth: true });
 };
 
 export const deleteVehicle = async (id) => {
+  invalidateVehicleCache();
   return apiRequest(`/api/vehicles/${id}`, { method: "DELETE", auth: true });
 };
 

@@ -2,7 +2,7 @@
 
 import { createSupabaseServerClient, createSupabaseAdminClient } from "../supabase";
 import { parseStringify } from "../utils";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { generateSignedUrl } from "../supabase-storage";
 import { revalidatePath } from "next/cache";
 
@@ -247,6 +247,52 @@ export const rejectUser = async (userId: string): Promise<{ success: boolean; er
   }
 };
 
+// ─── getDmsSiteUrl ──────────────────────────────────────────────────────────
+/**
+ * Resolves the absolute base URL for the DMS (used for email invite and password-reset links).
+ * 1. Checks NEXT_PUBLIC_SITE_URL if configured with a DMS host.
+ * 2. Dynamically detects the origin/host from incoming Next.js request headers.
+ * 3. Checks Vercel deployment environment variables.
+ * 4. Falls back to the production DMS domain (https://dms.ebenezarenterprises.com) to align with the DMS.
+ */
+export async function getDmsSiteUrl(): Promise<string> {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  // If an explicit DMS URL is configured (avoiding the showroom port 5173 or dev localhost fallback)
+  if (envUrl && !envUrl.includes("localhost:5173") && !envUrl.includes("localhost:3000")) {
+    return envUrl.replace(/\/$/, "");
+  }
+
+  try {
+    const headersList = await headers();
+    const origin = headersList.get("origin");
+    if (origin && !origin.includes("localhost") && origin !== "null") {
+      return origin.replace(/\/$/, "");
+    }
+    const host = headersList.get("x-forwarded-host") || headersList.get("host");
+    if (host && !host.includes("localhost")) {
+      const proto = headersList.get("x-forwarded-proto") || "https";
+      return `${proto}://${host}`.replace(/\/$/, "");
+    }
+  } catch {
+    // headers() might throw outside of a request context
+  }
+
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`.replace(/\/$/, "");
+  }
+
+  // If local override is explicitly provided and not the showroom port
+  if (envUrl && !envUrl.includes("localhost:5173")) {
+    return envUrl.replace(/\/$/, "");
+  }
+
+  // Fallback aligning with the DMS
+  return "https://dms.ebenezarenterprises.com";
+}
+
 // ─── inviteUser ───────────────────────────────────────────────────────────────
 // Uses Supabase's built-in invite flow: sends the user a welcome email with a
 // magic link. They click it, land on /reset-password to set their own password.
@@ -269,7 +315,7 @@ export const inviteUser = async ({
     const cleanLastName = lastName ? String(lastName).trim().toUpperCase() : "";
 
     const adminSupabase = createSupabaseAdminClient();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const siteUrl = await getDmsSiteUrl();
 
     // 0. Guard: reject if email already exists in our users table
     const { data: existing } = await adminSupabase
@@ -371,7 +417,7 @@ export const logoutAccount = async () => {
 export const requestPasswordReset = async (email: string): Promise<{ success: boolean; error?: string }> => {
   try {
     const supabase = await createSupabaseServerClient();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+    const siteUrl = await getDmsSiteUrl();
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,

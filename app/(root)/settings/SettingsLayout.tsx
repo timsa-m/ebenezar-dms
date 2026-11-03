@@ -69,7 +69,9 @@ export default function SettingsLayout({ user, initialSettings }: { user: any, i
     if (!file) return;
 
     if (file.size > 1024 * 1024) {
-      toast({ title: "Error", description: "File size must be less than 1MB.", variant: "destructive" });
+      toast.error("File size must be less than 1MB.", {
+        description: "Please select an image smaller than 1MB.",
+      });
       return;
     }
 

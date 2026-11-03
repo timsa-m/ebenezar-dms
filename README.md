@@ -82,7 +82,7 @@ Ebenezar tracks the entire lifecycle of a loan, from disbursement to repayment. 
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
+   NEXT_PUBLIC_SITE_URL=https://dms.ebenezarenterprises.com
    ```
 
 4. **Run the development server**

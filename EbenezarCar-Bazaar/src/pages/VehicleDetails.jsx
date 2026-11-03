@@ -651,9 +651,9 @@ export default function VehicleDetails() {
                 <button
                   type="button"
                   onClick={() => setFinanceModalOpen(true)}
-                  className="text-slate-800 underline hover:text-blue-600 font-semibold cursor-pointer"
+                  className="badge badge-primary text-slate-800 underline hover:text-blue-600 font-semibold cursor-pointer"
                 >
-                  request a quote
+                  Request a quote
                 </button>
               </div>
             </div>
@@ -730,7 +730,7 @@ export default function VehicleDetails() {
                           vehicle.title
                         )}%20listed%20at%20${encodeURIComponent(
                           FORMAT_KSH(vehicle.price)
-                        )}%20on%20Ebenezar%20Car%20Bazaar.`}
+                        )}%20on%20Ebenezar%20Car%20Bazaar%20Website.`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
@@ -907,10 +907,10 @@ export default function VehicleDetails() {
         <section className="my-14 space-y-6">
           <div>
             <span className="text-xs font-extrabold uppercase tracking-widest text-[#0B4DB7] block mb-1">
-              CRAFTED FOR COMFORT
+
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
-              Premium Features
+              Features
             </h2>
           </div>
 

@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/src/lib/supabase/admin';
+import { getCachedVehiclesApi, setCachedVehiclesApi, invalidateVehiclesApiCache } from '@/lib/cache/vehicleApiCache';
 
 export const dynamic = 'force-dynamic';
+export { invalidateVehiclesApiCache };
 
 export async function GET(request: Request) {
   try {
@@ -12,12 +14,29 @@ export async function GET(request: Request) {
     const isNewArrival = searchParams.get('isNewArrival');
     const limit = parseInt(searchParams.get('limit') || '50', 10);
 
-    const supabase = createAdminClient();
-    let query = supabase.from('vehicles').select('*').eq('is_published', true);
+    const cacheKey = `${make || ''}_${type || ''}_${condition || ''}_${isNewArrival || ''}_${limit}`;
+    const cachedData = getCachedVehiclesApi(cacheKey);
 
-    // Map old website params to Supabase column names
+    if (cachedData) {
+      return NextResponse.json(cachedData, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+          'X-Cache': 'HIT',
+        },
+      });
+    }
+
+    const supabase = createAdminClient();
+    let query = supabase
+      .from('vehicles')
+      .select('id, make_model, year, sale_price, hire_price, hire_price_weekly, fuel_type, mileage, transmission, engine_capacity, color, chassis_no, engine_no, type, condition, description, features, is_new_arrival, for_hire, status, images, slug, created_at')
+      .eq('is_published', true);
+
+    // Filter parameters
     if (make) query = query.ilike('make_model', `%${make}%`);
     if (type) query = query.eq('type', type);
+    if (condition) query = query.eq('condition', condition);
+    if (isNewArrival === 'true') query = query.eq('is_new_arrival', true);
 
     query = query.order('created_at', { ascending: false }).limit(limit);
 
@@ -56,9 +75,17 @@ export async function GET(request: Request) {
       slug: v.slug || v.id
     }));
 
-    return NextResponse.json(formattedData);
+    setCachedVehiclesApi(cacheKey, formattedData);
+
+    return NextResponse.json(formattedData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        'X-Cache': 'MISS',
+      },
+    });
   } catch (err: any) {
     console.error("[Vehicles API] Internal server error:", err);
     return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
   }
 }
+

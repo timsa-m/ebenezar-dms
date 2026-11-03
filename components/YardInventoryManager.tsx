@@ -3,7 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Vehicle, VehicleCostType, VehicleStatus } from '@/src/types/database.types';
 import { formatKES } from '@/src/lib/financial-engine';
-import { addVehicle, addVehicleCost, updateVehicleStatusAction, softDeleteVehicle, restoreVehicle } from '@/lib/actions/vehicle.actions';
+import { addVehicle, addVehicleCost, updateVehicleStatusAction, softDeleteVehicle, restoreVehicle, toggleVehiclePublishAction } from '@/lib/actions/vehicle.actions';
 import {
   Car,
   Plus,
@@ -27,7 +27,9 @@ import {
   Settings,
   Trash2,
   RotateCcw,
-  History
+  History,
+  Globe,
+  EyeOff
 } from 'lucide-react';
 import { toast } from '@/lib/toast';
 import { cn } from '@/lib/utils';
@@ -63,6 +65,70 @@ function StatusBadge({ status }: { status: VehicleStatus }) {
   return <span className="badge badge-new">{status}</span>;
 }
 
+function WebsiteBadge({
+  isPublished,
+  isManagerOrAdmin = false,
+  isToggling = false,
+  onToggle,
+}: {
+  isPublished: boolean | null | undefined;
+  isManagerOrAdmin?: boolean;
+  isToggling?: boolean;
+  onToggle?: (e: React.MouseEvent) => void;
+}) {
+  const published = Boolean(isPublished);
+
+  const badgeContent = (
+    <span
+      className={cn(
+        "badge badge-primary inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition-all select-none",
+        published
+          ? "bg-emerald-50 text-emerald-700 border border-emerald-200/90 shadow-2xs"
+          : "bg-slate-100 text-slate-600 border border-slate-200/80 shadow-2xs",
+        isManagerOrAdmin && onToggle && (
+          published
+            ? "hover:bg-emerald-100 hover:border-emerald-300"
+            : "hover:bg-slate-200 hover:border-slate-300"
+        )
+      )}
+      title={
+        isManagerOrAdmin
+          ? published
+            ? "Live on website (Click to remove from website)"
+            : "Hidden from website (Click to publish to website)"
+          : published
+            ? "Live on website"
+            : "Hidden from website"
+      }
+    >
+      {isToggling ? (
+        <Loader2 className="size-3 animate-spin shrink-0" />
+      ) : published ? (
+        <Globe className="size-3 text-emerald-600 shrink-0" />
+      ) : (
+        <EyeOff className="size-3 text-slate-400 shrink-0" />
+      )}
+      <span>{published ? "On Website" : "Off Website"}</span>
+    </span>
+  );
+
+  if (isManagerOrAdmin && onToggle) {
+    return (
+      <button
+        type="button"
+        onClick={onToggle}
+        disabled={isToggling}
+        className="focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 rounded-full transition-transform active:scale-95 disabled:opacity-60 cursor-pointer"
+        aria-label={published ? "Remove vehicle from website" : "Publish vehicle to website"}
+      >
+        {badgeContent}
+      </button>
+    );
+  }
+
+  return badgeContent;
+}
+
 export default function YardInventoryManager({ vehicles, currentUser }: YardInventoryManagerProps) {
   const router = useRouter();
   const [vehicleList, setVehicleList] = useState<Vehicle[]>(vehicles);
@@ -93,11 +159,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
   // Table States
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'all' | 'in_stock' | 'reserved' | 'financed' | 'repossessed' | 'cash_sale' | 'deleted'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'in_stock' | 'reserved' | 'financed' | 'repossessed' | 'cash_sale' | 'on_website' | 'off_website' | 'deleted'>('all');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<Vehicle | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [restoringId, setRestoringId] = useState<string | null>(null);
+  const [togglingPublishId, setTogglingPublishId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(() => {
@@ -109,6 +176,8 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
       repossessed: 0,
       cash_sale: 0,
       deleted: 0,
+      on_website: 0,
+      off_website: 0,
     };
 
     for (const v of vehicleList) {
@@ -121,6 +190,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         else if (v.status === 'reserved') res.reserved++;
         else if (v.status === 'repossessed') res.repossessed++;
         else if (v.status === 'cash_sale') res.cash_sale++;
+
+        if (v.is_published) {
+          res.on_website++;
+        } else {
+          res.off_website++;
+        }
       }
     }
 
@@ -144,6 +219,10 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
 
     if (activeTab === 'all') {
       result = vehicleList.filter(v => v.status !== 'deleted');
+    } else if (activeTab === 'on_website') {
+      result = vehicleList.filter(v => v.status !== 'deleted' && Boolean(v.is_published));
+    } else if (activeTab === 'off_website') {
+      result = vehicleList.filter(v => v.status !== 'deleted' && !v.is_published);
     } else {
       result = vehicleList.filter(v => v.status === activeTab);
     }
@@ -279,6 +358,33 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
     }
   };
 
+  const handleTogglePublish = async (vehicleId: string, newPublishState: boolean) => {
+    if (!isManagerOrAdmin) {
+      toast.error('Only managers or administrators can change website visibility.');
+      return;
+    }
+    setTogglingPublishId(vehicleId);
+    try {
+      const res = await toggleVehiclePublishAction(vehicleId, newPublishState);
+      if (res.success) {
+        toast.success(
+          newPublishState
+            ? 'Vehicle is now visible on the website!'
+            : 'Vehicle hidden from the website.'
+        );
+        setVehicleList((prev) =>
+          prev.map((v) => (v.id === vehicleId ? { ...v, is_published: newPublishState } : v))
+        );
+      } else {
+        toast.error(res.error || 'Failed to update website status.');
+      }
+    } catch (err: any) {
+      toast.error(err?.message || 'Error updating website status.');
+    } finally {
+      setTogglingPublishId(null);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-5 mt-6">
       {/* Top Action Bar 
@@ -339,6 +445,18 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
               <span>Cash Sale ({counts.cash_sale})</span>
             </div>
           </Button>
+          <Button onClick={() => setActiveTab('on_website')} className={cn('status-filter-pill', activeTab === 'on_website' && 'status-filter-pill-active')}>
+            <div className="flex items-center gap-2">
+              <Globe className="size-3.5 text-emerald-600" />
+              <span>On Website ({counts.on_website})</span>
+            </div>
+          </Button>
+          <Button onClick={() => setActiveTab('off_website')} className={cn('status-filter-pill', activeTab === 'off_website' && 'status-filter-pill-active')}>
+            <div className="flex items-center gap-2">
+              <EyeOff className="size-3.5 text-slate-500" />
+              <span>Off Website ({counts.off_website})</span>
+            </div>
+          </Button>
           {(counts.deleted > 0 || isManagerOrAdmin) && (
             <Button
               onClick={() => setActiveTab('deleted')}
@@ -374,9 +492,9 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         <div className="data-table-scroll">
           <Table className="data-table">
             <colgroup>
-              <col style={{ width: '30%' }} />
-              <col style={{ width: '15%' }} />
-              <col style={{ width: '15%' }} />
+              <col style={{ width: '28%' }} />
+              <col style={{ width: '14%' }} />
+              <col style={{ width: '18%' }} />
               <col style={{ width: '15%' }} />
               <col style={{ width: '15%' }} />
               <col style={{ width: '10%' }} />
@@ -385,7 +503,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
               <TableRow className="data-table-head-row">
                 <TableHead className="data-th text-left">Vehicle</TableHead>
                 <TableHead className="data-th text-left">Type & Year</TableHead>
-                <TableHead className="data-th text-left">Status</TableHead>
+                <TableHead className="data-th text-left">Status & Website</TableHead>
                 <TableHead className="data-th text-right">Purchase Price</TableHead>
                 <TableHead className="data-th text-right">Sale Price</TableHead>
                 <TableHead className="data-th text-right">Actions</TableHead>
@@ -425,7 +543,20 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                       </div>
                     </TableCell>
                     <TableCell className="data-td">
-                      <StatusBadge status={vehicle.status} />
+                      <div className="flex flex-col items-start gap-1.5" onClick={(e) => e.stopPropagation()}>
+                        <StatusBadge status={vehicle.status} />
+                        {vehicle.status !== 'deleted' && (
+                          <WebsiteBadge
+                            isPublished={vehicle.is_published}
+                            isManagerOrAdmin={isManagerOrAdmin}
+                            isToggling={togglingPublishId === vehicle.id}
+                            onToggle={(e) => {
+                              e.stopPropagation();
+                              handleTogglePublish(vehicle.id, !vehicle.is_published);
+                            }}
+                          />
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="data-td text-right">
                       <span className="amount-text">{formatKES(vehicle.purchase_price)}</span>
@@ -659,6 +790,43 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                                   <span>Repossessed</span>
                                 </button>
 
+                                {isManagerOrAdmin && vehicle.status !== 'deleted' && (
+                                  <>
+                                    <div className="my-2 border-t border-slate-100" />
+                                    <div className="px-2 pb-1.5 pt-1 text-center">
+                                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                                        Website Visibility
+                                      </span>
+                                    </div>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setOpenMenuId(null);
+                                        handleTogglePublish(vehicle.id, !vehicle.is_published);
+                                      }}
+                                      disabled={togglingPublishId === vehicle.id}
+                                      className={cn(
+                                        "flex w-full items-center justify-center gap-2.5",
+                                        "rounded-lg px-3 py-2.5",
+                                        "text-sm font-medium",
+                                        vehicle.is_published
+                                          ? "text-amber-700 hover:bg-amber-50"
+                                          : "text-emerald-700 hover:bg-emerald-50",
+                                        "transition-colors duration-150"
+                                      )}
+                                    >
+                                      {togglingPublishId === vehicle.id ? (
+                                        <Loader2 className="size-4 animate-spin text-slate-500" />
+                                      ) : vehicle.is_published ? (
+                                        <EyeOff className="size-4 shrink-0 text-amber-500" />
+                                      ) : (
+                                        <Globe className="size-4 shrink-0 text-emerald-500" />
+                                      )}
+                                      <span>{vehicle.is_published ? "Remove from Website" : "Publish to Website"}</span>
+                                    </button>
+                                  </>
+                                )}
+
                                 {isManagerOrAdmin && (
                                   <>
                                     <div className="my-2 border-t border-slate-100" />
@@ -697,10 +865,22 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     <div className="data-empty">
                       <Car className="size-8 text-gray-300" />
                       <p className="text-14 text-gray-600 font-medium mt-2">
-                        {query ? `No vehicles match "${query}"` : 'No vehicles found in stock'}
+                        {query
+                          ? `No vehicles match "${query}"`
+                          : activeTab === 'on_website'
+                            ? 'No vehicles currently published on the website'
+                            : activeTab === 'off_website'
+                              ? 'All active vehicles are currently published on the website'
+                              : 'No vehicles found in stock'}
                       </p>
                       <p className="text-12 text-gray-400">
-                        {query ? 'Try a different search term or check filters.' : 'Add vehicles to see them in the inventory.'}
+                        {query
+                          ? 'Try a different search term or check filters.'
+                          : activeTab === 'on_website'
+                            ? 'Use the "Publish to Website" action on any in-stock vehicle to display it online.'
+                            : activeTab === 'off_website'
+                              ? 'Unpublished or draft vehicles will appear here.'
+                              : 'Add vehicles to see them in the inventory.'}
                       </p>
                     </div>
                   </TableCell>
@@ -735,8 +915,19 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     <p className="text-sm font-medium text-slate-500 truncate mt-0.5">
                       {vehicle.make_model}
                     </p>
-                    <div className="mt-2.5">
+                    <div className="mt-2.5 flex flex-wrap items-center gap-2">
                       <StatusBadge status={vehicle.status} />
+                      {vehicle.status !== 'deleted' && (
+                        <WebsiteBadge
+                          isPublished={vehicle.is_published}
+                          isManagerOrAdmin={isManagerOrAdmin}
+                          isToggling={togglingPublishId === vehicle.id}
+                          onToggle={(e) => {
+                            e.stopPropagation();
+                            handleTogglePublish(vehicle.id, !vehicle.is_published);
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -751,6 +942,18 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500">Type</span>
                       <span className="text-sm font-medium text-slate-700">{vehicle.type || 'Saloon'} ({vehicle.year || '—'})</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500">Website Status</span>
+                      <WebsiteBadge
+                        isPublished={vehicle.is_published}
+                        isManagerOrAdmin={isManagerOrAdmin}
+                        isToggling={togglingPublishId === vehicle.id}
+                        onToggle={(e) => {
+                          e.stopPropagation();
+                          handleTogglePublish(vehicle.id, !vehicle.is_published);
+                        }}
+                      />
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500">Purchase Price</span>
@@ -814,14 +1017,36 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                         </Button>
                       </div>
                       {isManagerOrAdmin && (
-                        <Button
-                          variant="outline"
-                          onClick={() => setVehicleToDelete(vehicle)}
-                          className="w-full mt-2 rounded-xl h-9 text-xs font-medium text-rose-600 border-rose-200 hover:bg-rose-50 flex items-center justify-center gap-1.5"
-                        >
-                          <Trash2 className="size-3.5 text-rose-500" />
-                          <span>Delete Vehicle (Manager)</span>
-                        </Button>
+                        <div className="flex flex-col gap-2 mt-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleTogglePublish(vehicle.id, !vehicle.is_published)}
+                            disabled={togglingPublishId === vehicle.id}
+                            className={cn(
+                              "w-full rounded-xl h-9 text-xs font-medium border flex items-center justify-center gap-1.5",
+                              vehicle.is_published
+                                ? "text-amber-700 border-amber-200 hover:bg-amber-50"
+                                : "text-emerald-700 border-emerald-200 hover:bg-emerald-50"
+                            )}
+                          >
+                            {togglingPublishId === vehicle.id ? (
+                              <Loader2 className="size-3.5 animate-spin" />
+                            ) : vehicle.is_published ? (
+                              <EyeOff className="size-3.5 text-amber-500" />
+                            ) : (
+                              <Globe className="size-3.5 text-emerald-500" />
+                            )}
+                            <span>{vehicle.is_published ? "Remove from Website" : "Publish to Website"}</span>
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => setVehicleToDelete(vehicle)}
+                            className="w-full rounded-xl h-9 text-xs font-medium text-rose-600 border-rose-200 hover:bg-rose-50 flex items-center justify-center gap-1.5"
+                          >
+                            <Trash2 className="size-3.5 text-rose-500" />
+                            <span>Delete Vehicle (Manager)</span>
+                          </Button>
+                        </div>
                       )}
                     </>
                   )}
@@ -937,7 +1162,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                   />
                 </div>
               </div>
-              
+
               <div className="mt-4">
                 <label className="font-semibold text-slate-700 block mb-1">Purchase Date (Leave default for today)</label>
                 <input

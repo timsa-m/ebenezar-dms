@@ -227,8 +227,8 @@ const Sidebar = ({ user }: SiderbarProps) => {
             <div style={{
               fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase',
               letterSpacing: '0.08em', color: '#9aa4b8', padding: '0 0.5rem', marginBottom: 4,
-            }}>Administration</div>
-            
+            }}> </div>
+
             {user?.role === 'ADMIN' && (
               <Link
                 href="/users"
