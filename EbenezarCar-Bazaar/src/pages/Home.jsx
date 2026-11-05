@@ -219,7 +219,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
   // High-resolution hero banners featuring showroom scenes
   const heroBanners = [
     {
-      image: 'https://pub-b5971c79e1e94217b4847709c2e51781.r2.dev/ebenezer-vehicles/used-car-1024x604-1.jpg',
+      image: 'https://pub-b5971c79e1e94217b4847709c2e51781.r2.dev/ebenezer-vehicles/IMG_20261105_110013-EDIT.jpg',
       title: 'Locally Used & Sourced Vehicles',
       subtitle: 'Wide Selection of Vehicles · Kisumu Showroom',
     },
@@ -229,7 +229,7 @@ export const HomePage = ({ onSelectVehicle, onNavigateInventory }) => {
       subtitle: 'Toyota Vitz, Passo, Nissan March & Many More',
     },
     {
-      image: 'https://pub-b5971c79e1e94217b4847709c2e51781.r2.dev/ebenezer-vehicles/unnamed.jpg',
+      image: 'https://pub-b5971c79e1e94217b4847709c2e51781.r2.dev/ebenezer-vehicles/used-car-1024x604-1.jpg',
       title: 'Trade Ins Accepted',
       subtitle: 'Competitive Valuations & Swift Process',
     },
