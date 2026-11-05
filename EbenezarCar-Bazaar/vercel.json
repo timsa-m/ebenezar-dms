@@ -1,6 +1,32 @@
 {
   "rewrites": [
     {
+      "source": "/v/:id",
+      "destination": "/api/preview?id=:id"
+    },
+    {
+      "source": "/vehicle/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*([Ww]hats[Aa]pp|[Ff]acebookexternalhit|[Ff]acebot|[Tt]witterbot|[Tt]elegram[Bb]ot|[Ll]inked[Ii]n[Bb]ot|[Ss]lackbot|[Dd]iscordbot|[Aa]pplebot|[Pp]interest|[Gg]ooglebot|[Bb]ingbot).*"
+        }
+      ],
+      "destination": "/api/preview?id=:id"
+    },
+    {
+      "source": "/vehicle/hire/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*([Ww]hats[Aa]pp|[Ff]acebookexternalhit|[Ff]acebot|[Tt]witterbot|[Tt]elegram[Bb]ot|[Ll]inked[Ii]n[Bb]ot|[Ss]lackbot|[Dd]iscordbot|[Aa]pplebot|[Pp]interest|[Gg]ooglebot|[Bb]ingbot).*"
+        }
+      ],
+      "destination": "/api/preview?id=:id&isHire=true"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

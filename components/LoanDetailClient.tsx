@@ -18,6 +18,7 @@ import InstallmentsTable from './InstallmentsTable';
 // LoanAgreementModal removed
 import { toast } from '@/lib/toast';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import {
   DollarSign, AlertTriangle, FileText, ChevronDown,
   CheckCircle, RotateCcw, ArrowUpRight, ShieldCheck,
@@ -137,7 +138,10 @@ export default function LoanDetailClient({
   installments, transactions,
 }: Props) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'installments' | 'transactions' | 'penalties' | 'audit'>('installments');
+  const [activeTab, setActiveTab] = usePersistedState<'installments' | 'transactions' | 'penalties' | 'audit'>(
+    `dms_loan_tab_${loan?.$id || 'current'}`,
+    'installments'
+  );
   const [expandedTx, setExpandedTx] = useState<string | null>(null);
   const [reversingId, setReversingId] = useState<string | null>(null);
   // Agreement modal state removed

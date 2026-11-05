@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from "react";
+import { usePersistedState } from "@/lib/hooks/usePersistedState";
 import {
   Table,
   TableBody,
@@ -73,13 +74,13 @@ function extractTextFromHtml(htmlString: string): string {
 type QuickFilterTab = 'ALL' | 'CALLS_VISITS' | 'REMINDERS' | 'ARREARS' | 'MESSAGING';
 
 export default function CommunicationsTable({ notifications }: CommunicationsTableProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = usePersistedState("dms_comms_search", "");
   const [selectedClientId, setSelectedClientId] = useState("ALL");
   const [selectedChannel, setSelectedChannel] = useState("ALL");
   const [selectedType, setSelectedType] = useState("ALL");
   const [selectedStatus, setSelectedStatus] = useState("ALL");
   const [selectedMonth, setSelectedMonth] = useState("ALL");
-  const [activeTab, setActiveTab] = useState<QuickFilterTab>('ALL');
+  const [activeTab, setActiveTab] = usePersistedState<QuickFilterTab>('dms_comms_tab', 'ALL');
 
   // Modal inspection state
   const [selectedNotification, setSelectedNotification] = useState<any | null>(null);

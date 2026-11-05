@@ -250,18 +250,48 @@ export const Inventory = ({
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
 
-  // Filters state
-  const [brand, setBrand] = useState(brandParam === 'All brands' ? 'All' : brandParam);
-  const [model, setModel] = useState('All');
-  const [condition, setCondition] = useState('All');
-  const [status, setStatus] = useState('All');
-  const [bodyType, setBodyType] = useState('All');
-  const [priceRange, setPriceRange] = useState('All');
-  const [mileageRange, setMileageRange] = useState('All');
-  const [fuelType, setFuelType] = useState('All');
-  const [transmission, setTransmission] = useState('All');
-  const [searchQuery, setSearchQuery] = useState(queryParam);
-  const [sortBy, setSortBy] = useState('default');
+  const getSavedFilter = (key, fallback) => {
+    if (typeof window === 'undefined') return fallback;
+    try {
+      const saved = sessionStorage.getItem('ebenezar_inv_' + key);
+      if (saved !== null && saved !== undefined) return saved;
+    } catch {
+      // Ignore
+    }
+    return fallback;
+  };
+
+  // Filters state with sessionStorage memory
+  const [brand, setBrand] = useState(() => (brandParam && brandParam !== 'All brands' && brandParam !== 'All') ? brandParam : getSavedFilter('brand', 'All'));
+  const [model, setModel] = useState(() => getSavedFilter('model', 'All'));
+  const [condition, setCondition] = useState(() => getSavedFilter('condition', 'All'));
+  const [status, setStatus] = useState(() => getSavedFilter('status', 'All'));
+  const [bodyType, setBodyType] = useState(() => getSavedFilter('bodyType', 'All'));
+  const [priceRange, setPriceRange] = useState(() => getSavedFilter('priceRange', 'All'));
+  const [mileageRange, setMileageRange] = useState(() => getSavedFilter('mileageRange', 'All'));
+  const [fuelType, setFuelType] = useState(() => getSavedFilter('fuelType', 'All'));
+  const [transmission, setTransmission] = useState(() => getSavedFilter('transmission', 'All'));
+  const [searchQuery, setSearchQuery] = useState(() => queryParam ? queryParam : getSavedFilter('query', ''));
+  const [sortBy, setSortBy] = useState(() => getSavedFilter('sortBy', 'default'));
+
+  // Sync filters to sessionStorage whenever they change
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('ebenezar_inv_brand', brand);
+      sessionStorage.setItem('ebenezar_inv_model', model);
+      sessionStorage.setItem('ebenezar_inv_condition', condition);
+      sessionStorage.setItem('ebenezar_inv_status', status);
+      sessionStorage.setItem('ebenezar_inv_bodyType', bodyType);
+      sessionStorage.setItem('ebenezar_inv_priceRange', priceRange);
+      sessionStorage.setItem('ebenezar_inv_mileageRange', mileageRange);
+      sessionStorage.setItem('ebenezar_inv_fuelType', fuelType);
+      sessionStorage.setItem('ebenezar_inv_transmission', transmission);
+      sessionStorage.setItem('ebenezar_inv_query', searchQuery);
+      sessionStorage.setItem('ebenezar_inv_sortBy', sortBy);
+    } catch {
+      // Ignore
+    }
+  }, [brand, model, condition, status, bodyType, priceRange, mileageRange, fuelType, transmission, searchQuery, sortBy]);
 
   // Mobile floating filter drawer state
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -419,6 +449,15 @@ export const Inventory = ({
     setTransmission('All');
     setSearchQuery('');
     setSortBy('default');
+    try {
+      [
+        'brand', 'model', 'condition', 'status', 'bodyType',
+        'priceRange', 'mileageRange', 'fuelType', 'transmission',
+        'query', 'sortBy'
+      ].forEach((k) => sessionStorage.removeItem('ebenezar_inv_' + k));
+    } catch {
+      // Ignore
+    }
   };
 
   // Filter & sort logic applied to real database vehicles
@@ -502,6 +541,11 @@ export const Inventory = ({
   ]);
 
   const handleVehicleClick = (car) => {
+    try {
+      sessionStorage.setItem('web_scroll_' + window.location.pathname + window.location.search, String(Math.round(window.scrollY || 0)));
+    } catch {
+      // Ignore
+    }
     if (onSelectVehicle) {
       onSelectVehicle(car);
     } else {

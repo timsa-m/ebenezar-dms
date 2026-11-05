@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import HeaderBox from '@/components/HeaderBox';
 import { updateCompanySettings } from '@/lib/actions/settings.actions';
 import { uploadUserAvatar, updateUserProfile } from '@/lib/actions/user.actions';
@@ -35,7 +36,7 @@ export default function SettingsLayout({
   initialSettings?: any;
   initialTab?: string;
 }) {
-  const [activeTab, setActiveTab] = useState(initialTab || 'Profile');
+  const [activeTab, setActiveTab] = usePersistedState('dms_settings_tab', initialTab || 'Profile');
   const [isPending, startTransition] = useTransition();
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(user?.avatarUrl || null);

@@ -37,7 +37,26 @@ function getISOWeekBoundaries(): { weekStart: string; weekEnd: string } {
   };
 }
 
-function mapReportRow(agreement: any, client: any, nextInstallment?: any): DailyReportLoan {
+/**
+ * Compute DPD live from the earliest unsettled installment due date.
+ * This avoids relying on the stale `days_overdue` column on financing_agreements
+ * which is only written at disbursement time and never automatically refreshed.
+ */
+function computeLiveDPD(earliestUnpaidDueDate?: string | null): number {
+  if (!earliestUnpaidDueDate) return 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const due = new Date(earliestUnpaidDueDate);
+  due.setHours(0, 0, 0, 0);
+  const diffMs = today.getTime() - due.getTime();
+  return Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+}
+
+function mapReportRow(agreement: any, client: any, nextInstallment?: any, earliestUnpaidInstallment?: any): DailyReportLoan {
+  // Always compute DPD live from the earliest unsettled installment,
+  // NOT from the stale days_overdue column on the agreement row.
+  const dpd = computeLiveDPD(earliestUnpaidInstallment?.due_date ?? nextInstallment?.due_date);
+
   return {
     $id: agreement.id,
     clientId: agreement.client_id,
@@ -45,7 +64,7 @@ function mapReportRow(agreement: any, client: any, nextInstallment?: any): Daily
     clientPhone: client?.phone ?? "",
     clientEmail: client?.email ?? "",
     amountApplied: Number(agreement.sale_price || 0),
-    principalDisbursed: Number(agreement.principal_amount || 0), // Financed amount
+    principalDisbursed: Number(agreement.principal_amount || 0),
     balance: Number(agreement.balance || 0),
     remainingPrincipal: Number(agreement.balance || 0),
     remainingInterest: 0,
@@ -58,16 +77,15 @@ function mapReportRow(agreement: any, client: any, nextInstallment?: any): Daily
         Number(nextInstallment.fees_due || 0) +
         Number(nextInstallment.penalties_due || 0)
       : undefined,
-    daysPastDue: Number(agreement.days_overdue || 0),
+    daysPastDue: dpd,
     status: (() => {
       const rawStatus = (agreement.status || '').toLowerCase();
-      const dpd = Number(agreement.days_overdue || 0);
       if (rawStatus === 'completed' || rawStatus === 'fully paid') return 'Fully Paid';
       if (rawStatus === 'written off' || rawStatus === 'written_off') return 'Written Off';
       if (rawStatus === 'loss' || dpd > 90) return 'Loss';
       if (rawStatus === 'defaulting' || (dpd >= 60 && dpd <= 90)) return 'Defaulting';
       if (rawStatus === 'substandard' || (dpd > 30 && dpd < 60)) return 'Substandard';
-      if (rawStatus === 'overdue' || (dpd >= 7 && dpd <= 30)) return 'Overdue';
+      if (rawStatus === 'overdue' || dpd > 0) return 'Overdue';
       return 'Active';
     })(),
     loanType: agreement.contract_no || 'Vehicle Financing',
@@ -115,8 +133,7 @@ export async function getDueThisWeekLoans(): Promise<DailyReportLoan[]> {
       .from("financing_agreements")
       .select(
         "id, client_id, contract_no, sale_price, deposit_paid, principal_amount, " +
-        "monthly_due, duration_months, start_date, end_date, balance, status, " +
-        "aging_bucket, days_overdue, total_penalties"
+        "monthly_due, duration_months, start_date, end_date, balance, status, total_penalties"
       )
       .in("id", loanIds)
       .not("status", "in", '("completed","Written Off","written off")');
@@ -133,12 +150,33 @@ export async function getDueThisWeekLoans(): Promise<DailyReportLoan[]> {
     const clientMap: Record<string, any> = {};
     (clients ?? []).forEach((c: any) => { clientMap[c.id] = c; });
 
-    // Map installments by agreement_id for quick lookup
+    // Map installments by agreement_id for quick lookup (this week's installment)
     const instMap: Record<string, any> = {};
     uniqueInstallments.forEach((i) => { instMap[i.agreement_id] = i; });
 
+    // Separately fetch the EARLIEST unsettled installment per agreement
+    // (may be BEFORE this week) so DPD is computed from the actual oldest debt
+    const { data: earliestInsts } = await supabase
+      .from("financing_installments")
+      .select("agreement_id, due_date")
+      .eq("is_settled", false)
+      .in("agreement_id", loanIds)
+      .order("due_date", { ascending: true });
+
+    const earliestInstMap: Record<string, any> = {};
+    (earliestInsts ?? []).forEach((i: any) => {
+      if (!earliestInstMap[i.agreement_id]) {
+        earliestInstMap[i.agreement_id] = i;
+      }
+    });
+
     const result = (agreements ?? []).map((agreement: any) =>
-      mapReportRow(agreement, clientMap[agreement.client_id], instMap[agreement.id])
+      mapReportRow(
+        agreement,
+        clientMap[agreement.client_id],
+        instMap[agreement.id],
+        earliestInstMap[agreement.id]
+      )
     );
 
     return parseStringify(result);
@@ -158,19 +196,36 @@ export async function getOverdueLoans(): Promise<DailyReportLoan[]> {
   try {
     const supabase = createSupabaseAdminClient();
 
+    // Fetch agreements that are not completed/written off.
+    // We filter by status rather than the stale days_overdue column —
+    // actual DPD is computed live from financing_installments below.
     const { data: agreements, error } = await supabase
       .from("financing_agreements")
       .select(
         "id, client_id, contract_no, sale_price, deposit_paid, principal_amount, " +
-        "monthly_due, duration_months, start_date, end_date, balance, status, " +
-        "aging_bucket, days_overdue, total_penalties"
+        "monthly_due, duration_months, start_date, end_date, balance, status, total_penalties"
       )
-      .not("status", "in", '("completed","Written Off","written off")')
-      .gt("days_overdue", 0)
-      .order("days_overdue", { ascending: false });
+      .not("status", "in", '("completed","Written Off","written off","Fully Paid","fully paid")');
 
     if (error) throw error;
     if (!agreements || agreements.length === 0) return [];
+
+    const agreementIds = (agreements as any[]).map((a: any) => a.id as string);
+
+    // Fetch the EARLIEST unsettled installment per agreement — this is the true DPD anchor
+    const { data: earliestInsts } = await supabase
+      .from("financing_installments")
+      .select("agreement_id, due_date")
+      .eq("is_settled", false)
+      .in("agreement_id", agreementIds)
+      .order("due_date", { ascending: true });
+
+    const earliestInstMap: Record<string, any> = {};
+    (earliestInsts ?? []).forEach((i: any) => {
+      if (!earliestInstMap[i.agreement_id]) {
+        earliestInstMap[i.agreement_id] = i;
+      }
+    });
 
     const clientIds = [...new Set((agreements as any[]).map((l: any) => l.client_id as string))];
     const { data: clients } = await supabase
@@ -181,11 +236,22 @@ export async function getOverdueLoans(): Promise<DailyReportLoan[]> {
     const clientMap: Record<string, any> = {};
     (clients ?? []).forEach((c: any) => { clientMap[c.id] = c; });
 
-    const result = (agreements as any[]).map((agreement: any) =>
-      mapReportRow(agreement, clientMap[agreement.client_id])
-    );
+    // Build rows and compute live DPD — keep only those that are genuinely past due
+    const rows = (agreements as any[])
+      .map((agreement: any) =>
+        mapReportRow(
+          agreement,
+          clientMap[agreement.client_id],
+          undefined,
+          earliestInstMap[agreement.id]
+        )
+      )
+      .filter((r) => r.daysPastDue > 0);
 
-    return parseStringify(result);
+    // Sort by most overdue first
+    rows.sort((a, b) => b.daysPastDue - a.daysPastDue);
+
+    return parseStringify(rows);
   } catch (error) {
     console.error("[getOverdueLoans]", error);
     return [];

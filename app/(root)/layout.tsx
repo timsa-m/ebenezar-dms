@@ -24,7 +24,7 @@ export default async function RootLayout({
         <OfflineBanner />
         
         {/* Main App Canvas — scrollable */}
-        <main className="flex-1 overflow-y-auto relative z-10">
+        <main id="main-scroll-canvas" data-scroll-container="true" className="flex-1 overflow-y-auto relative z-10">
           {/* Subtle mesh background for premium feel */}
           <div className="absolute top-0 left-0 w-full h-[500px] bg-mesh-gradient pointer-events-none opacity-30 z-0"></div>
 

@@ -16,7 +16,32 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     query = query.eq('slug', id);
   }
 
-  const { data, error } = await query.single();
+  let { data, error } = await query.maybeSingle();
+
+  // If not found and not a UUID, fallback to lookup by registration_no or slug substring
+  if (!data && !isUuid) {
+    const cleanId = id.trim().toUpperCase();
+    const { data: byReg } = await supabase
+      .from('vehicles')
+      .select('*')
+      .ilike('registration_no', cleanId)
+      .maybeSingle();
+
+    if (byReg) {
+      data = byReg;
+      error = null;
+    } else {
+      const { data: bySlug } = await supabase
+        .from('vehicles')
+        .select('*')
+        .ilike('slug', `%${id.trim().toLowerCase()}%`)
+        .maybeSingle();
+      if (bySlug) {
+        data = bySlug;
+        error = null;
+      }
+    }
+  }
 
   if (error || !data) {
     return NextResponse.json({ error: 'Vehicle not found' }, { status: 404 });

@@ -16,8 +16,8 @@ interface Stats {
 export default function CommunicationStats({ stats }: { stats: Stats | null }) {
   if (!stats) return null;
 
-  const deliveryRate = stats.totalSent > 0 
-    ? Math.round((stats.delivered / stats.totalSent) * 100) 
+  const deliveryRate = stats.totalSent > 0
+    ? Math.round((stats.delivered / stats.totalSent) * 100)
     : 0;
 
   const cards = [
@@ -45,7 +45,7 @@ export default function CommunicationStats({ stats }: { stats: Stats | null }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
       {cards.map((card, idx) => (
         <div key={idx} className="card-premium p-4 flex items-center justify-between">
           <div>

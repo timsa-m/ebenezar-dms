@@ -5,7 +5,51 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 
 import { cn } from "@/lib/utils"
 
-const Tabs = TabsPrimitive.Root
+export interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
+  rememberKey?: string;
+}
+
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  TabsProps
+>(({ rememberKey, defaultValue, value, onValueChange, ...props }, ref) => {
+  const [internalVal, setInternalVal] = React.useState<string | undefined>(() => {
+    if (rememberKey && typeof window !== 'undefined') {
+      try {
+        const saved = sessionStorage.getItem(`tab_${rememberKey}`);
+        if (saved) return saved;
+      } catch {
+        // Ignore sessionStorage errors
+      }
+    }
+    return (value !== undefined ? value : defaultValue) as string | undefined;
+  });
+
+  const handleChange = (newVal: string) => {
+    if (rememberKey && typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem(`tab_${rememberKey}`, newVal);
+      } catch {
+        // Ignore sessionStorage errors
+      }
+    }
+    setInternalVal(newVal);
+    onValueChange?.(newVal);
+  };
+
+  const activeVal = value !== undefined ? value : internalVal;
+
+  return (
+    <TabsPrimitive.Root
+      ref={ref}
+      value={activeVal}
+      onValueChange={handleChange}
+      defaultValue={defaultValue}
+      {...props}
+    />
+  );
+});
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,

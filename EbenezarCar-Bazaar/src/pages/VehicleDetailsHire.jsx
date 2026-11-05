@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, Navigate } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, Gauge, Fuel, Zap, Settings, 
   Check, Phone, MessageCircle, MapPin, Fingerprint, Info 
@@ -37,10 +37,16 @@ const VehicleDetailsHire = () => {
           const raw = (response && !response.error)
             ? (response._id || response.id ? response : (response.data || response))
             : null;
+
+          if (!raw) {
+            navigate('/inventory', { replace: true });
+            return;
+          }
+
           setVehicle(raw);
           setLoadError("");
           setActiveImage(0);
-          if (raw?.slug && id !== raw.slug) {
+          if (raw?.slug && id !== raw.slug && !window.location.pathname.startsWith('/v/')) {
             navigate(`/vehicle/hire/${raw.slug}`, { replace: true });
           }
         }
@@ -48,6 +54,7 @@ const VehicleDetailsHire = () => {
         if (isMounted) {
           setLoadError(error.message || "Unable to load vehicle");
           setVehicle(null);
+          navigate('/inventory', { replace: true });
         }
       } finally {
         if (isMounted) {
@@ -73,17 +80,7 @@ const VehicleDetailsHire = () => {
   }
 
   if (!vehicle) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-slate-50">
-        <h1 className="text-2xl font-bold text-gray-700">Vehicle Not Found</h1>
-        <p className="text-gray-500">
-          {loadError || "The vehicle you are looking for does not exist in our inventory."}
-        </p>
-        <Link to="/inventory" className="px-6 py-2 bg-brand-accent text-white rounded-full hover:bg-brand-accentLight transition">
-          Return to Inventory
-        </Link>
-      </div>
-    );
+    return <Navigate to="/inventory" replace />;
   }
 
   // 2. Safe Image Handling

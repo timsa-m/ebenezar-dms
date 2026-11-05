@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { formatAmount } from '@/lib/utils';
 import { sendOverdueAlerts } from '@/lib/actions/daily-report.actions';
 import {
@@ -80,6 +81,7 @@ interface Props {
 
 // ─── Main component ────────────────────────────────────────────────────────────
 export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDate, canSendAlerts }: Props) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [alertResult, setAlertResult] = useState<{ attempted: number; sent: number; failed: number } | null>(null);
 
@@ -214,7 +216,18 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
                 </thead>
                 <tbody>
                   {dueThisWeek.map((loan, i) => (
-                    <tr key={loan.$id} style={{ borderBottom: '1px solid #F3F4F6', background: i % 2 === 0 ? '#FFF' : '#FAFAFA' }}>
+                    <tr
+                      key={loan.$id}
+                      onClick={() => router.push(`/loans/${loan.$id}`)}
+                      style={{
+                        borderBottom: '1px solid #F3F4F6',
+                        background: i % 2 === 0 ? '#FFF' : '#FAFAFA',
+                        cursor: 'pointer',
+                        transition: 'background 0.12s',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#EFF6FF')}
+                      onMouseLeave={e => (e.currentTarget.style.background = i % 2 === 0 ? '#FFF' : '#FAFAFA')}
+                    >
                       <td style={{ padding: '0.75rem 1rem' }}>
                         <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111113', margin: 0 }}>{loan.clientName}</p>
                         <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.2rem', flexWrap: 'wrap' }}>
@@ -306,13 +319,20 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
                   {overdueLoans.map((loan, i) => {
                     const isLoss = loan.status === 'Loss';
                     const isSub = loan.status === 'Substandard';
+                    const baseBg = isLoss ? '#FFF5F5' : isSub ? '#FFFBEB' : i % 2 === 0 ? '#FFF' : '#FAFAFA';
+                    const hoverBg = '#FEF2F2';
                     return (
                       <tr
                         key={loan.$id}
+                        onClick={() => router.push(`/loans/${loan.$id}`)}
                         style={{
                           borderBottom: '1px solid #FEE2E2',
-                          background: isLoss ? '#FFF5F5' : isSub ? '#FFFBEB' : i % 2 === 0 ? '#FFF' : '#FAFAFA',
+                          background: baseBg,
+                          cursor: 'pointer',
+                          transition: 'background 0.12s',
                         }}
+                        onMouseEnter={e => (e.currentTarget.style.background = hoverBg)}
+                        onMouseLeave={e => (e.currentTarget.style.background = baseBg)}
                       >
                         <td style={{ padding: '0.875rem 1rem' }}>
                           <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111113', margin: 0 }}>{loan.clientName}</p>

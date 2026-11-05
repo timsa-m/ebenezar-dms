@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import type { Vehicle, VehicleCostType, VehicleStatus } from '@/src/types/database.types';
 import { formatKES } from '@/src/lib/financial-engine';
 import { addVehicle, addVehicleCost, updateVehicleStatusAction, softDeleteVehicle, restoreVehicle, toggleVehiclePublishAction } from '@/lib/actions/vehicle.actions';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import {
   Car,
   Plus,
@@ -157,9 +158,9 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
   const [isCostSaving, setIsCostSaving] = useState(false);
 
   // Table States
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = usePersistedState('dms_yard_query', '');
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'all' | 'in_stock' | 'reserved' | 'financed' | 'repossessed' | 'cash_sale' | 'on_website' | 'off_website' | 'deleted'>('all');
+  const [activeTab, setActiveTab] = usePersistedState<'all' | 'in_stock' | 'reserved' | 'financed' | 'repossessed' | 'cash_sale' | 'on_website' | 'off_website' | 'deleted'>('dms_yard_tab', 'all');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<Vehicle | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);

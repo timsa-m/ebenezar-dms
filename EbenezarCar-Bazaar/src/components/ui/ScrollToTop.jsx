@@ -1,22 +1,103 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useLocation, useNavigationType } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const location = useLocation();
   const navigationType = useNavigationType();
   const [isVisible, setIsVisible] = useState(false);
+  const activeRestoreTimerRef = useRef(null);
+  const currentKey = `${location.pathname}${location.search}`;
 
-  // Scroll to top on route change
+  // Continuously record scroll position for current route
   useEffect(() => {
-    if (navigationType !== "POP") {
+    let animFrame;
+    const onScroll = () => {
+      cancelAnimationFrame(animFrame);
+      animFrame = requestAnimationFrame(() => {
+        if (typeof window !== "undefined") {
+          const y = window.scrollY || document.documentElement?.scrollTop || 0;
+          try {
+            sessionStorage.setItem(`web_scroll_${currentKey}`, String(Math.round(y)));
+          } catch {
+            // Ignore
+          }
+        }
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(animFrame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [currentKey]);
+
+  // Handle route change: Restore on POP (Back/Forward), Reset to top on Push
+  useEffect(() => {
+    if (activeRestoreTimerRef.current) {
+      clearInterval(activeRestoreTimerRef.current);
+      activeRestoreTimerRef.current = null;
+    }
+
+    if (navigationType === "POP") {
+      let targetY = 0;
+      try {
+        const saved = sessionStorage.getItem(`web_scroll_${currentKey}`);
+        if (saved) targetY = Number(saved);
+      } catch {
+        targetY = 0;
+      }
+
+      if (targetY > 0) {
+        let attempts = 0;
+        const maxAttempts = 35; // ~1.4 seconds max polling for async data
+
+        const cancelRestore = () => {
+          if (activeRestoreTimerRef.current) {
+            clearInterval(activeRestoreTimerRef.current);
+            activeRestoreTimerRef.current = null;
+          }
+          window.removeEventListener("wheel", cancelRestore);
+          window.removeEventListener("touchstart", cancelRestore);
+          window.removeEventListener("keydown", cancelRestore);
+        };
+
+        window.addEventListener("wheel", cancelRestore, { passive: true });
+        window.addEventListener("touchstart", cancelRestore, { passive: true });
+        window.addEventListener("keydown", cancelRestore, { passive: true });
+
+        activeRestoreTimerRef.current = setInterval(() => {
+          attempts++;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          window.scrollTo({
+            top: targetY,
+            left: 0,
+            behavior: "instant",
+          });
+
+          const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+          if (Math.abs(currentY - targetY) <= 4 || maxScroll >= targetY || attempts >= maxAttempts) {
+            if (attempts >= 4 || Math.abs(currentY - targetY) <= 4) {
+              cancelRestore();
+            }
+          }
+        }, 35);
+      }
+    } else {
       window.scrollTo({
         top: 0,
         left: 0,
         behavior: "instant",
       });
     }
-  }, [pathname, navigationType]);
+
+    return () => {
+      if (activeRestoreTimerRef.current) {
+        clearInterval(activeRestoreTimerRef.current);
+      }
+    };
+  }, [location.pathname, location.search, navigationType, currentKey]);
 
   // Track scroll position
   const checkScroll = useCallback(() => {

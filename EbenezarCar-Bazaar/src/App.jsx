@@ -36,6 +36,8 @@ function App() {
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/vehicle/:id" element={<VehicleDetails />} />
             <Route path="/vehicle/hire/:id" element={<VehicleDetailsHire />} />
+            <Route path="/v/:id" element={<VehicleDetails />} />
+            <Route path="/v/hire/:id" element={<VehicleDetailsHire />} />
             <Route path="/trade-in" element={<TradeIn />} />
           </Routes>
         </Suspense>

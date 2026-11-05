@@ -78,7 +78,7 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
   const tabClass = "data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-none text-14 font-semibold text-gray-500 h-12 px-0";
 
   return (
-    <Tabs defaultValue="overview" className="w-full">
+    <Tabs defaultValue="overview" rememberKey={`client_profile_tabs_${client.$id || client.id || 'current'}`} className="w-full">
       <div className="border-b border-gray-100 mb-8 overflow-x-auto no-scrollbar">
         <TabsList className="bg-transparent gap-8 h-12 p-0 justify-start w-full min-w-max">
           <TabsTrigger value="overview" className={tabClass}>

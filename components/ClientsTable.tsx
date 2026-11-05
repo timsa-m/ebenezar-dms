@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import ClientAvatar from '@/components/ClientAvatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { deleteClientAction } from '@/lib/actions/client.actions';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { toast } from '@/lib/toast';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
 import {
@@ -86,9 +87,9 @@ function StatusBadge({ status }: { status: ClientStatus }) {
 }
 
 export default function ClientsTable({ clients, userRole }: { clients: Client[], userRole?: string }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = usePersistedState('dms_clients_query', '');
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'all' | 'active' | 'arrears' | 'cleared' | 'new'>('all');
+  const [activeTab, setActiveTab] = usePersistedState<'all' | 'active' | 'arrears' | 'cleared' | 'new'>('dms_clients_tab', 'all');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);

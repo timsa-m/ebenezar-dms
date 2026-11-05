@@ -240,7 +240,7 @@ const Home = async () => {
         ))}
       </div>
 
-      {/* ── Row 6: Recent Loans ──────────────────────────────────────────── */}
+      {/* ── Row 6: Recent Vehicle Loans ──────────────────────────────────────────── */}
       <div className="flex flex-col gap-5">
         <div className="flex justify-between items-center">
           <h2 className="text-18 font-semibold text-gray-900 tracking-tight">Recent Agreements</h2>

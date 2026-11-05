@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, Navigate } from 'react-router-dom';
 import {
   Calendar,
   ShieldCheck,
@@ -179,8 +179,14 @@ export default function VehicleDetails() {
           const raw = (targetVehicle && !targetVehicle.error)
             ? (targetVehicle._id || targetVehicle.id ? targetVehicle : (targetVehicle.data || targetVehicle.vehicle || targetVehicle))
             : null;
+
+          if (!raw) {
+            navigate('/inventory', { replace: true });
+            return;
+          }
+
           setVehicleRaw(raw);
-          if (raw?.slug && id !== raw.slug) {
+          if (raw?.slug && id !== raw.slug && !window.location.pathname.startsWith('/v/')) {
             navigate(`/vehicle/${raw.slug}`, { replace: true });
           }
           const list = Array.isArray(allVehicles)
@@ -194,6 +200,7 @@ export default function VehicleDetails() {
         if (isMounted) {
           setError(err.message || 'Unable to load vehicle details');
           setVehicleRaw(null);
+          navigate('/inventory', { replace: true });
         }
       } finally {
         if (isMounted) {
@@ -299,8 +306,43 @@ export default function VehicleDetails() {
     touchEndX.current = 0;
   };
 
+  const vehicleSlug = vehicleRaw?.slug || vehicleRaw?.registration_no || vehicleRaw?._id || id;
+  const shortLink = typeof window !== 'undefined' ? `${window.location.origin}/v/${vehicleSlug}` : '';
+
+  useEffect(() => {
+    if (vehicleRaw) {
+      const title = vehicleRaw.make_model || vehicleRaw.name || 'Vehicle';
+      const price = vehicleRaw.price || vehicleRaw.sale_price || 0;
+      const priceStr = price ? ` - ${FORMAT_KSH(price)}` : '';
+      document.title = `${title}${priceStr} | Ebenezar Car Bazaar Kenya`;
+
+      const setMeta = (name, val) => {
+        let el = document.querySelector(`meta[property="${name}"]`) || document.querySelector(`meta[name="${name}"]`);
+        if (!el) {
+          el = document.createElement('meta');
+          if (name.startsWith('og:')) el.setAttribute('property', name);
+          else el.setAttribute('name', name);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', val);
+      };
+
+      const primaryImg = (Array.isArray(vehicleRaw.images) && vehicleRaw.images.length > 0)
+        ? vehicleRaw.images[0]
+        : (vehicleRaw.primaryImage || 'https://ebenezarenterprises.com/logo.png');
+
+      setMeta('og:title', `${title}${priceStr} | Ebenezar Car Bazaar`);
+      setMeta('og:image', primaryImg);
+      setMeta('og:image:width', '1200');
+      setMeta('og:image:height', '630');
+      setMeta('og:url', shortLink);
+      setMeta('twitter:image', primaryImg);
+      setMeta('twitter:card', 'summary_large_image');
+    }
+  }, [vehicleRaw, shortLink]);
+
   const handleCopyLink = () => {
-    navigator.clipboard?.writeText(window.location.href);
+    navigator.clipboard?.writeText(shortLink);
     setCopiedToast(true);
     setTimeout(() => setCopiedToast(false), 2500);
   };
@@ -308,14 +350,15 @@ export default function VehicleDetails() {
   const handleWhatsAppShare = () => {
     const title = vehicleRaw?.make_model || vehicleRaw?.name || 'Vehicle';
     const price = vehicleRaw?.price || vehicleRaw?.sale_price || 0;
+    const priceStr = price ? ` - ${FORMAT_KSH(price)}` : '';
     const text = encodeURIComponent(
-      `Check out this ${title} at ${FORMAT_KSH(price)} on Ebenezar Car Bazaar: ${window.location.href}`
+      `Check out this ${title}${priceStr} on Ebenezar Car Bazaar:\n${shortLink}`
     );
     window.open(`https://wa.me/?text=${text}`, '_blank');
   };
 
   const handleFacebookShare = () => {
-    const url = encodeURIComponent(window.location.href);
+    const url = encodeURIComponent(shortLink);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
   };
 
@@ -334,23 +377,7 @@ export default function VehicleDetails() {
   }
 
   if (!vehicleRaw) {
-    return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 bg-white px-4 text-center">
-        <div className="p-4 bg-slate-100 rounded-full mb-2 shadow-xs border border-slate-200">
-          <Info className="h-10 w-10 text-slate-400" />
-        </div>
-        <h1 className="text-2xl font-black text-slate-900">Vehicle Not Found</h1>
-        <p className="text-slate-500 max-w-md text-sm">
-          {error || "The vehicle you are looking for has been sold or is not available in our database."}
-        </p>
-        <button
-          onClick={() => navigate('/inventory')}
-          className="mt-3 px-7 py-3 bg-[#0B4DB7] text-white font-bold text-sm rounded-xl hover:bg-blue-800 transition shadow-sm cursor-pointer"
-        >
-          Browse All Inventory
-        </button>
-      </div>
-    );
+    return <Navigate to="/inventory" replace />;
   }
 
   // Map database vehicle data to the format expected by the UI
@@ -455,7 +482,7 @@ export default function VehicleDetails() {
       {copiedToast && (
         <div className="fixed top-20 right-8 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          Vehicle link copied to clipboard!
+          Short link copied to clipboard!
         </div>
       )}
 
@@ -659,7 +686,7 @@ export default function VehicleDetails() {
             </div>
 
             {/* Social Share Row */}
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <span className="text-xs font-extrabold tracking-wider text-slate-500 uppercase">
                 SHARE
               </span>
@@ -667,8 +694,8 @@ export default function VehicleDetails() {
                 <button
                   onClick={handleWhatsAppShare}
                   aria-label="Share on WhatsApp"
-                  title="Share on WhatsApp"
-                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-slate-700 hover:text-emerald-600 flex items-center justify-center transition-colors cursor-pointer"
+                  title="Share on WhatsApp (Large Picture Preview)"
+                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-slate-700 hover:text-emerald-600 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
                 >
                   <MessageCircle className="w-4 h-4" />
                 </button>
@@ -676,19 +703,30 @@ export default function VehicleDetails() {
                   onClick={handleFacebookShare}
                   aria-label="Share on Facebook"
                   title="Share on Facebook"
-                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-600 flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-600 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
                 >
                   <Share2 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  aria-label="Copy Link"
-                  title="Copy Vehicle Link"
-                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Copy Short Link"
+                  title="Copy Short Link to avoid clutter"
+                  className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
                 >
                   <Copy className="w-4 h-4" />
                 </button>
               </div>
+              {shortLink && (
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  title="Click to copy clean short link"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 text-xs font-mono transition-colors cursor-pointer"
+                >
+                  <span className="text-slate-400 font-sans">Short:</span>
+                  <span className="truncate max-w-[200px]">/v/{vehicleSlug}</span>
+                </button>
+              )}
             </div>
 
             {/* YOUR SALES TEAM Section */}

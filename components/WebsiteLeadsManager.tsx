@@ -8,6 +8,7 @@ import {
   updateHireRequestStatus,
   updateTradeInRequestStatus
 } from '@/lib/actions/website.actions';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { toast } from '@/lib/toast';
 import {
   Mail,
@@ -105,9 +106,9 @@ export default function WebsiteLeadsManager({
   const [tradeInRequests, setTradeInRequests] = useState<TradeInRequest[]>(initialTradeIn || []);
   const [hireRequests, setHireRequests] = useState<HireRequest[]>(initialHire || []);
 
-  const [activeTab, setActiveTab] = useState<'messages' | 'tradein'>('messages');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [activeTab, setActiveTab] = usePersistedState<'messages' | 'tradein'>('dms_leads_tab', 'messages');
+  const [searchQuery, setSearchQuery] = usePersistedState('dms_leads_search', '');
+  const [statusFilter, setStatusFilter] = usePersistedState<string>('dms_leads_status', 'all');
   const [isUpdating, setIsUpdating] = useState(false);
 
   // Selected lead for the Slide-Over Sheet Drawer

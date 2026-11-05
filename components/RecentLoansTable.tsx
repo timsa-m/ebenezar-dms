@@ -40,9 +40,9 @@ export default function RecentLoansTable({ recentLoans }: RecentLoansTableProps)
             </colgroup>
             <TableHeader>
               <TableRow className="data-table-head-row">
-                <TableCell className="data-th text-left">Loan ID</TableCell>
-                <TableCell className="data-th text-left">Client / Borrower</TableCell>
-                <TableCell className="data-th text-right">Principal</TableCell>
+                <TableCell className="data-th text-left">Contract ID</TableCell>
+                <TableCell className="data-th text-left">Client</TableCell>
+                <TableCell className="data-th text-right">Vehicle Loan</TableCell>
                 <TableCell className="data-th text-left">Status</TableCell>
                 <TableCell className="data-th text-right"></TableCell>
               </TableRow>
@@ -69,11 +69,11 @@ export default function RecentLoansTable({ recentLoans }: RecentLoansTableProps)
                   </TableCell>
                   <TableCell className="data-td">
                     <span className={cn('badge', {
-                      'badge-success':   loan.status === 'Active',
-                      'badge-pending':   loan.status === 'Pending',
-                      'badge-warning':   ['Overdue', 'Substandard'].includes(loan.status),
-                      'badge-error':     ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
-                      'badge-neutral':   loan.status === 'Written Off',
+                      'badge-success': loan.status === 'Active',
+                      'badge-pending': loan.status === 'Pending',
+                      'badge-warning': ['Overdue', 'Substandard'].includes(loan.status),
+                      'badge-error': ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
+                      'badge-neutral': loan.status === 'Written Off',
                       'badge-completed': ['Fully Paid', 'Cash Sale'].includes(loan.status),
                     })}>
                       {loan.status}
@@ -180,11 +180,11 @@ export default function RecentLoansTable({ recentLoans }: RecentLoansTableProps)
 
                     <div className="mt-3">
                       <span className={cn('badge', {
-                        'badge-success':   loan.status === 'Active',
-                        'badge-pending':   loan.status === 'Pending',
-                        'badge-warning':   ['Overdue', 'Substandard'].includes(loan.status),
-                        'badge-error':     ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
-                        'badge-neutral':   loan.status === 'Written Off',
+                        'badge-success': loan.status === 'Active',
+                        'badge-pending': loan.status === 'Pending',
+                        'badge-warning': ['Overdue', 'Substandard'].includes(loan.status),
+                        'badge-error': ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
+                        'badge-neutral': loan.status === 'Written Off',
                         'badge-completed': ['Fully Paid', 'Cash Sale'].includes(loan.status),
                       })}>
                         {loan.status}
@@ -285,10 +285,10 @@ export default function RecentLoansTable({ recentLoans }: RecentLoansTableProps)
         })}
         {recentLoans.length === 0 && (
 
-          <div className="col-span-full bg-white rounded-2xl border border-gray-200 p-8 text-center flex flex-col items-center justify-center text-slate-400 translate-y-2"><br/>
+          <div className="col-span-full bg-white rounded-2xl border border-gray-200 p-8 text-center flex flex-col items-center justify-center text-slate-400 translate-y-2"><br />
             <CreditCard className="size-8 mb-2" />
             <p className="text-14 font-semibold text-slate-600">No recent Loans</p>
-            <p className="text-12">Originated loans will appear here.</p><br/>
+            <p className="text-12">Originated loans will appear here.</p><br />
           </div>
         )}
       </TableResponsiveGrid>

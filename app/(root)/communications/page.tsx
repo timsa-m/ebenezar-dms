@@ -54,17 +54,17 @@ export default async function CommunicationsPage() {
       </div>
 
 
-      <div className="animate-fade-in space-y-12">
+      <div className="animate-fade-in space-y-1">
         {/* Global Analytics Section */}
         <CommunicationStats stats={stats} />
         <div className="h-4" />
 
         <div className="">
           {/* Global Message Log */}
-          <div className="space-y-4">
+          <div className="space-y-1">
 
             {/* Messages Log Header */}
-            <section className="my-8">
+            <section className="my-1">
               <div className="flex items-center justify-between">
                 <h2 className="text-18 font-bold text-gray-900">
                   Message Audit Trail

@@ -7,6 +7,7 @@ import { Search, CreditCard, Filter, ChevronUp, ChevronDown } from 'lucide-react
 import { formatAmount } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { usePersistedState } from '@/lib/hooks/usePersistedState';
 
 interface Agreement {
   $id: string;
@@ -48,10 +49,10 @@ const STATUS_FILTERS = [
 
 export default function LoansTable({ loans }: { loans: Agreement[] }) {
   const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [query, setQuery] = usePersistedState('dms_loans_query', '');
+  const [statusFilter, setStatusFilter] = usePersistedState<string>('dms_loans_status', 'All');
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<'disbursement' | 'created'>('disbursement');
+  const [sortBy, setSortBy] = usePersistedState<'disbursement' | 'created'>('dms_loans_sort', 'disbursement');
 
 
   const filtered = useMemo(() => {
