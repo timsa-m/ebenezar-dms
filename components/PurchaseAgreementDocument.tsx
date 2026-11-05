@@ -465,7 +465,7 @@ export default function PurchaseAgreementDocument({
           margin-bottom: .36in;
         }
 
-        .agreement-header-logo { width: 1.18in; height: 1.18in; object-fit: contain; }
+        .agreement-header-logo { width: 1.18in; height: 1.18in; object-fit: contain; border-radius: 50%; overflow: hidden; }
         .agreement-header-logo:last-child { justify-self: end; }
 
         .agreement-header-center { text-align: center; font-family: 'Times New Roman', Times, serif; }
@@ -552,7 +552,7 @@ export default function PurchaseAgreementDocument({
         @media (max-width: 900px) {
           .agreement-page { width: 100%; min-height: auto; padding: 32px 28px; }
           .agreement-header { grid-template-columns: 75px 1fr 75px; margin-bottom: 24px; }
-          .agreement-header-logo { width: 72px; height: 72px; }
+          .agreement-header-logo { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; }
           .agreement-header-center h1 { font-size: 14px; }
           .agreement-header-center p { font-size: 13px; }
           .agreement-header-center h2 { font-size: 15px; }

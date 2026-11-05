@@ -160,7 +160,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
         ref={sidebarRef}
         style={{ width: `${sidebarWidth}px`, minWidth: `${sidebarWidth}px`, maxWidth: `${sidebarWidth}px` }}
         className={cn(
-          "print:hidden fixed top-0 bottom-0 left-0 z-50 bg-white border-r border-slate-100 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:z-30",
+          "print:hidden fixed top-5 pt-7 pl-3 bottom-0 left-0 z-50 bg-white border-r border-slate-100 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:z-30",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >

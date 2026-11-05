@@ -18,18 +18,13 @@ export default function CompanyHeader({ title, subtext, className, rightContent 
             h2 text-2xl (32px line-height ~40px) + p text-sm (20px line-height) + 2px gap ≈ 62px.
           We set the logo to 60px so it matches that natural height exactly.
         */}
-        <div className="h-[60px] w-[60px] rounded-full overflow-hidden border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-xs">
+        <div className="h-[60px] w-[60px] rounded-full overflow-hidden shrink-0">
           <Image
             src="/icons/logo.png"
             alt="Ebenezar Logo"
             width={60}
             height={60}
             className="rounded-full object-contain"
-            style={{
-              height: "60px",
-              width: "auto",
-              maxWidth: "100%"
-            }}
           />
         </div>
 

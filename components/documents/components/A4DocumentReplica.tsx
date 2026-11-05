@@ -40,12 +40,12 @@ export const A4DocumentReplica: React.FC<Props> = ({ document: doc, id = 'a4-doc
         {/* Left: Logo & Title Block */}
         <div className="flex-1">
           {/* Logo Placeholder / Custom Logo */}
-          <div className="w-16 h-16 border border-neutral-300 rounded bg-neutral-50/60 flex items-center justify-center mb-4 overflow-hidden shadow-xs">
+          <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center mb-4">
             {doc.seller.logoUrl ? (
               <img
                 src={doc.seller.logoUrl}
                 alt="Company Logo"
-                className="w-full h-full object-contain p-1"
+                className="w-full h-full object-contain"
               />
             ) : (
               <div className="flex flex-col items-center justify-center text-neutral-400">
