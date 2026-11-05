@@ -118,6 +118,7 @@ export async function getVehicleHandoverData(vehicleId: string): Promise<Vehicle
     { data: logbookTransfers },
     { data: discrepancies },
     { data: auditLogs },
+    financialSummary,
   ] = await Promise.all([
     supabase
       .from('vehicle_handover_records')
@@ -152,6 +153,7 @@ export async function getVehicleHandoverData(vehicleId: string): Promise<Vehicle
       .eq('vehicle_id', vehicleId)
       .order('performed_at', { ascending: false })
       .limit(100),
+    getHandoverFinancialSummary(supabase, vehicleId),
   ]);
 
   const store = getHandoverStore();
@@ -197,9 +199,6 @@ export async function getVehicleHandoverData(vehicleId: string): Promise<Vehicle
     ? auditLogs
     : store.auditLogs.filter(a => a.vehicle_id === vehicleId)) as VehicleHandoverAuditLog[];
 
-  // Fetch financial summary for the vehicle
-  const financialSummary = await getHandoverFinancialSummary(supabase, vehicleId);
-
   return {
     incoming,
     outgoing,
@@ -220,23 +219,24 @@ async function getHandoverFinancialSummary(
   supabase: ReturnType<typeof createAdminClient>,
   vehicleId: string
 ): Promise<HandoverFinancialSummary | null> {
-  const { data: agreements } = await supabase
-    .from('financing_agreements')
-    .select(`
-      *,
-      client:clients(id, full_name, phone, client_id_number)
-    `)
-    .eq('vehicle_id', vehicleId)
-    .order('created_at', { ascending: false })
-    .limit(1);
+  const [{ data: agreements }, { data: vehicle }] = await Promise.all([
+    supabase
+      .from('financing_agreements')
+      .select(`
+        *,
+        client:clients(id, full_name, phone, client_id_number)
+      `)
+      .eq('vehicle_id', vehicleId)
+      .order('created_at', { ascending: false })
+      .limit(1),
+    supabase
+      .from('vehicles')
+      .select('status, sale_price, date_sold')
+      .eq('id', vehicleId)
+      .maybeSingle(),
+  ]);
 
   const agreement = agreements?.[0];
-
-  const { data: vehicle } = await supabase
-    .from('vehicles')
-    .select('status, sale_price, date_sold')
-    .eq('id', vehicleId)
-    .maybeSingle();
 
   if (!agreement) {
     if (vehicle?.status === 'cash_sale' || vehicle?.status === 'sold') {
@@ -709,6 +709,247 @@ export async function submitIncomingHandover(
   return updateIncomingHandoverStatus(handoverId, vehicleId, finalStatus);
 }
 
+// ── ALL-IN-ONE CONSOLIDATED INCOMING HANDOVER SAVE ───────────────────────────
+
+export interface SaveIncomingHandoverCompleteParams {
+  vehicleId: string;
+  handoverId?: string;
+  handedOverBy?: string;
+  odometer?: number;
+  fuelLevel?: string;
+  storageLocation?: string;
+  previousOwner?: string;
+  acquisitionDate?: string;
+  accessories: AccessoryFormItem[];
+  inspections: ConditionInspectionFormItem[];
+  overallCondition?: string;
+  outstandingIssues?: string;
+  isSubmit?: boolean;
+  hasDiscrepancies?: boolean;
+}
+
+export async function saveIncomingHandoverComplete(
+  params: SaveIncomingHandoverCompleteParams
+): Promise<{ success: boolean; handoverId?: string; handoverData?: VehicleHandoverData; error?: string }> {
+  try {
+    const user = await requireAuthenticatedUser();
+    const supabase = createAdminClient();
+    const staffName = `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.email;
+
+    let activeHandoverId = params.handoverId;
+
+    // 1. Resolve handover ID (or find/create)
+    if (!activeHandoverId) {
+      const { data: existing } = await supabase
+        .from('vehicle_handover_records')
+        .select('id')
+        .eq('vehicle_id', params.vehicleId)
+        .eq('handover_type', 'incoming')
+        .eq('is_cancelled', false)
+        .maybeSingle();
+
+      if (existing?.id) {
+        activeHandoverId = existing.id;
+      } else {
+        const { data: purchase } = await supabase
+          .from('vehicle_purchases')
+          .select('id')
+          .eq('vehicle_id', params.vehicleId)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const newId = crypto.randomUUID();
+        const initialStatus: IncomingHandoverStatus = params.isSubmit
+          ? (params.hasDiscrepancies ? 'received_with_discrepancies' : 'received_and_verified')
+          : 'draft';
+
+        const insertPayload: any = {
+          id: newId,
+          vehicle_id: params.vehicleId,
+          acquisition_ref: purchase?.id ?? null,
+          handover_type: 'incoming' as HandoverType,
+          incoming_status: initialStatus,
+          acquisition_date: params.acquisitionDate ?? new Date().toISOString(),
+          previous_owner: params.previousOwner ?? null,
+          received_by_user_id: user.$id,
+          received_by_name: staffName,
+          handedOverBy: params.handedOverBy ?? null,
+          odometer_km: params.odometer ?? null,
+          fuel_level: params.fuelLevel ?? null,
+          storage_location: params.storageLocation ?? null,
+          overall_condition: params.overallCondition ?? null,
+          outstanding_issues: params.outstandingIssues ?? null,
+          workflow_step: params.isSubmit ? 4 : 1,
+          submitted_at: params.isSubmit ? new Date().toISOString() : null,
+          created_by_user_id: user.$id,
+          created_by_name: staffName,
+          updated_by_user_id: user.$id,
+          updated_by_name: staffName,
+        };
+
+        const { data: inserted } = await supabase
+          .from('vehicle_handover_records')
+          .insert(insertPayload)
+          .select('id')
+          .maybeSingle();
+
+        activeHandoverId = inserted?.id || newId;
+
+        try {
+          const store = getHandoverStore();
+          store.handovers.push({
+            id: activeHandoverId,
+            ...insertPayload,
+            is_cancelled: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          } as any);
+          saveHandoverStore(store);
+        } catch {}
+      }
+    }
+
+    if (!activeHandoverId) {
+      return { success: false, error: 'Failed to initialize or resolve handover record.' };
+    }
+
+    // 2. Prepare Handover Record update payload
+    const updatePayload: any = {
+      handedOverBy: params.handedOverBy ?? null,
+      odometer_km: params.odometer ?? null,
+      fuel_level: params.fuelLevel ?? null,
+      storage_location: params.storageLocation ?? null,
+      previous_owner: params.previousOwner ?? null,
+      overall_condition: params.overallCondition ?? null,
+      outstanding_issues: params.outstandingIssues ?? null,
+      updated_by_user_id: user.$id,
+      updated_by_name: staffName,
+      updated_at: new Date().toISOString(),
+    };
+    if (params.acquisitionDate) {
+      updatePayload.acquisition_date = params.acquisitionDate;
+    }
+    if (params.isSubmit) {
+      updatePayload.incoming_status = params.hasDiscrepancies
+        ? 'received_with_discrepancies'
+        : 'received_and_verified';
+      updatePayload.submitted_at = new Date().toISOString();
+      updatePayload.workflow_step = 4;
+    }
+
+    // 3. Prepare Accessory rows
+    const accessoryRows = (params.accessories || []).map(acc => ({
+      id: crypto.randomUUID(),
+      handover_id: activeHandoverId,
+      vehicle_id: params.vehicleId,
+      handover_type: 'incoming' as HandoverType,
+      accessory_name: acc.accessory_name,
+      accessory_label: acc.accessory_label,
+      status: acc.status,
+      condition_notes: acc.condition_notes || null,
+      reason_if_missing: acc.reason_if_missing || null,
+      is_original_document: acc.accessory_name === 'logbook' ? acc.is_original_document : null,
+      document_verified: acc.accessory_name === 'logbook' ? acc.document_verified : false,
+      received_from_name: acc.accessory_name === 'logbook' ? acc.received_from_name || null : null,
+      ownership_discrepancy: acc.accessory_name === 'logbook' ? acc.ownership_discrepancy || null : null,
+      photo_urls: null,
+      recorded_by_user_id: user.$id,
+      recorded_by_name: staffName,
+      recorded_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+
+    // 4. Prepare Condition Inspection rows
+    const inspectionRows = (params.inspections || []).map(item => ({
+      id: crypto.randomUUID(),
+      handover_id: activeHandoverId,
+      vehicle_id: params.vehicleId,
+      handover_type: 'incoming' as HandoverType,
+      category: item.category,
+      item_key: item.item_key,
+      item_label: item.item_label,
+      rating: item.rating,
+      notes: item.notes || null,
+      photo_urls: null,
+      inspected_by_user_id: user.$id,
+      inspected_by_name: staffName,
+      inspected_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+
+    // 5. Run Database operations concurrently
+    await Promise.all([
+      // Update handover record
+      supabase
+        .from('vehicle_handover_records')
+        .update(updatePayload)
+        .eq('id', activeHandoverId),
+
+      // Replace accessories
+      (async () => {
+        try {
+          await supabase.from('vehicle_accessory_records').delete().eq('handover_id', activeHandoverId);
+          if (accessoryRows.length > 0) {
+            await supabase.from('vehicle_accessory_records').insert(accessoryRows);
+          }
+        } catch (e) {
+          console.warn('[saveIncomingHandoverComplete] accessories insert error:', e);
+        }
+      })(),
+
+      // Replace inspections
+      (async () => {
+        try {
+          await supabase.from('vehicle_condition_inspections').delete().eq('handover_id', activeHandoverId);
+          if (inspectionRows.length > 0) {
+            await supabase.from('vehicle_condition_inspections').insert(inspectionRows);
+          }
+        } catch (e) {
+          console.warn('[saveIncomingHandoverComplete] inspections insert error:', e);
+        }
+      })(),
+
+      // Audit log
+      logHandoverAudit(supabase, {
+        handoverId: activeHandoverId,
+        vehicleId: params.vehicleId,
+        eventType: params.isSubmit ? 'status_changed' : 'handover_draft_saved',
+        description: params.isSubmit
+          ? `Incoming handover submitted (${params.hasDiscrepancies ? 'with discrepancies' : 'verified'}).`
+          : `Incoming handover draft saved (${accessoryRows.length} accessories, ${inspectionRows.length} inspections).`,
+        eventData: { isSubmit: params.isSubmit, hasDiscrepancies: params.hasDiscrepancies },
+        performedByUserId: user.$id,
+        performedByName: staffName,
+      }),
+    ]);
+
+    // Update fallback store in memory/disk
+    try {
+      const store = getHandoverStore();
+      const rec = store.handovers.find(h => h.id === activeHandoverId);
+      if (rec) {
+        Object.assign(rec, updatePayload);
+      }
+      store.accessories = store.accessories.filter(a => a.handover_id !== activeHandoverId);
+      store.accessories.push(...(accessoryRows as any));
+      store.inspections = store.inspections.filter(i => i.handover_id !== activeHandoverId);
+      store.inspections.push(...(inspectionRows as any));
+      saveHandoverStore(store);
+    } catch {}
+
+    revalidateVehiclePaths(params.vehicleId);
+
+    // Return fresh handover data immediately to eliminate follow-up getVehicleHandoverData call
+    const freshData = await getVehicleHandoverData(params.vehicleId);
+    return { success: true, handoverId: activeHandoverId, handoverData: freshData };
+  } catch (err: any) {
+    console.error('[saveIncomingHandoverComplete]', err);
+    return { success: false, error: err?.message || 'Failed to save incoming handover.' };
+  }
+}
+
+
 // ── CREATE OUTGOING HANDOVER ──────────────────────────────────────────────────
 
 export async function createOutgoingHandover(vehicleId: string) {
@@ -1015,6 +1256,186 @@ export async function releaseVehicle(handoverId: string, vehicleId: string) {
     return { success: false, error: err?.message || 'Failed to mark vehicle as released.' };
   }
 }
+
+// ── ALL-IN-ONE CONSOLIDATED OUTGOING HANDOVER SAVE ───────────────────────────
+
+export interface SaveOutgoingHandoverCompleteParams {
+  vehicleId: string;
+  handoverId?: string;
+  accessories: AccessoryFormItem[];
+  inspections: ConditionInspectionFormItem[];
+  overallCondition?: string;
+  outstandingIssues?: string;
+  collectionDate?: string;
+  authorizedRecipient?: string;
+  customerAcknowledged?: boolean;
+  acknowledgmentNotes?: string;
+  isRelease?: boolean;
+}
+
+export async function saveOutgoingHandoverComplete(
+  params: SaveOutgoingHandoverCompleteParams
+): Promise<{ success: boolean; handoverId?: string; handoverData?: VehicleHandoverData; error?: string }> {
+  try {
+    const user = await requireAuthenticatedUser();
+    const supabase = createAdminClient();
+    const staffName = `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.email;
+
+    let activeHandoverId = params.handoverId;
+
+    if (!activeHandoverId) {
+      const createRes = await createOutgoingHandover(params.vehicleId);
+      if (!createRes.success) {
+        return { success: false, error: createRes.error || 'Failed to initialize outgoing handover.' };
+      }
+      activeHandoverId = createRes.handoverId!;
+    }
+
+    // Check financial clearance if release is requested
+    if (params.isRelease) {
+      const { data: handoverRec } = await supabase
+        .from('vehicle_handover_records')
+        .select('financial_clearance_status')
+        .eq('id', activeHandoverId)
+        .maybeSingle();
+
+      const clStatus = handoverRec?.financial_clearance_status;
+      if (clStatus !== 'cleared' && clStatus !== 'exception_approved') {
+        return {
+          success: false,
+          error: 'Cannot release vehicle: financial clearance has not been confirmed or an exception has not been approved by a manager.',
+        };
+      }
+    }
+
+    const updatePayload: any = {
+      overall_condition: params.overallCondition ?? null,
+      outstanding_issues: params.outstandingIssues ?? null,
+      collection_date: params.collectionDate ?? null,
+      authorized_recipient: params.authorizedRecipient ?? null,
+      customer_acknowledged: params.customerAcknowledged ?? false,
+      acknowledgment_notes: params.acknowledgmentNotes ?? null,
+      releasing_user_id: user.$id,
+      releasing_user_name: staffName,
+      updated_by_user_id: user.$id,
+      updated_by_name: staffName,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (params.isRelease) {
+      updatePayload.outgoing_status = 'vehicle_released';
+      updatePayload.submitted_at = new Date().toISOString();
+      updatePayload.workflow_step = 5;
+    }
+
+    const accessoryRows = (params.accessories || []).map(acc => ({
+      id: crypto.randomUUID(),
+      handover_id: activeHandoverId,
+      vehicle_id: params.vehicleId,
+      handover_type: 'outgoing' as HandoverType,
+      accessory_name: acc.accessory_name,
+      accessory_label: acc.accessory_label,
+      status: acc.status,
+      condition_notes: acc.condition_notes || null,
+      reason_if_missing: acc.reason_if_missing || null,
+      is_original_document: acc.accessory_name === 'logbook' ? acc.is_original_document : null,
+      document_verified: acc.accessory_name === 'logbook' ? acc.document_verified : false,
+      received_from_name: acc.accessory_name === 'logbook' ? acc.received_from_name || null : null,
+      ownership_discrepancy: acc.accessory_name === 'logbook' ? acc.ownership_discrepancy || null : null,
+      photo_urls: null,
+      recorded_by_user_id: user.$id,
+      recorded_by_name: staffName,
+      recorded_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+
+    const inspectionRows = (params.inspections || []).map(item => ({
+      id: crypto.randomUUID(),
+      handover_id: activeHandoverId,
+      vehicle_id: params.vehicleId,
+      handover_type: 'outgoing' as HandoverType,
+      category: item.category,
+      item_key: item.item_key,
+      item_label: item.item_label,
+      rating: item.rating,
+      notes: item.notes || null,
+      photo_urls: null,
+      inspected_by_user_id: user.$id,
+      inspected_by_name: staffName,
+      inspected_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+
+    await Promise.all([
+      // Update record
+      supabase
+        .from('vehicle_handover_records')
+        .update(updatePayload)
+        .eq('id', activeHandoverId),
+
+      // Replace accessories
+      (async () => {
+        try {
+          await supabase.from('vehicle_accessory_records').delete().eq('handover_id', activeHandoverId);
+          if (accessoryRows.length > 0) {
+            await supabase.from('vehicle_accessory_records').insert(accessoryRows);
+          }
+          await autoRaiseAccessoryDiscrepancies(supabase, activeHandoverId, params.vehicleId, params.accessories, user.$id, staffName);
+        } catch (e) {
+          console.warn('[saveOutgoingHandoverComplete] accessories insert error:', e);
+        }
+      })(),
+
+      // Replace inspections
+      (async () => {
+        try {
+          await supabase.from('vehicle_condition_inspections').delete().eq('handover_id', activeHandoverId);
+          if (inspectionRows.length > 0) {
+            await supabase.from('vehicle_condition_inspections').insert(inspectionRows);
+          }
+        } catch (e) {
+          console.warn('[saveOutgoingHandoverComplete] inspections insert error:', e);
+        }
+      })(),
+
+      // Audit log
+      logHandoverAudit(supabase, {
+        handoverId: activeHandoverId,
+        vehicleId: params.vehicleId,
+        eventType: params.isRelease ? 'vehicle_released' : 'outgoing_draft_saved',
+        description: params.isRelease
+          ? `Vehicle physically released to client by ${staffName}.`
+          : `Outgoing handover draft saved (${accessoryRows.length} accessories, ${inspectionRows.length} inspections).`,
+        eventData: { isRelease: params.isRelease },
+        performedByUserId: user.$id,
+        performedByName: staffName,
+      }),
+    ]);
+
+    // Fallback store
+    try {
+      const store = getHandoverStore();
+      const rec = store.handovers.find(h => h.id === activeHandoverId);
+      if (rec) {
+        Object.assign(rec, updatePayload);
+      }
+      store.accessories = store.accessories.filter(a => a.handover_id !== activeHandoverId);
+      store.accessories.push(...(accessoryRows as any));
+      store.inspections = store.inspections.filter(i => i.handover_id !== activeHandoverId);
+      store.inspections.push(...(inspectionRows as any));
+      saveHandoverStore(store);
+    } catch {}
+
+    revalidateVehiclePaths(params.vehicleId);
+
+    const freshData = await getVehicleHandoverData(params.vehicleId);
+    return { success: true, handoverId: activeHandoverId, handoverData: freshData };
+  } catch (err: any) {
+    console.error('[saveOutgoingHandoverComplete]', err);
+    return { success: false, error: err?.message || 'Failed to save outgoing handover.' };
+  }
+}
+
 
 // ── LOGBOOK TRANSFER MANAGEMENT ───────────────────────────────────────────────
 

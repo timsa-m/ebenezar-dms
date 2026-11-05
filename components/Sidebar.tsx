@@ -179,15 +179,17 @@ const Sidebar = ({ user }: SiderbarProps) => {
             <Image
               src="/icons/logo.png"
               alt="Ebenezar Logo"
-              width={50}
-              height={50}
+              width={48}
+              height={48}
               priority
               loading="eager"
+              className="rounded-full object-contain"
               style={{
-                objectFit: 'contain',
-                maxWidth: "100%",
-                height: "auto"
-              }} />
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+              }}
+            />
           </div>
           <div className="sidebar-brand-info">
             <span className="sidebar-brand-name">Ebenezar</span>

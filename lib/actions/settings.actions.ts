@@ -75,3 +75,8 @@ export async function updateCompanySettings(formData: any) {
     return { success: false, error: error.message }
   }
 }
+
+// Alias for backward compatibility
+export async function getProfileSettings() {
+  return getCompanySettings()
+}

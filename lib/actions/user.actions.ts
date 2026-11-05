@@ -385,10 +385,14 @@ export const getLoggedInUser = cache(async () => {
 
     const profile = await getUserInfo({ userId: user.id });
     
-    if (profile?.avatarUrl) {
-      const signedUrl = await generateSignedUrl('client-assets', profile.avatarUrl, 3600);
-      if (signedUrl) {
-        profile.avatarUrl = signedUrl;
+    if (profile?.avatarUrl && !profile.avatarUrl.startsWith('http')) {
+      try {
+        const signedUrl = await generateSignedUrl('client-assets', profile.avatarUrl, 3600);
+        if (signedUrl) {
+          profile.avatarUrl = signedUrl;
+        }
+      } catch (storageErr) {
+        // Non-critical: preserve original avatarUrl if signing fails
       }
     }
 

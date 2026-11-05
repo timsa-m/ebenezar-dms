@@ -126,17 +126,7 @@ export default function ConfirmDeleteModal({
 
             <div id="delete-modal-description" className="space-y-1.5 text-sm leading-6 text-gray-600">
               <p>
-                Are you sure you want to delete{' '}
-                {itemName ? (
-                  <span
-                    className="inline-block max-w-[260px] truncate align-bottom rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-mono text-xs font-semibold text-gray-900"
-                    title={itemName}
-                  >
-                    {itemName}
-                  </span>
-                ) : (
-                  <span className="font-medium text-gray-900">this item</span>
-                )}
+                Are you sure you want to delete <strong>{itemName}</strong>
                 ?
               </p>
               <p className="text-xs leading-5 text-gray-500">
@@ -154,7 +144,7 @@ export default function ConfirmDeleteModal({
             onClick={onClose}
             disabled={isPending}
             className={cn(
-              'inline-flex h-10 flex-1 items-center justify-center rounded-xl',
+              'inline-flex badge badge-primary h-10 flex-1 items-center justify-center rounded-xl',
               'border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700',
               'shadow-sm transition-all duration-150',
               'hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100',
@@ -170,7 +160,7 @@ export default function ConfirmDeleteModal({
             onClick={onConfirm}
             disabled={isPending}
             className={cn(
-              'inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-xl',
+              'inline-flex badge badge-primary h-10 flex-1 items-center justify-center gap-2 rounded-xl',
               'bg-red-600 px-4 text-sm font-semibold text-white',
               'shadow-sm shadow-red-600/15 transition-all duration-150',
               'hover:bg-red-700 active:bg-red-800',

@@ -42,13 +42,18 @@ export default function ForgotPasswordPage() {
                 src="/icons/logo.png"
                 width={120}
                 height={120}
-                alt="logo"
+                alt="Ebenezar Logo"
+                className="rounded-full object-contain"
                 style={{
                   maxWidth: "100%",
                   height: "auto"
-                }} />
+                }}
+              />
             </div>
-            <span className="auth-brand-name">Ebenezar</span>
+            <div className="flex flex-col">
+              <span className="auth-brand-name">Ebenezar DMS</span>
+              <span className="text-[11px] font-semibold text-blue-200 uppercase tracking-wider">Enterprises Car Bazaar</span>
+            </div>
           </div>
           <div className="auth-hero">
             <h2 className="auth-hero-title">Forgot your<br />password?</h2>
@@ -69,13 +74,18 @@ export default function ForgotPasswordPage() {
                 src="/icons/logo.png"
                 width={36}
                 height={36}
-                alt="logo"
+                alt="Ebenezar Logo"
+                className="rounded-full object-contain"
                 style={{
                   maxWidth: "100%",
                   height: "auto"
-                }} />
+                }}
+              />
             </div>
-            <span className="auth-mobile-brand-name">Ebenezar</span>
+            <div className="flex flex-col">
+              <span className="auth-mobile-brand-name">Ebenezar DMS</span>
+              <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Enterprises Car Bazaar</span>
+            </div>
           </div>
 
           {sent ? (

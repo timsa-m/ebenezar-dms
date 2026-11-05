@@ -99,7 +99,7 @@ export default function AccessoryChecklist({
           </p>
         </div>
       </div>
-      <br />
+
       <div className="grid grid-cols-1 gap-4">
         {accessories.map(item => {
           const Icon = ACCESSORY_ICONS[item.accessory_name] || Wrench;
@@ -282,10 +282,10 @@ export default function AccessoryChecklist({
                   )}
                 </div>
               )}
-              <br />
+
               {/* Special Section: Logbook Details */}
               {item.accessory_name === 'logbook' && (
-                <div className="mt-4 pt-3.5  space-y-3 bg-slate-50/50 p-3.5 rounded-lg">
+                <div className="mt-4 space-y-3 bg-slate-50/50 p-4 rounded-xl border border-slate-200">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800">
                     <FileCheck className="size-4 text-blue-600" />
                     <span>Logbook Legal Verification Checklist</span>

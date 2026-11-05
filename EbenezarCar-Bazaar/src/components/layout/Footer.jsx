@@ -10,12 +10,14 @@ const Footer = () => {
 
           {/* Column 1: Brand & Slogan */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-white">
-              <img
-                src="/logo.png"
-                alt="Ebenezer Logo"
-                className="h-10 w-auto object-contain"
-              />
+            <div className="flex items-center gap-3 text-white">
+              <div className="h-10 w-10 rounded-full overflow-hidden border border-white/20 bg-white flex items-center justify-center shrink-0">
+                <img
+                  src="/logo.png"
+                  alt="Ebenezer Logo"
+                  className="h-full w-full object-contain"
+                />
+              </div>
               <span className="font-bold text-xl tracking-tight">EBENEZAR CAR BAZAAR</span>
             </div>
             <p className="text-sm text-gray-400">

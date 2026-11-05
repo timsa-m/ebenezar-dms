@@ -56,6 +56,8 @@ import {
   confirmOwnershipTransfer,
   resolveDiscrepancy,
   updateHandoverDetails,
+  saveIncomingHandoverComplete,
+  saveOutgoingHandoverComplete,
 } from '@/lib/actions/handover.actions';
 
 import AccessoryChecklist from './AccessoryChecklist';
@@ -393,50 +395,32 @@ export default function VehicleHandoverModal({
   const handleSaveIncomingDraft = async () => {
     setIsSubmitting(true);
     try {
-      let handoverId = handoverData?.incoming?.id;
+      const res = await saveIncomingHandoverComplete({
+        vehicleId: vehicle.id,
+        handoverId: handoverData?.incoming?.id,
+        handedOverBy,
+        odometer: typeof odometerKm === 'number' ? odometerKm : undefined,
+        fuelLevel,
+        storageLocation,
+        previousOwner,
+        acquisitionDate: acquisitionDate ? new Date(acquisitionDate).toISOString() : undefined,
+        accessories: incomingAccessories,
+        inspections: incomingInspections,
+        overallCondition: incomingOverallCondition,
+        outstandingIssues: incomingOutstandingIssues,
+        isSubmit: false,
+      });
 
-      if (!handoverId) {
-        const createRes = await createIncomingHandover({
-          vehicleId: vehicle.id,
-          handedOverBy,
-          odometer: typeof odometerKm === 'number' ? odometerKm : undefined,
-          fuelLevel,
-          storageLocation,
-          previousOwner,
-          acquisitionDate: acquisitionDate ? new Date(acquisitionDate).toISOString() : undefined,
-        });
-
-        if (!createRes.success) {
-          toast.error(createRes.error || 'Failed to create incoming handover record.');
-          return;
-        }
-        handoverId = createRes.handoverId!;
-      } else {
-        await updateHandoverDetails(handoverId, vehicle.id, {
-          handedOverBy,
-          odometer: typeof odometerKm === 'number' ? odometerKm : undefined,
-          fuelLevel,
-          storageLocation,
-          previousOwner,
-          acquisitionDate: acquisitionDate ? new Date(acquisitionDate).toISOString() : undefined,
-        });
+      if (!res.success) {
+        toast.error(res.error || 'Failed to save incoming draft.');
+        return;
       }
 
-      // Save accessories & inspections
-      await saveAccessoryRecords(handoverId, vehicle.id, 'incoming', incomingAccessories);
-      await saveConditionInspections(
-        handoverId,
-        vehicle.id,
-        'incoming',
-        incomingInspections,
-        incomingOverallCondition,
-        incomingOutstandingIssues
-      );
-
-      toast.success('Incoming handover draft saved successfully.');
+      if (res.handoverData) {
+        setHandoverData(res.handoverData);
+      }
       setIsDirty(false);
-      await refreshData();
-      router.refresh();
+      toast.success('Incoming handover draft saved successfully.');
     } catch (err: any) {
       toast.error(err?.message || 'Failed to save incoming draft.');
     } finally {
@@ -467,53 +451,42 @@ export default function VehicleHandoverModal({
 
     setIsSubmitting(true);
     try {
-      let handoverId = handoverData?.incoming?.id;
-
-      if (!handoverId) {
-        const createRes = await createIncomingHandover({
-          vehicleId: vehicle.id,
-          handedOverBy,
-          odometer: typeof odometerKm === 'number' ? odometerKm : undefined,
-          fuelLevel,
-          storageLocation,
-          previousOwner,
-          acquisitionDate: acquisitionDate ? new Date(acquisitionDate).toISOString() : undefined,
-        });
-        if (!createRes.success) {
-          toast.error(createRes.error || 'Failed to initialize handover.');
-          return;
-        }
-        handoverId = createRes.handoverId!;
-      }
-
-      await saveAccessoryRecords(handoverId, vehicle.id, 'incoming', incomingAccessories);
-      await saveConditionInspections(
-        handoverId,
-        vehicle.id,
-        'incoming',
-        incomingInspections,
-        incomingOverallCondition,
-        incomingOutstandingIssues
-      );
-
       const hasDiscrepancies = incomingAccessories.some(
         a => a.status === 'missing' || a.status === 'received_but_defective'
       );
 
-      const submitRes = await submitIncomingHandover(handoverId, vehicle.id, hasDiscrepancies);
+      const res = await saveIncomingHandoverComplete({
+        vehicleId: vehicle.id,
+        handoverId: handoverData?.incoming?.id,
+        handedOverBy,
+        odometer: typeof odometerKm === 'number' ? odometerKm : undefined,
+        fuelLevel,
+        storageLocation,
+        previousOwner,
+        acquisitionDate: acquisitionDate ? new Date(acquisitionDate).toISOString() : undefined,
+        accessories: incomingAccessories,
+        inspections: incomingInspections,
+        overallCondition: incomingOverallCondition,
+        outstandingIssues: incomingOutstandingIssues,
+        isSubmit: true,
+        hasDiscrepancies,
+      });
 
-      if (submitRes.success) {
-        toast.success(
-          hasDiscrepancies
-            ? 'Incoming handover completed with recorded discrepancies.'
-            : 'Incoming vehicle handover verified and completed successfully!'
-        );
-        setIsDirty(false);
-        await refreshData();
-        router.refresh();
-      } else {
-        toast.error(submitRes.error || 'Failed to submit handover.');
+      if (!res.success) {
+        toast.error(res.error || 'Failed to submit handover.');
+        return;
       }
+
+      if (res.handoverData) {
+        setHandoverData(res.handoverData);
+      }
+      setIsDirty(false);
+      toast.success(
+        hasDiscrepancies
+          ? 'Incoming handover completed with recorded discrepancies.'
+          : 'Incoming vehicle handover verified and completed successfully!'
+      );
+      router.refresh();
     } catch (err: any) {
       toast.error(err?.message || 'Failed to submit incoming handover.');
     } finally {
@@ -571,42 +544,32 @@ export default function VehicleHandoverModal({
   };
 
   const handleSaveOutgoingDraft = async () => {
-    if (!handoverData?.outgoing?.id) {
-      const createRes = await createOutgoingHandover(vehicle.id);
-      if (!createRes.success) {
-        toast.error(createRes.error || 'Failed to initialize outgoing handover.');
-        return;
-      }
-      await refreshData();
-    }
-
-    const handoverId = handoverData?.outgoing?.id;
-    if (!handoverId) return;
-
     setIsSubmitting(true);
     try {
-      await saveAccessoryRecords(handoverId, vehicle.id, 'outgoing', outgoingAccessories);
-      await saveConditionInspections(
-        handoverId,
-        vehicle.id,
-        'outgoing',
-        outgoingInspections,
-        outgoingOverallCondition,
-        outgoingOutstandingIssues
-      );
-      await saveClientHandoverDetails({
-        handoverId,
+      const res = await saveOutgoingHandoverComplete({
         vehicleId: vehicle.id,
-        collectionDate: new Date(collectionDate).toISOString(),
+        handoverId: handoverData?.outgoing?.id,
+        accessories: outgoingAccessories,
+        inspections: outgoingInspections,
+        overallCondition: outgoingOverallCondition,
+        outstandingIssues: outgoingOutstandingIssues,
+        collectionDate: collectionDate ? new Date(collectionDate).toISOString() : undefined,
         authorizedRecipient,
         customerAcknowledged,
         acknowledgmentNotes,
+        isRelease: false,
       });
 
-      toast.success('Outgoing handover draft saved.');
+      if (!res.success) {
+        toast.error(res.error || 'Failed to save outgoing draft.');
+        return;
+      }
+
+      if (res.handoverData) {
+        setHandoverData(res.handoverData);
+      }
       setIsDirty(false);
-      await refreshData();
-      router.refresh();
+      toast.success('Outgoing handover draft saved.');
     } catch (err: any) {
       toast.error(err?.message || 'Failed to save outgoing draft.');
     } finally {
@@ -615,12 +578,6 @@ export default function VehicleHandoverModal({
   };
 
   const handleReleaseVehicle = async () => {
-    const handoverId = handoverData?.outgoing?.id;
-    if (!handoverId) {
-      toast.error('Please save outgoing handover draft before releasing.');
-      return;
-    }
-
     if (!customerAcknowledged) {
       toast.error('Customer acknowledgment must be confirmed before releasing vehicle.');
       return;
@@ -628,25 +585,31 @@ export default function VehicleHandoverModal({
 
     setIsSubmitting(true);
     try {
-      // Save client details first
-      await saveClientHandoverDetails({
-        handoverId,
+      const res = await saveOutgoingHandoverComplete({
         vehicleId: vehicle.id,
-        collectionDate: new Date(collectionDate).toISOString(),
+        handoverId: handoverData?.outgoing?.id,
+        accessories: outgoingAccessories,
+        inspections: outgoingInspections,
+        overallCondition: outgoingOverallCondition,
+        outstandingIssues: outgoingOutstandingIssues,
+        collectionDate: collectionDate ? new Date(collectionDate).toISOString() : undefined,
         authorizedRecipient,
         customerAcknowledged,
         acknowledgmentNotes,
+        isRelease: true,
       });
 
-      const res = await releaseVehicle(handoverId, vehicle.id);
-      if (res.success) {
-        toast.success(`Vehicle ${vehicle.registration_no} successfully released to client!`);
-        setIsDirty(false);
-        await refreshData();
-        router.refresh();
-      } else {
+      if (!res.success) {
         toast.error(res.error || 'Failed to release vehicle.');
+        return;
       }
+
+      if (res.handoverData) {
+        setHandoverData(res.handoverData);
+      }
+      setIsDirty(false);
+      toast.success(`Vehicle ${vehicle.registration_no} successfully released to client!`);
+      router.refresh();
     } catch (err: any) {
       toast.error(err?.message || 'Failed to release vehicle.');
     } finally {
@@ -748,7 +711,7 @@ export default function VehicleHandoverModal({
           {/* ================================================== */}
           {/* COMPACT VEHICLE IDENTITY HEADER                     */}
           {/* ================================================== */}
-          <div className="bg-white px-6 py-4.5">
+          <div className="bg-white px-6 pt-5 pb-4 border-b border-slate-200">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5 min-w-0">
                 <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
@@ -800,7 +763,7 @@ export default function VehicleHandoverModal({
             </div>
 
             {/* Workflow Tabs Switcher */}
-            <div className="flex items-center relative top-2 gap-2 mt-4 pt-3.5  overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-2 mt-4 overflow-x-auto no-scrollbar">
               <button
                 type="button"
                 onClick={() => requestWorkflowSwitch('incoming')}
@@ -847,12 +810,11 @@ export default function VehicleHandoverModal({
               </button>
             </div>
           </div>
-          <br />
 
           {/* ================================================== */}
           {/* MODAL MAIN CONTENT SCROLL AREA                     */}
           {/* ================================================== */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 min-h-[max-content]">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {loading ? (
               <div className="py-20 flex flex-col items-center justify-center text-slate-400 gap-3">
                 <Loader2 className="size-8 animate-spin text-blue-600" />
@@ -866,9 +828,9 @@ export default function VehicleHandoverModal({
                 {/* WORKFLOW A: INCOMING HANDOVER                      */}
                 {/* ================================================== */}
                 {activeWorkflow === 'incoming' && (
-                  <div className="space-y-6 relative top-1 pb-2 mb-2">
+                  <div className="space-y-6">
                     {/* Step Stepper Header */}
-                    <div className="flex items-center justify-between relative bottom-1 border-b border-padding-bottom-4 border-slate-200 pb-3">
+                    <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                       <div className="flex items-center gap-2 text-xs">
                         {[
                           { step: 1, label: 'Acquisition Details' },
@@ -913,8 +875,8 @@ export default function VehicleHandoverModal({
                     {/* Step 1: Acquisition Details */}
                     {incomingStep === 1 && (
                       <div className="space-y-4">
-                        <div className="relative top-1 rounded-xl bg-white p-5 space-y-4 shadow-xs">
-                          <h4 className="text-xs relative top-p font-bold uppercase tracking-wider text-slate-500">
+                        <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-4 shadow-xs">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                             1. Vehicle Acquisition & Receiving Custody Details
                           </h4>
 
@@ -1109,7 +1071,7 @@ export default function VehicleHandoverModal({
                           </div>
 
                           {/* Staff Confirmation Declaration */}
-                          <div className="mt-4 pt-4 border-t border-slate-200 flex items-start gap-3 bg-blue-50/40 p-3.5 rounded-xl border-blue-200">
+                          <div className="flex items-start gap-3 bg-blue-50/40 p-4 rounded-xl border border-blue-200">
                             <input
                               type="checkbox"
                               id="incoming-confirm"
@@ -1131,7 +1093,7 @@ export default function VehicleHandoverModal({
                     )}
 
                     {/* Incoming Workflow Step Buttons */}
-                    <div className="flex items-center justify-between h-12 pt-3 border-t border-slate-200">
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                       <button
                         type="button"
                         disabled={incomingStep === 1}
@@ -1290,7 +1252,7 @@ export default function VehicleHandoverModal({
 
                     {/* Step 4: Client Handover Details & Physical Release */}
                     {outgoingStep === 4 && (
-                      <div className="space-y-5">
+                      <div className="space-y-4">
                         <div className="rounded-xl border border-slate-200 bg-white p-5 space-y-4 shadow-xs">
                           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                             Client Collection & Handover Acknowledgment
@@ -1326,7 +1288,7 @@ export default function VehicleHandoverModal({
 
                             <div>
                               <label className="block text-xs font-medium text-slate-700 mb-1">
-                                Authorized Representative (if collected on buyer's behalf)
+                                Authorized Representative (if collected on buyer&apos;s behalf)
                               </label>
                               <input
                                 type="text"
@@ -1358,7 +1320,7 @@ export default function VehicleHandoverModal({
                           </div>
 
                           {/* Customer Acknowledgment Checkbox */}
-                          <div className="pt-3 border-t border-slate-200 flex items-start gap-3 bg-emerald-50/50 p-4 rounded-xl border border-emerald-200">
+                          <div className="flex items-start gap-3 bg-emerald-50/50 p-4 rounded-xl border border-emerald-200">
                             <input
                               type="checkbox"
                               id="customer-ack"
@@ -1377,7 +1339,7 @@ export default function VehicleHandoverModal({
                           </div>
 
                           {/* Release Vehicle Action */}
-                          <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <div>
                               <span className="text-xs font-bold text-slate-900 block">
                                 Physical Vehicle Handover Release
@@ -1413,7 +1375,7 @@ export default function VehicleHandoverModal({
                     )}
 
                     {/* Outgoing Workflow Stepper Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-slate-200">
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                       <button
                         type="button"
                         disabled={outgoingStep === 1}

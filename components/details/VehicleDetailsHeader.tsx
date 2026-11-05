@@ -168,7 +168,7 @@ export default function VehicleDetailsHeader({
         <div className="mb-6 rounded-2xl border border-red-200 bg-red-50/90 p-4 sm:p-5 text-red-900 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 bg-red-100 rounded-xl text-red-700 shrink-0 shadow-xs">
+              <div className="p-2.5 bg-red-100 rounded-xl text-red-700 shrink-0 relative top-2 left-2 shadow-xs">
                 <AlertTriangle className="size-5" />
               </div>
               <div>
@@ -176,7 +176,7 @@ export default function VehicleDetailsHeader({
                   <h3 className="font-bold text-red-900 text-sm sm:text-base">
                     This Vehicle is Archived / Deleted
                   </h3>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider bg-red-200/80 text-red-800 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] badge badge-primary font-semibold uppercase tracking-wider bg-red-200/80 text-red-800 px-2 py-0.5 rounded-full">
                     Hidden from Inventory
                   </span>
                 </div>
@@ -200,7 +200,7 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={handleRestore}
                 disabled={isRestoring}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 shrink-0 cursor-pointer"
+                className="badge badge-primary relative right-3 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 shrink-0 cursor-pointer"
               >
                 {isRestoring ? (
                   <>
@@ -317,9 +317,9 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={() => setIsHandoverModalOpen(true)}
                 className={cn(
-                  "btn-primary h-10 px-4",
+                  "badge badge-primary h-10 px-4",
                   "w-full sm:w-auto",
-                  "justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer"
+                  "justify-center gap-2 bg-gray-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer"
                 )}
                 title="Manage incoming custody, outgoing release inspection, and clearance"
               >
@@ -331,9 +331,9 @@ export default function VehicleDetailsHeader({
             <Link
               href={`/vehicles/${vehicle.id}/purchase-contract`}
               className={cn(
-                "btn-primary h-10 px-4",
+                "badge badge-primary h-10 px-4",
                 "w-full sm:w-auto",
-                "justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white"
+                "justify-center gap-2 bg-blue-700 hover:bg-gray-800 text-white"
               )}
               title="View and print official Motor Vehicle Purchase Agreement"
             >
@@ -345,9 +345,9 @@ export default function VehicleDetailsHeader({
               <Link
                 href={`/vehicles/${vehicle.id}/edit`}
                 className={cn(
-                  "btn-secondary h-10 px-4",
+                  "badge badge-primary h-10 px-4",
                   "w-full sm:w-auto",
-                  "justify-center gap-2"
+                  "justify-center gap-2 bg-amber-700 hover:bg-gray-800 text-white"
                 )}
               >
                 <Edit className="size-3.5" />
@@ -361,7 +361,7 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={handleRestore}
                 disabled={isRestoring}
-                className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition cursor-pointer disabled:opacity-50"
+                className="inline-flex badge badge-primary items-center justify-center gap-2 h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition cursor-pointer disabled:opacity-50"
               >
                 {isRestoring ? <Loader2 className="size-3.5 animate-spin" /> : <RotateCcw className="size-3.5" />}
                 <span>Revert Vehicle</span>
@@ -373,8 +373,8 @@ export default function VehicleDetailsHeader({
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 text-sm font-medium transition cursor-pointer"
-                title="Delete vehicle (Manager only - can be reverted)"
+                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:text-white hover:bg-red-700 text-sm font-medium transition cursor-pointer"
+                title="Delete vehicle"
               >
                 <Trash2 className="size-3.5" />
                 <span>Delete Vehicle</span>
@@ -396,34 +396,44 @@ export default function VehicleDetailsHeader({
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fade-in">
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-gray-100 p-6 overflow-hidden">
-            <div className="flex items-start gap-4">
+            {/* Header: Icon + Title Stack */}
+            <div className="flex items-center gap-3.5">
               <div className="p-3 bg-red-50 rounded-xl text-red-600 shrink-0">
                 <AlertTriangle className="size-6" />
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-gray-900">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-lg font-bold text-gray-900 leading-snug">
                   Delete Vehicle
                 </h3>
-                <p className="text-sm font-medium text-gray-700 mt-1">
-                  {vehicle.registration_no} - {vehicle.make_model}
-                </p>
-                <div className="mt-3 text-xs text-gray-600 bg-gray-50 rounded-lg p-3 border border-gray-100 space-y-1.5 leading-relaxed">
-                  <p>
-                    • This vehicle will be removed from the active yard inventory and customer listings.
-                  </p>
-                  <p className="font-semibold text-emerald-700">
-                    • Mistake? Managers can revert and restore this vehicle anytime from the "Deleted" tab in Inventory.
-                  </p>
+                <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+                  <span className="bg-gray-100 text-gray-800 px-2 py-0.5 rounded-md text-xs font-semibold shrink-0">
+                    {vehicle.registration_no}
+                  </span>
+                  <span className="text-gray-400">•</span>
+                  <span className="font-medium text-gray-700 truncate">
+                    {vehicle.make_model}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+            {/* Full-Width Callout Box */}
+            <div className="mt-4 text-xs text-gray-600 bg-gray-50 rounded-xl p-3.5 border border-gray-100 space-y-1.5 leading-relaxed">
+              <p>
+                • This vehicle will be removed from the active yard inventory and customer listings.
+              </p>
+              <p className="font-semibold text-emerald-700">
+                • Mistake? Managers can revert and restore this vehicle anytime from the &quot;Deleted&quot; tab in Inventory.
+              </p>
+            </div>
+
+            {/* Symmetrical Footer Action Buttons */}
+            <div className="mt-6 pt-4 border-t border-gray-100 grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(false)}
                 disabled={isDeleting}
-                className="btn-secondary h-10 px-4 text-xs font-semibold"
+                className="badge badge-primary h-10 w-full justify-center text-xs font-semibold rounded-lg bg-gray-600 hover:bg-gray-700 text-white"
               >
                 Cancel
               </button>
@@ -431,7 +441,7 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition disabled:opacity-50 cursor-pointer"
+                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 w-full rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition disabled:opacity-50 cursor-pointer"
               >
                 {isDeleting ? (
                   <>

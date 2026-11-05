@@ -27,19 +27,21 @@ const Navbar = () => {
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)] border-b border-transparent py-1'
-        : 'bg-white/80 backdrop-blur-sm border-b border-brand-muted/60 py-2'
+        ? 'bg-white/95 backdrop-blur-md shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)] border-transparent py-1'
+        : 'bg-white/80 backdrop-blur-sm shadow-sm border-brand-muted/60 py-2'
         }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* LOGO AREA */}
         <Link to="/" className="flex items-center gap-3 text-brand-primary group">
-          <img
-            src="/logo.png"
-            alt="Ebenezar Logo"
-            className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          <div className="h-10 w-10 rounded-full overflow-hidden border border-slate-200/80 bg-white flex items-center justify-center shadow-xs shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <img
+              src="/logo.png"
+              alt="Ebenezar Logo"
+              className="h-full w-full object-contain"
+            />
+          </div>
           <span className="font-heading text-lg font-bold tracking-tight uppercase group-hover:text-brand-accent transition-colors duration-300">
             Ebenezar Car Bazaar
           </span>

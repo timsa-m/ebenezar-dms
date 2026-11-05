@@ -967,7 +967,7 @@ export default function UndertakingClient({
   return (
     <div className="print:p-0 print:m-0 print:w-full print:max-w-none">
       {/* Top Header Navigation */}
-      <section className="home-content animate-fade-in no-print print:!hidden print:hidden">
+      <section className="w-full mb-6 animate-fade-in no-print print:!hidden print:hidden">
         <header className="page-header no-print print:!hidden print:hidden">
           <div
             style={{
@@ -1044,10 +1044,10 @@ export default function UndertakingClient({
       </section>
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 sm:p-8 flex flex-col lg:flex-row gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
+      <main className="w-full flex flex-col lg:flex-row items-start gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
         {/* Left Sidebar: Controls & Selection */}
-        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 no-print print:hidden">
-          <div className="card-premium p-6 sm:p-8">
+        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 lg:sticky lg:top-6 no-print print:hidden">
+          <div className="card-premium p-6">
             <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-12 font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
@@ -1109,7 +1109,7 @@ export default function UndertakingClient({
                       >
                         <SelectTrigger
                           className={cn(
-                            "items-center justify-center flex gap-10 h-11 w-full rounded-xl border pl-10 pr-8 text-sm font-semibold transition-all focus:outline-none focus:ring-2 cursor-pointer shadow-sm",
+                            "items-center justify-between flex gap-3 h-11 w-full rounded-xl border pl-10 pr-4 text-sm font-semibold transition-all focus:outline-none focus:ring-2 cursor-pointer shadow-sm",
                             selectedFinancier
                               ? "border-indigo-200 bg-indigo-50/50 text-indigo-950 focus:border-indigo-500 focus:ring-indigo-500/15"
                               : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 focus:border-indigo-500 focus:ring-indigo-500/15"
@@ -1133,8 +1133,8 @@ export default function UndertakingClient({
                       <Banknote className="size-3.5" />
                       Outstanding Loan (KSH)
                     </label>
-                    <label className="relative left-3 flex items-center gap-3 h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all cursor-text">
-                      <span className="pl-3 text-xs left-5 relative font-bold text-neutral-500 select-none flex-shrink-0">
+                    <div className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all px-3.5 gap-2">
+                      <span className="text-xs font-bold text-neutral-500 select-none flex-shrink-0">
                         Ksh
                       </span>
                       <input
@@ -1142,10 +1142,10 @@ export default function UndertakingClient({
                         inputMode="numeric"
                         value={data.loanAmount ? data.loanAmount.toLocaleString('en-US') : ''}
                         onChange={handleLoanAmountChange}
-                        className="w-full h-full relative left-10 bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none pl-12"
+                        className="w-full h-full bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
                         placeholder="0"
                       />
-                    </label>
+                    </div>
                     {data.loanAmount > 0 && (
                       <p className="text-[11px] text-neutral-400 italic">
                         {formatCurrencyInWords(data.loanAmount)}

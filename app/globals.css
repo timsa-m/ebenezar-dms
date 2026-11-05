@@ -92,15 +92,17 @@
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
-  background-color: #F8F9FA;
+  background-color: #eae1f8;
   /* Premium off-white background */
   color: #111113;
   font-family: 'Inter', sans-serif;
@@ -587,19 +589,69 @@ body {
   }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* ========================================================
+   GLOBAL CUSTOM SCROLLBAR DESIGN SYSTEM
+   Modern, slim, pill-shaped scrollbars that match the app
+   ======================================================== */
+
+/* Standard CSS for Firefox & modern browsers */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Chrome, Edge, Safari WebKit scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-/* Utility: custom-scrollbar */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.65);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(37, 99, 235, 0.85);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Utility: hide scrollbar while preserving scrolling */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+}
+
+.no-scrollbar,
+.scrollbar-none,
+.scrollbar-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Utility: custom-scrollbar alias */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -607,12 +659,14 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #E4E4E7;
-  border-radius: 12px;
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #D4D4D8;
+  background: rgba(59, 130, 246, 0.65);
 }
 
 /* Typography utilities */
@@ -755,25 +809,21 @@ body {
   margin-bottom: 1.5rem;
   text-decoration: none;
   border-radius: 0.875rem;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-brand:hover {
-  transform: translateY(-2px);
-  transition: transform 0.3s ease;
 }
 
 .sidebar-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
-  animation: floatLogo 3.5s ease-in-out infinite;
-  filter: drop-shadow(0 8px 18px rgba(124, 58, 237, 0.35));
-
-  background: transparent;
-  box-shadow: none;
+  background: #ffffff;
+  border: 1.5px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Text column: name on top, tagline below */
@@ -791,22 +841,6 @@ body {
   letter-spacing: -0.01em;
   white-space: nowrap;
   line-height: 1.2;
-
-  text-shadow:
-    0 0 16px rgba(124, 58, 237, 0.45),
-    0 0 18px rgba(124, 58, 237, 0.25);
-
-  transition:
-    transform 0.3s ease,
-    text-shadow 0.3s ease;
-}
-
-.sidebar-brand-name:hover {
-  transform: translateY(-4px);
-
-  text-shadow:
-    0 0 12px rgba(124, 58, 237, 0.6),
-    0 0 24px rgba(124, 58, 237, 0.35);
 }
 
 .sidebar-brand-tagline {
@@ -817,21 +851,6 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
   line-height: 1.2;
-}
-
-/* Hover state */
-@keyframes floatLogo {
-  0% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-6px);
-  }
-
-  100% {
-    transform: translateY(0px);
-  }
 }
 
 /* Sidebar nav section */
@@ -1163,9 +1182,17 @@ body {
 }
 
 .auth-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .auth-brand-name {
@@ -1344,9 +1371,17 @@ html {
 }
 
 .auth-logo-dark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .auth-mobile-brand-name {

@@ -903,7 +903,7 @@ export default function AuctioneerNoticeClient({
   return (
     <div className="print:p-0 print:m-0 print:w-full print:max-w-none">
       {/* Top Header Navigation */}
-      <section className="home-content animate-fade-in no-print print:!hidden print:hidden">
+      <section className="w-full mb-6 animate-fade-in no-print print:!hidden print:hidden">
         <header className="page-header no-print print:!hidden print:hidden">
           <div
             style={{
@@ -980,10 +980,10 @@ export default function AuctioneerNoticeClient({
       </section>
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 sm:p-8 flex flex-col lg:flex-row gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
+      <main className="w-full flex flex-col lg:flex-row items-start gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
         {/* Left Sidebar: Controls & Selection */}
-        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 no-print print:hidden">
-          <div className="card-premium p-6 sm:p-8">
+        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 lg:sticky lg:top-6 no-print print:hidden">
+          <div className="card-premium p-6">
             <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-12 font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
@@ -1023,8 +1023,8 @@ export default function AuctioneerNoticeClient({
                       <Banknote className="size-3.5" />
                       Outstanding Arrears / Balance (KSH)
                     </label>
-                    <label className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all cursor-text pl-3 pr-4">
-                      <span className="text-xs relative left-5 font-bold text-neutral-500 select-none flex-shrink-0">
+                    <div className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all px-3.5">
+                      <span className="text-xs font-bold text-neutral-500 select-none flex-shrink-0 mr-2">
                         Ksh
                       </span>
                       <input
@@ -1032,10 +1032,10 @@ export default function AuctioneerNoticeClient({
                         inputMode="numeric"
                         value={data.outstandingBalance ? data.outstandingBalance.toLocaleString('en-US') : ''}
                         onChange={handleBalanceChange}
-                        className="w-full relative left-10 h-full bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none pl-12"
+                        className="w-full h-full bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
                         placeholder="0"
                       />
-                    </label>
+                    </div>
                     {data.outstandingBalance > 0 && (
                       <p className="text-[11px] text-neutral-400 italic">
                         {numberToWords(data.outstandingBalance)} Kenyan Shillings Only
@@ -1098,15 +1098,13 @@ export default function AuctioneerNoticeClient({
                       <Building2 className="size-3.5" />
                       Auctioneer Firm Name
                     </label>
-                    <label className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all cursor-text pl-3 pr-4">
-                      <input
-                        type="text"
-                        value={data.auctioneerName}
-                        onChange={(e) => handleDataChange({ auctioneerName: e.target.value })}
-                        className="relative w-full left-5 h-11 px-4 pl-12 pr-4 bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all uppercase"
-                        placeholder="[AUCTIONEER FIRM NAME]"
-                      />
-                    </label>
+                    <input
+                      type="text"
+                      value={data.auctioneerName}
+                      onChange={(e) => handleDataChange({ auctioneerName: e.target.value })}
+                      className="h-11 w-full rounded-xl border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all uppercase"
+                      placeholder="[AUCTIONEER FIRM NAME]"
+                    />
                   </div>
 
                   {/* Auctioneer Address */}
@@ -1115,15 +1113,13 @@ export default function AuctioneerNoticeClient({
                       <MapPin className="size-3.5" />
                       Auctioneer Address / Location
                     </label>
-                    <label className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all cursor-text pl-3 pr-4">
-                      <input
-                        type="text"
-                        value={data.auctioneerAddress}
-                        onChange={(e) => handleDataChange({ auctioneerAddress: e.target.value })}
-                        className="relative w-full left-5 h-11 px-4 pl-12 pr-4 bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
-                        placeholder="P.O BOX ... - KISUMU"
-                      />
-                    </label>
+                    <input
+                      type="text"
+                      value={data.auctioneerAddress}
+                      onChange={(e) => handleDataChange({ auctioneerAddress: e.target.value })}
+                      className="h-11 w-full rounded-xl border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      placeholder="P.O BOX ... - KISUMU"
+                    />
                   </div>
 
                   {/* Signatory Name */}
@@ -1132,15 +1128,13 @@ export default function AuctioneerNoticeClient({
                       <FileText className="size-3.5" />
                       Authorized Signatory
                     </label>
-                    <label className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all cursor-text pl-3 pr-4">
-                      <input
-                        type="text"
-                        value={data.signatoryName}
-                        onChange={(e) => handleDataChange({ signatoryName: e.target.value })}
-                        className="relative w-full left-5 h-11 px-4 pl-12 pr-4 bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
-                        placeholder="Authorized Signatory"
-                      />
-                    </label>
+                    <input
+                      type="text"
+                      value={data.signatoryName}
+                      onChange={(e) => handleDataChange({ signatoryName: e.target.value })}
+                      className="h-11 w-full rounded-xl border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      placeholder="Authorized Signatory"
+                    />
                   </div>
                 </>
               )}

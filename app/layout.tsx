@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, IBM_Plex_Serif } from "next/font/google";
 import { Toaster } from "sonner";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import "./globals.css";
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
     <html lang="en" className="antialiased">
       <body className={`${inter.variable} ${ibmPlexSerif.variable} min-h-screen bg-[#FAFAFA] text-gray-900 selection:bg-accent/20 selection:text-accent`}>
         {children}
+        <ScrollToTopButton />
         <Toaster 
           position="bottom-right" 
           richColors 

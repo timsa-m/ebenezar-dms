@@ -353,7 +353,7 @@ export default function WebsiteLeadsManager({
       {/* ========================================================= */}
       {/* 1. Header & Title Section */}
       {/* ========================================================= */}
-      <div className="flex flex-col gap-5 pb-6 md:flex-row md:items-end md:justify-between relative">
+      <div className="flex flex-col gap-5 pb-3 md:flex-row md:items-end md:justify-between relative">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-100/40 via-transparent to-transparent dark:from-indigo-900/20 blur-3xl"></div>
         <div className="space-y-3 z-10">
           <div className="flex items-center gap-x-4 gap-y-2">
@@ -385,7 +385,7 @@ export default function WebsiteLeadsManager({
         </div>
       </div>
       <br />
-      <br />
+
 
       {/* ========================================================= */}
       {/* 2. Executive KPI Summary Cards */}
@@ -396,7 +396,7 @@ export default function WebsiteLeadsManager({
 
         {/* Total Leads */}
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-18 bg-orange-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
               <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Total Leads</p>
@@ -483,22 +483,22 @@ export default function WebsiteLeadsManager({
         </div>
 
       </div>
-      <br />
+
 
       {/* ========================================================= */}
       {/* 3. Main Card with Tabs & Live Controls */}
       {/* ========================================================= */}
-      <div className="overflow-hidden rounded-xl border border-white/50 dark:border-slate-700/50 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl shadow-2xl relative top-3 min-h-[calc(100vh-200px)] z-10">
+      <div className="overflow-hidden rounded-xl border border-white/50 dark:border-slate-700/50 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl shadow-2xl relative top-3 z-10">
         <Tabs
           value={activeTab}
           onValueChange={(val) => setActiveTab(val as 'messages' | 'tradein')}
           className="w-full"
         >
           {/* Top Control Bar: Tabs + Search + Filter */}
-          <div className="space-y-5 border-b border-white/40 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 p-6 lg:p-8 backdrop-blur-md">
+          <div className="space-y-5 border-b border-white/40 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 p-2 lg:p-2 backdrop-blur-md">
             <div className="flex flex-col md:flex-row md:items-center relative justify-between gap-5">
               {/* Segmented Control Pill Tabs */}
-              <TabsList className="inline-flex h-9 self-start relative top-3 left-3 rounded-2xl bg-slate-200/50 dark:bg-slate-950/50 p-1 md:self-auto backdrop-blur-sm border border-white/20 dark:border-slate-800">
+              <TabsList className="inline-flex h-9 self-start relative left-3 rounded-2xl bg-slate-200/50 dark:bg-slate-950/50 p-3 md:self-auto backdrop-blur-sm border border-white/20 dark:border-slate-800">
                 <TabsTrigger
                   value="messages"
                   className="badge badge-primary flex h-9.5 items-center gap-2.5 rounded-xl px-5 text-sm font-bold text-slate-600 dark:text-slate-400 transition-all data-[state=active]:bg-purple-50 data-[state=active]:dark:bg-slate-800 data-[state=active]:text-indigo-600 data-[state=active]:dark:text-indigo-400 data-[state=active]:shadow-md"
@@ -529,9 +529,9 @@ export default function WebsiteLeadsManager({
               </TabsList>
 
               {/* Search & Status Filter cluster */}
-              <div className="flex gap-3 relative start-end top-3 right-3">
+              <div className="flex gap-3 start-end p-3">
                 {/* Search Bar */}
-                <div className="flex items-center gap-3">
+                <div className="flex w-full items-center gap-3">
                   <div className="search-box">
                     <Search className="search-icon" />
                     <input
@@ -546,9 +546,9 @@ export default function WebsiteLeadsManager({
 
                 {/* Status Dropdown Filter */}
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-9 w-[150px] rounded-xl justify-center gap-2 border-white/50 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-sm font-semibold shadow-sm backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500/50">
+                  <SelectTrigger className="h-9 rounded-xl justify-center gap-2 border-white/50 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-sm font-semibold shadow-sm backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500/50">
                     <div className="flex items-center gap-1 truncate">
-                      <SlidersHorizontal className="h-4 w-4 text-slate-500 shrink-0" />
+                      <SlidersHorizontal className="h-4 w-6 text-slate-500 shrink-0" />
                       <SelectValue placeholder="All Statuses" />
                     </div>
                   </SelectTrigger>
@@ -582,7 +582,7 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Active Filter Indicators Bar */}
-            <div className="flex items-center justify-between relative top-7 left-6 right-3 max-w-[95%] gap-3 text-xs font-semibold text-slate-500">
+            <div className="flex items-center justify-between relative left-6 right-3 max-w-[95%] gap-3 text-xs font-semibold text-slate-500">
               <div>
                 {activeTab === 'messages' ? (
                   <span>
@@ -601,13 +601,13 @@ export default function WebsiteLeadsManager({
               )}
             </div>
           </div>
-          <br />
+
 
           {/* ======================================================= */}
           {/* TAB 1: MESSAGES STREAM / CARDS */}
           {/* ======================================================= */}
-          <div className="max-w-[95%] left-[2.5%] top-5 relative mt-100">
-            <TabsContent value="messages" className="m-9 focus-visible:outline-none p-4 lg:p-6 bg-white/20 dark:bg-slate-950/20 mt-6 mb-6 top-10 left-5">
+          <div className="max-w-[95%] pl-4 p-3 mt-0">
+            <TabsContent value="messages" className="m-9 focus-visible:outline-none p-4 lg:p-4 bg-white/20 dark:bg-slate-950/20 mt-0 mb-6 top-0 left-5">
               {filteredMessages.length === 0 ? (
                 <div className="px-4 py-20 text-center flex flex-col items-center justify-center mb-6 mt-6">
                   <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-3xl bg-slate-100 dark:bg-slate-800 shadow-inner">

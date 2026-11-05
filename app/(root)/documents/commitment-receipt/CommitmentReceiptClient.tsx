@@ -226,7 +226,7 @@ export default function CommitmentReceiptClient({
   return (
     <div className="print:p-0 print:m-0 print:w-full print:max-w-none">
       {/* Top Header Navigation */}
-      <section className="home-content animate-fade-in no-print print:!hidden print:hidden">
+      <section className="w-full mb-6 animate-fade-in no-print print:!hidden print:hidden">
         <header className="page-header no-print print:!hidden print:hidden">
           <div
             style={{
@@ -303,10 +303,10 @@ export default function CommitmentReceiptClient({
       </section>
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 sm:p-8 flex flex-col lg:flex-row gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
+      <main className="w-full flex flex-col lg:flex-row items-start gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
         {/* Left Sidebar: Controls & Selection */}
-        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 no-print print:hidden">
-          <div className="card-premium p-6 sm:p-8">
+        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 lg:sticky lg:top-6 no-print print:hidden">
+          <div className="card-premium p-6">
             <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-12 font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
@@ -342,15 +342,15 @@ export default function CommitmentReceiptClient({
                     <Banknote className="size-3.5" />
                     Commitment Deposit (KES)
                   </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-neutral-400">
+                  <div className="flex items-center h-11 w-full rounded-xl border border-neutral-200 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all px-3.5 gap-2">
+                    <span className="text-xs font-bold text-neutral-500 select-none flex-shrink-0">
                       KES
                     </span>
                     <input
                       type="number"
                       value={commitmentAmount || ''}
                       onChange={(e) => setCommitmentAmount(Number(e.target.value) || 0)}
-                      className="w-full pl-12 pr-4 py-2 border border-neutral-300 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full h-full bg-transparent text-sm font-semibold text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
                       placeholder="0"
                     />
                   </div>

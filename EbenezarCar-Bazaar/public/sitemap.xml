@@ -3,37 +3,127 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  
-  <!-- Homepage -->
+
+  <!-- Core Navigation Pages -->
+  <!-- Homepage & Featured Showroom -->
   <url>
-    <loc>https://carbazaar.ebenezarenterprises.com/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://ebenezarenterprises.com/</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Complete Vehicle Inventory / Showroom -->
   <url>
-    <loc>https://carbazaar.ebenezarenterprises.com/inventory</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://ebenezarenterprises.com/inventory</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
 
   <!-- Vehicle Trade-In & Valuation -->
   <url>
-    <loc>https://carbazaar.ebenezarenterprises.com/trade-in</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://ebenezarenterprises.com/trade-in</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Dealership Contact & Nationwide Inquiries -->
+  <!-- Dealership Location & Contact -->
   <url>
-    <loc>https://carbazaar.ebenezarenterprises.com/contact</loc>
-    <lastmod>2026-10-29</lastmod>
+    <loc>https://ebenezarenterprises.com/contact</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- Published Vehicles for Sale -->
+  <!-- TOYOTA PRADO -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-prado-kat107l</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA HARRIER -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-harrier-kay640b</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA PASSO -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-passo-kcc771p</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA COROLLA NZE -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-corolla-nze-2000-kbb683d-2</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- SUBARU IMPREZA -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/subaru-impreza-kdd058c</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA NOAH -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-noah-2016-kdm397f</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA PASSO -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-passo-kcj512h</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- FORD RANGER -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/ford-ranger-2019-kbv535e</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- NISSAN X-TRAIL -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/nissan-x-trail-2014-kdg673s</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA ALLION -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-allion-kch475x</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- TOYOTA VITZ -->
+  <url>
+    <loc>https://ebenezarenterprises.com/vehicle/toyota-vitz-kcc168w</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
 </urlset>

@@ -224,8 +224,9 @@ export default function ProformaInvoiceClient({
   };
 
   return (
-    <div className=' print:p-0 print:m-0 print:w-full print:max-w-none'>
-      <section className="home-content animate-fade-in no-print print:!hidden print:hidden">
+    <div className="print:p-0 print:m-0 print:w-full print:max-w-none">
+      {/* Top Header Navigation */}
+      <section className="w-full mb-6 animate-fade-in no-print print:!hidden print:hidden">
         <header className="page-header no-print print:!hidden print:hidden">
           <div
             style={{
@@ -301,11 +302,12 @@ export default function ProformaInvoiceClient({
         </header>
       </section>
 
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 sm:p-8 flex flex-col lg:flex-row gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
+      {/* Main Container */}
+      <main className="w-full flex flex-col lg:flex-row items-start gap-8 print:p-0 print:m-0 print:w-full print:max-w-none">
         {/* Left Sidebar: Controls & Selection */}
-        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 no-print print:hidden">
+        <div className="w-full lg:w-96 flex-shrink-0 flex flex-col gap-6 lg:sticky lg:top-6 no-print print:hidden">
           {/* Client & Product Section */}
-          <div className="card-premium p-6 sm:p-8">
+          <div className="card-premium p-6">
             <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-12 font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">

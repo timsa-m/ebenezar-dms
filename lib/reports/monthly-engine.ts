@@ -24,9 +24,17 @@ import type {
 // ─── Period helpers ───────────────────────────────────────────────────────────
 
 export function getPeriodBounds(year: number, month: number) {
-  const start = new Date(year, month - 1, 1, 0, 0, 0, 0);
-  const end = new Date(year, month, 0, 23, 59, 59, 999); // last day of month
-  return { start: start.toISOString(), end: end.toISOString() };
+  const mStr = String(month).padStart(2, "0");
+  const lastDay = new Date(year, month, 0).getDate();
+  const lastDayStr = String(lastDay).padStart(2, "0");
+  const startDateStr = `${year}-${mStr}-01`;
+  const endDateStr = `${year}-${mStr}-${lastDayStr}`;
+  return {
+    start: `${startDateStr}T00:00:00.000Z`,
+    end: `${endDateStr}T23:59:59.999Z`,
+    startDateStr,
+    endDateStr,
+  };
 }
 
 export function getPeriodLabel(year: number, month: number) {
@@ -49,7 +57,7 @@ export async function computeMonthlySnapshotLive(
   generatedBy: string = "System"
 ): Promise<MonthlyReportFull> {
   const supabase = createSupabaseAdminClient();
-  const { start: periodStart, end: periodEnd } = getPeriodBounds(year, month);
+  const { start: periodStart, end: periodEnd, startDateStr, endDateStr } = getPeriodBounds(year, month);
   const periodLabel = getPeriodLabel(year, month);
   const periodStartDate = new Date(periodStart);
   const periodEndDate = new Date(periodEnd);
@@ -71,12 +79,13 @@ export async function computeMonthlySnapshotLive(
     console.error("[computeMonthlySnapshotLive] Agreements query error:", aErr);
   }
 
-  // 2. Fetch repayments in this period
+  // 2. Fetch cash / mpesa repayments in this period (excluding non-cash waivers)
   const { data: rawRepayments, error: rErr } = await supabase
     .from("repayments")
-    .select("agreement_id, amount_paid, payment_date, created_at")
-    .gte("payment_date", periodStart)
-    .lte("payment_date", periodEnd)
+    .select("agreement_id, amount_paid, payment_date, created_at, payment_method")
+    .gte("payment_date", startDateStr)
+    .lte("payment_date", endDateStr)
+    .neq("payment_method", "Waiver")
     .gt("amount_paid", 0);
 
   if (rErr) {
@@ -84,15 +93,12 @@ export async function computeMonthlySnapshotLive(
   }
 
   // 3. Fetch penalties in this period
-  let penQuery = supabase
+  const { data: rawPenalties, error: pErr } = await supabase
     .from("penalties")
     .select("agreement_id, amount, status, date_applied, created_at")
-    .gte("date_applied", periodStart);
+    .gte("date_applied", periodStart)
+    .lte("date_applied", periodEnd);
 
-  const toDate = periodEnd.includes("T") ? periodEnd : `${periodEnd}T23:59:59.999Z`;
-  penQuery = penQuery.lte("date_applied", toDate);
-
-  const { data: rawPenalties, error: pErr } = await penQuery;
   if (pErr) {
     console.error("[computeMonthlySnapshotLive] Penalties query error:", pErr);
   }
@@ -132,9 +138,11 @@ export async function computeMonthlySnapshotLive(
     // ── Determine the canonical start date (use user-entered start_date; fall back to created_at) ──
     const dateStr = ag.start_date && ag.start_date !== "1970-01-01" ? ag.start_date : ag.created_at;
     const agDate = new Date(dateStr);
+    const amountPaid = repByAgreement.get(ag.id) || 0;
+    const hasRepaymentsThisPeriod = amountPaid > 0;
 
-    // Agreement hasn't started yet in this period — skip entirely
-    if (agDate > periodEndDate) continue;
+    // Agreement hasn't started yet in this period — skip entirely unless payments occurred this period
+    if (agDate > periodEndDate && !hasRepaymentsThisPeriod) continue;
 
     const vehicle = ag.vehicle as any;
     const client = ag.client as any;
@@ -144,14 +152,14 @@ export async function computeMonthlySnapshotLive(
 
     // ── Inclusion rules ─────────────────────────────────────────────────────────
     //
-    // CASH SALES: Only appear in the exact month their start_date falls in.
-    if (isCashSale) {
+    // CASH SALES: Only appear in the exact month their start_date falls in, unless they had payments this period.
+    if (isCashSale && !hasRepaymentsThisPeriod) {
       if (agDate < periodStartDate || agDate > periodEndDate) continue;
     }
     // FULLY PAID / SETTLED HIRE-PURCHASE: Appear from their start month up to and
-    // including the month their last payment was recorded. After that month they
-    // fall off the ledger. We use last_payment_date (user-entered / backdated).
-    else if (isClosed) {
+    // including the month their last payment was recorded.
+    // If the contract received a payment in THIS period, ALWAYS include it!
+    else if (isClosed && !hasRepaymentsThisPeriod) {
       const lastPayStr = ag.last_payment_date;
       if (!lastPayStr) {
         // No payment date recorded — exclude from all ledgers
@@ -171,7 +179,6 @@ export async function computeMonthlySnapshotLive(
 
     // ── Compute period metrics for this contract ────────────────────────────────
     const isNewThisPeriod = agDate >= periodStartDate && agDate <= periodEndDate;
-    const amountPaid = repByAgreement.get(ag.id) || 0;
     const penaltiesThisMonth = penByAgreement.get(ag.id) || 0;
 
     const principal = Number(ag.principal_amount || ag.sale_price || 0);
@@ -179,7 +186,7 @@ export async function computeMonthlySnapshotLive(
     const monthlyDue = Number(ag.monthly_due || 0);
     const dpd = Number(ag.days_overdue || 0);
 
-    const closingBal = isCashSale ? 0 : currBalance;
+    const closingBal = (isCashSale || isClosed) ? 0 : currBalance;
     const openingBal = isNewThisPeriod ? 0 : Math.max(0, closingBal + amountPaid - penaltiesThisMonth);
 
     const isLoss = rawSt === "loss" || (!isCashSale && !isClosed && dpd > 90);
@@ -247,6 +254,15 @@ export async function computeMonthlySnapshotLive(
       daysPastDue: dpd,
       installmentAmount: monthlyDue,
     });
+  }
+
+  // Ensure totalRepaymentsCollected captures all cash repayments in period
+  const totalInflowAllAgreements = (rawRepayments || []).reduce(
+    (sum, r) => sum + Number(r.amount_paid || 0),
+    0
+  );
+  if (totalRepaymentsCollected < totalInflowAllAgreements) {
+    totalRepaymentsCollected = totalInflowAllAgreements;
   }
 
   // Sort entries: largest closing balance first

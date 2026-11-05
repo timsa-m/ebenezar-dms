@@ -4,7 +4,11 @@ import { getCompanySettings } from '@/lib/actions/settings.actions';
 import { redirect } from 'next/navigation';
 import SettingsLayout from './SettingsLayout';
 
-export default async function SettingsPage() {
+interface SettingsPageProps {
+  searchParams?: Promise<{ tab?: string }>;
+}
+
+export default async function SettingsPage({ searchParams }: SettingsPageProps) {
   const user = await getLoggedInUser();
 
   // Protect settings page: Staff cannot access it.
@@ -13,6 +17,8 @@ export default async function SettingsPage() {
   }
 
   const initialSettings = await getCompanySettings();
+  const params = searchParams ? await searchParams : undefined;
+  const initialTab = params?.tab || 'Profile';
 
-  return <SettingsLayout user={user} initialSettings={initialSettings} />;
+  return <SettingsLayout user={user} initialSettings={initialSettings} initialTab={initialTab} />;
 }

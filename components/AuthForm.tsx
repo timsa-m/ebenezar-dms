@@ -7,14 +7,14 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { authFormSchema } from '@/lib/utils';
-import { Loader2, ShieldCheck, TrendingUp, Users, Lock, Mail, User } from 'lucide-react';
+import { Loader2, ShieldCheck, TrendingUp, Users, Lock, Mail, User, Car } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, signUp } from '@/lib/actions/user.actions';
 
 const FEATURES = [
-  { icon: TrendingUp, label: 'Real-time Portfolio Analytics' },
-  { icon: Users, label: 'Multi-client Loan Management' },
-  { icon: ShieldCheck, label: 'Bank-grade Security & Compliance' },
+  { icon: Car, label: 'Vehicle Inventory & Showroom' },
+  { icon: TrendingUp, label: 'Hire Purchase & Financing Ledger' },
+  { icon: ShieldCheck, label: 'Vehicle Handover & Logbook Custody' },
 ];
 
 const AuthForm = ({ type }: { type: string }) => {
@@ -94,22 +94,27 @@ const AuthForm = ({ type }: { type: string }) => {
                 src="/icons/logo.png"
                 width={120}
                 height={120}
-                alt="logo"
+                alt="Ebenezar Logo"
+                className="rounded-full object-contain"
                 style={{
                   maxWidth: "100%",
                   height: "auto"
-                }} />
+                }}
+              />
             </div>
-            <span className="auth-brand-name">Ebenezar</span>
+            <div className="flex flex-col">
+              <span className="auth-brand-name">Ebenezar DMS</span>
+              <span className="text-[11px] font-semibold text-blue-200 uppercase tracking-wider">Enterprises Car Bazaar</span>
+            </div>
           </div>
 
           {/* Hero copy */}
           <div className="auth-hero">
             <h2 className="auth-hero-title">
-              Enterprise-Grade<br />Loan Management
+              Dealer Management<br />System (DMS)
             </h2>
             <p className="auth-hero-sub">
-              The platform built for modern lenders — track portfolios, manage clients, and process repayments at scale.
+              Premier automotive dealer platform — vehicle inventory management, showroom display, asset-backed auto financing, and client operations.
             </p>
           </div>
 
@@ -126,8 +131,8 @@ const AuthForm = ({ type }: { type: string }) => {
           {/* Bottom stat bar */}
           <div className="auth-stats">
             <div className="auth-stat">
-              <span className="auth-stat-num">99.9%</span>
-              <span className="auth-stat-label">Uptime SLA</span>
+              <span className="auth-stat-num">DMS</span>
+              <span className="auth-stat-label">Enterprise</span>
             </div>
             <div className="auth-stat-divider" />
             <div className="auth-stat">
@@ -136,8 +141,8 @@ const AuthForm = ({ type }: { type: string }) => {
             </div>
             <div className="auth-stat-divider" />
             <div className="auth-stat">
-              <span className="auth-stat-num">&lt;100ms</span>
-              <span className="auth-stat-label">Query Speed</span>
+              <span className="auth-stat-num">99.9%</span>
+              <span className="auth-stat-label">Uptime SLA</span>
             </div>
           </div>
         </div>
@@ -153,24 +158,29 @@ const AuthForm = ({ type }: { type: string }) => {
                 src="/icons/logo.png"
                 width={36}
                 height={36}
-                alt="logo"
+                alt="Ebenezar Logo"
+                className="rounded-full object-contain"
                 style={{
                   maxWidth: "100%",
                   height: "auto"
-                }} />
+                }}
+              />
             </div>
-            <span className="auth-mobile-brand-name">Ebenezar</span>
+            <div className="flex flex-col">
+              <span className="auth-mobile-brand-name">Ebenezar DMS</span>
+              <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Enterprises Car Bazaar</span>
+            </div>
           </div>
 
           {/* Heading */}
           <div className="auth-form-header">
             <h1 className="auth-form-title">
-              {isSignIn ? 'Welcome back' : 'Request Access'}
+              {isSignIn ? 'Welcome to Ebenezar DMS' : 'Request DMS Access'}
             </h1>
             <p className="auth-form-sub">
               {isSignIn
-                ? 'Sign in to access your lending dashboard.'
-                : 'Submit your details. An administrator will review and approve your account.'}
+                ? 'Sign in to access your dealer management system.'
+                : 'Submit your details. An administrator will review and approve your DMS account.'}
             </p>
           </div>
 
@@ -302,7 +312,7 @@ const AuthForm = ({ type }: { type: string }) => {
             <button type="submit" disabled={isLoading} className="auth-submit-btn">
               {isLoading
                 ? <><Loader2 size={16} className="auth-spinner" /><span>Processing…</span></>
-                : <span>{isSignIn ? 'Sign In to Dashboard' : 'Submit Request'}</span>
+                : <span>{isSignIn ? 'Sign In to DMS' : 'Submit Request'}</span>
               }
             </button>
           </form>

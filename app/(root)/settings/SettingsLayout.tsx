@@ -26,8 +26,16 @@ import {
   Loader2,
 } from 'lucide-react';
 
-export default function SettingsLayout({ user, initialSettings }: { user: any, initialSettings?: any }) {
-  const [activeTab, setActiveTab] = useState('Business');
+export default function SettingsLayout({
+  user,
+  initialSettings,
+  initialTab = 'Profile',
+}: {
+  user: any;
+  initialSettings?: any;
+  initialTab?: string;
+}) {
+  const [activeTab, setActiveTab] = useState(initialTab || 'Profile');
   const [isPending, startTransition] = useTransition();
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(user?.avatarUrl || null);

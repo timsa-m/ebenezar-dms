@@ -1494,7 +1494,7 @@ export function ActionPanel({
         }}
         title="Delete Contract"
         description="This will permanently remove the contract, all transactions, installments and penalties. This CANNOT be undone."
-        confirmLabel="Delete Permanently"
+        confirmLabel="Delete"
         itemName={`Contract ${loan.$id.slice(-8).toUpperCase()}`}
       />
     </>

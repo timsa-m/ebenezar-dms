@@ -189,7 +189,7 @@ export default function HandoverSummaryTab({
           <div className="pt-2 border-t border-slate-100 text-[11.5px] text-slate-600 space-y-1">
             <div className="flex justify-between">
               <span className="text-slate-400">Odometer:</span>
-              <span className="font-mono font-medium">{incoming?.odometer_km ? `${incoming.odometer_km.toLocaleString()} km` : 'N/A'}</span>
+              <span className="font-medium">{incoming?.odometer_km ? `${incoming.odometer_km.toLocaleString()} km` : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Fuel Level:</span>
@@ -227,7 +227,7 @@ export default function HandoverSummaryTab({
               <span
                 key={a.accessory_name}
                 className={cn(
-                  'text-[10px] font-semibold px-2 py-0.5 rounded-md border',
+                  'badge badge-primary text-[10px] font-semibold px-2 py-0.5 rounded-md border',
                   a.status === 'received_and_verified'
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                     : 'bg-red-50 text-red-700 border-red-200'
