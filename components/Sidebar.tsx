@@ -184,11 +184,6 @@ const Sidebar = ({ user }: SiderbarProps) => {
               priority
               loading="eager"
               className="rounded-full object-contain"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-              }}
             />
           </div>
           <div className="sidebar-brand-info">
