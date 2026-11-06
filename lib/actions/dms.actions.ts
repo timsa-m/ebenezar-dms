@@ -5,6 +5,9 @@ import { allocateRepayment, calculateBalance, classifyDelinquency } from '@/src/
 import { revalidatePath } from 'next/cache';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import { logAuditEvent } from '@/lib/actions/audit.actions';
+import { logSecurityAudit } from '@/lib/security/audit';
+import { enforceActionPermission } from '@/lib/security/rbac';
+import { consumeVerificationGrant } from '@/lib/security/tokens';
 import type {
   FinancingAgreement,
   RepaymentRecord,
@@ -737,14 +740,29 @@ export async function createInstallmentsBulk(installments: any[]) {
   }
 }
 
-export async function deleteFinancingAgreement(id: string) {
+export async function deleteFinancingAgreement(id: string, verificationToken?: string) {
   try {
+    const user = await getLoggedInUser();
+    enforceActionPermission(user, 'CONTRACT_DELETE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: user!.userId || user!.$id,
+        action: 'CONTRACT_DELETE',
+        resourceId: id,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createAdminClient();
     
     // 1. Fetch agreement to get vehicle_id before deleting
     const { data: agreement } = await supabase
       .from('financing_agreements')
-      .select('vehicle_id')
+      .select('vehicle_id, contract_no, balance')
       .eq('id', id)
       .single();
 
@@ -765,6 +783,17 @@ export async function deleteFinancingAgreement(id: string) {
         })
         .eq('id', agreement.vehicle_id);
     }
+
+    await logSecurityAudit({
+      userId: user!.userId || user!.$id,
+      action: 'CONTRACT_DELETE',
+      resourceType: 'contract',
+      resourceId: id,
+      status: 'SUCCESS',
+      reason: 'Financing contract permanently deleted by authorized user.',
+      metadata: { contractNo: agreement?.contract_no, balance: agreement?.balance },
+    });
+
     revalidatePath('/admin/contracts');
     revalidatePath('/dashboard');
     return { success: true };
@@ -774,15 +803,25 @@ export async function deleteFinancingAgreement(id: string) {
   }
 }
 
-export async function writeOffAgreement(payload: { id: string; reason: string }) {
+export async function writeOffAgreement(payload: { id: string; reason: string; verificationToken?: string }) {
   try {
     const user = await getLoggedInUser();
-    if (!user || user.role !== 'ADMIN') {
-      throw new Error('Unauthorized: Only an Admin can write off a contract.');
-    }
+    enforceActionPermission(user, 'CONTRACT_WRITE_OFF');
 
     if (!payload.reason || payload.reason.trim().length < 10) {
       throw new Error('A detailed reason (minimum 10 characters) is required to write off a contract.');
+    }
+
+    if (payload.verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: payload.verificationToken,
+        userId: user!.userId || user!.$id,
+        action: 'CONTRACT_WRITE_OFF',
+        resourceId: payload.id,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
     }
 
     const supabase = createAdminClient();
@@ -821,10 +860,24 @@ export async function writeOffAgreement(payload: { id: string; reason: string })
         loanId: payload.id,
         entityType: 'financing_agreement',
         action: 'STATUS_CHANGED',
-        performedBy: `${user.firstName} ${user.lastName} (Admin)`,
+        performedBy: `${user!.firstName} ${user!.lastName} (Admin)`,
         description: `Contract written off as accounting credit loss. Reason: ${payload.reason.trim()}`,
         previousValue: `Status: ${prevStatus}, Balance: ${agreement.balance}`,
         newValue: 'Status: Written Off, Aging: WRITTEN OFF'
+      });
+
+      await logSecurityAudit({
+        userId: user!.userId || user!.$id,
+        action: 'CONTRACT_WRITE_OFF',
+        resourceType: 'contract',
+        resourceId: payload.id,
+        status: 'SUCCESS',
+        reason: payload.reason.trim(),
+        metadata: {
+          contractNo: agreement.contract_no,
+          previousStatus: prevStatus,
+          balanceWrittenOff: agreement.balance,
+        },
       });
     } else {
       // Check loans table
@@ -849,10 +902,23 @@ export async function writeOffAgreement(payload: { id: string; reason: string })
         loanId: payload.id,
         entityType: 'loan',
         action: 'STATUS_CHANGED',
-        performedBy: `${user.firstName} ${user.lastName} (Admin)`,
+        performedBy: `${user!.firstName} ${user!.lastName} (Admin)`,
         description: `Loan written off as accounting credit loss. Reason: ${payload.reason.trim()}`,
         previousValue: `Status: ${prevStatus}, Balance: ${loanRecord.balance}`,
         newValue: 'Status: Written Off'
+      });
+
+      await logSecurityAudit({
+        userId: user!.userId || user!.$id,
+        action: 'CONTRACT_WRITE_OFF',
+        resourceType: 'loan',
+        resourceId: payload.id,
+        status: 'SUCCESS',
+        reason: payload.reason.trim(),
+        metadata: {
+          previousStatus: prevStatus,
+          balanceWrittenOff: loanRecord.balance,
+        },
       });
     }
 
@@ -1014,12 +1080,17 @@ export async function applyWaiverToInstallments(
   await processTable('loan_installments', 'loan_id');
 }
 
-export async function waiveAgreementBalance(payload: { id: string; waiverType: string; amount: number; reason: string }) {
+export async function waiveAgreementBalance(payload: {
+  id: string;
+  waiverType: string;
+  amount: number;
+  reason: string;
+  waiverDate?: string;
+  verificationToken?: string;
+}) {
   try {
     const user = await getLoggedInUser();
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'MANAGER')) {
-      throw new Error('Unauthorized: Only Admin or Manager can execute a balance waiver.');
-    }
+    enforceActionPermission(user, 'BALANCE_WAIVER');
 
     const amountToWaive = Number(payload.amount);
     if (isNaN(amountToWaive) || amountToWaive <= 0) {
@@ -1030,7 +1101,21 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
       throw new Error('A detailed justification (minimum 10 characters) is required for audit compliance.');
     }
 
+    if (payload.verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: payload.verificationToken,
+        userId: user!.userId || user!.$id,
+        action: 'BALANCE_WAIVER',
+        resourceId: payload.id,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createAdminClient();
+    const effectivePaymentDate = payload.waiverDate || new Date().toISOString().split('T')[0];
+    const effectiveIsoDate = payload.waiverDate ? new Date(payload.waiverDate).toISOString() : new Date().toISOString();
 
     // Check financing_agreements
     const { data: agreement } = await supabase
@@ -1049,7 +1134,7 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
       const isSettled = newBalance <= 0;
       const newStatus = isSettled ? 'completed' : agreement.status;
 
-      // Record the waiver as a repayment record with payment_method: 'Waiver'
+      // Record the waiver as a repayment record with payment_method: 'Waiver' and effectivePaymentDate
       const { error: rErr } = await supabase
         .from('repayments')
         .insert({
@@ -1062,7 +1147,7 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
           allocated_principal: payload.waiverType === 'Penalty' ? 0 : amountToWaive,
           allocated_penalties: payload.waiverType === 'Penalty' ? amountToWaive : 0,
           allocated_overdue_interest: payload.waiverType === 'Interest' ? amountToWaive : 0,
-          payment_date: new Date().toISOString().split('T')[0]
+          payment_date: effectivePaymentDate
         });
       if (rErr) throw rErr;
 
@@ -1108,7 +1193,8 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
             payment_method: 'Waiver',
             notes: `[WAIVER: ${payload.waiverType}] ${payload.reason.trim()}`,
             status: 'Completed',
-            created_at: new Date().toISOString()
+            date: effectiveIsoDate,
+            created_at: effectiveIsoDate
           });
       } catch (_) {}
 
@@ -1128,10 +1214,26 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
         loanId: payload.id,
         entityType: 'financing_agreement',
         action: 'STATUS_CHANGED',
-        performedBy: `${user.firstName} ${user.lastName} (${user.role})`,
-        description: `Applied KES ${amountToWaive.toLocaleString()} waiver (${payload.waiverType}): ${payload.reason.trim()}. New balance: KES ${newBalance.toLocaleString()}`,
+        performedBy: `${user!.firstName} ${user!.lastName} (${user!.role})`,
+        description: `Applied KES ${amountToWaive.toLocaleString()} waiver (${payload.waiverType}): ${payload.reason.trim()}. Effective date: ${effectivePaymentDate}. New balance: KES ${newBalance.toLocaleString()}`,
         previousValue: `Balance: ${currentBalance}, Status: ${agreement.status}`,
         newValue: `Balance: ${newBalance}, Status: ${newStatus}`
+      });
+
+      await logSecurityAudit({
+        userId: user!.userId || user!.$id,
+        action: 'BALANCE_WAIVER',
+        resourceType: 'contract',
+        resourceId: payload.id,
+        status: 'SUCCESS',
+        reason: payload.reason.trim(),
+        metadata: {
+          waiverType: payload.waiverType,
+          amountWaived: amountToWaive,
+          effectiveDate: effectivePaymentDate,
+          previousBalance: currentBalance,
+          newBalance,
+        },
       });
 
       revalidatePath('/admin/contracts');
@@ -1181,7 +1283,8 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
         payment_method: 'Waiver',
         notes: `[WAIVER: ${payload.waiverType}] ${payload.reason.trim()}`,
         status: 'Completed',
-        created_at: new Date().toISOString()
+        date: effectiveIsoDate,
+        created_at: effectiveIsoDate
       });
 
     // Update installments so installment schedule and breakdown reflect the waiver
@@ -1191,10 +1294,26 @@ export async function waiveAgreementBalance(payload: { id: string; waiverType: s
       loanId: payload.id,
       entityType: 'loan',
       action: 'STATUS_CHANGED',
-      performedBy: `${user.firstName} ${user.lastName} (${user.role})`,
-      description: `Applied KES ${amountToWaive.toLocaleString()} waiver (${payload.waiverType}): ${payload.reason.trim()}. New balance: KES ${newBalance.toLocaleString()}`,
+      performedBy: `${user!.firstName} ${user!.lastName} (${user!.role})`,
+      description: `Applied KES ${amountToWaive.toLocaleString()} waiver (${payload.waiverType}): ${payload.reason.trim()}. Effective date: ${effectivePaymentDate}. New balance: KES ${newBalance.toLocaleString()}`,
       previousValue: `Balance: ${currentBalance}, Status: ${loanRecord.status}`,
       newValue: `Balance: ${newBalance}, Status: ${newStatus}`
+    });
+
+    await logSecurityAudit({
+      userId: user!.userId || user!.$id,
+      action: 'BALANCE_WAIVER',
+      resourceType: 'loan',
+      resourceId: payload.id,
+      status: 'SUCCESS',
+      reason: payload.reason.trim(),
+      metadata: {
+        waiverType: payload.waiverType,
+        amountWaived: amountToWaive,
+        effectiveDate: effectivePaymentDate,
+        previousBalance: currentBalance,
+        newBalance,
+      },
     });
 
     revalidatePath(`/loans/${payload.id}`);

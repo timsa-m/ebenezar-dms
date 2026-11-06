@@ -72,22 +72,22 @@ export default function PurchasesManager({ purchases = [] }: { purchases: any[] 
     <div className="flex flex-col gap-5 mt-6">
       {/* Table Toolbar */}
       <div className="table-toolbar">
-        <h2 className="text-18 font-semibold text-gray-900 tracking-tight">
+        <h2 className="text-18 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">
           All Purchases
-          <span className="ml-2 text-14 font-normal text-gray-400"> ({filtered.length})</span>
+          <span className="ml-2 text-14 font-normal text-gray-400 dark:text-[#A1ADA4]"> ({filtered.length})</span>
         </h2>
-        <div className="status-filter-group">
+        <div className="status-filter-group dark:bg-[#101612] dark:border dark:border-[#29352D]">
           {/* Sorting */}
           <Button
             variant="outline"
-            className={cn('status-filter-pill')}
+            className={cn('status-filter-pill dark:text-[#A1ADA4] dark:hover:text-[#F4F7F4] dark:hover:bg-[#1D2920] dark:border-[#29352D]')}
             onClick={() => setSortBy(prev => prev === 'date_desc' ? 'date_asc' : 'date_desc')}
           >
             <Filter className="size-4" />
             {sortBy === 'date_desc' ? ' ' : ' '}
           </Button>
           {/* Status filter pills */}
-          <div className="status-filter-group">
+          <div className="status-filter-group dark:bg-[#101612] dark:border dark:border-[#29352D]">
             {STATUS_FILTERS.map((f) => (
               <Button
                 key={f.value}

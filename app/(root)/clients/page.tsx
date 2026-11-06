@@ -32,49 +32,32 @@ export default async function ClientsPage() {
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative hover:-translate-y-1 hover:shadow-md transition-all duration-300">
           <div className="absolute top-0 right-0 w-24 h-24 rounded-bl-full -z-10" style={{ backgroundColor: 'rgba(17,17,19,0.03)' }}></div>
           <div className="flex justify-between items-start mb-6">
-            <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Total Clients</p>
-            <div className="p-2 bg-gray-50 rounded-lg text-gray-700" style={{ outline: '1px solid rgba(229,231,235,0.5)' }}>
+            <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Total Clients</p>
+            <div className="p-2 bg-gray-50 dark:bg-[#18221A] rounded-lg text-gray-700 dark:text-[#C1CBC3] border border-gray-200/50 dark:border-[#29352D]">
               <Users className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900">{clients.length}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4]">{clients.length}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-success">Registered</span>
             </div>
           </div>
         </div>
-        {/*
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-danger-50 rounded-bl-full -z-10"></div>
-          <div className="flex justify-between items-start mb-6">
-            <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Total Loan Exposure</p>
-            <div className="p-2 bg-danger-50 rounded-lg text-danger-600" style={{ outline: '1px solid rgba(254,226,226,1)' }}>
-              <TrendingDown className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900">{formatAmount(totalExposure)}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-error">Outstanding</span>
-              <p className="text-12 text-gray-500 font-medium">Total amount owed</p>
-            </div>
-          </div>
-        </div>
-*/}
+
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative border-l-4 border-l-warning-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-warning-50 rounded-bl-full -z-10"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-warning-50 dark:bg-amber-950/20 rounded-bl-full -z-10"></div>
           <div className="flex justify-between items-start mb-6">
-            <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Clients in Arrears</p>
-            <div className="p-2 bg-warning-50 rounded-lg text-warning-700" style={{ outline: '1px solid rgba(254,243,199,1)' }}>
+            <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Clients in Arrears</p>
+            <div className="p-2 bg-warning-50 dark:bg-amber-950/40 rounded-lg text-warning-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/40">
               <AlertTriangle className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900">{clientsInArrears}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4]">{clientsInArrears}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-warning">At Risk</span>
-              <p className="text-12 text-gray-500 font-medium">Overdue payments</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Overdue payments</p>
             </div>
           </div>
         </div>

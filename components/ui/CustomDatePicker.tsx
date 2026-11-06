@@ -169,14 +169,14 @@ export default function CustomDatePicker({
 
   // ─── Shared style tokens ─────────────────────────────────────────────
   const TOKEN = {
-    border: '1.5px solid #E5E7EB',
+    border: '1.5px solid var(--border)',
     radius: '0.625rem',
-    primary: '#6366F1',
-    primaryLight: '#EEF2FF',
-    text: '#111113',
-    muted: '#9CA3AF',
-    subtle: '#F3F4F6',
-    danger: '#B91C1C',
+    primary: 'var(--primary)',
+    primaryLight: 'var(--secondary)',
+    text: 'var(--foreground)',
+    muted: 'var(--muted-foreground)',
+    subtle: 'var(--muted)',
+    danger: 'var(--destructive)',
   };
 
   return (
@@ -199,9 +199,9 @@ export default function CustomDatePicker({
           width: '100%',
           gap: '0.625rem',
           padding: '0.625rem 1rem',
-          background: disabled ? TOKEN.subtle : '#fff',
+          background: disabled ? TOKEN.subtle : 'var(--card)',
           border: TOKEN.border,
-          borderColor: isOpen ? TOKEN.primary : '#E5E7EB',
+          borderColor: isOpen ? TOKEN.primary : 'var(--border)',
           borderRadius: TOKEN.radius,
           cursor: disabled ? 'not-allowed' : 'pointer',
           fontSize: '0.875rem',
@@ -243,10 +243,10 @@ export default function CustomDatePicker({
             left: 0,
             zIndex: 9000,
             width: '300px',
-            background: '#fff',
+            background: 'var(--card)',
             border: TOKEN.border,
             borderRadius: '0.875rem',
-            boxShadow: '0 12px 40px -8px rgba(0,0,0,0.15)',
+            boxShadow: '0 12px 40px -8px rgba(0,0,0,0.3)',
             overflow: 'hidden',
             animation: 'dp-open 0.15s ease',
           }}
@@ -308,7 +308,7 @@ export default function CustomDatePicker({
                     borderRadius: '0.5rem',
                     border: 'none',
                     background: i === viewMonth ? TOKEN.primary : 'transparent',
-                    color: i === viewMonth ? '#fff' : TOKEN.text,
+                    color: i === viewMonth ? 'var(--primary-foreground)' : TOKEN.text,
                     fontSize: '0.8125rem',
                     fontWeight: i === viewMonth ? 700 : 500,
                     cursor: 'pointer',
@@ -336,7 +336,7 @@ export default function CustomDatePicker({
                     borderRadius: '0.5rem',
                     border: 'none',
                     background: y === viewYear ? TOKEN.primary : 'transparent',
-                    color: y === viewYear ? '#fff' : TOKEN.text,
+                    color: y === viewYear ? 'var(--primary-foreground)' : TOKEN.text,
                     fontSize: '0.8125rem',
                     fontWeight: y === viewYear ? 700 : 500,
                     cursor: 'pointer',
@@ -389,11 +389,11 @@ export default function CustomDatePicker({
                         border: isTodayDate && !isSelected ? `1.5px solid ${TOKEN.primary}` : 'none',
                         background: isSelected ? TOKEN.primary : 'transparent',
                         color: isSelected
-                          ? '#fff'
+                          ? 'var(--primary-foreground)'
                           : disabled
-                          ? '#D1D5DB'
+                          ? 'var(--muted-foreground)'
                           : !isCurrentMonth
-                          ? '#D1D5DB'
+                          ? 'var(--muted-foreground)'
                           : isTodayDate
                           ? TOKEN.primary
                           : TOKEN.text,

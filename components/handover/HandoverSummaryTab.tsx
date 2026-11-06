@@ -97,14 +97,14 @@ export default function HandoverSummaryTab({
       <div className="card-premium p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-blue-100 text-blue-700">
+            <div className="p-2 rounded-xl bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400">
               <ShieldCheck className="size-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-base">
+              <h3 className="font-bold text-slate-900 dark:text-[#F4F7F4] text-base">
                 Vehicle Handover, Inspection & Clearance
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">
                 Audited custody transfer, accessory verification, financial clearance, and legal logbook transfer history.
               </p>
             </div>
@@ -114,7 +114,7 @@ export default function HandoverSummaryTab({
         <button
           type="button"
           onClick={onOpenModal}
-          className="btn-primary h-10 px-5 text-xs bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 cursor-pointer shadow-xs shrink-0"
+          className="btn-primary h-10 px-5 text-xs flex items-center gap-2 cursor-pointer shadow-xs shrink-0"
         >
           <ClipboardList className="size-4" />
           <span>Manage Handover & Clearance</span>
@@ -167,33 +167,33 @@ export default function HandoverSummaryTab({
         {/* 1. Incoming Handover Card */}
         <div className="card-premium p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A1ADA4]">
               1. Incoming Handover
             </span>
-            <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 ring-1 ring-blue-100 dark:ring-blue-900/40">
               <ClipboardList className="size-3.5" />
             </div>
           </div>
 
           <div>
-            <span className="text-base font-bold text-slate-900 block">
+            <span className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] block">
               {incoming?.incoming_status
                 ? INCOMING_STATUS_LABELS[incoming.incoming_status]
                 : 'Not Recorded'}
             </span>
-            <span className="text-xs text-slate-500 block mt-0.5">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4] block mt-0.5">
               {incoming?.received_by_name ? `Received by ${incoming.received_by_name}` : 'Awaiting initial receiving inspection'}
             </span>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 text-[11.5px] text-slate-600 space-y-1">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#29352D] text-[11.5px] text-slate-600 dark:text-[#C1CBC3] space-y-1">
             <div className="flex justify-between">
-              <span className="text-slate-400">Odometer:</span>
-              <span className="font-medium">{incoming?.odometer_km ? `${incoming.odometer_km.toLocaleString()} km` : 'N/A'}</span>
+              <span className="text-slate-400 dark:text-[#A1ADA4]">Odometer:</span>
+              <span className="font-medium text-slate-900 dark:text-[#F4F7F4]">{incoming?.odometer_km ? `${incoming.odometer_km.toLocaleString()} km` : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Fuel Level:</span>
-              <span>{incoming?.fuel_level || 'N/A'}</span>
+              <span className="text-slate-400 dark:text-[#A1ADA4]">Fuel Level:</span>
+              <span className="text-slate-900 dark:text-[#F4F7F4]">{incoming?.fuel_level || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -201,36 +201,36 @@ export default function HandoverSummaryTab({
         {/* 2. Accessories & Logbook Card */}
         <div className="card-premium p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A1ADA4]">
               2. Equipment Custody
             </span>
-            <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
+            <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-[#B7FF3C] ring-1 ring-emerald-100 dark:ring-emerald-900/40">
               <ShieldCheck className="size-3.5" />
             </div>
           </div>
 
           <div>
-            <span className="text-base font-bold text-slate-900 block">
+            <span className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] block">
               {accessories.length > 0
                 ? `${accessories.filter(a => a.status === 'received_and_verified').length} / ${accessories.length} Verified`
                 : 'Pending Check'}
             </span>
-            <span className="text-xs text-slate-500 block mt-0.5">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4] block mt-0.5">
               {logbookAcc?.document_verified
                 ? 'Logbook verified'
                 : 'Logbook unverified'}
             </span>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#29352D] flex flex-wrap gap-1">
             {accessories.map(a => (
               <span
                 key={a.accessory_name}
                 className={cn(
                   'badge badge-primary text-[10px] font-semibold px-2 py-0.5 rounded-md border',
                   a.status === 'received_and_verified'
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                    : 'bg-red-50 text-red-700 border-red-200'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900/40'
+                    : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-900/40'
                 )}
               >
                 {a.accessory_name === 'spare_tire' ? 'Tyre' : a.accessory_name === 'wheel_spanner' ? 'Spanner' : a.accessory_name}: {a.status === 'received_and_verified' ? '✓' : '✗'}
@@ -242,15 +242,15 @@ export default function HandoverSummaryTab({
         {/* 3. Financial Clearance Card */}
         <div className="card-premium p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A1ADA4]">
               3. Financial Clearance
             </span>
             <div
               className={cn(
-                'p-1.5 rounded-lg',
+                'p-1.5 rounded-lg ring-1 transition-colors',
                 financial?.isFinanciallyCleared
-                  ? 'bg-emerald-50 text-emerald-600'
-                  : 'bg-amber-50 text-amber-600'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-[#B7FF3C] ring-emerald-100 dark:ring-emerald-900/40'
+                  : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 ring-amber-100 dark:ring-amber-900/40'
               )}
             >
               <KeyRound className="size-3.5" />
@@ -258,22 +258,20 @@ export default function HandoverSummaryTab({
           </div>
 
           <div>
-            <span className="text-base font-bold text-slate-900 block">
+            <span className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] block">
               {financial
                 ? financial.isFinanciallyCleared
-                  ? 'Cleared'
-                  : formatKES(financial.totalOutstanding) + ' Due'
-                : 'No Sale Contract'}
+                : 'Cleared'}
             </span>
-            <span className="text-xs text-slate-500 block mt-0.5 capitalize">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4] block mt-0.5 capitalize">
               {financial ? `${financial.saleType.replace(/_/g, ' ')} (${financial.agreementStatus})` : 'Inventory in yard'}
             </span>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 text-[11.5px] text-slate-600 space-y-1">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#29352D] text-[11.5px] text-slate-600 dark:text-[#C1CBC3] space-y-1">
             <div className="flex justify-between">
-              <span className="text-slate-400">Release Status:</span>
-              <span className="font-semibold text-blue-700">
+              <span className="text-slate-400 dark:text-[#A1ADA4]">Release Status:</span>
+              <span className="font-semibold text-blue-700 dark:text-blue-400">
                 {outgoing?.outgoing_status ? OUTGOING_STATUS_LABELS[outgoing.outgoing_status] : 'Pending Sale'}
               </span>
             </div>
@@ -283,31 +281,31 @@ export default function HandoverSummaryTab({
         {/* 4. Logbook & Ownership Card */}
         <div className="card-premium p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A1ADA4]">
               4. Legal Transfer
             </span>
-            <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 ring-1 ring-blue-100 dark:ring-blue-900/40">
               <FileText className="size-3.5" />
             </div>
           </div>
 
           <div>
-            <span className="text-base font-bold text-slate-900 block">
+            <span className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] block">
               {logbookTransfer?.status
                 ? LOGBOOK_STATUS_LABELS[logbookTransfer.status]
                 : 'Not Initiated'}
             </span>
-            <span className="text-xs text-slate-500 block mt-0.5">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4] block mt-0.5">
               {logbookTransfer?.transfer_reference_no
                 ? `Ref: ${logbookTransfer.transfer_reference_no}`
                 : 'Awaiting NTSA processing'}
             </span>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 text-[11.5px] text-slate-600 space-y-1">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#29352D] text-[11.5px] text-slate-600 dark:text-[#C1CBC3] space-y-1">
             <div className="flex justify-between">
-              <span className="text-slate-400">New Owner:</span>
-              <span className="font-medium truncate max-w-[120px]">{logbookTransfer?.intended_new_owner || 'Unassigned'}</span>
+              <span className="text-slate-400 dark:text-[#A1ADA4]">New Owner:</span>
+              <span className="font-medium text-slate-900 dark:text-[#F4F7F4] truncate max-w-[120px]">{logbookTransfer?.intended_new_owner || 'Unassigned'}</span>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function DateRangeFilter({ label = "Filter by Date" }: DateRangeF
 
   return (
     <div className="flex items-center gap-3 flex-wrap">
-      <div className="flex items-center gap-2 text-12 font-bold text-gray-500 uppercase tracking-widest">
+      <div className="flex items-center gap-2 text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">
         <Filter className="size-3.5" />
         <span>{label}</span>
       </div>
@@ -51,7 +51,7 @@ export default function DateRangeFilter({ label = "Filter by Date" }: DateRangeF
             placeholder="From Date"
           />
         </div>
-        <span className="text-gray-400 text-12">to</span>
+        <span className="text-gray-400 dark:text-[#A1ADA4] text-12">to</span>
         <div className="relative w-[150px]">
           <DatePickerInput
             value={to}
@@ -63,7 +63,7 @@ export default function DateRangeFilter({ label = "Filter by Date" }: DateRangeF
           Apply
         </button>
         {hasFilter && (
-          <button onClick={clear} className="btn-ghost h-9 px-3 text-12">
+          <button onClick={clear} className="btn-ghost h-9 px-3 text-12 dark:text-[#C1CBC3] dark:hover:text-[#F4F7F4] dark:hover:bg-[#18221A]">
             Clear
           </button>
         )}

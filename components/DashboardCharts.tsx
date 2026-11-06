@@ -46,12 +46,28 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
   // Reverse the array so it goes from oldest month to newest
   const flowData = [...(metrics.cashFlow || [])].reverse();
 
+  const CustomBarCursor = (props: any) => {
+    const { x, y, width, height } = props;
+    if (x == null || y == null || width == null || height == null) return null;
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        rx={6}
+        ry={6}
+        className="fill-slate-100/70 dark:fill-white/[0.06] pointer-events-none transition-colors"
+      />
+    );
+  };
+
   const CustomBarTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 rounded-lg shadow-lg border border-gray-100">
-          <p className="font-semibold text-slate-800 mb-2">{label}</p>
-          <p style={{ color: payload[0].payload.fill || payload[0].color }} className="text-sm font-bold">
+        <div className="bg-white dark:bg-[#1D2920] p-3 rounded-xl shadow-xl border border-gray-100 dark:border-[#29352D] transition-colors">
+          <p className="font-semibold text-slate-800 dark:text-[#F4F7F4] mb-2">{label}</p>
+          <p style={{ color: payload[0].payload.fill || payload[0].color }} className="text-sm font-bold tabular-nums">
             {payload[0].name === 'amount' ? 'Collected: ' : 'Exposure: '} 
             {formatKES(payload[0].value)}
           </p>
@@ -65,10 +81,10 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       
       {/* Area Chart: Cash Flow Trend */}
-      <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 flex flex-col p-6 shadow-sm">
+      <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
         <div className="mb-6">
-          <h3 className="text-base font-bold text-slate-900">Cash Collection Trend</h3>
-          <p className="text-xs text-slate-500">Total monthly revenue collected over the last 6 months</p>
+          <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
+          <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
         </div>
         <div className="flex-1 min-h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -79,7 +95,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-[#29352D]" />
               <XAxis 
                 dataKey="month" 
                 axisLine={false} 
@@ -101,10 +117,10 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
       </div>
 
       {/* Pie Chart: Portfolio Mix */}
-      <div className="bg-white rounded-xl border border-slate-200 flex flex-col p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
         <div className="mb-2">
-          <h3 className="text-base font-bold text-slate-900">Portfolio Distribution</h3>
-          <p className="text-xs text-slate-500">All historical agreements</p>
+          <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Portfolio Distribution</h3>
+          <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">All historical agreements</p>
         </div>
         <div className="flex-1 min-h-[300px] w-full flex items-center justify-center">
           {mixData.length > 0 ? (
@@ -126,7 +142,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
                 </Pie>
                 <RechartsTooltip 
                   formatter={(value: any, name: any) => [`${value} Deals`, name]}
-                  contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  contentStyle={{ borderRadius: '12px', border: '1px solid var(--border-primary, #29352D)', backgroundColor: 'var(--bg-elevated, #1D2920)', color: 'var(--text-primary, #F4F7F4)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.3)' }}
                   itemStyle={{ fontWeight: 600 }}
                 />
                 <Legend 
@@ -139,7 +155,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
             </ResponsiveContainer>
           ) : (
             <div className="flex flex-col items-center justify-center text-slate-400">
-              <div className="w-24 h-24 rounded-full border-4 border-slate-100 mb-3 border-dashed"></div>
+              <div className="w-24 h-24 rounded-full border-4 border-slate-100 dark:border-[#29352D] mb-3 border-dashed"></div>
               <p className="text-sm font-medium">No accounts yet</p>
             </div>
           )}
@@ -147,15 +163,15 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
       </div>
 
       {/* Bar Chart: Arrears Exposure (Moved to bottom) */}
-      <div className="lg:col-span-3 bg-white rounded-xl border border-slate-200 flex flex-col p-6 shadow-sm">
+      <div className="lg:col-span-3 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
         <div className="mb-6">
-          <h3 className="text-base font-bold text-slate-900">Capital Exposure by Aging Bucket</h3>
-          <p className="text-xs text-slate-500">Outstanding portfolio balance distributed by delinquency status</p>
+          <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Capital Exposure by Aging Bucket</h3>
+          <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Outstanding portfolio balance distributed by delinquency status</p>
         </div>
         <div className="flex-1 min-h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-[#29352D]" />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
@@ -169,7 +185,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
                 tick={{ fontSize: 12, fill: '#64748b' }}
                 tickFormatter={(value) => `KES ${value >= 1000 ? (value / 1000) + 'k' : value}`}
               />
-              <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: '#f8fafc' }} />
+              <RechartsTooltip content={<CustomBarTooltip />} cursor={<CustomBarCursor />} />
               <Bar 
                 dataKey="balance" 
                 radius={[6, 6, 0, 0]} 

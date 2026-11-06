@@ -22,13 +22,23 @@ import {
 } from "../reports/monthly-engine";
 import type { ReportFilters, GenerateMonthlyReportInput } from "../reports/report.types";
 import { parseStringify } from "../utils";
+import { enforceActionPermission } from "@/lib/security/rbac";
+import { checkFinancialAccess } from "@/lib/security/actions";
 
 // ─── Auth guard ───────────────────────────────────────────────────────────────
 
 async function requireAdmin() {
   const user = await getLoggedInUser();
-  if (!user || (user.role !== "ADMIN" && user.role !== "MANAGER")) {
-    throw new Error("UNAUTHORIZED: Admin or Manager access required.");
+  if (!user) {
+    throw new Error("UNAUTHORIZED: You must be logged in to view reports.");
+  }
+  enforceActionPermission(user, 'FINANCIAL_REPORTS_VIEW');
+
+  if (process.env.TEST_MODE !== 'true') {
+    const hasAccess = await checkFinancialAccess();
+    if (!hasAccess) {
+      throw new Error("SECURITY_VERIFICATION_REQUIRED: Re-authentication required to access financial data.");
+    }
   }
   return user;
 }

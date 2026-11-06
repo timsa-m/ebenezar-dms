@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, ChevronDown, Car, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface Vehicle {
   id: string;
@@ -120,7 +121,7 @@ export default function VehicleSearchSelect({
   }
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
+    <div ref={containerRef} className="relative w-full">
       {/* Hidden input for form submission */}
       <input type="hidden" name={name} value={selected?.id ?? ''} required={required} />
 
@@ -137,45 +138,24 @@ export default function VehicleSearchSelect({
           }
         }}
         onClick={openDropdown}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          padding: '0.625rem 1rem',
-          background: '#fff',
-          border: '1.5px solid #E5E7EB',
-          borderRadius: '0.625rem',
-          cursor: 'pointer',
-          gap: '0.75rem',
-          minHeight: '2.75rem',
-          transition: 'border-color 0.15s',
-          outline: 'none',
-        }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = '#6366F1')}
-        onBlur={(e) => (e.currentTarget.style.borderColor = '#E5E7EB')}
+        className={cn(
+          "flex items-center w-full px-4 py-2.5 rounded-[10px] cursor-pointer gap-3 min-h-[44px] transition-colors outline-none",
+          "bg-white dark:bg-[#101612] border border-gray-200 dark:border-[#29352D]",
+          "hover:border-gray-300 dark:hover:border-[#3a4b3f] focus-visible:border-amber-500 dark:focus-visible:border-[#B7FF3C]"
+        )}
       >
         {selected ? (
           <>
             {/* Icon */}
-            <div style={{
-              flexShrink: 0,
-              width: '2rem',
-              height: '2rem',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #F59E0B, #D97706)',
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+            <div className="shrink-0 size-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 dark:from-[#B7FF3C] dark:to-[#84cc16] text-white dark:text-[#090C0A] flex items-center justify-center">
               <Car size={14} strokeWidth={2.5} />
             </div>
             {/* Details */}
-            <div style={{ flex: 1, textAlign: 'left', minWidth: 0 }}>
-              <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: '#111113', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div className="flex-1 text-left min-w-0">
+              <p className="m-0 text-sm font-semibold text-gray-900 dark:text-[#F4F7F4] truncate">
                 {selected.registration_no}
               </p>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: '#9CA3AF', fontFamily: 'ui-monospace, monospace' }}>
+              <p className="m-0 text-xs text-gray-400 dark:text-[#A1ADA4] font-mono">
                 {selected.make_model}
               </p>
             </div>
@@ -184,65 +164,47 @@ export default function VehicleSearchSelect({
               type="button"
               onClick={handleClear}
               title="Clear selection"
-              style={{ flexShrink: 0, padding: '0.25rem', borderRadius: '50%', border: 'none', background: '#F3F4F6', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B7280' }}
+              className="shrink-0 p-1 rounded-full border-none bg-gray-100 dark:bg-[#1D2920] text-gray-500 dark:text-[#C1CBC3] hover:text-gray-900 dark:hover:text-[#F4F7F4] flex items-center justify-center cursor-pointer"
             >
               <X size={14} />
             </button>
           </>
         ) : (
           <>
-            <Car size={16} style={{ flexShrink: 0, color: '#9CA3AF' }} />
-            <span style={{ flex: 1, textAlign: 'left', fontSize: '0.875rem', color: '#9CA3AF' }}>
+            <Car size={16} className="shrink-0 text-gray-400 dark:text-[#A1ADA4]" />
+            <span className="flex-1 text-left text-sm text-gray-400 dark:text-[#A1ADA4]">
               {placeholder}
             </span>
-            <ChevronDown size={16} style={{ flexShrink: 0, color: '#9CA3AF' }} />
+            <ChevronDown size={16} className="shrink-0 text-gray-400 dark:text-[#A1ADA4]" />
           </>
         )}
       </div>
 
       {/* Dropdown */}
       {isOpen && (
-        <div style={{
-          position: 'absolute',
-          top: 'calc(100% + 4px)',
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          background: '#fff',
-          border: '1.5px solid #E5E7EB',
-          borderRadius: '0.75rem',
-          boxShadow: '0 10px 40px -4px rgba(0,0,0,0.12)',
-          overflow: 'hidden',
-        }}>
+        <div className="absolute top-[calc(100%+4px)] inset-x-0 z-50 bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] rounded-xl shadow-[0_10px_40px_-4px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_40px_-4px_rgba(0,0,0,0.7)] overflow-hidden">
           {/* Search input */}
-          <div style={{ padding: '0.625rem 0.75rem', borderBottom: '1px solid #F3F4F6', display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#FAFAFA' }}>
-            <Search size={15} style={{ flexShrink: 0, color: '#9CA3AF' }} />
+          <div className="px-3 py-2.5 border-b border-gray-100 dark:border-[#29352D] flex items-center gap-2 bg-gray-50/60 dark:bg-[#18221A]">
+            <Search size={15} className="shrink-0 text-gray-400 dark:text-[#A1ADA4]" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Type registration, make or model…"
-              style={{
-                flex: 1,
-                border: 'none',
-                outline: 'none',
-                background: 'transparent',
-                fontSize: '0.875rem',
-                color: '#111113',
-              }}
+              className="flex-1 border-none outline-none bg-transparent text-sm text-gray-900 dark:text-[#F4F7F4] placeholder:text-gray-400 dark:placeholder:text-[#5d6f62]"
             />
             {query && (
-              <button type="button" onClick={() => setQuery('')} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#9CA3AF', padding: 0 }}>
+              <button type="button" onClick={() => setQuery('')} className="border-none bg-none cursor-pointer text-gray-400 dark:text-[#A1ADA4] p-0">
                 <X size={13} />
               </button>
             )}
           </div>
 
           {/* Results */}
-          <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
+          <div className="max-h-[280px] overflow-y-auto">
             {filtered.length === 0 ? (
-              <div style={{ padding: '1.5rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.8125rem' }}>
+              <div className="p-6 text-center text-gray-400 dark:text-[#A1ADA4] text-[13px]">
                 No vehicles match &ldquo;{query}&rdquo;
               </div>
             ) : (
@@ -253,49 +215,35 @@ export default function VehicleSearchSelect({
                     key={vehicle.id}
                     type="button"
                     onClick={() => handleSelect(vehicle)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: '100%',
-                      padding: '0.625rem 0.875rem',
-                      gap: '0.75rem',
-                      border: 'none',
-                      background: isSelected ? '#FEF3C7' : 'transparent',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'background 0.1s',
-                      borderLeft: isSelected ? '3px solid #F59E0B' : '3px solid transparent',
-                    }}
-                    onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = '#F9FAFB'; }}
-                    onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
+                    className={cn(
+                      "flex items-center w-full px-3.5 py-2.5 gap-3 border-none cursor-pointer text-left transition-colors",
+                      isSelected
+                        ? "bg-amber-50 dark:bg-emerald-950/40 border-l-[3px] border-l-amber-500 dark:border-l-[#B7FF3C]"
+                        : "bg-transparent hover:bg-gray-50 dark:hover:bg-[#18221A] border-l-[3px] border-l-transparent"
+                    )}
                   >
                     {/* Icon */}
-                    <div style={{
-                      flexShrink: 0,
-                      width: '2rem',
-                      height: '2rem',
-                      borderRadius: '50%',
-                      background: isSelected
-                        ? 'linear-gradient(135deg, #F59E0B, #D97706)'
-                        : 'linear-gradient(135deg, #F3F4F6, #E5E7EB)',
-                      color: isSelected ? '#fff' : '#6B7280',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
+                    <div
+                      className={cn(
+                        "shrink-0 size-8 rounded-full flex items-center justify-center text-[11px] font-bold",
+                        isSelected
+                          ? "bg-gradient-to-br from-amber-500 to-amber-600 text-white dark:bg-[#B7FF3C] dark:text-[#090C0A]"
+                          : "bg-gray-100 dark:bg-[#1D2920] text-gray-600 dark:text-[#C1CBC3]"
+                      )}
+                    >
                       <Car size={14} strokeWidth={isSelected ? 2.5 : 2} />
                     </div>
                     {/* Details */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: '#111113', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div className="flex-1 min-w-0">
+                      <p className="m-0 text-sm font-semibold text-gray-900 dark:text-[#F4F7F4] truncate">
                         {vehicle.registration_no}
                       </p>
-                      <p style={{ margin: 0, fontSize: '0.75rem', color: '#9CA3AF', fontFamily: 'ui-monospace, monospace' }}>
+                      <p className="m-0 text-xs text-gray-400 dark:text-[#A1ADA4] font-mono">
                         {vehicle.make_model}
                       </p>
                     </div>
                     {isSelected && (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5" style={{ flexShrink: 0 }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 text-amber-500 dark:text-[#B7FF3C]">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     )}
@@ -306,7 +254,7 @@ export default function VehicleSearchSelect({
           </div>
 
           {/* Footer count */}
-          <div style={{ padding: '0.5rem 0.875rem', borderTop: '1px solid #F3F4F6', background: '#FAFAFA', fontSize: '0.6875rem', color: '#9CA3AF', textAlign: 'right' }}>
+          <div className="px-3.5 py-2 border-t border-gray-100 dark:border-[#29352D] bg-gray-50/60 dark:bg-[#18221A] text-[11px] text-gray-400 dark:text-[#A1ADA4] text-right">
             {filtered.length} of {safeVehicles.length} vehicles
           </div>
         </div>

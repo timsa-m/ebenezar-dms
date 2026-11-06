@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Serif } from "next/font/google";
 import { Toaster } from "sonner";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import ScrollRestorer from "@/components/ScrollRestorer";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -42,22 +43,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="antialiased">
-      <body className={`${inter.variable} ${ibmPlexSerif.variable} min-h-screen bg-[#FAFAFA] text-gray-900 selection:bg-accent/20 selection:text-accent`}>
-        <ScrollRestorer />
-        {children}
-        <ScrollToTopButton />
-        <Toaster 
-          position="bottom-right" 
-          richColors 
-          closeButton 
-          toastOptions={{
-            classNames: {
-              error: 'bg-red-600 text-white border-red-700',
-              success: 'bg-emerald-600 text-white border-emerald-700',
-            }
-          }}
-        />
+    <html lang="en" className="antialiased" suppressHydrationWarning>
+      <body className={`${inter.variable} ${ibmPlexSerif.variable} min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary transition-colors duration-200`}>
+        <ThemeProvider>
+          <ScrollRestorer />
+          {children}
+          <ScrollToTopButton />
+          <Toaster 
+            position="bottom-right" 
+            richColors 
+            closeButton 
+            toastOptions={{
+              classNames: {
+                error: 'bg-red-600 text-white border-red-700',
+                success: 'bg-emerald-600 text-white border-emerald-700',
+              }
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

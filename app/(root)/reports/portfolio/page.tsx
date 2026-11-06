@@ -288,7 +288,7 @@ export default async function PortfolioReportPage() {
                       </td>
                     </tr>
                   ) : (
-                    expenses.generalByCategory.map((cat) => (
+                    expenses.generalByCategory.map((cat: any) => (
                       <tr key={cat.category} className="data-table-row">
                         <td className="data-td font-semibold text-gray-900">{cat.category}</td>
                         <td className="data-td text-center text-gray-500 tabular-nums">{cat.count}</td>
@@ -356,7 +356,7 @@ export default async function PortfolioReportPage() {
                       </td>
                     </tr>
                   ) : (
-                    expenses.vehicleCostsByType.map((cost) => (
+                    expenses.vehicleCostsByType.map((cost: any) => (
                       <tr key={cost.costType} className="data-table-row">
                         <td className="data-td font-semibold text-gray-900">{cost.label}</td>
                         <td className="data-td text-center text-gray-500 tabular-nums">{cost.count}</td>
@@ -424,7 +424,7 @@ export default async function PortfolioReportPage() {
                   </td>
                 </tr>
               ) : (
-                expenses.topCostVehicles.map((unit) => (
+                expenses.topCostVehicles.map((unit: any) => (
                   <tr key={unit.id} className="data-table-row">
                     <td className="data-td">
                       <Link
@@ -498,7 +498,7 @@ export default async function PortfolioReportPage() {
                 </tr>
               </thead>
               <tbody>
-                {inventory.statusBreakdown.map((row) => (
+                {inventory.statusBreakdown.map((row: any) => (
                   <tr key={row.status} className="data-table-row">
                     <td className="data-td">
                       <span className={`badge ${row.badgeClass}`}>{row.label}</span>
@@ -559,18 +559,18 @@ export default async function PortfolioReportPage() {
           </div>
           <br />
 
-          <div className="grid grid-cols-3 gap-2 text-center text-xs pt-3 border-t border-gray-100">
-            <div className="p-2 bg-amber-50 rounded-lg">
-              <p className="text-11 text-amber-700 font-semibold">PAR30</p>
-              <p className="text-14 font-bold text-amber-900 mt-0.5">{financing.par30Rate}%</p>
+          <div className="grid grid-cols-3 gap-2 text-center text-xs pt-3 border-t border-gray-100 dark:border-[#29352D]">
+            <div className="p-2 bg-amber-50 dark:bg-amber-950/40 rounded-lg ring-1 ring-amber-100 dark:ring-amber-900/40">
+              <p className="text-11 text-amber-700 dark:text-amber-400 font-semibold">PAR30</p>
+              <p className="text-14 font-bold text-amber-900 dark:text-[#F4F7F4] mt-0.5">{financing.par30Rate}%</p>
             </div>
-            <div className="p-2 bg-orange-50 rounded-lg">
-              <p className="text-11 text-orange-700 font-semibold">PAR60</p>
-              <p className="text-14 font-bold text-orange-900 mt-0.5">{financing.par60Rate}%</p>
+            <div className="p-2 bg-orange-50 dark:bg-orange-950/40 rounded-lg ring-1 ring-orange-100 dark:ring-orange-900/40">
+              <p className="text-11 text-orange-700 dark:text-orange-400 font-semibold">PAR60</p>
+              <p className="text-14 font-bold text-orange-900 dark:text-[#F4F7F4] mt-0.5">{financing.par60Rate}%</p>
             </div>
-            <div className="p-2 bg-red-50 rounded-lg">
-              <p className="text-11 text-red-700 font-semibold">PAR90</p>
-              <p className="text-14 font-bold text-red-900 mt-0.5">{financing.par90Rate}%</p>
+            <div className="p-2 bg-red-50 dark:bg-rose-950/40 rounded-lg ring-1 ring-red-100 dark:ring-rose-900/40">
+              <p className="text-11 text-red-700 dark:text-rose-400 font-semibold">PAR90</p>
+              <p className="text-14 font-bold text-red-900 dark:text-[#F4F7F4] mt-0.5">{financing.par90Rate}%</p>
             </div>
           </div>
         </div>
@@ -612,7 +612,7 @@ export default async function PortfolioReportPage() {
                 </tr>
               </thead>
               <tbody>
-                {financing.topAtRiskDebtors.map((debtor) => (
+                {financing.topAtRiskDebtors.map((debtor: any) => (
                   <tr key={debtor.id} className="data-table-row relative cursor-pointer hover:bg-red-50/40 transition-colors">
                     <td className="data-td font-roboto font-bold text-blue-600 relative">
                       <Link
@@ -686,7 +686,7 @@ export default async function PortfolioReportPage() {
                   </td>
                 </tr>
               ) : (
-                expenses.recentLedger.map((item) => (
+                expenses.recentLedger.map((item: any) => (
                   <tr key={item.id} className="data-table-row">
                     <td className="data-td text-xs text-gray-600 font-roboto">
                       {new Date(item.date).toLocaleDateString("en-KE", {

@@ -110,35 +110,35 @@ export default function ArrearsLedgerTable({
     switch (bucket) {
       case "1-30":
         return (
-          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#F5BD4F] border border-amber-200 dark:border-amber-900/40">
             <Clock className="size-3" />
             1–30d (Watchlist)
           </span>
         );
       case "31-60":
         return (
-          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
+          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-50 dark:bg-amber-950/40 text-orange-700 dark:text-[#F5BD4F] border border-orange-200 dark:border-amber-900/40">
             <AlertTriangle className="size-3" />
             31–60d (Substandard)
           </span>
         );
       case "61-90":
         return (
-          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200">
+          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/40">
             <AlertTriangle className="size-3" />
             61–90d (Defaulting)
           </span>
         );
       case "90+":
         return (
-          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 font-extrabold animate-pulse">
-            <ShieldAlert className="size-3 text-rose-700" />
+          <span className="inline-flex items-center gap-1 text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-100 dark:bg-red-950/60 text-rose-800 dark:text-[#FF626D] border border-rose-300 dark:border-red-900/60 font-extrabold animate-pulse">
+            <ShieldAlert className="size-3 text-rose-700 dark:text-[#FF626D]" />
             90+d (Repossession)
           </span>
         );
       default:
         return (
-          <span className="text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+          <span className="text-10 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 dark:bg-[#18221A] text-gray-700 dark:text-[#C1CBC3] border border-transparent dark:border-[#29352D]">
             {bucket}
           </span>
         );
@@ -146,35 +146,35 @@ export default function ArrearsLedgerTable({
   };
 
   return (
-    <div className="card-premium space-y-4">
+    <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] space-y-4">
       {/* Title & Filter Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-gray-100">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-gray-100 dark:border-[#29352D]">
         <div>
-          <h3 className="text-16 font-bold text-gray-900 tracking-tight flex items-center gap-2">
+          <h3 className="text-16 font-bold text-gray-900 dark:text-[#F4F7F4] tracking-tight flex items-center gap-2">
             <span>Overdue Agreements Ledger</span>
-            <span className="text-12 font-medium bg-red-50 text-red-700 px-2.5 py-0.5 rounded-full border border-red-200">
+            <span className="text-12 font-medium bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 px-2.5 py-0.5 rounded-full border border-red-200 dark:border-red-900/40">
               {rows.length} contract{rows.length !== 1 ? "s" : ""}
             </span>
           </h3>
-          <p className="text-12 text-gray-400 mt-0.5">
+          <p className="text-12 text-gray-400 dark:text-[#A1ADA4] mt-0.5">
             Active vehicle hire-purchase agreements with unpaid installments or overdue balance
           </p>
         </div>
 
         {/* Search input */}
         <div className="relative w-full lg:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 dark:text-[#A1ADA4]" />
           <input
             type="text"
             placeholder="Search client, contract, plate..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 py-2 text-13 bg-gray-50/70 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-gray-800 placeholder-gray-400"
+            className="w-full pl-9 pr-8 py-2 text-13 bg-gray-50/70 dark:bg-[#101612] border border-gray-200 dark:border-[#29352D] rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all text-gray-800 dark:text-[#F4F7F4] placeholder-gray-400 dark:placeholder-[#5d6f62]"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] hover:text-gray-600 dark:hover:text-[#F4F7F4] p-0.5"
             >
               <X className="size-3.5" />
             </button>
@@ -189,15 +189,15 @@ export default function ArrearsLedgerTable({
           className={cn(
             "px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             selectedBucket === "ALL"
-              ? "bg-gray-900 text-white shadow-xs"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-gray-900 text-white dark:bg-[#B7FF3C] dark:text-[#090C0A] shadow-xs"
+              : "bg-gray-100 dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] hover:bg-gray-200 dark:hover:bg-[#1D2920]"
           )}
         >
           All Overdue
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              selectedBucket === "ALL" ? "bg-gray-700 text-white" : "bg-white text-gray-600"
+              selectedBucket === "ALL" ? "bg-gray-700 text-white dark:bg-[#090C0A]/20 dark:text-[#090C0A]" : "bg-white dark:bg-[#101612] text-gray-600 dark:text-[#A1ADA4]"
             )}
           >
             {counts.all}
@@ -210,14 +210,14 @@ export default function ArrearsLedgerTable({
             "px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             selectedBucket === "1-30"
               ? "bg-amber-600 text-white shadow-xs"
-              : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/50"
+              : "bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-[#F5BD4F] hover:bg-amber-100 dark:hover:bg-amber-950/60 border border-amber-200/50 dark:border-amber-900/40"
           )}
         >
           1–30 Days (Watchlist)
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              selectedBucket === "1-30" ? "bg-amber-700 text-white" : "bg-white text-amber-800"
+              selectedBucket === "1-30" ? "bg-amber-700 text-white" : "bg-white dark:bg-amber-900/40 text-amber-800 dark:text-[#F5BD4F]"
             )}
           >
             {counts.b1_30}
@@ -230,14 +230,14 @@ export default function ArrearsLedgerTable({
             "px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             selectedBucket === "31-60"
               ? "bg-orange-600 text-white shadow-xs"
-              : "bg-orange-50 text-orange-800 hover:bg-orange-100 border border-orange-200/50"
+              : "bg-orange-50 dark:bg-amber-950/30 text-orange-800 dark:text-amber-400 hover:bg-orange-100 dark:hover:bg-amber-950/50 border border-orange-200/50 dark:border-amber-900/40"
           )}
         >
           31–60 Days (Substandard)
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              selectedBucket === "31-60" ? "bg-orange-700 text-white" : "bg-white text-orange-800"
+              selectedBucket === "31-60" ? "bg-orange-700 text-white" : "bg-white dark:bg-amber-900/40 text-orange-800 dark:text-amber-400"
             )}
           >
             {counts.b31_60}
@@ -250,14 +250,14 @@ export default function ArrearsLedgerTable({
             "px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             selectedBucket === "61-90"
               ? "bg-red-600 text-white shadow-xs"
-              : "bg-red-50 text-red-800 hover:bg-red-100 border border-red-200/50"
+              : "bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-950/60 border border-red-200/50 dark:border-red-900/40"
           )}
         >
           61–90 Days (Defaulting)
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              selectedBucket === "61-90" ? "bg-red-700 text-white" : "bg-white text-red-800"
+              selectedBucket === "61-90" ? "bg-red-700 text-white" : "bg-white dark:bg-red-900/40 text-red-800 dark:text-red-300"
             )}
           >
             {counts.b61_90}
@@ -270,7 +270,7 @@ export default function ArrearsLedgerTable({
             "px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             selectedBucket === "90+"
               ? "bg-rose-900 text-white shadow-xs"
-              : "bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200"
+              : "bg-rose-50 dark:bg-red-950/50 text-rose-800 dark:text-red-300 hover:bg-rose-100 dark:hover:bg-red-950/70 border border-rose-200 dark:border-red-900/50"
           )}
         >
           <ShieldAlert className="size-3.5" />
@@ -278,7 +278,7 @@ export default function ArrearsLedgerTable({
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              selectedBucket === "90+" ? "bg-rose-950 text-white" : "bg-white text-rose-800"
+              selectedBucket === "90+" ? "bg-rose-950 text-white" : "bg-white dark:bg-red-900/50 text-rose-800 dark:text-red-300"
             )}
           >
             {counts.b90plus}
@@ -375,54 +375,54 @@ export default function ArrearsLedgerTable({
                 </tr>
               ) : (
                 filteredRows.map((row) => (
-                  <tr key={row.loanId} className="data-table-row hover:bg-red-50/20 transition-colors">
+                  <tr key={row.loanId} className="data-table-row hover:bg-red-50/20 dark:hover:bg-red-950/20 transition-colors">
                     {/* Contract # */}
                     <td className="data-td font-medium">
                       <Link
                         href={`/loans/${row.loanId}`}
-                        className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline font-mono text-12"
+                        className="inline-flex items-center gap-1.5 text-blue-600 dark:text-[#65C8F2] hover:text-blue-800 dark:hover:text-[#B7FF3C] hover:underline font-mono text-12"
                       >
-                        <FileText className="size-3.5 text-gray-400" />
+                        <FileText className="size-3.5 text-gray-400 dark:text-[#A1ADA4]" />
                         {row.contractNo || "—"}
                       </Link>
                     </td>
 
                     {/* Client */}
                     <td className="data-td">
-                      <div className="font-semibold text-gray-900 text-13">{row.clientName}</div>
+                      <div className="font-semibold text-gray-900 dark:text-[#F4F7F4] text-13">{row.clientName}</div>
                       {row.clientPhone ? (
                         <a
                           href={`tel:${row.clientPhone}`}
-                          className="inline-flex items-center gap-1 text-gray-400 hover:text-blue-600 text-11 mt-0.5"
+                          className="inline-flex items-center gap-1 text-gray-400 dark:text-[#A1ADA4] hover:text-blue-600 dark:hover:text-[#B7FF3C] text-11 mt-0.5"
                         >
                           <Phone className="size-3" />
                           {row.clientPhone}
                         </a>
                       ) : (
-                        <span className="text-11 text-gray-300">No phone</span>
+                        <span className="text-11 text-gray-300 dark:text-[#5d6f62]">No phone</span>
                       )}
                     </td>
 
                     {/* Vehicle Plate */}
                     <td className="data-td">
-                      <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded font-mono font-bold text-11 bg-amber-50 text-amber-900 border border-amber-200">
-                        <Car className="size-3 text-amber-700" />
+                      <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded font-mono font-bold text-11 bg-amber-50 dark:bg-[#18221A] text-amber-900 dark:text-[#B7FF3C] border border-amber-200 dark:border-[#29352D]">
+                        <Car className="size-3 text-amber-700 dark:text-[#B7FF3C]" />
                         {row.vehicleReg || "N/A"}
                       </div>
                     </td>
 
                     {/* Principal Financed */}
-                    <td className="data-td text-right tabular-nums text-gray-600 text-12">
+                    <td className="data-td text-right tabular-nums text-gray-600 dark:text-[#C1CBC3] text-12">
                       {formatAmount(row.principalAmount)}
                     </td>
 
                     {/* Overdue Balance */}
-                    <td className="data-td text-right tabular-nums font-bold text-red-600 text-13">
+                    <td className="data-td text-right tabular-nums font-bold text-red-600 dark:text-[#FF626D] text-13">
                       {formatAmount(row.balance)}
                     </td>
 
                     {/* Penalties Accrued */}
-                    <td className="data-td text-right tabular-nums text-amber-600 font-medium text-12">
+                    <td className="data-td text-right tabular-nums text-amber-600 dark:text-[#F5BD4F] font-medium text-12">
                       {formatAmount(row.penaltyAccrued)}
                     </td>
 
@@ -432,12 +432,12 @@ export default function ArrearsLedgerTable({
                         className={cn(
                           "inline-block font-extrabold tabular-nums px-2 py-0.5 rounded text-12",
                           row.daysPastDue > 90
-                            ? "bg-rose-100 text-rose-800 border border-rose-300"
+                            ? "bg-rose-100 dark:bg-red-950/50 text-rose-800 dark:text-[#FF626D] border border-rose-300 dark:border-red-900/50"
                             : row.daysPastDue > 60
-                            ? "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/40"
                             : row.daysPastDue > 30
-                            ? "bg-orange-50 text-orange-700 border border-orange-200"
-                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                            ? "bg-orange-50 dark:bg-amber-950/40 text-orange-700 dark:text-[#F5BD4F] border border-orange-200 dark:border-amber-900/40"
+                            : "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-[#F5BD4F] border border-amber-200 dark:border-amber-900/30"
                         )}
                       >
                         {row.daysPastDue}d
@@ -451,7 +451,7 @@ export default function ArrearsLedgerTable({
                     <td className="data-td text-center print:hidden">
                       <Link
                         href={`/loans/${row.loanId}`}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-11 font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-11 font-medium bg-gray-100 dark:bg-[#18221A] hover:bg-gray-200 dark:hover:bg-[#1D2920] text-gray-700 dark:text-[#C1CBC3] border border-transparent dark:border-[#29352D] transition-colors"
                       >
                         <span>View</span>
                         <ExternalLink className="size-3" />
@@ -465,20 +465,20 @@ export default function ArrearsLedgerTable({
             {/* Totals Footer */}
             {filteredRows.length > 0 && (
               <tfoot>
-                <tr className="border-t-2 border-gray-200 bg-gray-50/80 font-semibold">
-                  <td colSpan={3} className="data-td text-gray-900 font-bold">
+                <tr className="border-t-2 border-gray-200 dark:border-[#29352D] bg-gray-50/80 dark:bg-[#18221A] font-semibold">
+                  <td colSpan={3} className="data-td text-gray-900 dark:text-[#F4F7F4] font-bold">
                     {selectedBucket === "ALL" && !search
                       ? "Total Delinquent Portfolio"
                       : `Filtered Subtotal (${filteredRows.length} contracts)`}
                   </td>
                   <td className="data-td" />
-                  <td className="data-td text-right font-extrabold text-red-600 tabular-nums text-13">
+                  <td className="data-td text-right font-extrabold text-red-600 dark:text-[#FF626D] tabular-nums text-13">
                     {formatAmount(filteredTotals.overdue)}
                   </td>
-                  <td className="data-td text-right font-bold text-amber-600 tabular-nums text-12">
+                  <td className="data-td text-right font-bold text-amber-600 dark:text-[#F5BD4F] tabular-nums text-12">
                     {formatAmount(filteredTotals.penalties)}
                   </td>
-                  <td colSpan={3} className="data-td text-gray-400 text-11 text-right">
+                  <td colSpan={3} className="data-td text-gray-400 dark:text-[#A1ADA4] text-11 text-right">
                     KES {(filteredTotals.overdue + filteredTotals.penalties).toLocaleString()} total claim
                   </td>
                 </tr>

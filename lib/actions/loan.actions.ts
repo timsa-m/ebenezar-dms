@@ -8,6 +8,9 @@ import { getLoggedInUser } from "./user.actions";
 import { logAuditEvent } from "./audit.actions";
 import { triggerEventNotification, scheduleLoanReminders } from "./collections.actions";
 import { requireManagerRole, requireAdminRole } from "./user.actions";
+import { logSecurityAudit } from '@/lib/security/audit';
+import { enforceActionPermission } from '@/lib/security/rbac';
+import { consumeVerificationGrant } from '@/lib/security/tokens';
 
 function mapLoanRow(row: any): Loan {
   return {
@@ -1400,11 +1403,25 @@ export const renewLoan = async (oldLoanId: string) => {
   }
 };
 
-export const writeOffLoan = async (loanId: string, reason: string) => {
+export const writeOffLoan = async (loanId: string, reason: string, verificationToken?: string) => {
   try {
     const currentUser = await requireAdminRole();
+    enforceActionPermission(currentUser, 'CONTRACT_WRITE_OFF');
+
     if (!reason || !reason.trim()) {
       throw new Error("A reason is required to write off a loan.");
+    }
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId ?? currentUser.$id ?? '',
+        action: 'CONTRACT_WRITE_OFF',
+        resourceId: loanId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
     }
 
     const supabase = createSupabaseAdminClient();
@@ -1444,6 +1461,19 @@ export const writeOffLoan = async (loanId: string, reason: string) => {
       newValue: "Written Off",
     });
 
+    await logSecurityAudit({
+      userId: currentUser.userId ?? currentUser.$id ?? null,
+      action: 'CONTRACT_WRITE_OFF',
+      resourceType: 'loan',
+      resourceId: loanId,
+      status: 'SUCCESS',
+      reason: reason.trim(),
+      metadata: {
+        previousStatus: loan.status,
+        balanceWrittenOff: loan.balance,
+      },
+    });
+
     revalidatePath("/");
     revalidatePath("/loans");
     revalidatePath(`/loans/${loanId}`);
@@ -1459,7 +1489,9 @@ export const waiveLoanBalance = async (
   loanId: string,
   waiverType: "Principal" | "Interest" | "Penalty",
   amount: number,
-  reason: string
+  reason: string,
+  waiverDate?: string,
+  verificationToken?: string
 ) => {
   try {
     let currentUser;
@@ -1476,11 +1508,26 @@ export const waiveLoanBalance = async (
     } else {
       currentUser = await requireManagerRole();
     }
+
+    enforceActionPermission(currentUser, 'BALANCE_WAIVER');
+
     if (!reason || !reason.trim()) {
       throw new Error("A reason is required to waive any loan outstanding balance.");
     }
     if (amount <= 0) {
       throw new Error("Waiver amount must be greater than zero.");
+    }
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId ?? currentUser.$id ?? '',
+        action: 'BALANCE_WAIVER',
+        resourceId: loanId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
     }
 
     const supabase = createSupabaseAdminClient();
@@ -1551,7 +1598,7 @@ export const waiveLoanBalance = async (
 
     if (updateError) throw updateError;
 
-    const effectiveDate = new Date().toISOString();
+    const effectiveDate = waiverDate ? new Date(waiverDate).toISOString() : new Date().toISOString();
 
     // 5. Create a transaction of type 'Waiver'
     const { error: txError } = await supabase
@@ -1608,9 +1655,27 @@ export const waiveLoanBalance = async (
       description: `Waiver of KES ${amount.toLocaleString()} applied to outstanding ${waiverType.toLowerCase()} by ${currentUser.firstName} ${currentUser.lastName}. Reason: ${reason.trim()}`,
     });
 
+    await logSecurityAudit({
+      userId: currentUser.userId ?? currentUser.$id ?? null,
+      action: 'BALANCE_WAIVER',
+      resourceType: 'loan',
+      resourceId: loanId,
+      status: 'SUCCESS',
+      reason: reason.trim(),
+      metadata: {
+        waiverType,
+        amountWaived: amount,
+        effectiveDate,
+      },
+    });
+
     if (process.env.TEST_SUITE !== "true") {
       revalidatePath(`/loans/${loanId}`);
+      revalidatePath(`/loans/${loanId}/statement`);
+      revalidatePath("/loans");
+      revalidatePath("/");
     }
+
     return parseStringify(mapLoanRow(updatedLoan));
   } catch (error) {
     console.error("Error waiving loan balance", error);
@@ -1674,10 +1739,24 @@ export const getDashboardTrendData = unstable_cache(async () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Hard-delete a loan and all its child installments/transactions/penalties.
- *  Only callable by ADMIN role. Cascades via ON DELETE CASCADE FK constraints. */
-export const deleteLoan = async (loanId: string): Promise<{ success: boolean; error?: string }> => {
+ *  Only callable by ADMIN role. Requires security action authorization. */
+export const deleteLoan = async (loanId: string, verificationToken?: string): Promise<{ success: boolean; error?: string }> => {
   try {
     const currentUser = await requireAdminRole();
+    enforceActionPermission(currentUser, 'CONTRACT_DELETE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId ?? currentUser.$id ?? '',
+        action: 'CONTRACT_DELETE',
+        resourceId: loanId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createSupabaseAdminClient();
 
     const { error } = await supabase.from("loans").delete().eq("id", loanId);
@@ -1688,10 +1767,19 @@ export const deleteLoan = async (loanId: string): Promise<{ success: boolean; er
       entityType: "loan",
       action: "LOAN_UPDATED",
       performedBy: `${currentUser.firstName} ${currentUser.lastName}`,
-      userId: currentUser.$id ?? currentUser.userId ?? "system",
+      userId: currentUser.userId ?? currentUser.$id ?? "system",
       description: `[DATA CORRECTION] Loan ${loanId} permanently deleted by admin.`,
       previousValue: "Exists",
       newValue: "Deleted",
+    });
+
+    await logSecurityAudit({
+      userId: currentUser.userId ?? currentUser.$id ?? null,
+      action: 'CONTRACT_DELETE',
+      resourceType: 'loan',
+      resourceId: loanId,
+      status: 'SUCCESS',
+      reason: 'Loan record permanently deleted by administrator.',
     });
 
     revalidatePath("/");
@@ -1704,19 +1792,34 @@ export const deleteLoan = async (loanId: string): Promise<{ success: boolean; er
 };
 
 /** Hard-delete a single transaction/repayment row.
- *  Only callable by ADMIN role. */
+ *  Only callable by ADMIN role. Requires security action authorization. */
 export const deleteTransaction = async (
   transactionId: string,
-  loanId: string
+  loanId: string,
+  verificationToken?: string
 ): Promise<{ success: boolean; error?: string }> => {
   try {
     const currentUser = await requireAdminRole();
+    enforceActionPermission(currentUser, 'PAYMENT_DELETE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId ?? currentUser.$id ?? '',
+        action: 'PAYMENT_DELETE',
+        resourceId: transactionId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createSupabaseAdminClient();
 
     // 1. Check if this is a repayment in repayments table (DMS architecture)
     const { data: repayment } = await supabase
       .from("repayments")
-      .select("id, agreement_id")
+      .select("id, agreement_id, amount_paid, receipt_no")
       .eq("id", transactionId)
       .maybeSingle();
 
@@ -1731,6 +1834,20 @@ export const deleteTransaction = async (
 
       const { recascadeAgreementInstallments } = await import("./dms.actions");
       await recascadeAgreementInstallments(targetAgreementId);
+
+      await logSecurityAudit({
+        userId: currentUser.userId ?? currentUser.$id ?? null,
+        action: 'PAYMENT_DELETE',
+        resourceType: 'repayment',
+        resourceId: transactionId,
+        status: 'SUCCESS',
+        reason: 'Repayment transaction deleted by admin.',
+        metadata: {
+          agreementId: targetAgreementId,
+          receiptNo: repayment.receipt_no,
+          amount: repayment.amount_paid,
+        },
+      });
 
       revalidatePath(`/loans/${targetAgreementId}`);
       revalidatePath("/loans");
@@ -1753,6 +1870,16 @@ export const deleteTransaction = async (
         description: `[DATA CORRECTION] Transaction ${transactionId} permanently deleted by admin.`,
         previousValue: "Exists",
         newValue: "Deleted",
+      });
+
+      await logSecurityAudit({
+        userId: currentUser.userId ?? currentUser.$id ?? null,
+        action: 'PAYMENT_DELETE',
+        resourceType: 'loan_transaction',
+        resourceId: transactionId,
+        status: 'SUCCESS',
+        reason: 'Legacy loan transaction deleted by admin.',
+        metadata: { loanId },
       });
 
       await healLoanLedger(loanId, supabase);

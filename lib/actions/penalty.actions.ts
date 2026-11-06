@@ -5,6 +5,9 @@ import { parseStringify, formatAmount } from "../utils";
 import { revalidatePath } from "next/cache";
 import { getLoggedInUser, requireManagerRole } from "./user.actions";
 import { triggerEventNotification } from "./collections.actions";
+import { logSecurityAudit } from "@/lib/security/audit";
+import { enforceActionPermission } from "@/lib/security/rbac";
+import { consumeVerificationGrant } from "@/lib/security/tokens";
 
 function mapPenaltyRow(row: any): Penalty {
   return {
@@ -222,9 +225,22 @@ export const getPenaltiesByLoan = async (loanId: string) => {
   }
 };
 
-export const reversePenalty = async (penaltyId: string, loanId: string) => {
+export const reversePenalty = async (penaltyId: string, loanId: string, verificationToken?: string) => {
   try {
     const currentUser = await requireManagerRole();
+    enforceActionPermission(currentUser, 'PENALTY_REVERSE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId ?? currentUser.$id ?? '',
+        action: 'PENALTY_REVERSE',
+        resourceId: penaltyId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
 
     const supabase = createSupabaseAdminClient();
 
@@ -282,6 +298,19 @@ export const reversePenalty = async (penaltyId: string, loanId: string) => {
           .eq("id", penalty.client_id);
       }
     }
+
+    await logSecurityAudit({
+      userId: currentUser.userId ?? currentUser.$id ?? null,
+      action: 'PENALTY_REVERSE',
+      resourceType: 'penalty',
+      resourceId: penaltyId,
+      status: 'SUCCESS',
+      reason: 'Penalty charge reversed by authorized manager.',
+      metadata: {
+        loanId,
+        amount: penalty.amount,
+      },
+    });
 
     revalidatePath(`/loans/${loanId}`);
     return parseStringify(mapPenaltyRow(reversed));

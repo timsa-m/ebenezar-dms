@@ -169,12 +169,12 @@ export default function CreateVehiclePage() {
               {/* Basic Details Section */}
               <div className="card-premium p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-primary/5 rounded-lg text-primary">
+                  <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                     <Car className="size-5" />
                   </div>
                   <div>
-                    <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Vehicle Identity</h3>
-                    <p className="text-xs text-gray-500">Core vehicle specifications and registration details</p>
+                    <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Vehicle Identity</h3>
+                    <p className="text-xs text-gray-500 dark:text-[#A1ADA4]">Core vehicle specifications and registration details</p>
                   </div>
                 </div>
 
@@ -267,12 +267,12 @@ export default function CreateVehiclePage() {
               {/* Technical & Pricing Section */}
               <div className="card-premium p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-primary/5 rounded-lg text-primary">
+                  <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                     <Settings className="size-5" />
                   </div>
                   <div>
-                    <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Technical & Valuation</h3>
-                    <p className="text-xs text-gray-500">Chassis, engine numbers, and acquisition pricing</p>
+                    <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Technical & Valuation</h3>
+                    <p className="text-xs text-gray-500 dark:text-[#A1ADA4]">Chassis, engine numbers, and acquisition pricing</p>
                   </div>
                 </div>
 
@@ -349,20 +349,20 @@ export default function CreateVehiclePage() {
               </div>
 
               {/* Seller & Purchase Agreement Section */}
-              <div className="card-premium p-8 border-2 border-emerald-500/20 bg-emerald-50/10">
+              <div className="card-premium p-8 border-2 border-emerald-500/20 bg-emerald-50/10 dark:bg-emerald-950/10 dark:border-emerald-900/40">
                 <div className="flex items-center justify-between gap-4 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-600/10 rounded-lg text-emerald-700">
+                    <div className="p-2 bg-emerald-600/10 dark:bg-emerald-950/40 rounded-lg text-emerald-700 dark:text-[#B7FF3C] ring-1 ring-emerald-600/20 dark:ring-emerald-900/40">
                       <FileText className="size-5" />
                     </div>
                     <div>
-                      <h3 className="text-16 font-semibold text-gray-900 tracking-tight flex items-center gap-2">
+                      <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight flex items-center gap-2">
                         Seller &amp; Purchase Agreement Details
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-[#B7FF3C] border border-transparent dark:border-emerald-900/40">
                           Legal Contract
                         </span>
                       </h3>
-                      <p className="text-xs text-gray-500">Record vendor identity and automatically generate the Motor Vehicle Purchase Agreement</p>
+                      <p className="text-xs text-gray-500 dark:text-[#A1ADA4]">Record vendor identity and automatically generate the Motor Vehicle Purchase Agreement</p>
                     </div>
                   </div>
 
@@ -594,12 +594,12 @@ export default function CreateVehiclePage() {
             <div className="lg:col-span-1">
               <div className="card-premium p-6 h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-primary/5 rounded-lg text-primary">
+                  <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                     <Camera className="size-5" />
                   </div>
                   <div>
-                    <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Vehicle Photos</h3>
-                    <p className="text-xs text-gray-500">Inventory and condition pictures</p>
+                    <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Vehicle Photos</h3>
+                    <p className="text-xs text-gray-500 dark:text-[#A1ADA4]">Inventory and condition pictures</p>
                   </div>
                 </div>
 

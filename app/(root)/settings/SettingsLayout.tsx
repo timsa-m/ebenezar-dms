@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
+import { useTheme } from 'next-themes';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import HeaderBox from '@/components/HeaderBox';
 import { updateCompanySettings } from '@/lib/actions/settings.actions';
-import { uploadUserAvatar, updateUserProfile } from '@/lib/actions/user.actions';
+import { uploadUserAvatar, updateUserProfile, updateUserThemePreference } from '@/lib/actions/user.actions';
 import { toast } from '@/lib/toast';
 import confetti from 'canvas-confetti';
 import {
@@ -25,6 +26,7 @@ import {
   Moon,
   Monitor,
   Loader2,
+  Check,
 } from 'lucide-react';
 
 export default function SettingsLayout({
@@ -40,6 +42,25 @@ export default function SettingsLayout({
   const [isPending, startTransition] = useTransition();
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(user?.avatarUrl || null);
+
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const currentTheme = mounted ? theme : (user?.themePreference || 'system');
+
+  const handleThemeChange = async (newTheme: 'light' | 'dark' | 'system') => {
+    setTheme(newTheme);
+    try {
+      await updateUserThemePreference(newTheme);
+      toast.success(`Theme preference set to ${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)}`);
+    } catch (e) {
+      console.error('Failed to sync theme preference:', e);
+    }
+  };
 
   const [formData, setFormData] = useState({
     company_name: initialSettings?.company_name || 'EBENEZAR ENTERPRISES CAR BAZAAR',
@@ -355,18 +376,18 @@ export default function SettingsLayout({
             {/* Appearance */}
             {activeTab === 'Appearance' && (
               <div>
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 pb-6 dark:border-[#29352D]">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-[#B7FF3C]/15 dark:text-[#B7FF3C]">
                       <Palette className="size-5" />
                     </div>
 
                     <div>
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-[#F4F7F4]">
                         Appearance
                       </h3>
-                      <p className="mt-1 text-sm leading-6 text-gray-500">
-                        Customize how the dashboard looks and feels.
+                      <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-[#A1ADA4]">
+                        Customize how the dealership management system looks and feels across your devices.
                       </p>
                     </div>
                   </div>
@@ -375,11 +396,11 @@ export default function SettingsLayout({
                 <div className="space-y-8">
                   <div>
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
                         Interface theme
                       </h4>
-                      <p className="mt-1 text-sm text-gray-500">
-                        Choose how the application should appear on your device.
+                      <p className="mt-1 text-sm text-gray-500 dark:text-[#A1ADA4]">
+                        Select Light, Dark (Midnight Lime), or System mode. Your preference syncs to your user profile and active session.
                       </p>
                     </div>
 
@@ -387,19 +408,24 @@ export default function SettingsLayout({
                       {/* Light */}
                       <button
                         type="button"
-                        className="group rounded-2xl border border-primary/30 bg-white/80 p-4 text-left shadow-sm ring-2 ring-primary/10 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                        onClick={() => handleThemeChange('light')}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                          currentTheme === 'light'
+                            ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
+                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                        }`}
                       >
-                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200/80 bg-gray-50">
-                          <div className="w-[78%] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-                            <div className="flex h-5 items-center gap-1 border-b border-gray-100 px-2">
-                              <span className="size-1.5 rounded-full bg-gray-200" />
-                              <span className="size-1.5 rounded-full bg-gray-200" />
-                              <span className="size-1.5 rounded-full bg-gray-200" />
+                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200/80 bg-gray-50 shadow-inner">
+                          <div className="w-[82%] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                            <div className="flex h-5 items-center gap-1 border-b border-gray-100 px-2 bg-gray-50/70">
+                              <span className="size-1.5 rounded-full bg-red-300" />
+                              <span className="size-1.5 rounded-full bg-amber-300" />
+                              <span className="size-1.5 rounded-full bg-emerald-300" />
                             </div>
-                            <div className="flex h-16">
+                            <div className="flex h-16 bg-white">
                               <div className="w-1/4 border-r border-gray-100 bg-gray-50" />
                               <div className="flex flex-1 items-center justify-center">
-                                <Sun className="size-6 text-amber-400" />
+                                <Sun className="size-7 text-amber-500" />
                               </div>
                             </div>
                           </div>
@@ -407,99 +433,139 @@ export default function SettingsLayout({
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-semibold text-gray-900">
+                            <p className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
                               Light
                             </p>
-                            <p className="mt-0.5 text-xs text-gray-500">
-                              Clean and bright
+                            <p className="mt-0.5 text-xs text-gray-500 dark:text-[#A1ADA4]">
+                              Clean & bright surface
                             </p>
                           </div>
 
-                          <span className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                            <span className="size-2 rounded-full bg-primary" />
-                          </span>
+                          {currentTheme === 'light' ? (
+                            <span className="flex size-6 items-center justify-center rounded-full bg-primary text-white dark:bg-[#B7FF3C] dark:text-[#090C0A]">
+                              <Check className="size-3.5 stroke-[3]" />
+                            </span>
+                          ) : (
+                            <span className="size-5 rounded-full border border-gray-300 dark:border-[#29352D]" />
+                          )}
                         </div>
                       </button>
 
                       {/* Dark */}
                       <button
                         type="button"
-                        className="group rounded-2xl border border-transparent bg-gray-50/70 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-gray-200 hover:bg-white hover:shadow-md"
+                        onClick={() => handleThemeChange('dark')}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                          currentTheme === 'dark'
+                            ? 'border-[#B7FF3C] bg-[#151D17] ring-2 ring-[#B7FF3C]/25 shadow-lg'
+                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                        }`}
                       >
-                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-800 bg-slate-900">
-                          <div className="w-[78%] overflow-hidden rounded-lg border border-slate-700 bg-slate-950 shadow-sm">
-                            <div className="flex h-5 items-center gap-1 border-b border-slate-800 px-2">
-                              <span className="size-1.5 rounded-full bg-slate-700" />
-                              <span className="size-1.5 rounded-full bg-slate-700" />
-                              <span className="size-1.5 rounded-full bg-slate-700" />
+                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-[#29352D] bg-[#090C0A] shadow-inner">
+                          <div className="w-[82%] overflow-hidden rounded-lg border border-[#29352D] bg-[#151D17] shadow-sm">
+                            <div className="flex h-5 items-center justify-between border-b border-[#29352D] px-2 bg-[#101612]">
+                              <div className="flex items-center gap-1">
+                                <span className="size-1.5 rounded-full bg-[#29352D]" />
+                                <span className="size-1.5 rounded-full bg-[#29352D]" />
+                                <span className="size-1.5 rounded-full bg-[#29352D]" />
+                              </div>
+                              <span className="h-1.5 w-6 rounded-full bg-[#B7FF3C]/70" />
                             </div>
-                            <div className="flex h-16">
-                              <div className="w-1/4 border-r border-slate-800 bg-slate-900" />
+                            <div className="flex h-16 bg-[#151D17]">
+                              <div className="w-1/4 border-r border-[#29352D] bg-[#101612]" />
                               <div className="flex flex-1 items-center justify-center">
-                                <Moon className="size-6 text-indigo-400" />
+                                <Moon className="size-7 text-[#B7FF3C]" />
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">
-                            Dark
-                          </p>
-                          <p className="mt-0.5 text-xs text-gray-500">
-                            Coming soon
-                          </p>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
+                                Dark
+                              </p>
+                              <span className="rounded bg-[#B7FF3C]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#B7FF3C] uppercase tracking-wider">
+                                Midnight Lime
+                              </span>
+                            </div>
+                            <p className="mt-0.5 text-xs text-gray-500 dark:text-[#A1ADA4]">
+                              Deep black & neon lime
+                            </p>
+                          </div>
+
+                          {currentTheme === 'dark' ? (
+                            <span className="flex size-6 items-center justify-center rounded-full bg-[#B7FF3C] text-[#090C0A]">
+                              <Check className="size-3.5 stroke-[3]" />
+                            </span>
+                          ) : (
+                            <span className="size-5 rounded-full border border-gray-300 dark:border-[#29352D]" />
+                          )}
                         </div>
                       </button>
 
                       {/* System */}
                       <button
                         type="button"
-                        className="group rounded-2xl border border-transparent bg-gray-50/70 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-gray-200 hover:bg-white hover:shadow-md"
+                        onClick={() => handleThemeChange('system')}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                          currentTheme === 'system'
+                            ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
+                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                        }`}
                       >
-                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-br from-white via-white to-slate-200">
-                          <div className="w-[78%] overflow-hidden rounded-lg border border-gray-200 bg-white/80 shadow-sm">
-                            <div className="flex h-5 items-center gap-1 border-b border-gray-100 px-2">
-                              <span className="size-1.5 rounded-full bg-gray-200" />
-                              <span className="size-1.5 rounded-full bg-gray-200" />
-                              <span className="size-1.5 rounded-full bg-gray-200" />
+                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-tr from-[#151D17] via-slate-700 to-slate-200 dark:border-[#29352D] shadow-inner">
+                          <div className="w-[82%] overflow-hidden rounded-lg border border-gray-300/80 bg-white/90 shadow-sm backdrop-blur-sm dark:border-[#29352D] dark:bg-[#151D17]/90">
+                            <div className="flex h-5 items-center gap-1 border-b border-gray-200 px-2 dark:border-[#29352D]">
+                              <span className="size-1.5 rounded-full bg-gray-400" />
+                              <span className="size-1.5 rounded-full bg-gray-400" />
+                              <span className="size-1.5 rounded-full bg-gray-400" />
                             </div>
                             <div className="flex h-16">
-                              <div className="w-1/4 border-r border-gray-100 bg-gray-50" />
+                              <div className="w-1/4 border-r border-gray-200 bg-gray-100 dark:border-[#29352D] dark:bg-[#101612]" />
                               <div className="flex flex-1 items-center justify-center">
-                                <Monitor className="size-6 text-slate-500" />
+                                <Monitor className="size-7 text-slate-700 dark:text-[#B7FF3C]" />
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">
-                            System
-                          </p>
-                          <p className="mt-0.5 text-xs text-gray-500">
-                            Follow device settings
-                          </p>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
+                              System
+                            </p>
+                            <p className="mt-0.5 text-xs text-gray-500 dark:text-[#A1ADA4]">
+                              Follow device appearance
+                            </p>
+                          </div>
+
+                          {currentTheme === 'system' ? (
+                            <span className="flex size-6 items-center justify-center rounded-full bg-primary text-white dark:bg-[#B7FF3C] dark:text-[#090C0A]">
+                              <Check className="size-3.5 stroke-[3]" />
+                            </span>
+                          ) : (
+                            <span className="size-5 rounded-full border border-gray-300 dark:border-[#29352D]" />
+                          )}
                         </div>
                       </button>
                     </div>
                   </div>
 
-                  {/* Future preferences */}
-                  <div className="rounded-2xl border border-gray-200/70 bg-gray-50/50 p-5">
+                  {/* Theme Information Banner */}
+                  <div className="rounded-2xl border border-gray-200/70 bg-gray-50/50 p-5 dark:border-[#29352D] dark:bg-[#101612]">
                     <div className="flex items-start gap-3">
-                      <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-white text-gray-400 shadow-sm">
+                      <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-white text-gray-400 shadow-sm dark:bg-[#151D17] dark:text-[#B7FF3C]">
                         <Palette className="size-4" />
                       </div>
 
                       <div>
-                        <p className="text-sm font-semibold text-gray-900">
-                          More customization
+                        <p className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
+                          Isolated Management Theme
                         </p>
-                        <p className="mt-1 max-w-xl text-sm leading-6 text-gray-500">
-                          Additional interface preferences such as density,
-                          sidebar behavior, and accent colors can be added here
-                          without changing the current settings flow.
+                        <p className="mt-1 max-w-xl text-sm leading-6 text-gray-500 dark:text-[#A1ADA4]">
+                          This appearance theme applies exclusively to the private dealership management application. The public customer-facing car bazaar website, customer financing requests, and printable receipts/statements strictly retain their standard high-contrast formats.
                         </p>
                       </div>
                     </div>

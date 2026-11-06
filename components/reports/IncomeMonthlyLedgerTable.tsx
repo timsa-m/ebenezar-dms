@@ -107,17 +107,17 @@ export default function IncomeMonthlyLedgerTable({
   };
 
   return (
-    <div className="card-premium space-y-4">
+    <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] space-y-4">
       {/* Title & Filter Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-gray-100">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-gray-100 dark:border-[#29352D]">
         <div>
-          <h3 className="text-16 font-bold text-gray-900 tracking-tight flex items-center gap-2">
+          <h3 className="text-16 font-bold text-gray-900 dark:text-[#F4F7F4] tracking-tight flex items-center gap-2">
             <span>Monthly P&L Ledger</span>
-            <span className="badge badge-primary text-12 font-medium px-2.5 py-0.5 rounded-full">
+            <span className="badge badge-primary dark:bg-[#18221A] dark:text-[#C1CBC3] dark:border-[#29352D] text-12 font-medium px-2.5 py-0.5 rounded-full">
               {months.length} month{months.length !== 1 ? "s" : ""}
             </span>
           </h3>
-          <p className="text-12 text-gray-400 mt-0.5">
+          <p className="text-12 text-gray-400 dark:text-[#A1ADA4] mt-0.5">
             Chronological breakdown of trading profit, hire-purchase collections, penalties, and net operating income
           </p>
         </div>
@@ -125,18 +125,18 @@ export default function IncomeMonthlyLedgerTable({
         {/* Search input */}
         <div className="search-box">
           <div className="search-input relative w-full lg:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 dark:text-[#A1ADA4]" />
             <input
               type="text"
               placeholder="Search month or year..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="search-input w-full pl-9 pr-8 py-2 text-13 bg-gray-50/70 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-gray-800 placeholder-gray-400"
+              className="search-input w-full pl-9 pr-8 py-2 text-13 bg-gray-50/70 dark:bg-[#101612] border border-gray-200 dark:border-[#29352D] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-gray-800 dark:text-[#F4F7F4] placeholder-gray-400 dark:placeholder-[#5d6f62]"
             />
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] hover:text-gray-600 dark:hover:text-[#F4F7F4] p-0.5"
               >
                 <X className="size-3.5" />
               </button>
@@ -152,15 +152,15 @@ export default function IncomeMonthlyLedgerTable({
           className={cn(
             "badge px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             yearFilter === "ALL"
-              ? "bg-gray-900 text-white shadow-xs"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-gray-900 text-white dark:bg-[#B7FF3C] dark:text-[#090C0A] shadow-xs"
+              : "bg-gray-100 dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] hover:bg-gray-200 dark:hover:bg-[#1D2920]"
           )}
         >
           All History
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              yearFilter === "ALL" ? "bg-gray-700 text-white" : "bg-white text-gray-600"
+              yearFilter === "ALL" ? "bg-gray-700 text-white dark:bg-[#090C0A]/20 dark:text-[#090C0A]" : "bg-white dark:bg-[#101612] text-gray-600 dark:text-[#A1ADA4]"
             )}
           >
             {counts.all}
@@ -173,14 +173,14 @@ export default function IncomeMonthlyLedgerTable({
             "badge px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             yearFilter === "2026"
               ? "bg-blue-600 text-white shadow-xs"
-              : "bg-blue-50 text-blue-800 hover:bg-blue-100 border border-blue-200/50"
+              : "bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-950/60 border border-blue-200/50 dark:border-blue-900/40"
           )}
         >
           2026 Current Year
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              yearFilter === "2026" ? "bg-blue-700 text-white" : "bg-white text-blue-800"
+              yearFilter === "2026" ? "bg-blue-700 text-white" : "bg-white dark:bg-blue-900/40 text-blue-800 dark:text-blue-300"
             )}
           >
             {counts.y2026}
@@ -193,14 +193,14 @@ export default function IncomeMonthlyLedgerTable({
             "badge px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             yearFilter === "2025"
               ? "bg-indigo-600 text-white shadow-xs"
-              : "bg-indigo-50 text-indigo-800 hover:bg-indigo-100 border border-indigo-200/50"
+              : "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 border border-indigo-200/50 dark:border-indigo-900/40"
           )}
         >
           2025 FY
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              yearFilter === "2025" ? "bg-indigo-700 text-white" : "bg-white text-indigo-800"
+              yearFilter === "2025" ? "bg-indigo-700 text-white" : "bg-white dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300"
             )}
           >
             {counts.y2025}
@@ -212,8 +212,8 @@ export default function IncomeMonthlyLedgerTable({
           className={cn(
             "badge px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
             yearFilter === "PROFITABLE"
-              ? "bg-emerald-600 text-white shadow-xs"
-              : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200/50"
+              ? "bg-emerald-600 text-white dark:bg-[#B7FF3C] dark:text-[#090C0A] shadow-xs"
+              : "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-950/60 border border-emerald-200/50 dark:border-emerald-900/40"
           )}
         >
           <TrendingUp className="size-3.5" />
@@ -221,7 +221,7 @@ export default function IncomeMonthlyLedgerTable({
           <span
             className={cn(
               "text-11 px-1.5 py-0.2 rounded-full",
-              yearFilter === "PROFITABLE" ? "bg-emerald-700 text-white" : "bg-white text-emerald-800"
+              yearFilter === "PROFITABLE" ? "bg-emerald-700 text-white dark:bg-[#090C0A]/20 dark:text-[#090C0A]" : "bg-white dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300"
             )}
           >
             {counts.profitable}
@@ -318,34 +318,34 @@ export default function IncomeMonthlyLedgerTable({
                 </tr>
               ) : (
                 filteredMonths.map((m) => (
-                  <tr key={`${m.year}-${m.month}`} className="data-table-row hover:bg-blue-50/15 transition-colors">
+                  <tr key={`${m.year}-${m.month}`} className="data-table-row hover:bg-blue-50/15 dark:hover:bg-blue-950/20 transition-colors">
                     {/* Month */}
-                    <td className="data-td font-semibold text-gray-900 text-13">
+                    <td className="data-td font-semibold text-gray-900 dark:text-[#F4F7F4] text-13">
                       <div className="flex items-center gap-1.5">
-                        <Calendar className="size-3.5 text-blue-500" />
+                        <Calendar className="size-3.5 text-blue-500 dark:text-[#65C8F2]" />
                         <span>{m.label}</span>
                       </div>
                     </td>
 
                     {/* Trading Margin */}
-                    <td className="data-td text-right tabular-nums text-blue-700 font-bold text-13">
+                    <td className="data-td text-right tabular-nums text-blue-700 dark:text-[#65C8F2] font-bold text-13">
                       {m.margin > 0 ? formatAmount(m.margin) : "—"}
                     </td>
 
                     {/* Financing Collections */}
-                    <td className="data-td text-right tabular-nums text-emerald-700 font-semibold text-13">
+                    <td className="data-td text-right tabular-nums text-emerald-700 dark:text-[#B7FF3C] font-semibold text-13">
                       {m.interest > 0 ? formatAmount(m.interest) : "—"}
                     </td>
 
                     {/* Penalties */}
-                    <td className="data-td text-right tabular-nums text-amber-600 font-medium text-12">
+                    <td className="data-td text-right tabular-nums text-amber-600 dark:text-[#F5BD4F] font-medium text-12">
                       {m.penalties > 0 ? formatAmount(m.penalties) : "—"}
                     </td>
 
                     {/* Expenses */}
-                    <td className="data-td text-right tabular-nums text-gray-600 text-12">
+                    <td className="data-td text-right tabular-nums text-gray-600 dark:text-[#C1CBC3] text-12">
                       {m.expenses > 0 ? (
-                        <span className="text-amber-700 font-medium">({formatAmount(m.expenses)})</span>
+                        <span className="text-amber-700 dark:text-[#F5BD4F] font-medium">({formatAmount(m.expenses)})</span>
                       ) : (
                         "—"
                       )}
@@ -355,7 +355,7 @@ export default function IncomeMonthlyLedgerTable({
                     <td
                       className={cn(
                         "data-td text-right tabular-nums font-extrabold text-13",
-                        m.net >= 0 ? "text-emerald-700" : "text-red-600"
+                        m.net >= 0 ? "text-emerald-700 dark:text-[#B7FF3C]" : "text-red-600 dark:text-[#FF626D]"
                       )}
                     >
                       {formatAmount(m.net)}
@@ -365,12 +365,12 @@ export default function IncomeMonthlyLedgerTable({
                     <td className="data-td text-center">
                       {m.net >= 0 ? (
                         <span className="badge badge-success px-2.5 py-0.5 rounded-full text-10 font-bold uppercase tracking-wider inline-flex items-center gap-1">
-                          <CheckCircle2 className="size-3 text-emerald-600" />
+                          <CheckCircle2 className="size-3 text-emerald-600 dark:text-[#B7FF3C]" />
                           Surplus
                         </span>
                       ) : (
                         <span className="badge badge-error px-2.5 py-0.5 rounded-full text-10 font-bold uppercase tracking-wider inline-flex items-center gap-1">
-                          <AlertTriangle className="size-3 text-red-600" />
+                          <AlertTriangle className="size-3 text-red-600 dark:text-[#FF626D]" />
                           Deficit
                         </span>
                       )}
@@ -383,28 +383,28 @@ export default function IncomeMonthlyLedgerTable({
             {/* Totals Footer */}
             {filteredMonths.length > 0 && (
               <tfoot>
-                <tr className="border-t-2 border-gray-200 bg-gray-50/80 font-bold">
-                  <td className="data-td text-gray-900">
+                <tr className="border-t-2 border-gray-200 dark:border-[#29352D] bg-gray-50/80 dark:bg-[#18221A] font-bold">
+                  <td className="data-td text-gray-900 dark:text-[#F4F7F4]">
                     {yearFilter === "ALL" && !search
                       ? "Cumulative Total"
                       : `Filtered Total (${filteredMonths.length} months)`}
                   </td>
-                  <td className="data-td text-right tabular-nums text-blue-800 font-extrabold text-13">
+                  <td className="data-td text-right tabular-nums text-blue-800 dark:text-[#65C8F2] font-extrabold text-13">
                     {formatAmount(filteredTotals.margin)}
                   </td>
-                  <td className="data-td text-right tabular-nums text-emerald-800 font-extrabold text-13">
+                  <td className="data-td text-right tabular-nums text-emerald-800 dark:text-[#B7FF3C] font-extrabold text-13">
                     {formatAmount(filteredTotals.interest)}
                   </td>
-                  <td className="data-td text-right tabular-nums text-amber-700 font-bold text-12">
+                  <td className="data-td text-right tabular-nums text-amber-700 dark:text-[#F5BD4F] font-bold text-12">
                     {formatAmount(filteredTotals.penalties)}
                   </td>
-                  <td className="data-td text-right tabular-nums text-gray-700 font-bold text-12">
+                  <td className="data-td text-right tabular-nums text-gray-700 dark:text-[#C1CBC3] font-bold text-12">
                     {filteredTotals.expenses > 0 ? `(${formatAmount(filteredTotals.expenses)})` : "—"}
                   </td>
                   <td
                     className={cn(
                       "data-td text-right tabular-nums font-black text-14",
-                      filteredTotals.net >= 0 ? "text-emerald-700" : "text-red-600"
+                      filteredTotals.net >= 0 ? "text-emerald-700 dark:text-[#B7FF3C]" : "text-red-600 dark:text-[#FF626D]"
                     )}
                   >
                     {formatAmount(filteredTotals.net)}

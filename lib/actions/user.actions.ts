@@ -5,6 +5,9 @@ import { parseStringify } from "../utils";
 import { cookies, headers } from "next/headers";
 import { generateSignedUrl } from "../supabase-storage";
 import { revalidatePath } from "next/cache";
+import { logSecurityAudit } from "@/lib/security/audit";
+import { enforceActionPermission } from "@/lib/security/rbac";
+import { consumeVerificationGrant } from "@/lib/security/tokens";
 
 // ─── Row → Domain mappers ────────────────────────────────────────────────────
 
@@ -22,6 +25,7 @@ function mapUserRow(row: any): User | null {
     role: row.role,
     userStatus: row.user_status,
     avatarUrl: row.avatar_url,
+    themePreference: row.theme_preference || 'system',
   } as any;
 }
 
@@ -208,7 +212,16 @@ export const getPendingUsers = async () => {
 
 export const approveUser = async (userId: string): Promise<{ success: boolean; error?: string }> => {
   try {
+    const adminUser = await requireAdminRole();
+    enforceActionPermission(adminUser, 'USER_STATUS_CHANGE');
+
     const adminSupabase = createSupabaseAdminClient();
+    const { data: userToApprove } = await adminSupabase
+      .from("users")
+      .select("email, role")
+      .eq("id", userId)
+      .maybeSingle();
+
     const { error } = await adminSupabase
       .from("users")
       .update({ user_status: "active" })
@@ -218,19 +231,52 @@ export const approveUser = async (userId: string): Promise<{ success: boolean; e
       console.error("approveUser error:", error);
       return { success: false, error: error.message };
     }
+
+    await logSecurityAudit({
+      userId: adminUser.userId || adminUser.$id || null,
+      action: 'USER_STATUS_CHANGE',
+      resourceType: 'user',
+      resourceId: userId,
+      status: 'SUCCESS',
+      reason: 'User approved and granted active status.',
+      metadata: { targetEmail: userToApprove?.email, assignedRole: userToApprove?.role },
+    });
+
+    revalidatePath('/users');
     return { success: true };
   } catch (error: any) {
     console.error("approveUser unexpected error:", error);
-    return { success: false, error: "An unexpected error occurred." };
+    return { success: false, error: error.message || "An unexpected error occurred." };
   }
 };
 
 // ─── rejectUser ──────────────────────────────────────────────────────────────
 // Soft-rejects a user — marks them as 'rejected' in the DB for audit purposes.
 
-export const rejectUser = async (userId: string): Promise<{ success: boolean; error?: string }> => {
+export const rejectUser = async (userId: string, verificationToken?: string): Promise<{ success: boolean; error?: string }> => {
   try {
+    const adminUser = await requireAdminRole();
+    enforceActionPermission(adminUser, 'USER_STATUS_CHANGE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: adminUser.userId || adminUser.$id || '',
+        action: 'USER_STATUS_CHANGE',
+        resourceId: userId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const adminSupabase = createSupabaseAdminClient();
+    const { data: userToReject } = await adminSupabase
+      .from("users")
+      .select("email, role")
+      .eq("id", userId)
+      .maybeSingle();
+
     const { error } = await adminSupabase
       .from("users")
       .update({ user_status: "rejected" })
@@ -240,10 +286,88 @@ export const rejectUser = async (userId: string): Promise<{ success: boolean; er
       console.error("rejectUser error:", error);
       return { success: false, error: error.message };
     }
+
+    await logSecurityAudit({
+      userId: adminUser.userId || adminUser.$id || null,
+      action: 'USER_STATUS_CHANGE',
+      resourceType: 'user',
+      resourceId: userId,
+      status: 'SUCCESS',
+      reason: 'User account rejected by administrator.',
+      metadata: { targetEmail: userToReject?.email },
+    });
+
+    revalidatePath('/users');
     return { success: true };
   } catch (error: any) {
     console.error("rejectUser unexpected error:", error);
-    return { success: false, error: "An unexpected error occurred." };
+    return { success: false, error: error.message || "An unexpected error occurred." };
+  }
+};
+
+// ─── updateUserRole ──────────────────────────────────────────────────────────
+// Elevates or changes a user role — requires ADMIN role and verification grant.
+
+export const updateUserRole = async (
+  userId: string,
+  newRole: "ADMIN" | "MANAGER" | "STAFF",
+  verificationToken?: string
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const adminUser = await requireAdminRole();
+    enforceActionPermission(adminUser, 'USER_ROLE_CHANGE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: adminUser.userId || adminUser.$id || '',
+        action: 'USER_ROLE_CHANGE',
+        resourceId: userId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
+    const adminSupabase = createSupabaseAdminClient();
+
+    const { data: targetUser } = await adminSupabase
+      .from("users")
+      .select("email, role")
+      .eq("id", userId)
+      .maybeSingle();
+
+    const prevRole = targetUser?.role;
+
+    const { error } = await adminSupabase
+      .from("users")
+      .update({ role: newRole })
+      .eq("id", userId);
+
+    if (error) {
+      console.error("updateUserRole error:", error);
+      return { success: false, error: error.message };
+    }
+
+    await logSecurityAudit({
+      userId: adminUser.userId || adminUser.$id || null,
+      action: 'USER_ROLE_CHANGE',
+      resourceType: 'user',
+      resourceId: userId,
+      status: 'SUCCESS',
+      reason: `User role changed from ${prevRole} to ${newRole}.`,
+      metadata: {
+        targetEmail: targetUser?.email,
+        previousRole: prevRole,
+        newRole,
+      },
+    });
+
+    revalidatePath('/users');
+    return { success: true };
+  } catch (error: any) {
+    console.error("updateUserRole unexpected error:", error);
+    return { success: false, error: error.message || "An unexpected error occurred." };
   }
 };
 
@@ -547,6 +671,63 @@ export const updateUserProfile = async (firstName: string, lastName: string): Pr
   } catch (error: any) {
     console.error('updateUserProfile error:', error);
     return { success: false, error: error.message || 'Failed to update profile.' };
+  }
+};
+
+// ─── updateUserThemePreference ───────────────────────────────────────────────
+/**
+ * Persists the user's appearance preference (light, dark, or system).
+ * Updates the user's profile record, sets an HTTP cookie for SSR/hydration,
+ * and synchronizes with auth metadata.
+ */
+export const updateUserThemePreference = async (
+  theme: 'light' | 'dark' | 'system'
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    if (!['light', 'dark', 'system'].includes(theme)) {
+      return { success: false, error: 'Invalid theme selection.' };
+    }
+
+    // Set cookie for instant server-side hydration & FOUC prevention
+    try {
+      const cookieStore = await cookies();
+      cookieStore.set('ebenezar_theme', theme, {
+        path: '/',
+        maxAge: 31536000, // 1 year
+        sameSite: 'lax',
+      });
+    } catch {
+      // Non-critical if called outside active cookie context
+    }
+
+    const user = await getLoggedInUser();
+    if (user?.userId) {
+      const supabase = createSupabaseAdminClient();
+
+      // Safely update theme_preference on public.users
+      try {
+        await supabase
+          .from('users')
+          .update({ theme_preference: theme })
+          .eq('auth_id', user.userId);
+      } catch (dbErr) {
+        console.warn('[updateUserThemePreference] users table update note:', dbErr);
+      }
+
+      // Also persist to Supabase auth user_metadata
+      try {
+        await supabase.auth.admin.updateUserById(user.userId, {
+          user_metadata: { theme_preference: theme }
+        });
+      } catch {
+        // Non-critical fallback
+      }
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('updateUserThemePreference error:', error);
+    return { success: false, error: error?.message || 'Failed to update theme preference.' };
   }
 };
 

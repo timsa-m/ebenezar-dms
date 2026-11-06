@@ -11,29 +11,28 @@ export function usePersistedState<T>(
   key: string,
   defaultValue: T
 ): [T, (val: T | ((prev: T) => T)) => void, () => void] {
-  const isFirstMount = useRef(true);
+  // Always initialize with defaultValue on first render to match SSR and prevent hydration mismatches
+  const [state, setStateInternal] = useState<T>(defaultValue);
+  const isHydrated = useRef(false);
 
-  // Initialize from sessionStorage if available
-  const [state, setStateInternal] = useState<T>(() => {
-    if (typeof window === 'undefined') return defaultValue;
+  // Sync from sessionStorage on mount (client-only)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     try {
       const item = window.sessionStorage.getItem(`dms_state_${key}`);
       if (item !== null) {
-        return JSON.parse(item) as T;
+        setStateInternal(JSON.parse(item) as T);
       }
     } catch {
-      // Ignore parse errors and fallback to defaultValue
+      // Ignore parse errors and keep defaultValue
     }
-    return defaultValue;
-  });
+    isHydrated.current = true;
+  }, [key]);
 
-  // Sync to sessionStorage on changes
+  // Sync to sessionStorage on state changes (only after hydration)
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return;
-    }
+    if (!isHydrated.current) return;
     try {
       window.sessionStorage.setItem(`dms_state_${key}`, JSON.stringify(state));
     } catch {

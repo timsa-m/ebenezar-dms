@@ -62,7 +62,7 @@ export default function PortfolioChart({ data }: PortfolioChartProps) {
         </Pie>
         <Tooltip
           formatter={(value: any) => [value, "Loans"]}
-          contentStyle={{ borderRadius: "0.75rem", border: "1px solid #e5e7eb", fontSize: 12 }}
+          contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
         />
         <Legend
           iconType="circle"

@@ -97,7 +97,7 @@ const Home = async () => {
         boxShadow: '0 4px 24px 0 rgba(37,99,235,0.10)',
       }}>
         <Image
-          src="/ebenezarDealershipunsplash.jpg"
+          src="https://pub-b5971c79e1e94217b4847709c2e51781.r2.dev/ebenezer-vehicles/IMG_20261105_110013-EDIT.jpg"
           alt="Ebenezar Enterprises Car Bazaar — Dashboard Banner"
           fill
           priority
@@ -165,55 +165,61 @@ const Home = async () => {
             label: 'Active',
             value: metrics.activeLoans,
             icon: <Activity className="size-3.5" />,
-            color: 'text-green-600', bg: 'bg-green-50', ring: 'ring-green-100',
+            color: 'text-green-600 dark:text-[#B7FF3C]',
+            bg: 'bg-green-50 dark:bg-emerald-950/40',
+            ring: 'ring-green-100 dark:ring-emerald-900/40',
             badge: null,
           },
           {
             label: 'Overdue (7–30d)',
             value: metrics.overdueLoans,
             icon: <AlertCircle className="size-3.5" />,
-            color: metrics.overdueLoans > 0 ? 'text-amber-600' : 'text-gray-400',
-            bg: metrics.overdueLoans > 0 ? 'bg-amber-50' : 'bg-gray-50',
-            ring: metrics.overdueLoans > 0 ? 'ring-amber-100' : 'ring-gray-100',
+            color: metrics.overdueLoans > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-[#A1ADA4]',
+            bg: metrics.overdueLoans > 0 ? 'bg-amber-50 dark:bg-amber-950/40' : 'bg-gray-50 dark:bg-[#101612]',
+            ring: metrics.overdueLoans > 0 ? 'ring-amber-100 dark:ring-amber-900/40' : 'ring-gray-100 dark:ring-[#29352D]',
             badge: null,
           },
           {
             label: 'Defaulting (60–90d)',
             value: metrics.defaultingLoans,
             icon: <AlertCircle className="size-3.5" />,
-            color: metrics.defaultingLoans > 0 ? 'text-orange-600' : 'text-gray-400',
-            bg: metrics.defaultingLoans > 0 ? 'bg-orange-50' : 'bg-gray-50',
-            ring: metrics.defaultingLoans > 0 ? 'ring-orange-100' : 'ring-gray-100',
+            color: metrics.defaultingLoans > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400 dark:text-[#A1ADA4]',
+            bg: metrics.defaultingLoans > 0 ? 'bg-orange-50 dark:bg-orange-950/40' : 'bg-gray-50 dark:bg-[#101612]',
+            ring: metrics.defaultingLoans > 0 ? 'ring-orange-100 dark:ring-orange-900/40' : 'ring-gray-100 dark:ring-[#29352D]',
             badge: null,
           },
           {
             label: 'Loss (>90d)',
             value: metrics.lossLoans,
             icon: <ShieldAlert className="size-3.5" />,
-            color: metrics.lossLoans > 0 ? 'text-red-600' : 'text-gray-400',
-            bg: metrics.lossLoans > 0 ? 'bg-red-50' : 'bg-gray-50',
-            ring: metrics.lossLoans > 0 ? 'ring-red-100' : 'ring-gray-100',
+            color: metrics.lossLoans > 0 ? 'text-red-600 dark:text-rose-400' : 'text-gray-400 dark:text-[#A1ADA4]',
+            bg: metrics.lossLoans > 0 ? 'bg-red-50 dark:bg-rose-950/40' : 'bg-gray-50 dark:bg-[#101612]',
+            ring: metrics.lossLoans > 0 ? 'ring-red-100 dark:ring-rose-900/40' : 'ring-gray-100 dark:ring-[#29352D]',
             badge: null,
           },
           {
             label: 'Written Off',
             value: metrics.writtenOffLoans,
             icon: <XCircle className="size-3.5" />,
-            color: 'text-gray-500', bg: 'bg-gray-50', ring: 'ring-gray-100',
+            color: 'text-gray-500 dark:text-[#A1ADA4]',
+            bg: 'bg-gray-50 dark:bg-[#101612]',
+            ring: 'ring-gray-100 dark:ring-[#29352D]',
             badge: null,
           },
           {
             label: 'Clients',
             value: metrics.totalClients,
             icon: <Users className="size-3.5" />,
-            color: 'text-blue-600', bg: 'bg-blue-50', ring: 'ring-blue-100',
+            color: 'text-blue-600 dark:text-blue-400',
+            bg: 'bg-blue-50 dark:bg-blue-950/40',
+            ring: 'ring-blue-100 dark:ring-blue-900/40',
             badge: null,
           },
         ].map(({ label, value, icon, color, bg, ring, badge }) => (
           <div key={label} className="card-premium p-4 flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <p className="text-11 font-bold text-gray-400 uppercase tracking-widest">{label}</p>
-              <div className={cn('p-1.5 rounded-lg ring-1', bg, ring, color)}>
+              <p className="text-11 font-bold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-widest">{label}</p>
+              <div className={cn('p-1.5 rounded-lg ring-1 transition-colors', bg, ring, color)}>
                 {icon}
               </div>
             </div>
@@ -243,7 +249,7 @@ const Home = async () => {
       {/* ── Row 6: Recent Vehicle Loans ──────────────────────────────────────────── */}
       <div className="flex flex-col gap-5">
         <div className="flex justify-between items-center">
-          <h2 className="text-18 font-semibold text-gray-900 tracking-tight">Recent Agreements</h2>
+          <h2 className="text-18 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Recent Agreements</h2>
           <Link href="/loans" className="btn-ghost">
             View All Contracts
             <ChevronRight className="size-4" />

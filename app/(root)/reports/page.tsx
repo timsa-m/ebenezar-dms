@@ -128,7 +128,7 @@ export default async function ReportsPage() {
 
       {/* Live Business Reports */}
       <div className="mb-8">
-        <h2 className="text-14 font-bold text-gray-500 uppercase tracking-widest mb-4">
+        <h2 className="text-14 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest mb-4">
           Live Business Reports
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -140,7 +140,7 @@ export default async function ReportsPage() {
 
       {/* Analytics & Risk */}
       <div className="mb-8">
-        <h2 className="text-14 font-bold text-gray-500 uppercase tracking-widest mb-4">
+        <h2 className="text-14 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest mb-4">
           Analytics &amp; Risk
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -152,7 +152,7 @@ export default async function ReportsPage() {
 
       {/* Period-Based & Client */}
       <div>
-        <h2 className="text-14 font-bold text-gray-500 uppercase tracking-widest mb-4">
+        <h2 className="text-14 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest mb-4">
           Period-Based &amp; Client Reports
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

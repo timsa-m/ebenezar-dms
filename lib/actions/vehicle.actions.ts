@@ -5,6 +5,9 @@ import { revalidatePath } from 'next/cache';
 import { requireManagerRole } from './user.actions';
 import type { Vehicle, VehicleCost, VehicleStatus, VehicleCostType } from '@/src/types/database.types';
 import { invalidateVehiclesApiCache } from '@/lib/cache/vehicleApiCache';
+import { logSecurityAudit } from '@/lib/security/audit';
+import { enforceActionPermission } from '@/lib/security/rbac';
+import { consumeVerificationGrant } from '@/lib/security/tokens';
 
 /**
  * Automatically uploads any Base64 data URLs to Supabase Storage 'vehicle-assets'
@@ -536,9 +539,26 @@ export async function getVehicleDocuments(vehicleId: string) {
  * Marks status as 'deleted', is_published as false, and stores deletion metadata.
  * Can be reverted at any time by a manager/admin.
  */
-export async function softDeleteVehicle(id: string): Promise<{ success: boolean; error?: string; vehicle?: Vehicle }> {
+export async function softDeleteVehicle(
+  id: string,
+  verificationToken?: string
+): Promise<{ success: boolean; error?: string; vehicle?: Vehicle }> {
   try {
     const currentUser = await requireManagerRole();
+    enforceActionPermission(currentUser, 'VEHICLE_DELETE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser.userId || currentUser.$id || '',
+        action: 'VEHICLE_DELETE',
+        resourceId: id,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createAdminClient();
 
     const { data: vehicle, error: fetchErr } = await supabase
@@ -558,7 +578,7 @@ export async function softDeleteVehicle(id: string): Promise<{ success: boolean;
     const deletionMeta = {
       deletedAt: new Date().toISOString(),
       deletedBy: `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim() || currentUser.email || 'Manager',
-      deletedById: currentUser.$id || currentUser.userId || '',
+      deletedById: currentUser.userId || currentUser.$id || '',
       previousStatus: vehicle.status || 'in_stock',
     };
 
@@ -579,6 +599,20 @@ export async function softDeleteVehicle(id: string): Promise<{ success: boolean;
 
     if (updateErr) throw updateErr;
 
+    await logSecurityAudit({
+      userId: currentUser.userId || currentUser.$id || null,
+      action: 'VEHICLE_DELETE',
+      resourceType: 'vehicle',
+      resourceId: id,
+      status: 'SUCCESS',
+      reason: 'Vehicle moved to deleted archive by manager/admin.',
+      metadata: {
+        registrationNo: vehicle.registration_no,
+        makeModel: vehicle.make_model,
+        previousStatus: vehicle.status,
+      },
+    });
+
     revalidatePath('/vehicles');
     revalidatePath('/admin/inventory');
     revalidatePath(`/vehicles/${id}`);
@@ -594,8 +628,8 @@ export async function softDeleteVehicle(id: string): Promise<{ success: boolean;
 }
 
 // Alias for convenience
-export async function deleteVehicle(id: string) {
-  return softDeleteVehicle(id);
+export async function deleteVehicle(id: string, verificationToken?: string) {
+  return softDeleteVehicle(id, verificationToken);
 }
 
 /**
@@ -604,7 +638,7 @@ export async function deleteVehicle(id: string) {
  */
 export async function restoreVehicle(id: string): Promise<{ success: boolean; error?: string; vehicle?: Vehicle }> {
   try {
-    await requireManagerRole();
+    const currentUser = await requireManagerRole();
     const supabase = createAdminClient();
 
     const { data: vehicle, error: fetchErr } = await supabase
@@ -643,6 +677,19 @@ export async function restoreVehicle(id: string): Promise<{ success: boolean; er
       .single();
 
     if (updateErr) throw updateErr;
+
+    await logSecurityAudit({
+      userId: currentUser.userId || currentUser.$id || null,
+      action: 'VEHICLE_DELETE',
+      resourceType: 'vehicle',
+      resourceId: id,
+      status: 'REVOKED',
+      reason: 'Vehicle restored to active inventory from deleted archive.',
+      metadata: {
+        registrationNo: vehicle.registration_no,
+        restoredStatus: previousStatus,
+      },
+    });
 
     revalidatePath('/vehicles');
     revalidatePath('/admin/inventory');

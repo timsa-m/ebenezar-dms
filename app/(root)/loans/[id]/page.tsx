@@ -30,8 +30,8 @@ export default async function LoanDetailPage({
     return (
       <section className="home-content">
         <div className="card-premium" style={{ textAlign: "center", padding: "4rem 1.5rem" }}>
-          <p style={{ fontSize: "1.125rem", fontWeight: 700, color: "#111113" }}>Contract not found</p>
-          <p style={{ fontSize: "0.875rem", color: "#9CA3AF", marginTop: "0.5rem" }}>
+          <p className="text-gray-900 dark:text-[#F4F7F4]" style={{ fontSize: "1.125rem", fontWeight: 700 }}>Contract not found</p>
+          <p className="text-gray-500 dark:text-[#A1ADA4]" style={{ fontSize: "0.875rem", marginTop: "0.5rem" }}>
             The requested financing agreement does not exist.
           </p>
           <Link href="/loans" className="btn-primary" style={{ marginTop: "1.5rem", display: "inline-flex" }}>
@@ -156,11 +156,11 @@ export default async function LoanDetailPage({
 
       {/* High-Risk Client Banner — shown when loan is flagged or freshly created from a risky client */}
       {(loan.isHighRisk || sp?.warn === 'high_risk') && (
-        <div style={{ display: 'flex', gap: '0.875rem', padding: '1rem 1.25rem', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '0.875rem', marginBottom: '0.75rem' }}>
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded-2xl p-4 sm:p-5 mb-3 flex gap-3.5">
           <span style={{ fontSize: '1.25rem', flexShrink: 0 }}>⚠️</span>
           <div>
-            <p style={{ fontWeight: 700, fontSize: '0.875rem', color: '#92400E' }}>High-Risk Client — Pending Admin Approval</p>
-            <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#78350F', lineHeight: 1.5 }}>This borrower has an existing Overdue, Written Off, or Loss loan. This facility has been flagged and must be reviewed and approved by an admin before disbursement.</p>
+            <p className="font-bold text-sm text-amber-900 dark:text-amber-300">High-Risk Client — Pending Admin Approval</p>
+            <p className="text-xs mt-1 text-amber-800 dark:text-amber-400/90 leading-relaxed">This borrower has an existing Overdue, Written Off, or Loss loan. This facility has been flagged and must be reviewed and approved by an admin before disbursement.</p>
           </div>
         </div>
       )}
@@ -169,7 +169,7 @@ export default async function LoanDetailPage({
       <header className="page-header">
         <HeaderBox
           title={
-            <Link href={`/clients/${client?.$id}`} className="hover:underline text-gray-900 transition-colors hover:text-primary">
+            <Link href={`/clients/${client?.$id}`} className="hover:underline text-gray-900 dark:text-[#F4F7F4] transition-colors hover:text-primary">
               {client?.firstName} {client?.lastName}
             </Link>
           }
@@ -187,15 +187,13 @@ export default async function LoanDetailPage({
               >
                 {loan.status}
               </span>
-              <span style={{ fontSize: "0.75rem", color: "#6B7280", fontWeight: 500 }}>
-
+              <span className="text-gray-500 dark:text-[#A1ADA4]" style={{ fontSize: "0.75rem", fontWeight: 500 }}>
                 {`Contract No. - ${agreementData.contract_no}`}
               </span>
 
-
-              <span style={{ fontSize: "0.75rem", color: "#9CA3AF" }}>·</span>
+              <span className="text-gray-400 dark:text-[#78847B]" style={{ fontSize: "0.75rem" }}>·</span>
               {loan.loanType && (
-                <span style={{ fontSize: "0.75rem", color: "#6B7280", fontWeight: 500 }}>
+                <span className="text-gray-500 dark:text-[#A1ADA4]" style={{ fontSize: "0.75rem", fontWeight: 500 }}>
                   {loan.loanType}
                 </span>
               )}

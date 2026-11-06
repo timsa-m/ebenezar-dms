@@ -154,12 +154,9 @@ export default function ExpenseClient({ initialExpenses, currentUser }: { initia
 
             {/* Header */}
             <div className="modal-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-                <div style={{
-                  width: '2rem', height: '2rem', borderRadius: '0.5rem',
-                  background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <CreditCard size={15} style={{ color: '#1D4ED8' }} />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/40 flex items-center justify-center">
+                  <CreditCard size={15} className="text-blue-700 dark:text-blue-400" />
                 </div>
                 <h2 className="modal-title" id="expense-modal-title">Record New Expense</h2>
               </div>

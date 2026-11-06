@@ -720,34 +720,34 @@ export default function VehicleHandoverModal({
 
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-lg font-bold text-slate-950 tracking-tight">
+                    <h2 className="text-lg font-bold text-slate-950 dark:text-[#F4F7F4] tracking-tight">
                       {vehicle.registration_no}
                     </h2>
-                    <span className="text-xs badge badge-primary font-semibold px-2.5 py-0.5 rounded-full capitalize bg-blue-50 text-blue-700 border border-blue-200">
+                    <span className="text-xs badge badge-primary font-semibold px-2.5 py-0.5 rounded-full capitalize bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/40">
                       {vehicle.status.replace(/_/g, ' ')}
                     </span>
                     {handoverData?.incoming?.incoming_status && (
-                      <span className="text-[11px] badge badge-primary font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                      <span className="text-[11px] badge badge-primary font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3]">
                         In: {INCOMING_STATUS_LABELS[handoverData.incoming.incoming_status]}
                       </span>
                     )}
                     {handoverData?.outgoing?.outgoing_status && (
-                      <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                      <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3]">
                         Out: {OUTGOING_STATUS_LABELS[handoverData.outgoing.outgoing_status]}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 mt-1">
-                    <span className="font-medium text-slate-800">{vehicle.make_model}</span>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-[#A1ADA4] mt-1">
+                    <span className="font-medium text-slate-800 dark:text-[#F4F7F4]">{vehicle.make_model}</span>
                     {vehicle.year && <span>• {vehicle.year}</span>}
                     {vehicle.chassis_no && (
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-slate-400 dark:text-[#A1ADA4]">
                         VIN: {vehicle.chassis_no}
                       </span>
                     )}
                     {vehicle.seller_name && (
-                      <span className="text-slate-600">Seller: {vehicle.seller_name}</span>
+                      <span className="text-slate-600 dark:text-[#C1CBC3]">Seller: {vehicle.seller_name}</span>
                     )}
                   </div>
                 </div>
@@ -756,7 +756,7 @@ export default function VehicleHandoverModal({
               <button
                 type="button"
                 onClick={requestClose}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition self-start md:self-center cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-[#F4F7F4] hover:bg-slate-100 dark:hover:bg-[#1D2920] transition self-start md:self-center cursor-pointer"
               >
                 <X className="size-5" />
               </button>
@@ -770,8 +770,8 @@ export default function VehicleHandoverModal({
                 className={cn(
                   'flex items-center badge badge-primary gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer shrink-0',
                   activeWorkflow === 'incoming'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                    ? 'bg-blue-600 dark:bg-[#B7FF3C] text-white dark:text-[#090C0A] shadow-xs'
+                    : 'bg-slate-100 dark:bg-[#18221A] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-200/70 dark:hover:bg-[#1D2920]'
                 )}
               >
                 <ClipboardList className="size-3.5" />
@@ -784,8 +784,8 @@ export default function VehicleHandoverModal({
                 className={cn(
                   'flex items-center badge badge-primary gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer shrink-0',
                   activeWorkflow === 'outgoing'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                    ? 'bg-blue-600 dark:bg-[#B7FF3C] text-white dark:text-[#090C0A] shadow-xs'
+                    : 'bg-slate-100 dark:bg-[#18221A] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-200/70 dark:hover:bg-[#1D2920]'
                 )}
               >
                 <KeyRound className="size-3.5" />
@@ -798,8 +798,8 @@ export default function VehicleHandoverModal({
                 className={cn(
                   'flex items-center badge badge-primary gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition cursor-pointer shrink-0',
                   activeWorkflow === 'history'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                    ? 'bg-blue-600 dark:bg-[#B7FF3C] text-white dark:text-[#090C0A] shadow-xs'
+                    : 'bg-slate-100 dark:bg-[#18221A] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-200/70 dark:hover:bg-[#1D2920]'
                 )}
               >
                 <History className="size-3.5" />

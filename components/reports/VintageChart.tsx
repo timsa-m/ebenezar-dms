@@ -19,31 +19,31 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const cohort = payload[0].payload as VintageCohort;
     return (
-      <div className="bg-white p-4 rounded-xl shadow-xl border border-slate-100 min-w-[240px]">
-        <p className="text-sm font-bold text-slate-800 mb-3">{label} Cohort</p>
+      <div className="bg-white dark:bg-[#151D17] p-4 rounded-xl shadow-xl border border-slate-100 dark:border-[#29352D] min-w-[240px]">
+        <p className="text-sm font-bold text-slate-800 dark:text-[#F4F7F4] mb-3">{label} Cohort</p>
         <div className="space-y-2">
           <div className="flex justify-between items-center gap-4">
-            <span className="text-xs text-slate-500">Total Disbursed</span>
-            <span className="text-xs font-semibold text-slate-900">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total Disbursed</span>
+            <span className="text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
               {formatAmount(cohort.totalDisbursed)}
             </span>
           </div>
           <div className="flex justify-between items-center gap-4">
-            <span className="text-xs text-slate-500">Active Balance</span>
-            <span className="text-xs font-semibold text-slate-900">
+            <span className="text-xs text-slate-500 dark:text-[#A1ADA4]">Active Balance</span>
+            <span className="text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
               {formatAmount(cohort.activeBalance)}
             </span>
           </div>
-          <div className="h-px bg-slate-100 my-2" />
+          <div className="h-px bg-slate-100 dark:bg-[#29352D] my-2" />
           <div className="flex justify-between items-center gap-4">
-            <span className="text-xs font-medium text-orange-600">PAR30 Balance</span>
-            <span className="text-xs font-bold text-orange-600">
+            <span className="text-xs font-medium text-orange-600 dark:text-[#F5BD4F]">PAR30 Balance</span>
+            <span className="text-xs font-bold text-orange-600 dark:text-[#F5BD4F]">
               {formatAmount(cohort.par30Balance)}
             </span>
           </div>
           <div className="flex justify-between items-center gap-4">
-            <span className="text-xs font-medium text-red-600">Default Balance</span>
-            <span className="text-xs font-bold text-red-600">
+            <span className="text-xs font-medium text-red-600 dark:text-[#FF626D]">Default Balance</span>
+            <span className="text-xs font-bold text-red-600 dark:text-[#FF626D]">
               {formatAmount(cohort.defaultBalance)}
             </span>
           </div>
@@ -57,8 +57,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function VintageChart({ data }: { data: VintageCohort[] }) {
   if (!data || data.length === 0) {
     return (
-      <div className="w-full h-80 flex items-center justify-center bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
-        <p className="text-sm text-gray-500">No vintage data available for this period.</p>
+      <div className="w-full h-80 flex items-center justify-center bg-gray-50/50 dark:bg-[#18221A] rounded-2xl border border-dashed border-gray-200 dark:border-[#29352D]">
+        <p className="text-sm text-gray-500 dark:text-[#A1ADA4]">No vintage data available for this period.</p>
       </div>
     );
   }

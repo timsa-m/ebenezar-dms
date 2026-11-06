@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { formatAmount } from '@/lib/utils';
+import { formatAmount, cn } from '@/lib/utils';
 import { sendOverdueAlerts } from '@/lib/actions/daily-report.actions';
 import {
   AlertTriangle, Calendar, Clock, Phone, Mail,
@@ -13,20 +13,15 @@ import {
 
 // ─── Status badge helper ───────────────────────────────────────────────────────
 function StatusBadge({ status, dpd }: { status: string; dpd: number }) {
-  const map: Record<string, { bg: string; color: string }> = {
-    Overdue: { bg: '#FEF2F2', color: '#DC2626' },
-    Substandard: { bg: '#FFFBEB', color: '#D97706' },
-    Loss: { bg: '#F3F4F6', color: '#374151' },
-    Active: { bg: '#ECFDF5', color: '#047857' },
+  const map: Record<string, string> = {
+    Overdue: "bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-[#FF626D] border border-red-200 dark:border-red-900/40",
+    Substandard: "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-[#F5BD4F] border border-amber-200 dark:border-amber-900/40",
+    Loss: "bg-gray-100 dark:bg-[#18221A] text-gray-700 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D]",
+    Active: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-[#B7FF3C] border border-emerald-200 dark:border-emerald-900/40",
   };
-  const s = map[status] ?? map.Active;
+  const cls = map[status] ?? map.Active;
   return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
-      fontSize: '0.6875rem', fontWeight: 700,
-      padding: '0.125rem 0.5rem', borderRadius: '0.375rem',
-      background: s.bg, color: s.color,
-    }}>
+    <span className={cn("inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md", cls)}>
       {status === 'Substandard' ? 'Defaulting' : status}{dpd > 0 && ` · ${dpd}d`}
     </span>
   );
@@ -43,28 +38,32 @@ function AlertResultBanner({
   if (!result) return null;
   const allOk = result.failed === 0;
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '0.875rem 1.25rem',
-      background: allOk ? '#ECFDF5' : '#FFFBEB',
-      border: `1px solid ${allOk ? '#A7F3D0' : '#FDE68A'}`,
-      borderRadius: '0.75rem', marginBottom: '1.5rem',
-      gap: '1rem',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+    <div className={cn(
+      "flex items-center justify-between p-3.5 sm:px-5 rounded-xl mb-6 gap-4 border",
+      allOk
+        ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900/40"
+        : "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900/40"
+    )}>
+      <div className="flex items-center gap-2.5">
         {allOk
-          ? <CheckCircle size={18} color="#047857" />
-          : <AlertTriangle size={18} color="#D97706" />}
+          ? <CheckCircle size={18} className="text-emerald-700 dark:text-[#B7FF3C]" />
+          : <AlertTriangle size={18} className="text-amber-700 dark:text-[#F5BD4F]" />}
         <div>
-          <p style={{ fontSize: '0.875rem', fontWeight: 700, color: allOk ? '#065F46' : '#92400E', margin: 0 }}>
+          <p className={cn(
+            "text-sm font-bold m-0",
+            allOk ? "text-emerald-900 dark:text-[#F4F7F4]" : "text-amber-900 dark:text-[#F4F7F4]"
+          )}>
             {allOk ? 'Alerts dispatched successfully' : 'Alerts sent with some failures'}
           </p>
-          <p style={{ fontSize: '0.75rem', color: allOk ? '#047857' : '#D97706', margin: 0 }}>
+          <p className={cn(
+            "text-xs m-0",
+            allOk ? "text-emerald-700 dark:text-[#A1ADA4]" : "text-amber-700 dark:text-[#A1ADA4]"
+          )}>
             {result.sent} sent · {result.failed} failed · {result.attempted} total clients targeted
           </p>
         </div>
       </div>
-      <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', padding: '0.25rem' }}>
+      <button onClick={onClose} className="bg-transparent border-none cursor-pointer text-gray-400 dark:text-[#A1ADA4] hover:text-gray-600 dark:hover:text-[#F4F7F4] p-1">
         <XCircle size={16} />
       </button>
     </div>
@@ -100,20 +99,20 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
     <section className="home-content animate-fade-in">
       {/* ── Page Header ── */}
       <header className="page-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <div className="flex items-center gap-4 flex-wrap justify-between">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+            <div className="flex items-center gap-3 mb-1">
               <Link
                 href="/reports"
-                style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.75rem', color: '#9CA3AF', textDecoration: 'none' }}
+                className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4] no-underline transition-colors"
               >
                 <ArrowLeft size={13} /> Reports
               </Link>
             </div>
-            <h1 style={{ fontSize: '1.375rem', fontWeight: 800, color: '#111113', letterSpacing: '-0.02em', margin: 0 }}>
+            <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-[#F4F7F4] tracking-tight m-0">
               Daily Report
             </h1>
-            <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+            <p className="text-xs sm:text-[13px] text-gray-400 dark:text-[#A1ADA4] mt-1">
               Generated: {reportDate}
             </p>
           </div>
@@ -123,17 +122,15 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
               id="btn-send-overdue-alerts"
               onClick={handleSendAlerts}
               disabled={isPending}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.625rem 1.25rem',
-                background: isPending ? '#9CA3AF' : '#DC2626',
-                color: '#FFF', border: 'none', borderRadius: '0.625rem',
-                fontSize: '0.875rem', fontWeight: 700, cursor: isPending ? 'not-allowed' : 'pointer',
-                transition: 'background 0.15s', boxShadow: '0 1px 4px rgba(220,38,38,0.3)',
-              }}
+              className={cn(
+                "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-bold border-none transition-all shadow-sm",
+                isPending
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700 text-white cursor-pointer shadow-red-600/30"
+              )}
             >
               {isPending
-                ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> Sending Alerts…</>
+                ? <><Loader2 size={14} className="animate-spin" /> Sending Alerts…</>
                 : <><Send size={14} /> Send Overdue Alerts ({overdueLoans.length})</>}
             </button>
           )}
@@ -144,73 +141,62 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
       <AlertResultBanner result={alertResult} onClose={() => setAlertResult(null)} />
 
       {/* ── KPI Row ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.875rem', marginBottom: '1.75rem' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-7">
         {[
-          { label: 'Due This Week', value: dueThisWeek.length, icon: <Calendar size={16} />, color: '#2563EB', bg: '#EFF6FF' },
-          { label: 'Overdue Accounts', value: overdueLoans.length, icon: <AlertTriangle size={16} />, color: '#DC2626', bg: '#FEF2F2' },
+          { label: 'Due This Week', value: dueThisWeek.length, icon: <Calendar size={16} />, color: 'text-blue-600 dark:text-[#65C8F2]', bg: 'bg-blue-50 dark:bg-blue-950/40 border-blue-200/50 dark:border-blue-900/40 border-l-blue-600 dark:border-l-[#65C8F2]' },
+          { label: 'Overdue Accounts', value: overdueLoans.length, icon: <AlertTriangle size={16} />, color: 'text-red-600 dark:text-[#FF626D]', bg: 'bg-red-50 dark:bg-red-950/40 border-red-200/50 dark:border-red-900/40 border-l-red-600 dark:border-l-[#FF626D]' },
           {
             label: 'Total Overdue Exposure',
             value: `KES ${overdueLoans.reduce((s, l) => s + l.balance, 0).toLocaleString()}`,
-            icon: <TrendingDown size={16} />, color: '#D97706', bg: '#FFFBEB',
+            icon: <TrendingDown size={16} />, color: 'text-amber-600 dark:text-[#F5BD4F]', bg: 'bg-amber-50 dark:bg-amber-950/40 border-amber-200/50 dark:border-amber-900/40 border-l-amber-600 dark:border-l-[#F5BD4F]',
           },
           {
             label: 'Clients at Risk',
             value: new Set(overdueLoans.map(l => l.clientId)).size,
-            icon: <Users size={16} />, color: '#7C3AED', bg: '#F5F3FF',
+            icon: <Users size={16} />, color: 'text-purple-600 dark:text-purple-300', bg: 'bg-purple-50 dark:bg-purple-950/40 border-purple-200/50 dark:border-purple-900/40 border-l-purple-600 dark:border-l-purple-400',
           },
         ].map((kpi) => (
-          <div key={kpi.label} style={{
-            background: kpi.bg, border: `1px solid ${kpi.color}20`,
-            borderLeft: `3px solid ${kpi.color}`,
-            borderRadius: '0.75rem', padding: '0.875rem 1rem',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', color: kpi.color, marginBottom: '0.375rem' }}>
+          <div key={kpi.label} className={cn("rounded-xl p-3.5 border border-l-[3px]", kpi.bg)}>
+            <div className={cn("flex items-center gap-1.5 mb-1.5", kpi.color)}>
               {kpi.icon}
-              <span style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{kpi.label}</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">{kpi.label}</span>
             </div>
-            <span style={{ fontSize: '1.375rem', fontWeight: 800, color: '#111113', fontVariantNumeric: 'tabular-nums' }}>{kpi.value}</span>
+            <span className="text-xl font-extrabold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{kpi.value}</span>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+      <div className="grid grid-cols-1 gap-6">
 
         {/* ── Due This Week ── */}
-        <div className="card-premium" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '1.125rem 1.5rem',
-            borderBottom: '1px solid #F3F4F6',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-              <div style={{ padding: '0.375rem', background: '#EFF6FF', borderRadius: '0.5rem' }}>
-                <Calendar size={16} color="#2563EB" />
+        <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] !p-0 overflow-hidden">
+          <div className="flex items-center justify-between p-4 sm:px-6 border-b border-gray-100 dark:border-[#29352D]">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200/40 dark:border-blue-900/40 rounded-lg text-blue-600 dark:text-[#65C8F2]">
+                <Calendar size={16} />
               </div>
               <div>
-                <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111113', margin: 0 }}>Due This Week</h2>
-                <p style={{ fontSize: '0.75rem', color: '#9CA3AF', margin: 0 }}>Installments due Mon–Sun</p>
+                <h2 className="text-sm font-bold text-gray-900 dark:text-[#F4F7F4] m-0">Due This Week</h2>
+                <p className="text-xs text-gray-400 dark:text-[#A1ADA4] m-0">Installments due Mon–Sun</p>
               </div>
             </div>
-            <span style={{
-              fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.625rem',
-              background: '#EFF6FF', color: '#2563EB', borderRadius: '1rem',
-            }}>
+            <span className="text-xs font-bold px-2.5 py-1 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-[#65C8F2] border border-blue-200/50 dark:border-blue-900/40 rounded-full">
               {dueThisWeek.length} agreement(s)
             </span>
           </div>
 
           {dueThisWeek.length === 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center' }}>
-              <CheckCircle size={32} style={{ color: '#D1D5DB', margin: '0 auto 0.75rem' }} />
-              <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#6B7280' }}>No installments due this week</p>
+            <div className="p-12 text-center">
+              <CheckCircle size={32} className="text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+              <p className="text-sm font-semibold text-gray-500 dark:text-[#A1ADA4]">No installments due this week</p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '780px' }}>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[780px]">
                 <thead>
-                  <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
+                  <tr className="bg-gray-50/70 dark:bg-[#18221A] border-b border-gray-200 dark:border-[#29352D]">
                     {['Client', 'Agreement ID', 'Vehicle Price', 'Bal After Deposit', 'Total Balance', 'Due Date', 'Status'].map((h) => (
-                      <th key={h} style={{ padding: '0.625rem 1rem', fontSize: '0.6875rem', fontWeight: 700, color: '#6B7280', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                      <th key={h} className="px-4 py-2.5 text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] text-left uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -219,46 +205,39 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
                     <tr
                       key={loan.$id}
                       onClick={() => router.push(`/loans/${loan.$id}`)}
-                      style={{
-                        borderBottom: '1px solid #F3F4F6',
-                        background: i % 2 === 0 ? '#FFF' : '#FAFAFA',
-                        cursor: 'pointer',
-                        transition: 'background 0.12s',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#EFF6FF')}
-                      onMouseLeave={e => (e.currentTarget.style.background = i % 2 === 0 ? '#FFF' : '#FAFAFA')}
+                      className="border-b border-gray-100 dark:border-[#29352D] bg-white dark:bg-[#151D17] hover:bg-blue-50/20 dark:hover:bg-[#18221A] cursor-pointer transition-colors"
                     >
-                      <td style={{ padding: '0.75rem 1rem' }}>
-                        <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111113', margin: 0 }}>{loan.clientName}</p>
-                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.2rem', flexWrap: 'wrap' }}>
+                      <td className="px-4 py-3">
+                        <p className="text-sm font-bold text-gray-900 dark:text-[#F4F7F4] m-0">{loan.clientName}</p>
+                        <div className="flex gap-2 mt-1 flex-wrap">
                           {loan.clientPhone && (
-                            <span style={{ fontSize: '0.6875rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                            <span className="text-[11px] text-gray-500 dark:text-[#A1ADA4] flex items-center gap-1 font-mono">
                               <Phone size={9} /> {loan.clientPhone}
                             </span>
                           )}
                           {loan.clientEmail && (
-                            <span style={{ fontSize: '0.6875rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                            <span className="text-[11px] text-gray-500 dark:text-[#A1ADA4] flex items-center gap-1 font-mono">
                               <Mail size={9} /> {loan.clientEmail}
                             </span>
                           )}
                         </div>
                       </td>
-                      <td style={{ padding: '0.75rem 1rem', fontSize: '0.8125rem', color: '#6B7280' }}>{loan.loanType || '—'}</td>
-                      <td style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151', fontVariantNumeric: 'tabular-nums' }}>
+                      <td className="px-4 py-3 text-xs text-gray-500 dark:text-[#A1ADA4]">{loan.loanType || '—'}</td>
+                      <td className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-[#C1CBC3] tabular-nums">
                         {formatAmount(loan.amountApplied)}
                       </td>
-                      <td style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 700, color: '#047857', fontVariantNumeric: 'tabular-nums' }}>
+                      <td className="px-4 py-3 text-sm font-bold text-emerald-600 dark:text-[#B7FF3C] tabular-nums">
                         {formatAmount(loan.principalDisbursed)}
                       </td>
-                      <td style={{ padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 700, color: '#111113', fontVariantNumeric: 'tabular-nums' }}>
+                      <td className="px-4 py-3 text-sm font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">
                         {loan.nextInstallmentAmount != null ? formatAmount(loan.nextInstallmentAmount) : '—'}
                       </td>
-                      <td style={{ padding: '0.75rem 1rem', fontSize: '0.8125rem', color: '#374151', whiteSpace: 'nowrap' }}>
+                      <td className="px-4 py-3 text-xs text-gray-700 dark:text-[#C1CBC3] whitespace-nowrap tabular-nums">
                         {loan.nextInstallmentDate
                           ? new Date(loan.nextInstallmentDate).toLocaleDateString('en-KE', { weekday: 'short', day: 'numeric', month: 'short' })
                           : '—'}
                       </td>
-                      <td style={{ padding: '0.75rem 1rem' }}>
+                      <td className="px-4 py-3">
                         <StatusBadge status={loan.status} dpd={loan.daysPastDue} />
                       </td>
                     </tr>
@@ -270,118 +249,93 @@ export default function DailyReportClient({ dueThisWeek, overdueLoans, reportDat
         </div>
 
         {/* ── Overdue Loans ── */}
-        <div className="card-premium" style={{ padding: 0, overflow: 'hidden' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '1.125rem 1.5rem',
-            borderBottom: '1px solid #FECACA',
-            background: overdueLoans.length > 0 ? '#FFF5F5' : '#FFF',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-              <div style={{ padding: '0.375rem', background: '#FEE2E2', borderRadius: '0.5rem' }}>
-                <BadgeAlert size={16} color="#DC2626" />
+        <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] !p-0 overflow-hidden">
+          <div className="flex items-center justify-between p-4 sm:px-6 border-b border-red-100 dark:border-red-950/50 bg-red-50/30 dark:bg-red-950/20">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 bg-red-100 dark:bg-red-950/40 border border-red-200/40 dark:border-red-900/40 rounded-lg text-red-600 dark:text-[#FF626D]">
+                <BadgeAlert size={16} />
               </div>
               <div>
-                <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: overdueLoans.length > 0 ? '#B91C1C' : '#111113', margin: 0 }}>
+                <h2 className="text-sm font-bold text-red-700 dark:text-[#FF626D] m-0">
                   Overdue Agreements
                 </h2>
-                <p style={{ fontSize: '0.75rem', color: '#9CA3AF', margin: 0 }}>
+                <p className="text-xs text-gray-400 dark:text-[#A1ADA4] m-0">
                   Loans past their payment deadline
                 </p>
               </div>
             </div>
             {overdueLoans.length > 0 && (
-              <span style={{
-                fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.625rem',
-                background: '#FEE2E2', color: '#DC2626', borderRadius: '1rem',
-              }}>
+              <span className="text-xs font-bold px-2.5 py-1 bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200/50 dark:border-red-900/40 rounded-full">
                 {overdueLoans.length} agreement(s)
               </span>
             )}
           </div>
 
           {overdueLoans.length === 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center' }}>
-              <CheckCircle size={32} style={{ color: '#D1D5DB', margin: '0 auto 0.75rem' }} />
-              <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#6B7280' }}>No overdue loans today</p>
+            <div className="p-12 text-center">
+              <CheckCircle size={32} className="text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+              <p className="text-sm font-semibold text-gray-500 dark:text-[#A1ADA4]">No overdue loans today</p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '860px' }}>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[860px]">
                 <thead>
-                  <tr style={{ background: '#FEF2F2', borderBottom: '1px solid #FECACA' }}>
+                  <tr className="bg-red-50/40 dark:bg-[#18221A] border-b border-red-100 dark:border-[#29352D]">
                     {['Client & Contact', 'Agreement ID', 'Vehicle Price', 'Balance after Deposit', 'Total Balance', 'DPD', 'Status'].map((h) => (
-                      <th key={h} style={{ padding: '0.625rem 1rem', fontSize: '0.6875rem', fontWeight: 700, color: '#B91C1C', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                      <th key={h} className="px-4 py-2.5 text-[11px] font-bold text-red-700 dark:text-red-400 text-left uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {overdueLoans.map((loan, i) => {
-                    const isLoss = loan.status === 'Loss';
-                    const isSub = loan.status === 'Substandard';
-                    const baseBg = isLoss ? '#FFF5F5' : isSub ? '#FFFBEB' : i % 2 === 0 ? '#FFF' : '#FAFAFA';
-                    const hoverBg = '#FEF2F2';
-                    return (
-                      <tr
-                        key={loan.$id}
-                        onClick={() => router.push(`/loans/${loan.$id}`)}
-                        style={{
-                          borderBottom: '1px solid #FEE2E2',
-                          background: baseBg,
-                          cursor: 'pointer',
-                          transition: 'background 0.12s',
-                        }}
-                        onMouseEnter={e => (e.currentTarget.style.background = hoverBg)}
-                        onMouseLeave={e => (e.currentTarget.style.background = baseBg)}
-                      >
-                        <td style={{ padding: '0.875rem 1rem' }}>
-                          <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111113', margin: 0 }}>{loan.clientName}</p>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem', marginTop: '0.3rem' }}>
-                            {loan.clientPhone && (
-                              <a href={`tel:${loan.clientPhone}`} style={{ fontSize: '0.75rem', color: '#2563EB', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none' }}>
-                                <Phone size={10} /> {loan.clientPhone}
-                              </a>
-                            )}
-                            {loan.clientEmail && (
-                              <a href={`mailto:${loan.clientEmail}`} style={{ fontSize: '0.75rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none' }}>
-                                <Mail size={10} /> {loan.clientEmail}
-                              </a>
-                            )}
-                          </div>
-                        </td>
-                        <td style={{ padding: '0.875rem 1rem', fontSize: '0.8125rem', color: '#6B7280' }}>{loan.loanType || '—'}</td>
-                        <td style={{ padding: '0.875rem 1rem', fontSize: '0.875rem', color: '#374151', fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>
-                          {formatAmount(loan.amountApplied)}
-                        </td>
-                        <td style={{ padding: '0.875rem 1rem', fontSize: '0.875rem', fontWeight: 700, color: '#047857', fontVariantNumeric: 'tabular-nums' }}>
-                          {formatAmount(loan.principalDisbursed)}
-                        </td>
-                        <td style={{ padding: '0.875rem 1rem' }}>
-                          <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#B91C1C', fontVariantNumeric: 'tabular-nums', display: 'block' }}>
-                            {formatAmount(loan.balance)}
-                          </span>
-                          {(loan.remainingPenalties > 0) && (
-                            <span style={{ fontSize: '0.6875rem', color: '#D97706' }}>
-                              incl. {formatAmount(loan.remainingPenalties)} penalties
-                            </span>
+                  {overdueLoans.map((loan, i) => (
+                    <tr
+                      key={loan.$id}
+                      onClick={() => router.push(`/loans/${loan.$id}`)}
+                      className="border-b border-gray-100 dark:border-[#29352D] bg-white dark:bg-[#151D17] hover:bg-red-50/20 dark:hover:bg-red-950/20 cursor-pointer transition-colors"
+                    >
+                      <td className="px-4 py-3">
+                        <p className="text-sm font-bold text-gray-900 dark:text-[#F4F7F4] m-0">{loan.clientName}</p>
+                        <div className="flex flex-col gap-0.5 mt-1">
+                          {loan.clientPhone && (
+                            <a href={`tel:${loan.clientPhone}`} className="text-xs text-blue-600 dark:text-[#65C8F2] hover:underline flex items-center gap-1 font-mono">
+                              <Phone size={10} /> {loan.clientPhone}
+                            </a>
                           )}
-                        </td>
-                        <td style={{ padding: '0.875rem 1rem' }}>
-                          <span style={{
-                            fontSize: '1rem', fontWeight: 800,
-                            color: loan.daysPastDue >= 90 ? '#7F1D1D' : loan.daysPastDue >= 30 ? '#B91C1C' : '#D97706',
-                            fontVariantNumeric: 'tabular-nums',
-                          }}>
-                            {loan.daysPastDue}
+                          {loan.clientEmail && (
+                            <a href={`mailto:${loan.clientEmail}`} className="text-xs text-gray-400 dark:text-[#A1ADA4] hover:underline flex items-center gap-1 font-mono">
+                              <Mail size={10} /> {loan.clientEmail}
+                            </a>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-gray-500 dark:text-[#A1ADA4]">{loan.loanType || '—'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-[#C1CBC3] tabular-nums font-semibold">
+                        {formatAmount(loan.amountApplied)}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-bold text-emerald-600 dark:text-[#B7FF3C] tabular-nums">
+                        {formatAmount(loan.principalDisbursed)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-sm font-extrabold text-red-600 dark:text-[#FF626D] tabular-nums block">
+                          {formatAmount(loan.balance)}
+                        </span>
+                        {(loan.remainingPenalties > 0) && (
+                          <span className="text-[11px] text-amber-600 dark:text-[#F5BD4F]">
+                            incl. {formatAmount(loan.remainingPenalties)} penalties
                           </span>
-                          <span style={{ fontSize: '0.6875rem', color: '#9CA3AF', marginLeft: '0.2rem' }}>d</span>
-                        </td>
-                        <td style={{ padding: '0.875rem 1rem' }}>
-                          <StatusBadge status={loan.status} dpd={0} />
-                        </td>
-                      </tr>
-                    );
-                  })}
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-base font-extrabold text-red-600 dark:text-[#FF626D] tabular-nums">
+                          {loan.daysPastDue}
+                        </span>
+                        <span className="text-[11px] text-gray-400 dark:text-[#A1ADA4] ml-0.5">d</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <StatusBadge status={loan.status} dpd={0} />
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

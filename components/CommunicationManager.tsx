@@ -127,22 +127,19 @@ export default function CommunicationManager({ clients }: CommunicationManagerPr
           style={{ animation: 'none' }}
           onClick={(e) => e.target === e.currentTarget && setIsOpen(false)}
         >
-          <div className="modal-box" role="dialog" aria-modal="true" aria-labelledby="comm-modal-title" style={{ overflow: 'visible', maxWidth: '600px', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal-box dark:bg-[#151D17] dark:border-[#29352D]" role="dialog" aria-modal="true" aria-labelledby="comm-modal-title" style={{ overflow: 'visible', maxWidth: '600px', display: 'flex', flexDirection: 'column' }}>
 
             {/* Header */}
-            <div className="modal-header" style={{ paddingBottom: '1.5rem' }}>
+            <div className="modal-header border-b border-gray-100 dark:border-[#29352D]" style={{ paddingBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-                <div style={{
-                  width: '2.5rem', height: '2.5rem', borderRadius: '0.5rem',
-                  background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <MessageSquare size={18} style={{ color: '#1D4ED8' }} />
+                <div className="size-10 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200/50 dark:border-blue-900/40 flex items-center justify-center">
+                  <MessageSquare size={18} className="text-blue-700 dark:text-[#65C8F2]" />
                 </div>
-                <h2 className="modal-title" id="comm-modal-title" style={{ fontSize: '1.25rem' }}>
+                <h2 className="modal-title text-gray-900 dark:text-[#F4F7F4]" id="comm-modal-title" style={{ fontSize: '1.25rem' }}>
                   Communicate &amp; Log
                 </h2>
               </div>
-              <button className="modal-close" onClick={() => setIsOpen(false)} aria-label="Close">
+              <button className="modal-close text-gray-400 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4]" onClick={() => setIsOpen(false)} aria-label="Close">
                 <X size={16} />
               </button>
             </div>
@@ -173,19 +170,18 @@ export default function CommunicationManager({ clients }: CommunicationManagerPr
                       <DropdownMenuTrigger asChild>
                         <button
                           type="button"
-                          className="form-select w-full flex items-center justify-between"
-                          style={{ padding: '0.75rem 1rem', fontSize: '1.05rem', backgroundColor: '#fff', border: '1.5px solid #E5E7EB', borderRadius: '0.625rem', outline: 'none' }}
+                          className="form-select w-full flex items-center justify-between px-4 py-3 text-[1.05rem] bg-white dark:bg-[#101612] border border-gray-200 dark:border-[#29352D] rounded-[10px] text-gray-900 dark:text-[#F4F7F4] outline-none"
                         >
                           <span>{CHANNELS.find(c => c.value === formData.channel)?.label}</span>
-                          <ChevronDown className="size-4 opacity-0" />
+                          <ChevronDown className="size-4 opacity-70" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]" align="start" style={{ width: '100%' }}>
+                      <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D]" align="start" style={{ width: '100%' }}>
                         {CHANNELS.map((channel) => (
                           <DropdownMenuItem
                             key={channel.value}
                             onClick={() => setFormData(prev => ({ ...prev, channel: channel.value }))}
-                            className="left-3 text-14 py-2 cursor-pointer"
+                            className="left-3 text-14 py-2 cursor-pointer text-gray-900 dark:text-[#F4F7F4] focus:bg-gray-100 dark:focus:bg-[#18221A]"
                           >
                             {channel.label}
                           </DropdownMenuItem>
@@ -196,21 +192,17 @@ export default function CommunicationManager({ clients }: CommunicationManagerPr
 
                   <div className="form-field mb-0">
                     <label className="form-label" htmlFor="comm-action">Action</label>
-                    <div style={{
-                      display: 'flex', alignItems: 'center', height: '100%',
-                      background: '#F9FAFB', border: '1px solid #E5E7EB',
-                      borderRadius: '0.5rem', padding: '0 1rem', gap: '0.5rem'
-                    }}>
+                    <div className="flex items-center h-full bg-gray-50 dark:bg-[#18221A] border border-gray-200 dark:border-[#29352D] rounded-lg px-4 gap-2 min-h-[46px]">
                       <input
                         type="checkbox"
                         id="comm-sendnow"
                         name="sendNow"
                         checked={formData.sendNow}
                         onChange={handleChange}
-                        style={{ width: '1.2rem', height: '1.2rem' }}
+                        className="size-4.5 accent-indigo-600 dark:accent-[#B7FF3C]"
                         disabled={['CALL', 'IN_PERSON'].includes(formData.channel)}
                       />
-                      <label htmlFor="comm-sendnow" style={{ fontSize: '0.9rem', color: '#4B5563', cursor: 'pointer', userSelect: 'none' }}>
+                      <label htmlFor="comm-sendnow" className="text-sm text-gray-600 dark:text-[#C1CBC3] cursor-pointer select-none">
                         Send Actual Message
                       </label>
                     </div>
@@ -247,11 +239,12 @@ export default function CommunicationManager({ clients }: CommunicationManagerPr
                           <ChevronDown className="size-3.5 opacity-70" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-64">
+                      <DropdownMenuContent align="end" className="w-64 bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D]">
                         {QUICK_RESPONSES.map((response) => (
                           <DropdownMenuItem
                             key={response}
                             onClick={() => setFormData(prev => ({ ...prev, messageBody: response }))}
+                            className="text-gray-900 dark:text-[#F4F7F4] focus:bg-gray-100 dark:focus:bg-[#18221A] cursor-pointer"
                           >
                             {response}
                           </DropdownMenuItem>
@@ -298,7 +291,7 @@ export default function CommunicationManager({ clients }: CommunicationManagerPr
                 </button>
                 <button
                   type="button"
-                  className="action-btn action-btn-outline"
+                  className="action-btn action-btn-outline dark:bg-[#18221A] dark:border-[#29352D] dark:text-[#C1CBC3] dark:hover:bg-[#1D2920] dark:hover:text-[#F4F7F4]"
                   onClick={() => setIsOpen(false)}
                   disabled={isPending}
                 >

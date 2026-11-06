@@ -125,10 +125,10 @@ export default function ClientEditForm({ client }: ClientEditFormProps) {
         <div className="lg:col-span-1">
           <div className="card-premium p-6 h-full flex flex-col">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/5 rounded-lg text-primary">
+              <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                 <Camera className="size-5" />
               </div>
-              <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Profile Photo</h3>
+              <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Profile Photo</h3>
             </div>
 
             <FileUpload
@@ -137,7 +137,7 @@ export default function ClientEditForm({ client }: ClientEditFormProps) {
               existingUrl={existingPhotoPreviewUrl ?? undefined}
               className="flex-1"
             />
-            <p className="text-12 text-gray-400 mt-4 leading-relaxed">
+            <p className="text-12 text-gray-400 dark:text-[#A1ADA4] mt-4 leading-relaxed">
               Drag & drop or click to replace. Max 5MB. JPG, PNG or WEBP.
             </p>
           </div>
@@ -148,10 +148,10 @@ export default function ClientEditForm({ client }: ClientEditFormProps) {
           {/* Personal Information */}
           <div className="card-premium p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/5 rounded-lg text-primary">
+              <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                 <UserCheck className="size-5" />
               </div>
-              <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Personal Details</h3>
+              <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Personal Details</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -197,10 +197,10 @@ export default function ClientEditForm({ client }: ClientEditFormProps) {
           {/* Contact Information */}
           <div className="card-premium p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/5 rounded-lg text-primary">
+              <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
                 <Phone className="size-5" />
               </div>
-              <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Contact Information</h3>
+              <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Contact Information</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

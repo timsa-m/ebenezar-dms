@@ -159,7 +159,7 @@ export default function ClientsTable({ clients }: { clients: Client[] }) {
       {/* Table Toolbar Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Left Side: Tabs */}
-        <div className="status-filter-group w-fit">
+        <div className="status-filter-group w-fit dark:bg-[#101612] dark:border dark:border-[#29352D]">
           <Button
             onClick={() => setActiveTab('all')}
             className={cn('status-filter-pill', activeTab === 'all' && 'status-filter-pill-active')}

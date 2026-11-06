@@ -58,98 +58,98 @@ export default async function AdminContractsPage() {
       {/* Contract Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 dark:bg-emerald-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
-            <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Active Contracts</p>
-            <div className="p-2 bg-success-50 rounded-lg text-success-600 ring-1 ring-success-100">
+            <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Active Contracts</p>
+            <div className="p-2 bg-success-50 dark:bg-emerald-950/40 rounded-lg text-success-600 dark:text-[#B7FF3C] ring-1 ring-success-100 dark:ring-emerald-900/40">
               <Activity className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{activeLoans}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{activeLoans}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-success">Servicing</span>
-              <p className="text-12 text-gray-500 font-medium">Interest earning</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Interest earning</p>
             </div>
           </div>
         </div>
 
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Overdue Accounts</p>
-              <p className="text-11 text-gray-400">7–30 days past due</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Overdue Accounts</p>
+              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">7–30 days past due</p>
             </div>
-            <div className="p-2 bg-amber-50 rounded-lg text-amber-600 ring-1 ring-amber-100">
+            <div className="p-2 bg-amber-50 dark:bg-amber-950/40 rounded-lg text-amber-600 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-900/40">
               <AlertTriangle className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{overdueLoans}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{overdueLoans}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-warning">Overdue</span>
-              <p className="text-12 text-gray-500 font-medium">Payment due</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Payment due</p>
             </div>
           </div>
         </div>
 
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Defaulting</p>
-              <p className="text-11 text-gray-400">60–90 days past due</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Defaulting</p>
+              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">60–90 days past due</p>
             </div>
-            <div className="p-2 bg-orange-50 rounded-lg text-orange-600 ring-1 ring-orange-100">
+            <div className="p-2 bg-orange-50 dark:bg-orange-950/40 rounded-lg text-orange-600 dark:text-orange-400 ring-1 ring-orange-100 dark:ring-orange-900/40">
               <AlertTriangle className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{defaultingLoans}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{defaultingLoans}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-error">Defaulting</span>
-              <p className="text-12 text-gray-500 font-medium">Pre-repossession</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Pre-repossession</p>
             </div>
           </div>
         </div>
 
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-rose-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Loss Accounts</p>
-              <p className="text-11 text-gray-400">&gt;90 days past due</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Loss Accounts</p>
+              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">&gt;90 days past due</p>
             </div>
-            <div className="p-2 bg-red-50 rounded-lg text-red-600 ring-1 ring-red-100">
+            <div className="p-2 bg-red-50 dark:bg-rose-950/40 rounded-lg text-red-600 dark:text-rose-400 ring-1 ring-red-100 dark:ring-rose-900/40">
               <ShieldAlert className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{lossLoans}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{lossLoans}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-error">Loss</span>
-              <p className="text-12 text-gray-500 font-medium">Not written off</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Not written off</p>
             </div>
           </div>
         </div>
 
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-sky-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-sky-50 dark:bg-sky-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Fully Paid</p>
-              <p className="text-11 text-gray-400">Settled accounts</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Fully Paid</p>
+              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">Settled accounts</p>
             </div>
-            <div className="p-2 bg-sky-50 rounded-lg text-sky-600 ring-1 ring-sky-100">
+            <div className="p-2 bg-sky-50 dark:bg-sky-950/40 rounded-lg text-sky-600 dark:text-sky-400 ring-1 ring-sky-100 dark:ring-sky-900/40">
               <CheckCircle2 className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{fullyPaidLoans}</h2>
+            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{fullyPaidLoans}</h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="badge badge-completed">Settled</span>
-              <p className="text-12 text-gray-500 font-medium">Fully repaid</p>
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Fully repaid</p>
             </div>
           </div>
         </div>

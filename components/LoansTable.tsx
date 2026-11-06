@@ -92,22 +92,22 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
     <div className="flex flex-col gap-5 mt-6">
       {/* Table Toolbar */}
       <div className="table-toolbar">
-        <h2 className="text-18 font-semibold text-gray-900 tracking-tight">
+        <h2 className="text-18 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">
           All Agreements
-          <span className="ml-2 text-14 font-normal text-gray-400"> ({filtered.length})</span>
+          <span className="ml-2 text-14 font-normal text-gray-400 dark:text-[#A1ADA4]"> ({filtered.length})</span>
         </h2>
-        <div className="status-filter-group">
+        <div className="status-filter-group dark:bg-[#101612] ">
           {/* Sorting */}
           <Button
             variant="outline"
-            className={cn('status-filter-pill')}
+            className={cn('status-filter-pill dark:text-[#A1ADA4] dark:hover:text-[#F4F7F4] dark:hover:bg-[#1D2920] dark:border-[#29352D]')}
             onClick={() => setSortBy(prev => prev === 'disbursement' ? 'created' : 'disbursement')}
           >
             <Filter className="size-4" />
             {sortBy === 'disbursement' ? ' ' : ' '}
           </Button>
           {/* Status filter pills */}
-          <div className="status-filter-group">
+          <div className="status-filter-group dark:bg-[#101612] dark:border dark:border-[#29352D]">
             {STATUS_FILTERS.map((f) => (
               <Button
                 key={f.value}
@@ -167,7 +167,7 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                 <TableRow
                   key={loan.$id}
                   onClick={() => router.push(`/loans/${loan.$id}`)}
-                  className="data-table-row cursor-pointer hover:bg-gray-50/80 transition-colors"
+                  className="data-table-row cursor-pointer hover:bg-gray-50/80 dark:hover:bg-[#1D2920]/80 transition-colors"
                 >
                   <TableCell className="data-td">
                     <span className="mono-pill">{loan.$id.slice(-8).toUpperCase()}</span>
@@ -176,10 +176,10 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                     <span className="client-name">{loan.clientName || loan.clientId}</span>
                   </TableCell>
                   <TableCell className="data-td">
-                    <span className="text-14 text-slate-700 font-semibold">{loan.vehicleRegNo || 'N/A'}</span>
+                    <span className="text-14 text-slate-700 dark:text-[#F4F7F4] font-semibold">{loan.vehicleRegNo || 'N/A'}</span>
                   </TableCell>
                   <TableCell className="data-td">
-                    <span className="text-14 text-gray-600 font-medium">{loan.loanType}</span>
+                    <span className="text-14 text-gray-600 dark:text-[#A1ADA4] font-medium">{loan.loanType}</span>
                   </TableCell>
                   <TableCell className="data-td text-right">
                     <span className="amount-text">{formatAmount(loan.principalAmount || 0)}</span>
@@ -238,12 +238,12 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
               className="
           overflow-hidden
           rounded-3xl
-          border border-slate-200/70
-          bg-white
+          border border-slate-200/70 dark:border-[#29352D]
+          bg-white dark:bg-[#151D17]
           shadow-sm
           transition-all duration-300
           hover:shadow-lg
-          hover:shadow-slate-200/50
+          hover:shadow-slate-200/50 dark:hover:shadow-none
           p-5
           cursor-pointer
         "
@@ -275,6 +275,9 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                 from-slate-100
                 to-slate-200
                 text-slate-700
+                dark:from-[#1D2920]
+                dark:to-[#151D17]
+                dark:text-[#F4F7F4]
                 font-bold
                 shadow-sm
               "
@@ -284,11 +287,11 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
 
                   {/* Client Info */}
                   <div className="min-w-0 flex flex-col justify-center">
-                    <h3 className="font-semibold text-[15px] text-slate-900 truncate">
+                    <h3 className="font-semibold text-[15px] text-slate-900 dark:text-[#F4F7F4] truncate">
                       {loan.clientName || "Unknown Client"}
                     </h3>
 
-                    <p className="text-sm font-medium text-slate-600 truncate mt-0.5">
+                    <p className="text-sm font-medium text-slate-600 dark:text-[#A1ADA4] truncate mt-0.5">
                       {loan.vehicleRegNo || "No vehicle linked"}
                     </p>
 
@@ -297,11 +300,11 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                         className={cn(
                           "badge inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide",
                           {
-                            "bg-green-50 text-green-700": loan.status === "Active",
-                            "bg-amber-50 text-amber-700": loan.status === "Pending" || loan.status === "Overdue" || loan.status === "Substandard",
-                            "bg-red-50 text-red-700": ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
-                            "bg-gray-100 text-gray-700": loan.status === "Written Off",
-                            "bg-blue-50 text-blue-700": loan.status === "Completed" || loan.status === "Fully Paid" || loan.status === "Cash Sale",
+                            "bg-green-50 text-green-700 dark:bg-emerald-950/30 dark:text-emerald-400": loan.status === "Active",
+                            "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400": loan.status === "Pending" || loan.status === "Overdue" || loan.status === "Substandard",
+                            "bg-red-50 text-red-700 dark:bg-rose-950/30 dark:text-rose-400": ['Defaulting', 'Loss', 'Denied'].includes(loan.status),
+                            "bg-gray-100 text-gray-700 dark:bg-[#1D2920] dark:text-[#C1CBC3]": loan.status === "Written Off",
+                            "bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400": loan.status === "Completed" || loan.status === "Fully Paid" || loan.status === "Cash Sale",
                           }
                         )}
                       >
@@ -317,7 +320,7 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
               flex
               items-center
               shrink-0
-              text-slate-400
+              text-slate-400 dark:text-[#A1ADA4]
               transition-transform
               duration-200
               ease-out
@@ -340,14 +343,15 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                   <div
                     className="
                 rounded-2xl
-                bg-slate-50
+                bg-slate-50 dark:bg-[#101612]
+                border border-slate-100 dark:border-[#29352D]
                 p-4
                 grid
                 gap-4
               "
                   >
                     <div className="flex justify-between items-center px-1">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         Contract ID
                       </span>
 
@@ -355,13 +359,13 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                         className="
                     badge
                     rounded-lg
-                    bg-slate-100
+                    bg-slate-100 dark:bg-[#1D2920]
                     px-2.5
                     py-1
                     text-xs
                     font-mono
-                    border
-                    text-slate-700
+                    border dark:border-[#29352D]
+                    text-slate-700 dark:text-[#C1CBC3]
                   "
                       >
                         {loan.$id.slice(-8).toUpperCase()}
@@ -369,11 +373,11 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                     </div>
 
                     <div className="flex justify-between items-center px-1">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         Amount
                       </span>
 
-                      <span className="font-bold text-slate-900">
+                      <span className="font-bold text-slate-900 dark:text-[#F4F7F4]">
                         {formatAmount(
                           loan.principalAmount || 0
                         )}
@@ -404,8 +408,8 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
             className="
         rounded-3xl
         border
-        border-slate-200
-        bg-white
+        border-slate-200 dark:border-[#29352D]
+        bg-white dark:bg-[#151D17]
         p-10
         text-center
         shadow-sm
@@ -413,13 +417,13 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
         mt-10
       "
           >
-            <CreditCard className="size-10 mx-auto mb-3 text-slate-300" />
+            <CreditCard className="size-10 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
 
-            <h3 className="font-semibold text-slate-700">
+            <h3 className="font-semibold text-slate-700 dark:text-[#F4F7F4]">
               No Agreements Found
             </h3>
 
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-400 dark:text-[#A1ADA4] mt-1">
               Created agreements will appear here
             </p>
 

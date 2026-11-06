@@ -4,6 +4,7 @@ import { useState, useTransition, useRef, useEffect } from 'react';
 import { inviteUser } from '@/lib/actions/user.actions';
 import { UserPlus, X, Loader2, CheckCircle, Mail, User, Shield, Send } from 'lucide-react';
 import { toast } from '@/lib/toast';
+import { cn } from '@/lib/utils';
 
 type Props = {
   onSuccess?: () => void;
@@ -136,48 +137,29 @@ export default function InviteUserModal({ onSuccess }: Props) {
 
       {/* Modal */}
       {open && (
-        <div style={{
-          position: 'fixed',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 9999,
-          background: 'white',
-          borderRadius: 18,
-          width: '100%',
-          maxWidth: 480,
-          padding: '2rem',
-          boxShadow: '0 24px 80px rgba(10, 20, 50, 0.22)',
-          animation: 'slideUp 0.2s ease',
-          fontFamily: 'Inter, system-ui, sans-serif',
-        }}>
+        <div
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] rounded-2xl w-[calc(100%-2rem)] max-w-[480px] p-6 sm:p-8 shadow-2xl font-sans"
+          style={{ animation: 'slideUp 0.2s ease' }}
+        >
           {/* Modal header */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{
-                width: 42, height: 42, borderRadius: 10,
-                background: 'linear-gradient(135deg, #0f4c81, #1a73e8)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <UserPlus size={20} color="white" />
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-700 to-blue-500 flex items-center justify-center text-white shrink-0">
+                <UserPlus size={20} />
               </div>
               <div>
-                <h2 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f1c3f' }}>
+                <h2 className="text-lg font-extrabold text-gray-900 dark:text-[#F4F7F4] m-0">
                   Invite New User
                 </h2>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#8a95ab' }}>
+                <p className="text-xs text-gray-500 dark:text-[#A1ADA4] m-0">
                   An invite email will be sent. The user sets their own password.
                 </p>
               </div>
             </div>
             <button
               onClick={() => setOpen(false)}
-              style={{
-                border: 'none', background: '#f1f4f9', borderRadius: 8,
-                width: 32, height: 32, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#5a6a8a', flexShrink: 0,
-              }}
+              className="border-none bg-gray-100 dark:bg-[#1D2920] rounded-lg w-8 h-8 cursor-pointer flex items-center justify-center text-gray-500 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4] transition-colors shrink-0"
+              aria-label="Close"
             >
               <X size={16} />
             </button>
@@ -185,30 +167,19 @@ export default function InviteUserModal({ onSuccess }: Props) {
 
           {/* Success state */}
           {result?.ok ? (
-            <div style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              gap: '0.75rem', padding: '1.5rem', textAlign: 'center',
-            }}>
-              <div style={{
-                width: 60, height: 60, borderRadius: '50%',
-                background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <CheckCircle size={30} color="#15803d" />
+            <div className="flex flex-col items-center gap-3 p-6 text-center">
+              <div className="w-14 h-14 rounded-full bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center">
+                <CheckCircle size={30} className="text-emerald-600 dark:text-emerald-400" />
               </div>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#1a2340', fontWeight: 600 }}>
+              <p className="m-0 text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
                 User Invited!
               </p>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#5a6a8a', lineHeight: 1.6 }}>
+              <p className="m-0 text-xs text-gray-500 dark:text-[#A1ADA4] leading-relaxed">
                 {result.msg}
               </p>
               <button
                 onClick={() => setOpen(false)}
-                style={{
-                  marginTop: 8, padding: '0.55rem 1.5rem',
-                  background: '#f0fdf4', border: '1px solid #bbf7d0',
-                  color: '#15803d', borderRadius: 8, fontSize: '0.85rem',
-                  fontWeight: 600, cursor: 'pointer',
-                }}
+                className="mt-2 py-2 px-6 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 rounded-lg text-sm font-semibold cursor-pointer"
               >
                 Done
               </button>
@@ -216,34 +187,40 @@ export default function InviteUserModal({ onSuccess }: Props) {
           ) : (
             <form onSubmit={handleSubmit} noValidate>
               {/* Name row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.875rem', marginBottom: '0.875rem' }}>
+              <div className="grid grid-cols-2 gap-3.5 mb-3.5">
                 <div>
-                  <label style={labelStyle}><User size={11} />First Name</label>
-                  <div style={{ position: 'relative' }}>
-                    <span style={iconWrap}><User size={14} /></span>
+                  <label className="text-xs font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                    <User size={11} />First Name
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] pointer-events-none">
+                      <User size={14} />
+                    </span>
                     <input
                       ref={firstRef}
                       type="text"
                       placeholder="JOHN"
                       value={form.firstName}
                       onChange={e => setForm(f => ({ ...f, firstName: e.target.value.toUpperCase() }))}
-                      style={{ ...inputStyle(), textTransform: 'uppercase' }}
-                      className="uppercase"
+                      className="form-input w-full pl-9 py-2 text-sm uppercase rounded-lg border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4]"
                       required
                     />
                   </div>
                 </div>
                 <div>
-                  <label style={labelStyle}><User size={11} />Last Name</label>
-                  <div style={{ position: 'relative' }}>
-                    <span style={iconWrap}><User size={14} /></span>
+                  <label className="text-xs font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                    <User size={11} />Last Name
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] pointer-events-none">
+                      <User size={14} />
+                    </span>
                     <input
                       type="text"
                       placeholder="DOE"
                       value={form.lastName}
                       onChange={e => setForm(f => ({ ...f, lastName: e.target.value.toUpperCase() }))}
-                      style={{ ...inputStyle(), textTransform: 'uppercase' }}
-                      className="uppercase"
+                      className="form-input w-full pl-9 py-2 text-sm uppercase rounded-lg border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4]"
                       required
                     />
                   </div>
@@ -251,36 +228,40 @@ export default function InviteUserModal({ onSuccess }: Props) {
               </div>
 
               {/* Email */}
-              <div style={{ marginBottom: '0.875rem' }}>
-                <label style={labelStyle}><Mail size={11} />Email Address</label>
-                <div style={{ position: 'relative' }}>
-                  <span style={iconWrap}><Mail size={14} /></span>
+              <div className="mb-3.5">
+                <label className="text-xs font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <Mail size={11} />Email Address
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] pointer-events-none">
+                    <Mail size={14} />
+                  </span>
                   <input
                     type="email"
                     placeholder="user@example.com"
                     value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    style={inputStyle()}
+                    className="form-input w-full pl-9 py-2 text-sm rounded-lg border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4]"
                     required
                   />
                 </div>
               </div>
 
               {/* Role */}
-              <div style={{ marginBottom: '1.25rem' }}>
-                <label style={labelStyle}><Shield size={11} />Role</label>
-                <div style={{ display: 'flex', gap: 10 }}>
+              <div className="mb-5">
+                <label className="text-xs font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <Shield size={11} />Role
+                </label>
+                <div className="flex gap-2.5">
                   {(['STAFF', 'MANAGER', 'ADMIN'] as const).map(r => (
                     <label
                       key={r}
-                      style={{
-                        flex: 1, display: 'flex', alignItems: 'center', gap: 8,
-                        padding: '0.6rem 0.875rem',
-                        border: `1.5px solid ${form.role === r ? '#1a73e8' : '#e2e8f0'}`,
-                        borderRadius: 9, cursor: 'pointer',
-                        background: form.role === r ? '#eff6ff' : 'white',
-                        transition: 'all 0.15s',
-                      }}
+                      className={cn(
+                        "flex-1 flex items-center gap-2 p-2.5 rounded-lg border cursor-pointer transition-all",
+                        form.role === r
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300"
+                          : "border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-700 dark:text-[#C1CBC3]"
+                      )}
                     >
                       <input
                         type="radio"
@@ -288,21 +269,24 @@ export default function InviteUserModal({ onSuccess }: Props) {
                         value={r}
                         checked={form.role === r}
                         onChange={() => setForm(f => ({ ...f, role: r }))}
-                        style={{ display: 'none' }}
+                        className="hidden"
                       />
-                      <div style={{
-                        width: 16, height: 16, borderRadius: '50%',
-                        border: `2px solid ${form.role === r ? '#1a73e8' : '#cbd5e1'}`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0,
-                      }}>
+                      <div className={cn(
+                        "w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0",
+                        form.role === r ? "border-blue-600" : "border-gray-300 dark:border-gray-600"
+                      )}>
                         {form.role === r && (
-                          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#1a73e8' }} />
+                          <div className="w-2 h-2 rounded-full bg-blue-600" />
                         )}
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: form.role === r ? '#1d4ed8' : '#1a2340' }}>{r}</div>
-                        <div style={{ fontSize: '0.72rem', color: '#8a95ab' }}>
+                        <div className={cn(
+                          "text-xs font-bold",
+                          form.role === r ? "text-blue-700 dark:text-blue-300" : "text-gray-900 dark:text-[#F4F7F4]"
+                        )}>
+                          {r}
+                        </div>
+                        <div className="text-[11px] text-gray-400 dark:text-[#A1ADA4]">
                           {r === 'STAFF' ? 'Read/write' : r === 'MANAGER' ? 'Approvals' : 'Full access'}
                         </div>
                       </div>
@@ -313,48 +297,28 @@ export default function InviteUserModal({ onSuccess }: Props) {
 
               {/* Error */}
               {result && !result.ok && (
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '0.65rem 0.875rem',
-                  background: '#fef2f2', border: '1px solid #fca5a5',
-                  borderRadius: 8, marginBottom: '1rem',
-                  fontSize: '0.82rem', color: '#b91c1c',
-                }}>
-                  <X size={13} style={{ flexShrink: 0 }} />
+                <div className="flex items-center gap-2 p-2.5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-lg mb-4 text-xs text-red-600 dark:text-red-400">
+                  <X size={13} className="shrink-0" />
                   {result.msg}
                 </div>
               )}
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="flex gap-2.5">
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  style={{
-                    flex: 1, padding: '0.7rem',
-                    border: '1.5px solid #e2e8f0', background: 'white',
-                    color: '#5a6a8a', borderRadius: 10,
-                    fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer',
-                  }}
+                  className="flex-1 py-2.5 px-4 border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#1D2920] text-gray-700 dark:text-[#C1CBC3] hover:bg-gray-50 dark:hover:bg-[#222E25] rounded-xl text-sm font-semibold cursor-pointer transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isPending}
-                  style={{
-                    flex: 2, padding: '0.7rem',
-                    background: 'linear-gradient(135deg, #0f4c81, #1a73e8)',
-                    color: 'white', border: 'none', borderRadius: 10,
-                    fontSize: '0.875rem', fontWeight: 600, cursor: isPending ? 'not-allowed' : 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                    opacity: isPending ? 0.75 : 1,
-                    boxShadow: '0 4px 14px rgba(15, 76, 129, 0.25)',
-                    transition: 'opacity 0.2s',
-                  }}
+                  className="flex-[2] py-2.5 px-4 bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 text-white border-none rounded-xl text-sm font-semibold cursor-pointer disabled:opacity-75 flex items-center justify-center gap-2 transition-all shadow-md"
                 >
                   {isPending ? (
-                    <><Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> Sending Invite…</>
+                    <><Loader2 size={15} className="animate-spin" /> Sending Invite…</>
                   ) : (
                     <><Send size={15} /> Send Invite</>
                   )}

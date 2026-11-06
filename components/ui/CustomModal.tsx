@@ -134,16 +134,16 @@ export default function CustomModal({
         tabIndex={-1}
         onKeyDown={handleKeyDown}
         onClick={(e) => e.stopPropagation()}
-        className={className}
+        className={`bg-card text-card-foreground border border-border ${className}`}
         style={{
           width: typeof width === 'number' ? `${width}px` : width,
           maxWidth: '100%',
           maxHeight: 'calc(100vh - 2rem)',
           overflowY: 'auto',
-          background: '#fff',
+          background: 'var(--card)',
           borderRadius: '1rem',
           boxShadow:
-            '0 24px 64px -8px rgba(0,0,0,0.18), 0 4px 16px -4px rgba(0,0,0,0.08)',
+            '0 24px 64px -8px rgba(0,0,0,0.3), 0 4px 16px -4px rgba(0,0,0,0.15)',
           outline: 'none',
           animation: 'modal-slide-up 0.18s ease',
         }}
@@ -156,7 +156,7 @@ export default function CustomModal({
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '1.125rem 1.5rem',
-              borderBottom: '1px solid #F3F4F6',
+              borderBottom: '1px solid var(--border)',
             }}
           >
             {title ? (
@@ -166,7 +166,7 @@ export default function CustomModal({
                   margin: 0,
                   fontSize: '1rem',
                   fontWeight: 700,
-                  color: '#111113',
+                  color: 'var(--foreground)',
                   letterSpacing: '-0.01em',
                 }}
               >
@@ -188,19 +188,19 @@ export default function CustomModal({
                   width: '2rem',
                   height: '2rem',
                   borderRadius: '50%',
-                  border: '1.5px solid #E5E7EB',
+                  border: '1.5px solid var(--border)',
                   background: 'transparent',
                   cursor: 'pointer',
-                  color: '#6B7280',
+                  color: 'var(--muted-foreground)',
                   transition: 'background 0.15s, color 0.15s',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#F3F4F6';
-                  e.currentTarget.style.color = '#111113';
+                  e.currentTarget.style.background = 'var(--secondary)';
+                  e.currentTarget.style.color = 'var(--foreground)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#6B7280';
+                  e.currentTarget.style.color = 'var(--muted-foreground)';
                 }}
               >
                 <X size={15} />

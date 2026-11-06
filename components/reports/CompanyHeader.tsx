@@ -10,7 +10,7 @@ interface CompanyHeaderProps {
 
 export default function CompanyHeader({ title, subtext, className, rightContent }: CompanyHeaderProps) {
   return (
-    <div className={cn("flex justify-between items-start mb-8 pb-6 border-b border-gray-300", className)}>
+    <div className={cn("flex justify-between items-start mb-8 pb-6 border-b border-gray-300 dark:border-[#29352D]", className)}>
       {/* Left: Logo + Brand — logo is same visual height as stacked brand name + tagline */}
       <div className="flex items-center gap-3">
         {/*
@@ -30,19 +30,19 @@ export default function CompanyHeader({ title, subtext, className, rightContent 
 
         {/* Brand name on top, tagline directly below */}
         <div className="flex flex-col justify-center">
-          <span className="text-2xl font-black text-gray-900 tracking-tight leading-tight">
+          <span className="text-2xl font-black text-gray-900 dark:text-[#F4F7F4] tracking-tight leading-tight">
             Ebenezar Enterprises LTD
           </span>
-          <span className="text-sm text-gray-500 leading-snug mt-0.5">
+          <span className="text-sm text-gray-500 dark:text-[#A1ADA4] leading-snug mt-0.5">
             Car Bazaar
           </span>
         </div>
       </div>
       {/* Right: Report title + metadata */}
       <div className="text-right">
-        <p className="text-xl font-bold text-gray-900">{title}</p>
+        <p className="text-xl font-bold text-gray-900 dark:text-[#F4F7F4]">{title}</p>
         {subtext && (
-          <p className="text-xs text-gray-500 mt-0.5">{subtext}</p>
+          <p className="text-xs text-gray-500 dark:text-[#A1ADA4] mt-0.5">{subtext}</p>
         )}
         {rightContent}
       </div>

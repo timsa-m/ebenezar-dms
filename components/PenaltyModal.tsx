@@ -91,13 +91,9 @@ export default function PenaltyModal({
       <div className="modal-box" role="dialog" aria-modal="true" aria-labelledby="penalty-modal-title" style={{ overflow: 'visible' }}>
         {/* Header */}
         <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-            <div style={{
-              width: '2rem', height: '2rem', borderRadius: '0.5rem',
-              background: '#FEF2F2', display: 'flex', alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <AlertTriangle size={14} style={{ color: '#B91C1C' }} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/40 flex items-center justify-center">
+              <AlertTriangle size={14} className="text-red-700 dark:text-red-400" />
             </div>
             <h2 className="modal-title" id="penalty-modal-title">Apply Penalty</h2>
           </div>
@@ -167,10 +163,10 @@ export default function PenaltyModal({
             {/* Preview */}
             {isValid && (
               <div className={`preview-box${calcMode === 'percentage' ? ' preview-box-danger' : ''}`}>
-                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151' }}>
+                <span className="text-xs font-semibold text-gray-700 dark:text-[#C1CBC3]">
                   Penalty to be applied
                 </span>
-                <span style={{ fontSize: '1.125rem', fontWeight: 800, color: '#B91C1C', fontVariantNumeric: 'tabular-nums' }}>
+                <span className="text-lg font-extrabold text-red-600 dark:text-red-400 tabular-nums">
                   +{formatAmount(penaltyAmount)}
                 </span>
               </div>
@@ -187,7 +183,7 @@ export default function PenaltyModal({
 
             {/* Comment */}
             <div className="form-field">
-              <label className="form-label" htmlFor="penalty-comment">Reason / Comment <span style={{ color: '#EF4444' }}>*</span></label>
+              <label className="form-label" htmlFor="penalty-comment">Reason / Comment <span className="text-red-500">*</span></label>
               <textarea
                 id="penalty-comment"
                 placeholder="Provide a clear reason for this penalty (required for audit trail)..."
@@ -206,8 +202,7 @@ export default function PenaltyModal({
                 type="text"
                 value={currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : 'Unknown User'}
                 readOnly
-                className="form-input"
-                style={{ color: '#6B7280', cursor: 'default' }}
+                className="form-input text-gray-500 dark:text-[#A1ADA4] cursor-default bg-gray-50 dark:bg-[#18221A]"
               />
             </div>
 

@@ -11,6 +11,7 @@ import { deleteClientAction } from '@/lib/actions/client.actions';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import { toast } from '@/lib/toast';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
+import SecureActionModal from '@/components/security/SecureActionModal';
 import {
   Table,
   TableHeader,
@@ -160,11 +161,11 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
     document.body.removeChild(link);
   };
 
-  const handleDeleteClient = async (clientId: string) => {
+  const handleDeleteClient = async (clientId: string, verificationToken?: string) => {
     setIsDeleting(true);
     setOpenMenuId(null);
     try {
-      const res = await deleteClientAction(clientId);
+      const res = await deleteClientAction(clientId, verificationToken);
       if (res?.success) {
         toast.success('Client deleted successfully.');
       } else {
@@ -183,7 +184,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
       {/* Table Toolbar Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Left Side: Tabs */}
-        <div className="status-filter-group w-fit">
+        <div className="status-filter-group w-fit dark:bg-[#101612] dark:border dark:border-[#29352D]">
           <Button
             onClick={() => setActiveTab('all')}
             className={cn('status-filter-pill', activeTab === 'all' && 'status-filter-pill-active')}
@@ -420,12 +421,12 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
               className="
                 overflow-hidden
                 rounded-3xl
-                border border-slate-200/70
-                bg-white
+                border border-slate-200/70 dark:border-[#29352D]
+                bg-white dark:bg-[#151D17]
                 shadow-sm
                 transition-all duration-300
                 hover:shadow-lg
-                hover:shadow-slate-200/50
+                hover:shadow-slate-200/50 dark:hover:shadow-none
                 p-5
                 cursor-pointer
               "
@@ -456,11 +457,11 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
 
                   {/* Client Info */}
                   <div className="min-w-0">
-                    <h3 className="font-semibold text-[15px] text-slate-900 truncate">
+                    <h3 className="font-semibold text-[15px] text-slate-900 dark:text-[#F4F7F4] truncate">
                       {client.firstName} {client.lastName}
                     </h3>
 
-                    <p className="text-sm text-slate-500 truncate mt-0.5">
+                    <p className="text-sm text-slate-500 dark:text-[#A1ADA4] truncate mt-0.5">
                       {client.email || "No email provided"}
                     </p>
 
@@ -471,7 +472,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                 </div>
 
                 {/* Expand Icon */}
-                <div className="shrink-0 text-slate-400">
+                <div className="shrink-0 text-slate-400 dark:text-[#A1ADA4]">
                   {isOpen ? (
                     <ChevronUp size={18} />
                   ) : (
@@ -487,7 +488,8 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                   <div
                     className="
                       rounded-2xl
-                      bg-slate-50
+                      bg-slate-50 dark:bg-[#101612]
+                      border border-slate-100 dark:border-[#29352D]
                       p-4
                       grid
                       gap-4
@@ -495,20 +497,20 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                     "
                   >
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         National ID
                       </span>
                       <span
                         className="
                           badge
                           rounded-lg
-                          bg-slate-100
+                          bg-slate-100 dark:bg-[#1D2920]
                           px-2.5
                           py-1
                           text-xs
                           font-mono
-                          border
-                          text-slate-700
+                          border dark:border-[#29352D]
+                          text-slate-700 dark:text-[#C1CBC3]
                         "
                       >
                         {client.nationalId}
@@ -516,28 +518,28 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         Phone
                       </span>
-                      <span className="text-sm font-medium text-slate-700">
+                      <span className="text-sm font-medium text-slate-700 dark:text-[#F4F7F4]">
                         {client.phone}
                       </span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         Total Disbursed
                       </span>
-                      <span className="font-semibold text-slate-900">
+                      <span className="font-semibold text-slate-900 dark:text-[#F4F7F4]">
                         {formatAmount(client.totalBorrowed || 0)}
                       </span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">
                         Outstanding Balance
                       </span>
-                      <span className={cn("font-semibold", status === 'Arrears' ? "text-red-600" : "text-slate-900")}>
+                      <span className={cn("font-semibold", status === 'Arrears' ? "text-red-600 dark:text-red-400" : "text-slate-900 dark:text-[#F4F7F4]")}>
                         {formatAmount(client.outstandingBalance || 0)}
                       </span>
                     </div>
@@ -553,8 +555,9 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                         h-10
                         text-xs
                         font-medium
-                        border-slate-200
-                        hover:bg-slate-50
+                        border-slate-200 dark:border-[#29352D]
+                        hover:bg-slate-50 dark:hover:bg-[#1D2920]
+                        dark:text-[#C1CBC3]
                         flex
                         items-center
                         justify-center
@@ -562,7 +565,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                       "
                     >
                       <Link href={`/clients/${client.$id}`}>
-                        <Eye className="size-3.5 text-gray-500" />
+                        <Eye className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
                         <span>Profile</span>
                       </Link>
                     </Button>
@@ -575,8 +578,9 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                         h-10
                         text-xs
                         font-medium
-                        border-slate-200
-                        hover:bg-slate-50
+                        border-slate-200 dark:border-[#29352D]
+                        hover:bg-slate-50 dark:hover:bg-[#1D2920]
+                        dark:text-[#C1CBC3]
                         flex
                         items-center
                         justify-center
@@ -584,7 +588,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                       "
                     >
                       <a href={`tel:${client.phone}`}>
-                        <Phone className="size-3.5 text-gray-500" />
+                        <Phone className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
                         <span>Call</span>
                       </a>
                     </Button>
@@ -597,8 +601,9 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                         h-10
                         text-xs
                         font-medium
-                        border-slate-200
-                        hover:bg-slate-50
+                        border-slate-200 dark:border-[#29352D]
+                        hover:bg-slate-50 dark:hover:bg-[#1D2920]
+                        dark:text-[#C1CBC3]
                         flex
                         items-center
                         justify-center
@@ -606,7 +611,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                       "
                     >
                       <Link href={`/clients/${client.$id}/edit`}>
-                        <UserCog className="size-3.5 text-gray-500" />
+                        <UserCog className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
                         <span>Edit</span>
                       </Link>
                     </Button>
@@ -618,9 +623,8 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                         h-10
                         text-xs
                         font-semibold
-                        bg-slate-900
-                        hover:bg-slate-800
-                        text-white
+                        bg-slate-900 hover:bg-slate-800 text-white
+                        dark:bg-[#B7FF3C] dark:hover:bg-[#a3e635] dark:text-[#090C0A]
                         flex
                         items-center
                         justify-center
@@ -650,6 +654,7 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
                         bg-red-50
                         hover:bg-red-100
                         hover:text-red-700
+                        dark:bg-rose-950/20 dark:border-rose-900/40 dark:text-rose-400 dark:hover:bg-rose-950/40
                         flex
                         items-center
                         justify-center
@@ -671,8 +676,8 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
             className="
               rounded-3xl
               border
-              border-slate-200
-              bg-white
+              border-slate-200 dark:border-[#29352D]
+              bg-white dark:bg-[#151D17]
               p-10
               text-center
               shadow-sm
@@ -681,13 +686,13 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
               w-full
             "
           >
-            <UsersRound className="size-6 mx-auto mb-3 text-slate-300" />
+            <UsersRound className="size-6 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
 
-            <h3 className="font-semibold text-slate-700">
+            <h3 className="font-semibold text-slate-700 dark:text-[#F4F7F4]">
               {query ? "No clients match your search" : "No Clients Found"}
             </h3>
 
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-400 dark:text-[#A1ADA4] mt-1">
               {query ? "Try adjusting your search or filter." : "Add clients to see them in the registry."}
             </p>
             <br />
@@ -696,16 +701,23 @@ export default function ClientsTable({ clients, userRole }: { clients: Client[],
       </TableResponsiveGrid>
 
 
-      {/* Custom Delete Confirmation Modal */}
-      <ConfirmDeleteModal
+      {/* Security Re-Authentication Modal for Client Deletion */}
+      <SecureActionModal
         isOpen={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
-        onConfirm={() => deleteTarget && handleDeleteClient(deleteTarget.id)}
-        isPending={isDeleting}
-        title="Delete Client"
-        description="This will permanently remove the client and all associated data. This action cannot be undone."
-        confirmLabel="Delete Client"
-        itemName={deleteTarget?.name}
+        onAuthorized={(token: string) => {
+          if (deleteTarget) return handleDeleteClient(deleteTarget.id, token);
+        }}
+        action="CLIENT_DELETE"
+        resourceId={deleteTarget?.id || ''}
+        title="Delete Client Record"
+        description="Permanently delete this client from the dealership registry. Enter your administrator password to authorize this destructive operation."
+        confirmLabel="Confirm Delete Client"
+        severity="danger"
+        summaryItems={[
+          { label: 'Client Name', value: deleteTarget?.name || 'Selected Client' },
+          { label: 'Client ID', value: deleteTarget?.id?.slice(-8).toUpperCase() || '' },
+        ]}
       />
     </div>
   );

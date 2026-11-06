@@ -29,6 +29,7 @@ import {
   restoreVehicle,
 } from "@/lib/actions/vehicle.actions";
 import VehicleHandoverModal from "@/components/handover/VehicleHandoverModal";
+import SecureActionModal from "@/components/security/SecureActionModal";
 
 interface VehicleDetailsHeaderProps {
   vehicle: Vehicle;
@@ -78,11 +79,11 @@ export default function VehicleDetailsHeader({
 
   const statusLabel = vehicle.status.replace("_", " ");
 
-  const handleDelete = async () => {
+  const handleDelete = async (verificationToken?: string) => {
     setIsDeleting(true);
     setActionMessage(null);
     try {
-      const res = await softDeleteVehicle(vehicle.id);
+      const res = await softDeleteVehicle(vehicle.id, verificationToken);
       if (res.success) {
         setIsDeleteModalOpen(false);
         setActionMessage({
@@ -165,29 +166,29 @@ export default function VehicleDetailsHeader({
 
       {/* Prominent Deletion Warning Banner */}
       {isDeleted && (
-        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50/90 p-4 sm:p-5 text-red-900 shadow-xs">
+        <div className="mb-6 rounded-2xl border border-red-200 bg-red-50/90 dark:border-red-900/40 dark:bg-red-950/30 p-4 sm:p-5 text-red-900 dark:text-red-200 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 bg-red-100 rounded-xl text-red-700 shrink-0 relative top-2 left-2 shadow-xs">
+              <div className="p-2.5 bg-red-100 dark:bg-red-900/40 rounded-xl text-red-700 dark:text-red-300 shrink-0 relative top-2 left-2 shadow-xs">
                 <AlertTriangle className="size-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-red-900 text-sm sm:text-base">
+                  <h3 className="font-bold text-red-900 dark:text-red-200 text-sm sm:text-base">
                     This Vehicle is Archived / Deleted
                   </h3>
-                  <span className="text-[11px] badge badge-primary font-semibold uppercase tracking-wider bg-red-200/80 text-red-800 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] badge badge-primary font-semibold uppercase tracking-wider bg-red-200/80 dark:bg-red-900/60 text-red-800 dark:text-red-200 px-2 py-0.5 rounded-full">
                     Hidden from Inventory
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-red-700 mt-1">
+                <p className="text-xs sm:text-sm text-red-700 dark:text-red-300 mt-1">
                   {deletionMeta.deletedBy ? `Deleted by ${deletionMeta.deletedBy}` : 'Deleted'}
                   {deletionMeta.deletedAt
                     ? ` on ${new Date(deletionMeta.deletedAt).toLocaleDateString('en-KE', { month: 'short', day: 'numeric', year: 'numeric' })} at ${new Date(deletionMeta.deletedAt).toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' })}`
                     : ''}.
                   {' '}This vehicle is hidden from active yard inventory and customer listings.
                   {deletionMeta.previousStatus && (
-                    <span className="block sm:inline sm:ml-1 text-red-600 font-medium">
+                    <span className="block sm:inline sm:ml-1 text-red-600 dark:text-red-400 font-medium">
                       (Previous status: <span className="capitalize">{deletionMeta.previousStatus.replace('_', ' ')}</span>)
                     </span>
                   )}
@@ -232,8 +233,8 @@ export default function VehicleDetailsHeader({
             className={cn(
               "flex size-14 shrink-0 items-center justify-center rounded-xl border sm:size-16",
               isDeleted
-                ? "border-red-200 bg-red-50 text-red-600"
-                : "border-blue-100 bg-blue-50 text-blue-600"
+                ? "border-red-200 bg-red-50 text-red-600 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-400"
+                : "border-blue-100 bg-blue-50 text-blue-600 dark:border-[#29352D] dark:bg-[#18221A] dark:text-[#B7FF3C]"
             )}
           >
             <Car className="size-7 sm:size-8" strokeWidth={1.8} />
@@ -244,7 +245,7 @@ export default function VehicleDetailsHeader({
 
             {/* Registration + Status */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 sm:text-2xl lg:text-[28px]">
+              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 dark:text-[#F4F7F4] sm:text-2xl lg:text-[28px]">
                 {vehicle.registration_no}
               </h1>
 
@@ -261,35 +262,35 @@ export default function VehicleDetailsHeader({
             </div>
 
             {/* Make / Model */}
-            <p className="mt-1.5 text-sm font-medium text-slate-700 sm:text-[15px]">
+            <p className="mt-1.5 text-sm font-medium text-slate-700 dark:text-[#C1CBC3] sm:text-[15px]">
               {vehicle.make_model}
             </p>
 
             {/* Metadata */}
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 sm:text-sm">
-                <Hash className="size-3.5 text-slate-400" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+                <Hash className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   {vehicle.type || "Saloon"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 sm:text-sm">
-                <Calendar className="size-3.5 text-slate-400" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+                <Calendar className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   {vehicle.year || "N/A"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 sm:text-sm">
-                <Tag className="size-3.5 text-slate-400" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+                <Tag className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   {vehicle.condition || "Condition not specified"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 sm:text-sm">
-                <Calendar className="size-3.5 text-slate-400" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+                <Calendar className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   Added {dateAdded}
                 </span>
@@ -305,9 +306,9 @@ export default function VehicleDetailsHeader({
         <div className="flex shrink-0 flex-col gap-3 lg:items-end">
 
           {/* Cost Basis */}
-          <div className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-slate-50 px-4 shadow-md transition-shadow duration-200 hover:shadow-lg sm:w-auto">
-            <span className="text-sm font-medium text-slate-600">Total Cost:</span>
-            <span className="text-sm font-bold text-slate-900">{formatKES(totalCostBasis)}</span>
+          <div className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-slate-50 dark:bg-[#18221A] border border-slate-200/60 dark:border-[#29352D] px-4 shadow-xs sm:w-auto">
+            <span className="text-sm font-medium text-slate-600 dark:text-[#A1ADA4]">Total Cost:</span>
+            <span className="text-sm font-bold text-slate-900 dark:text-[#B7FF3C]">{formatKES(totalCostBasis)}</span>
           </div>
 
           {/* Actions */}
@@ -319,7 +320,7 @@ export default function VehicleDetailsHeader({
                 className={cn(
                   "badge badge-primary h-10 px-4",
                   "w-full sm:w-auto",
-                  "justify-center gap-2 bg-gray-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer"
+                  "justify-center gap-2 bg-gray-600 hover:bg-gray-700 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D] shadow-xs cursor-pointer"
                 )}
                 title="Manage incoming custody, outgoing release inspection, and clearance"
               >
@@ -333,7 +334,7 @@ export default function VehicleDetailsHeader({
               className={cn(
                 "badge badge-primary h-10 px-4",
                 "w-full sm:w-auto",
-                "justify-center gap-2 bg-blue-700 hover:bg-gray-800 text-white"
+                "justify-center gap-2 bg-blue-700 hover:bg-blue-800 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D]"
               )}
               title="View and print official Motor Vehicle Purchase Agreement"
             >
@@ -347,7 +348,7 @@ export default function VehicleDetailsHeader({
                 className={cn(
                   "badge badge-primary h-10 px-4",
                   "w-full sm:w-auto",
-                  "justify-center gap-2 bg-amber-700 hover:bg-gray-800 text-white"
+                  "justify-center gap-2 bg-amber-700 hover:bg-amber-800 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D]"
                 )}
               >
                 <Edit className="size-3.5" />
@@ -373,7 +374,7 @@ export default function VehicleDetailsHeader({
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:text-white hover:bg-red-700 text-sm font-medium transition cursor-pointer"
+                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:text-white hover:bg-red-700 dark:border-red-900/40 dark:bg-red-950/30 dark:text-[#FF626D] dark:hover:bg-red-900/50 text-sm font-medium transition cursor-pointer"
                 title="Delete vehicle"
               >
                 <Trash2 className="size-3.5" />
@@ -388,77 +389,27 @@ export default function VehicleDetailsHeader({
       {/* MOBILE / DESKTOP DIVIDER                           */}
       {/* ================================================== */}
 
-      <div className="mt-5 border-b border-slate-200" />
+      <div className="mt-5 border-b border-slate-200 dark:border-[#29352D]" />
 
       {/* ================================================== */}
       {/* DELETE CONFIRMATION MODAL                          */}
       {/* ================================================== */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-gray-100 p-6 overflow-hidden">
-            {/* Header: Icon + Title Stack */}
-            <div className="flex items-center gap-3.5">
-              <div className="p-3 bg-red-50 rounded-xl text-red-600 shrink-0">
-                <AlertTriangle className="size-6" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-lg font-bold text-gray-900 leading-snug">
-                  Delete Vehicle
-                </h3>
-                <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-                  <span className="bg-gray-100 text-gray-800 px-2 py-0.5 rounded-md text-xs font-semibold shrink-0">
-                    {vehicle.registration_no}
-                  </span>
-                  <span className="text-gray-400">•</span>
-                  <span className="font-medium text-gray-700 truncate">
-                    {vehicle.make_model}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Full-Width Callout Box */}
-            <div className="mt-4 text-xs text-gray-600 bg-gray-50 rounded-xl p-3.5 border border-gray-100 space-y-1.5 leading-relaxed">
-              <p>
-                • This vehicle will be removed from the active yard inventory and customer listings.
-              </p>
-              <p className="font-semibold text-emerald-700">
-                • Mistake? Managers can revert and restore this vehicle anytime from the &quot;Deleted&quot; tab in Inventory.
-              </p>
-            </div>
-
-            {/* Symmetrical Footer Action Buttons */}
-            <div className="mt-6 pt-4 border-t border-gray-100 grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setIsDeleteModalOpen(false)}
-                disabled={isDeleting}
-                className="badge badge-primary h-10 w-full justify-center text-xs font-semibold rounded-lg bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 w-full rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition disabled:opacity-50 cursor-pointer"
-              >
-                {isDeleting ? (
-                  <>
-                    <Loader2 className="size-3.5 animate-spin" />
-                    <span>Deleting...</span>
-                  </>
-                ) : (
-                  <>
-                    <Trash2 className="size-3.5" />
-                    <span>Confirm Delete</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SecureActionModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onAuthorized={(token) => handleDelete(token)}
+        action="VEHICLE_DELETE"
+        resourceId={vehicle.id}
+        title="Delete Vehicle Record"
+        description="This vehicle will be hidden from the active yard inventory and customer listings. Enter your password to authorize moving this record to the deleted archive."
+        confirmLabel="Confirm Delete Vehicle"
+        severity="danger"
+        summaryItems={[
+          { label: 'Registration No', value: vehicle.registration_no },
+          { label: 'Make & Model', value: vehicle.make_model },
+          { label: 'Cost Basis', value: totalCostBasis ? formatKES(totalCostBasis) : 'N/A' },
+        ]}
+      />
 
       {/* Vehicle Handover & Clearance Modal */}
       <VehicleHandoverModal

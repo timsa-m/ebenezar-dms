@@ -66,11 +66,11 @@ export default async function CommunicationsPage() {
             {/* Messages Log Header */}
             <section className="my-1">
               <div className="flex items-center justify-between">
-                <h2 className="text-18 font-bold text-gray-900">
+                <h2 className="text-18 font-bold text-gray-900 dark:text-[#F4F7F4]">
                   Message Audit Trail
                 </h2>
 
-                <span className="badge badge-primary border-slate-100 text-12 rounded-full border bg-white px-3 py-1 font-medium uppercase tracking-widest text-black shadow-sm">
+                <span className="badge badge-primary border-slate-100 dark:border-[#29352D] text-12 rounded-full border bg-white dark:bg-[#18221A] px-3 py-1 font-medium uppercase tracking-widest text-black dark:text-[#F4F7F4] shadow-sm">
                   Total Logs: {notifications.length}
                 </span>
               </div>

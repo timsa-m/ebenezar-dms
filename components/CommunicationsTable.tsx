@@ -324,43 +324,43 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
     switch (channel) {
       case 'CALL':
         return (
-          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-sky-50 text-sky-700 border border-sky-200/70">
-            <Phone className="size-3 text-sky-600" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border border-sky-200/70 dark:border-sky-900/50">
+            <Phone className="size-3 text-sky-600 dark:text-sky-400" />
             Voice Call
           </span>
         );
       case 'IN_PERSON':
         return (
-          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-purple-50 text-purple-700 border border-purple-200/70">
-            <Building2 className="size-3 text-purple-600" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200/70 dark:border-purple-900/50">
+            <Building2 className="size-3 text-purple-600 dark:text-purple-400" />
             Yard Visit
           </span>
         );
       case 'WHATSAPP':
         return (
-          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70">
-            <MessageSquare className="size-3 text-emerald-600" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-900/50">
+            <MessageSquare className="size-3 text-emerald-600 dark:text-emerald-400" />
             WhatsApp
           </span>
         );
       case 'SMS':
         return (
-          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-amber-50 text-amber-700 border border-amber-200/70">
-            <Smartphone className="size-3 text-amber-600" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/70 dark:border-amber-900/50">
+            <Smartphone className="size-3 text-amber-600 dark:text-amber-400" />
             SMS
           </span>
         );
       case 'EMAIL':
         return (
-          <span className="badge badge-primaryinline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/70">
-            <Mail className="size-3 text-indigo-600" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200/70 dark:border-indigo-900/50">
+            <Mail className="size-3 text-indigo-600 dark:text-indigo-400" />
             Email
           </span>
         );
       default:
         return (
-          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-gray-100 text-gray-700 border border-gray-200">
-            <MessageSquare className="size-3 text-gray-500" />
+          <span className="badge badge-primary inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-11 font-semibold bg-gray-100 dark:bg-[#18221A] text-gray-700 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D]">
+            <MessageSquare className="size-3 text-gray-500 dark:text-[#A1ADA4]" />
             {channel || 'Direct'}
           </span>
         );
@@ -372,28 +372,28 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
     switch (templateType) {
       case 'MANUAL_LOG':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-slate-100 text-slate-700 border-slate-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-slate-100 dark:bg-[#18221A] text-slate-700 dark:text-[#C1CBC3] border-slate-200 dark:border-[#29352D] uppercase tracking-tight">
             {channel === 'CALL' ? 'Agent Call Log' : channel === 'IN_PERSON' ? 'Visit Note' : 'Staff Record'}
           </Badge>
         );
       case 'PAYMENT_REMINDER':
       case 'INSTALLMENT_DUE':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-amber-50 text-amber-700 border-amber-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900/50 uppercase tracking-tight">
             Installment Due
           </Badge>
         );
       case 'OVERDUE_ALERT':
       case 'ARREARS_NOTICE':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-rose-50 text-rose-700 border-rose-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900/50 uppercase tracking-tight">
             Arrears Alert
           </Badge>
         );
       case 'DEMAND_LETTER':
       case 'DEFAULT_ALERT':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-red-100 text-red-800 border-red-300 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-red-100 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-300 dark:border-red-900/50 uppercase tracking-tight">
             Demand Notice
           </Badge>
         );
@@ -406,25 +406,25 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
       case 'LOAN_DISBURSEMENT':
       case 'AGREEMENT_ACTIVATED':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-emerald-50 text-emerald-700 border-emerald-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/50 uppercase tracking-tight">
             Deal Activated
           </Badge>
         );
       case 'SETTLEMENT_CONFIRMATION':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-teal-50 text-teal-700 border-teal-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-900/50 uppercase tracking-tight">
             Contract Cleared
           </Badge>
         );
       case 'MANUAL_MESSAGE':
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-blue-50 text-blue-700 border-blue-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/50 uppercase tracking-tight">
             Direct Outreach
           </Badge>
         );
       default:
         return (
-          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-gray-50 text-gray-600 border-gray-200 uppercase tracking-tight">
+          <Badge variant="outline" className="badge badge-primary text-10 font-bold bg-gray-50 dark:bg-[#18221A] text-gray-600 dark:text-[#A1ADA4] border-gray-200 dark:border-[#29352D] uppercase tracking-tight">
             {(templateType || 'COMMUNICATION').replace(/_/g, ' ')}
           </Badge>
         );
@@ -437,29 +437,29 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
       case 'SENT':
       case 'DELIVERED':
         return (
-          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 text-11 font-bold tracking-tight">
-            <CheckCircle className="size-3 text-emerald-600" />
+          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-900/50 text-11 font-bold tracking-tight">
+            <CheckCircle className="size-3 text-emerald-600 dark:text-emerald-400" />
             <span>Delivered</span>
           </div>
         );
       case 'LOGGED':
         return (
-          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/70 text-11 font-bold tracking-tight">
-            <Check className="size-3 text-blue-600" />
+          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/70 dark:border-blue-900/50 text-11 font-bold tracking-tight">
+            <Check className="size-3 text-blue-600 dark:text-blue-400" />
             <span>Logged</span>
           </div>
         );
       case 'FAILED':
         return (
-          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200/70 text-11 font-bold tracking-tight">
-            <XCircle className="size-3 text-rose-600" />
+          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200/70 dark:border-rose-900/50 text-11 font-bold tracking-tight">
+            <XCircle className="size-3 text-rose-600 dark:text-rose-400" />
             <span>Failed</span>
           </div>
         );
       default:
         return (
-          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200/70 text-11 font-bold tracking-tight">
-            <Clock className="size-3 text-amber-600" />
+          <div className="badge badge-primary flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/70 dark:border-amber-900/50 text-11 font-bold tracking-tight">
+            <Clock className="size-3 text-amber-600 dark:text-amber-400" />
             <span>{status || 'Pending'}</span>
           </div>
         );
@@ -475,14 +475,16 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
           className={cn(
             "badge badge-pilled px-3.5 py-1.5 rounded-xl text-12 font-bold transition-all flex items-center gap-2 cursor-pointer",
             activeTab === 'ALL'
-              ? "bg-gray-900 text-white shadow-sm"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+              ? "bg-gray-900 text-white dark:bg-[#B7FF3C] dark:text-[#090C0A] shadow-sm"
+              : "bg-white dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D] hover:bg-gray-50 dark:hover:bg-[#1D2920]"
           )}
         >
           All Logs
           <span className={cn(
             "badge badge-pilled px-1.5 py-0.2 rounded-md text-10 font-bold",
-            activeTab === 'ALL' ? "bg-gray-800 text-gray-200" : "bg-gray-100 text-gray-600"
+            activeTab === 'ALL'
+              ? "bg-gray-800 text-gray-200 dark:bg-[#090C0A]/20 dark:text-[#090C0A]"
+              : "bg-gray-100 dark:bg-[#101612] text-gray-600 dark:text-[#A1ADA4]"
           )}>
             {tabCounts.all}
           </span>
@@ -494,14 +496,14 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             "badge badge-pilled px-3.5 py-1.5 rounded-xl text-12 font-bold transition-all flex items-center gap-2 cursor-pointer",
             activeTab === 'CALLS_VISITS'
               ? "bg-sky-600 text-white shadow-sm"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+              : "bg-white dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D] hover:bg-gray-50 dark:hover:bg-[#1D2920]"
           )}
         >
           <Phone className="size-3.5" />
           Calls & Visits
           <span className={cn(
             "badge badge-pilled px-1.5 py-0.2 rounded-md text-10 font-bold",
-            activeTab === 'CALLS_VISITS' ? "bg-sky-700 text-white" : "bg-sky-50 text-sky-700"
+            activeTab === 'CALLS_VISITS' ? "bg-sky-700 text-white" : "bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300"
           )}>
             {tabCounts.callsVisits}
           </span>
@@ -513,14 +515,14 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             "badge badge-pilled px-3.5 py-1.5 rounded-xl text-12 font-bold transition-all flex items-center gap-2 cursor-pointer",
             activeTab === 'REMINDERS'
               ? "bg-amber-600 text-white shadow-sm"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+              : "bg-white dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D] hover:bg-gray-50 dark:hover:bg-[#1D2920]"
           )}
         >
-          <Clock className="size-3.5 text-amber-600" />
+          <Clock className="size-3.5 text-amber-600 dark:text-amber-400" />
           Installment Reminders
           <span className={cn(
             "badge badge-pilled px-1.5 py-0.2 rounded-md text-10 font-bold",
-            activeTab === 'REMINDERS' ? "bg-amber-700 text-white" : "bg-amber-50 text-amber-700"
+            activeTab === 'REMINDERS' ? "bg-amber-700 text-white" : "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300"
           )}>
             {tabCounts.reminders}
           </span>
@@ -532,14 +534,14 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             "badge badge-pilled px-3.5 py-1.5 rounded-xl text-12 font-bold transition-all flex items-center gap-2 cursor-pointer",
             activeTab === 'ARREARS'
               ? "bg-rose-600 text-white shadow-sm"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+              : "bg-white dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D] hover:bg-gray-50 dark:hover:bg-[#1D2920]"
           )}
         >
-          <AlertCircle className="size-3.5 text-rose-600" />
+          <AlertCircle className="size-3.5 text-rose-600 dark:text-rose-400" />
           Arrears & Legal
           <span className={cn(
             "badge badge-pilled px-1.5 py-0.2 rounded-md text-10 font-bold",
-            activeTab === 'ARREARS' ? "bg-rose-700 text-white" : "bg-rose-50 text-rose-700"
+            activeTab === 'ARREARS' ? "bg-rose-700 text-white" : "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300"
           )}>
             {tabCounts.arrears}
           </span>
@@ -551,14 +553,14 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             "badge badge-pilled px-3.5 py-1.5 rounded-xl text-12 font-bold transition-all flex items-center gap-2 cursor-pointer",
             activeTab === 'MESSAGING'
               ? "bg-emerald-600 text-white shadow-sm"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+              : "bg-white dark:bg-[#18221A] text-gray-600 dark:text-[#C1CBC3] border border-gray-200 dark:border-[#29352D] hover:bg-gray-50 dark:hover:bg-[#1D2920]"
           )}
         >
           <MessageSquare className="size-3.5" />
           SMS
           <span className={cn(
             "badge badge-pilled px-1.5 py-0.2 rounded-md text-10 font-bold",
-            activeTab === 'MESSAGING' ? "bg-emerald-700 text-white" : "bg-emerald-50 text-emerald-700"
+            activeTab === 'MESSAGING' ? "bg-emerald-700 text-white" : "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300"
           )}>
             {tabCounts.messaging}
           </span>
@@ -566,24 +568,24 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
       </div>
 
       {/* ── Minimal Multi-filter Control Bar ── */}
-      <div className="p-3.5 sm:p-4 rounded-xl flex flex-col gap-3">
+      <div className="p-3.5 sm:p-4 rounded-xl flex flex-col gap-3 bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D]">
         {/* Primary Row: Universal Search + Your Quick Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           {/* Universal Search */}
-          <div className="relative min-w-80 sm:min-w-110 flex-1 rounded-xl border border-slate-200/90 bg-slate-50/60 shadow-xs">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <div className="relative min-w-80 sm:min-w-110 flex-1 rounded-xl border border-slate-200/90 dark:border-[#29352D] bg-slate-50/60 dark:bg-[#101612] shadow-xs">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400 dark:text-[#A1ADA4]" />
             <input
               type="text"
               placeholder="Search by buyer, phone, vehicle, reg plate, agreement..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="translate-x-10 pl-10 pr-9 h-9 w-full rounded-lg text-[13px] font-medium text-slate-800 transition-all placeholder:text-slate-400 hover:border-slate-300 focus:border-indigo-500 focus:outline-none"
+              className="translate-x-10 pl-10 pr-9 h-9 w-full rounded-lg text-[13px] font-medium text-slate-800 dark:text-[#F4F7F4] bg-transparent transition-all placeholder:text-slate-400 dark:placeholder:text-[#5d6f62] hover:border-slate-300 focus:border-indigo-500 dark:focus:border-[#B7FF3C] focus:outline-none"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-5 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-slate-400 hover:bg-slate-200/60 hover:text-slate-600 transition-colors cursor-pointer"
+                className="absolute right-5 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-slate-400 dark:text-[#A1ADA4] hover:bg-slate-200/60 dark:hover:bg-[#1D2920] hover:text-slate-600 dark:hover:text-[#F4F7F4] transition-colors cursor-pointer"
                 title="Clear search"
               >
                 <X className="size-3.5" />
@@ -591,13 +593,12 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             )}
           </div>
 
-
           {/* Quick Actions (Reset & Export) */}
           <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
             {hasActiveFilters && (
               <button
                 onClick={resetFilters}
-                className="btn-secondary inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200/90 bg-red-100 px-3.5 text-xs font-semibold text-red-700 shadow-2xs transition-all hover:bg-slate-50 hover:border-red-300 focus:outline-red focus:ring-2 focus:ring-slate-200 cursor-pointer"
+                className="btn-secondary inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200/90 dark:border-red-900/40 bg-red-100 dark:bg-red-950/40 px-3.5 text-xs font-semibold text-red-700 dark:text-red-300 shadow-2xs transition-all hover:bg-slate-50 dark:hover:bg-red-950/60 hover:border-red-300 focus:outline-red focus:ring-2 focus:ring-slate-200 cursor-pointer"
               >
                 <RotateCcw className="size-3.5" />
                 <span>Reset</span>
@@ -607,9 +608,9 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             <button
               type="button"
               onClick={exportToCSV}
-              className="btn-secondary inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-3.5 text-xs font-semibold text-slate-700 shadow-2xs transition-all hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-200 cursor-pointer"
+              className="btn-secondary inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200/90 dark:border-[#29352D] bg-white dark:bg-[#18221A] px-3.5 text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] shadow-2xs transition-all hover:bg-slate-50 dark:hover:bg-[#1D2920] hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-200 cursor-pointer"
             >
-              <Download className="size-3.5 text-slate-500" />
+              <Download className="size-3.5 text-slate-500 dark:text-[#A1ADA4]" />
               <span>Export</span>
             </button>
           </div>
@@ -622,7 +623,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             <User
               className={cn(
                 "pointer-events-none absolute left-3.5 top-1/2 size-3.5 -translate-y-1/2 z-10 transition-colors",
-                selectedClientId !== 'ALL' ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-500"
+                selectedClientId !== 'ALL' ? "text-indigo-600 dark:text-[#B7FF3C]" : "text-slate-400 dark:text-[#A1ADA4] group-hover:text-slate-500"
               )}
             />
             <Select value={selectedClientId} onValueChange={(val) => setSelectedClientId(val)}>
@@ -630,13 +631,13 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 className={cn(
                   "h-9 w-full rounded-lg border pl-10 justify-center gap-4 text-[13px] font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/15 cursor-pointer",
                   selectedClientId !== 'ALL'
-                    ? "border-indigo-200 bg-indigo-50/50 text-indigo-950 focus:border-indigo-500"
-                    : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 focus:border-indigo-500"
+                    ? "border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-950 dark:text-[#65C8F2] focus:border-indigo-500"
+                    : "border-slate-200/90 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-700 dark:text-[#C1CBC3] hover:border-slate-300 dark:hover:border-[#3a4b3f] focus:border-indigo-500"
                 )}
               >
                 <SelectValue placeholder="All Buyers / Clients" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] text-gray-900 dark:text-[#F4F7F4]">
                 <SelectItem value="ALL">All Buyers / Clients</SelectItem>
                 {uniqueClients.map((c) => (
                   <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
@@ -650,7 +651,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             <Phone
               className={cn(
                 "pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 z-10 transition-colors",
-                selectedChannel !== 'ALL' ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-500"
+                selectedChannel !== 'ALL' ? "text-indigo-600 dark:text-[#B7FF3C]" : "text-slate-400 dark:text-[#A1ADA4] group-hover:text-slate-500"
               )}
             />
             <Select value={selectedChannel} onValueChange={(val) => setSelectedChannel(val)}>
@@ -658,13 +659,13 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 className={cn(
                   "h-9 w-full rounded-lg border pl-6 justify-center gap-4 pr-8 text-[13px] font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/15 cursor-pointer",
                   selectedChannel !== 'ALL'
-                    ? "border-indigo-200 bg-indigo-50/50 text-indigo-950 focus:border-indigo-500"
-                    : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 focus:border-indigo-500"
+                    ? "border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-950 dark:text-[#65C8F2] focus:border-indigo-500"
+                    : "border-slate-200/90 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-700 dark:text-[#C1CBC3] hover:border-slate-300 dark:hover:border-[#3a4b3f] focus:border-indigo-500"
                 )}
               >
                 <SelectValue placeholder="All Channels" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] text-gray-900 dark:text-[#F4F7F4]">
                 <SelectItem value="ALL">All Channels</SelectItem>
                 <SelectItem value="CALL">Voice Calls</SelectItem>
                 <SelectItem value="IN_PERSON">Yard / In-Person</SelectItem>
@@ -680,7 +681,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             <CheckCircle
               className={cn(
                 "pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 z-10 transition-colors",
-                selectedStatus !== 'ALL' ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-500"
+                selectedStatus !== 'ALL' ? "text-indigo-600 dark:text-[#B7FF3C]" : "text-slate-400 dark:text-[#A1ADA4] group-hover:text-slate-500"
               )}
             />
             <Select value={selectedStatus} onValueChange={(val) => setSelectedStatus(val)}>
@@ -688,13 +689,13 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 className={cn(
                   "h-9 w-full rounded-lg border pl-9 justify-center gap-4 pr-8 text-[13px] font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/15 cursor-pointer",
                   selectedStatus !== 'ALL'
-                    ? "border-indigo-200 bg-indigo-50/50 text-indigo-950 focus:border-indigo-500"
-                    : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 focus:border-indigo-500"
+                    ? "border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-950 dark:text-[#65C8F2] focus:border-indigo-500"
+                    : "border-slate-200/90 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-700 dark:text-[#C1CBC3] hover:border-slate-300 dark:hover:border-[#3a4b3f] focus:border-indigo-500"
                 )}
               >
                 <SelectValue placeholder="All Delivery Statuses" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] text-gray-900 dark:text-[#F4F7F4]">
                 <SelectItem value="ALL">All Statuses</SelectItem>
                 <SelectItem value="DELIVERED">Delivered / Sent</SelectItem>
                 <SelectItem value="LOGGED">Logged (Agent Notes)</SelectItem>
@@ -708,7 +709,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
             <Calendar
               className={cn(
                 "pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 z-10 transition-colors",
-                selectedMonth !== 'ALL' ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-500"
+                selectedMonth !== 'ALL' ? "text-indigo-600 dark:text-[#B7FF3C]" : "text-slate-400 dark:text-[#A1ADA4] group-hover:text-slate-500"
               )}
             />
             <Select value={selectedMonth} onValueChange={(val) => setSelectedMonth(val)}>
@@ -716,15 +717,13 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 className={cn(
                   "h-9 w-full rounded-lg justify-center gap-4 border left-6 pr-8 text-[13px] font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/15 cursor-pointer",
                   selectedMonth !== 'ALL'
-                    ? "border-indigo-200 bg-indigo-50/50 text-indigo-950 focus:border-indigo-500"
-                    : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 focus:border-indigo-500"
+                    ? "border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-950 dark:text-[#65C8F2] focus:border-indigo-500"
+                    : "border-slate-200/90 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-700 dark:text-[#C1CBC3] hover:border-slate-300 dark:hover:border-[#3a4b3f] focus:border-indigo-500"
                 )}
               >
-                <SelectValue
-
-                  placeholder="All Time" />
+                <SelectValue placeholder="All Time" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] text-gray-900 dark:text-[#F4F7F4]">
                 <SelectItem value="ALL">All Time</SelectItem>
                 {availableMonths.map((m) => {
                   const [year, month] = m.split('-');
@@ -742,32 +741,32 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
       </div>
 
       {/* ── Table Container ── */}
-      <div className="card-premium overflow-hidden border border-gray-200/70 shadow-sm bg-white rounded-2xl">
+      <div className="card-premium overflow-hidden border border-gray-200/70 dark:border-[#29352D] shadow-sm bg-white dark:bg-[#151D17] rounded-2xl">
         <Table>
-          <TableHeader className="bg-slate-50/70 ">
+          <TableHeader className="bg-slate-50/70 dark:bg-[#18221A] border-b border-gray-200/70 dark:border-[#29352D]">
             <TableRow className="border-none hover:bg-transparent">
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4 pl-6">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4 pl-6">
                 Client
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Vehicle
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Channel
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Purpose
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Notes
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Outcome
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4">
                 Logged At
               </TableHead>
-              <TableHead className="text-11 font-bold text-gray-500 uppercase tracking-wider py-4 pr-6 text-right">
+              <TableHead className="text-11 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider py-4 pr-6 text-right">
                 Action
               </TableHead>
             </TableRow>
@@ -783,23 +782,23 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
               return (
                 <TableRow
                   key={notif.id}
-                  className="border-b border-slate-100 hover:bg-slate-50/70 transition-colors group cursor-pointer mt-4"
+                  className="border-b border-slate-100 dark:border-[#29352D] hover:bg-slate-50/70 dark:hover:bg-[#18221A] transition-colors group cursor-pointer mt-4"
                   onClick={() => setSelectedNotification(notif)}
                 >
                   {/* Buyer / Client */}
                   <TableCell className="py-4 pl-6 mt-4">
                     <div className="flex flex-col gap-0.5 mt-4">
                       <div className="flex items-center gap-1.5 mt-4">
-                        <span className="text-14 font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        <span className="text-14 font-bold text-gray-900 dark:text-[#F4F7F4] group-hover:text-blue-600 dark:group-hover:text-[#B7FF3C] transition-colors">
                           {clientName}
                         </span>
                         {natId && (
-                          <span className="badge badge-info text-10 font-roboto font-medium px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200 translate-y-1/2">
+                          <span className="badge badge-info text-10 font-roboto font-medium px-1.5 py-0.2 rounded bg-slate-100 dark:bg-[#18221A] text-slate-600 dark:text-[#C1CBC3] border border-slate-200 dark:border-[#29352D] translate-y-1/2">
                             ID: {natId}
                           </span>
                         )}
                       </div>
-                      <span className="text-12 text-gray-500 font-medium tracking-tight">
+                      <span className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium tracking-tight">
                         {notif.recipient || 'No contact specified'}
                       </span>
                       {notif.client_id && (
@@ -815,17 +814,17 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                     {vehicle.makeModel || vehicle.regNo || vehicle.contractNo ? (
                       <div className="flex flex-col gap-1 max-w-[200px]">
                         {vehicle.makeModel && (
-                          <div className="flex items-center gap-1.5 font-bold text-12 text-gray-800 uppercase tracking-tight truncate">
+                          <div className="flex items-center gap-1.5 font-bold text-12 text-gray-800 dark:text-[#F4F7F4] uppercase tracking-tight truncate">
 
                             <span className="truncate" title={vehicle.makeModel}>{vehicle.makeModel}</span>
                           </div>
                         )}
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {vehicle.regNo && (
-                            <span className="badge badge-info px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-roboto font-bold text-11 uppercase">
+                            <span className="badge badge-info px-2 py-0.5 rounded-md bg-amber-50 dark:bg-[#18221A] text-amber-800 dark:text-[#B7FF3C] border border-amber-200 dark:border-[#29352D] font-roboto font-bold text-11 uppercase">
                               <Link
                                 href={`/loans/${vehicle.agreementId}`}
-                                className="text-11 font-roboto text-amber-800 hover:blink font-semibold"
+                                className="text-11 font-roboto text-amber-800 dark:text-[#B7FF3C] hover:underline font-semibold"
                                 title="Open Financing Contract"
                               >
                                 {vehicle.regNo}
@@ -840,8 +839,8 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-gray-400">
-                        <Building2 className="size-3.5 text-gray-400" />
+                      <div className="flex items-center gap-1.5 text-gray-400 dark:text-[#A1ADA4]">
+                        <Building2 className="size-3.5 text-gray-400 dark:text-[#A1ADA4]" />
                         <span className="text-11 font-medium italic">Dealership Direct</span>
                       </div>
                     )}
@@ -861,11 +860,11 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                   <TableCell className="py-4 max-w-[260px]">
                     <div className="flex flex-col gap-0.5">
                       {subjectText && (
-                        <p className="text-12 font-bold text-gray-800 truncate" title={subjectText}>
+                        <p className="text-12 font-bold text-gray-800 dark:text-[#F4F7F4] truncate" title={subjectText}>
                           {subjectText}
                         </p>
                       )}
-                      <p className="text-12 text-gray-600 truncate" title={messageText}>
+                      <p className="text-12 text-gray-600 dark:text-[#C1CBC3] truncate" title={messageText}>
                         {messageText || '(Empty message body)'}
                       </p>
                     </div>
@@ -879,10 +878,10 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                   {/* Date & Time */}
                   <TableCell className="py-4 whitespace-nowrap">
                     <div className="flex flex-col">
-                      <span className="text-12 font-semibold text-gray-800">
+                      <span className="text-12 font-semibold text-gray-800 dark:text-[#F4F7F4]">
                         {notif.created_at ? format(new Date(notif.created_at), 'MMM dd, yyyy') : 'N/A'}
                       </span>
-                      <span className="text-11 text-gray-400 font-medium">
+                      <span className="text-11 text-gray-400 dark:text-[#A1ADA4] font-medium">
                         {notif.created_at ? format(new Date(notif.created_at), 'hh:mm a') : 'N/A'}
                       </span>
                     </div>
@@ -892,9 +891,9 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                   <TableCell className="py-4 pr-6 text-right" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                     <button
                       onClick={() => setSelectedNotification(notif)}
-                      className="badge badge-secondary inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-blue-200 bg-white hover:bg-gray-50 text-blue-700 text-11 font-bold shadow-2xs transition-all cursor-pointer"
+                      className="badge badge-secondary inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-blue-200 dark:border-blue-900/50 bg-white dark:bg-[#18221A] hover:bg-gray-50 dark:hover:bg-[#1D2920] text-blue-700 dark:text-[#65C8F2] text-11 font-bold shadow-2xs transition-all cursor-pointer"
                     >
-                      <Eye className="size-3 text-blue-500" />
+                      <Eye className="size-3 text-blue-500 dark:text-[#65C8F2]" />
                       View
                     </button>
                   </TableCell>
@@ -906,11 +905,11 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
               <TableRow>
                 <TableCell colSpan={8} className="py-16 text-center">
                   <div className="flex flex-col items-center justify-center gap-2 p-4 mx-auto">
-                    <div className="size-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mt-5">
+                    <div className="size-12 rounded-2xl bg-slate-100 dark:bg-[#18221A] flex items-center justify-center text-slate-400 dark:text-[#A1ADA4] mt-5">
                       <MessageSquare className="size-6" />
                     </div>
-                    <p className="text-14 font-bold text-gray-800">No matching communications found</p>
-                    <p className="text-12 text-gray-500">
+                    <p className="text-14 font-bold text-gray-800 dark:text-[#F4F7F4]">No matching communications found</p>
+                    <p className="text-12 text-gray-500 dark:text-[#A1ADA4]">
                       {hasActiveFilters
                         ? "Try clearing some filters or refining your search term."
                         : "No dealership communication logs recorded yet. Use 'New Message / Log' above to record buyer calls or outreach."}
@@ -918,7 +917,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                     {hasActiveFilters && (
                       <button
                         onClick={resetFilters}
-                        className="mt-2 text-12 font-bold text-blue-600 hover:underline cursor-pointer"
+                        className="mt-2 text-12 font-bold text-blue-600 dark:text-[#B7FF3C] hover:underline cursor-pointer"
                       >
                         Reset all filters
                       </button>
@@ -948,7 +947,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                   {renderPurposeBadge(selectedNotification.template_type, selectedNotification.channel)}
                   {renderStatusBadge(selectedNotification.status)}
                 </div>
-                <span className="text-12 font-medium text-gray-500">
+                <span className="text-12 font-medium text-gray-500 dark:text-[#A1ADA4]">
                   {selectedNotification.created_at
                     ? format(new Date(selectedNotification.created_at), 'MMMM dd, yyyy · hh:mm a')
                     : 'N/A'}
@@ -958,16 +957,16 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
               {/* Buyer & Vehicle Deal Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Buyer Card */}
-                <div className="p-3.5 rounded-xl bg-gray-50/60 flex flex-col gap-1.5">
+                <div className="p-3.5 rounded-xl bg-gray-50/60 dark:bg-[#18221A] border border-gray-200/50 dark:border-[#29352D] flex flex-col gap-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
+                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1">
                       <User className="size-3" />
                       Buyer Details
                     </span>
                     {selectedNotification.client_id && (
                       <Link
                         href={`/clients/${selectedNotification.client_id}`}
-                        className="btn btn-sm btn-primary text-11 font-semibold text-blue-600 hover:underline flex items-center gap-0.3"
+                        className="btn btn-sm btn-primary text-11 font-semibold text-blue-600 dark:text-[#B7FF3C] hover:underline flex items-center gap-0.3"
                         target="_blank"
                         title="View buyer profile"
                       >
@@ -975,17 +974,17 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                       </Link>
                     )}
                   </div>
-                  <p className="text-13 font-bold text-gray-900">
+                  <p className="text-13 font-bold text-gray-900 dark:text-[#F4F7F4]">
                     {getClientName(selectedNotification) || 'Unknown Buyer'}
                   </p>
-                  <div className="text-11 text-gray-600 flex flex-col gap-0.5">
+                  <div className="text-11 text-gray-600 dark:text-[#C1CBC3] flex flex-col gap-0.5">
                     <p>
-                      <span className="text-gray-400">Phone: </span>
+                      <span className="text-gray-400 dark:text-[#A1ADA4]">Phone: </span>
                       <span className="font-medium font-mono">{selectedNotification.recipient || 'N/A'}</span>
                     </p>
                     {selectedNotification.clients?.client_id_number && (
                       <p>
-                        <span className="text-gray-400">National ID: </span>
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">National ID: </span>
                         <span className="font-medium font-mono">{selectedNotification.clients.client_id_number}</span>
                       </p>
                     )}
@@ -993,45 +992,44 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 </div>
 
                 {/* Vehicle & Contract Card */}
-                <div className="p-3.5 rounded-xl bg-gray-50/60 flex flex-col gap-1.5">
+                <div className="p-3.5 rounded-xl bg-gray-50/60 dark:bg-[#18221A] border border-gray-200/50 dark:border-[#29352D] flex flex-col gap-1.5">
                   {(() => {
                     const v = getVehicleInfo(selectedNotification);
                     return (
                       <>
                         <div className="flex items-center justify-between">
-                          <span className="text-10 font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
+                          <span className="text-10 font-bold uppercase tracking-wider text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1">
                             <Car className="size-3" />
                             Vehicle & Contract
                           </span>
                           {v.agreementId && (
                             <Link
                               href={`/loans/${v.agreementId}`}
-                              className="btn btn-primary text-11 font-semibold text-blue-600 hover:underline flex items-center gap-0.5"
+                              className="btn btn-primary text-11 font-semibold text-blue-600 dark:text-[#B7FF3C] hover:underline flex items-center gap-0.5"
                               target="_blank"
                             >
                               Contract
-
                             </Link>
                           )}
                         </div>
-                        <p className="text-13 font-bold text-gray-900 truncate">
+                        <p className="text-13 font-bold text-gray-900 dark:text-[#F4F7F4] truncate">
                           {v.makeModel || 'General Buyer Deal'}
                         </p>
-                        <div className="text-11 text-gray-600 flex flex-col gap-0.5">
+                        <div className="text-11 text-gray-600 dark:text-[#C1CBC3] flex flex-col gap-0.5">
                           {v.regNo && (
                             <p>
-                              <span className="text-gray-400">Reg Plate: </span>
-                              <span className="font-bold font-roboto text-gray-800">{v.regNo}</span>
+                              <span className="text-gray-400 dark:text-[#A1ADA4]">Reg Plate: </span>
+                              <span className="font-bold font-roboto text-gray-800 dark:text-[#F4F7F4]">{v.regNo}</span>
                             </p>
                           )}
                           {v.contractNo && (
                             <p>
-                              <span className="text-gray-400">Contract #: </span>
-                              <span className="font-medium font-roboto text-blue-600">{v.contractNo}</span>
+                              <span className="text-gray-400 dark:text-[#A1ADA4]">Contract #: </span>
+                              <span className="font-medium font-roboto text-blue-600 dark:text-[#65C8F2]">{v.contractNo}</span>
                             </p>
                           )}
                           {!v.regNo && !v.contractNo && (
-                            <p className="italic text-gray-400">No vehicle attached to this direct log.</p>
+                            <p className="italic text-gray-400 dark:text-[#A1ADA4]">No vehicle attached to this direct log.</p>
                           )}
                         </div>
                       </>
@@ -1043,8 +1041,8 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
               {/* Interaction Notes & Transcript */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-10.5 font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <FileText className="text-blue-600 size-3.5" />
+                  <span className="text-10.5 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider flex items-center gap-1.5">
+                    <FileText className="text-blue-600 dark:text-[#65C8F2] size-3.5" />
                     Interaction info & Notes
                   </span>
                   <button
@@ -1054,11 +1052,11 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                         selectedNotification.id
                       )
                     }
-                    className="badge badge-primary text-11 font-semibold text-black hover:text-gray-900 flex items-center gap-1 px-2 py-0.5 rounded border border-gray-200 bg-white cursor-pointer"
+                    className="badge badge-primary text-11 font-semibold text-black dark:text-[#F4F7F4] hover:text-gray-900 dark:hover:text-white flex items-center gap-1 px-2 py-0.5 rounded border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] cursor-pointer"
                   >
                     {copiedId === selectedNotification.id ? (
                       <>
-                        <Check className="size-3 text-emerald-600" />
+                        <Check className="size-3 text-emerald-600 dark:text-[#B7FF3C]" />
                         Copied
                       </>
                     ) : (
@@ -1071,18 +1069,18 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
                 </div>
 
                 {selectedNotification.error_message && !selectedNotification.error_message.includes('Error') && (
-                  <div className="px-3 py-2 rounded-lg bg-blue-50/60 border border-blue-100 text-12 font-semibold text-blue-800">
+                  <div className="px-3 py-2 rounded-lg bg-blue-50/60 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/40 text-12 font-semibold text-blue-800 dark:text-[#65C8F2]">
                     Subject / Outcome: {selectedNotification.error_message}
                   </div>
                 )}
 
-                <div className="p-4 rounded-xl border border-gray-200 bg-slate-50/70 text-13 font-medium text-gray-800 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                <div className="p-4 rounded-xl border border-gray-200 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#101612] text-13 font-medium text-gray-800 dark:text-[#F4F7F4] leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
                   {extractTextFromHtml(selectedNotification.message_body || '') || '(No message notes recorded)'}
                 </div>
               </div>
 
               {/* Delivery Metadata & Diagnostics */}
-              <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-11 text-gray-400 font-mono">
+              <div className="pt-2 border-t border-gray-100 dark:border-[#29352D] flex flex-wrap items-center justify-between gap-2 text-11 text-gray-400 dark:text-[#A1ADA4] font-mono">
                 <span>Log ID: {selectedNotification.id}</span>
                 {selectedNotification.retry_count > 0 && (
                   <span>Retries: {selectedNotification.retry_count}</span>
@@ -1096,7 +1094,7 @@ export default function CommunicationsTable({ notifications }: CommunicationsTab
               <div className="flex justify-end gap-2 pt-2">
                 <button
                   onClick={() => setSelectedNotification(null)}
-                  className="badge badge-destructive  px-4 py-2 rounded-xl border border-red-200 text-13 font-bold bg-red-50 text-red-700 hover:bg-red-200 transition-all cursor-pointer"
+                  className="badge badge-destructive px-4 py-2 rounded-xl border border-red-200 dark:border-red-900/40 text-13 font-bold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/60 transition-all cursor-pointer"
                 >
                   Close
                 </button>

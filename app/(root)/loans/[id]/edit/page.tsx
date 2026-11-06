@@ -80,10 +80,10 @@ export default async function EditLoanPage({ params }: { params: Promise<{ id: s
         {/* Financial Terms */}
         <div className="card-premium p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-primary/5 rounded-lg text-primary">
+            <div className="p-2 bg-primary/5 dark:bg-[#18221A] rounded-lg text-primary dark:text-[#B7FF3C] ring-1 ring-primary/10 dark:ring-[#29352D]">
               <Calculator className="size-5" />
             </div>
-            <h3 className="text-16 font-semibold text-gray-900 tracking-tight">Financial Terms</h3>
+            <h3 className="text-16 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">Financial Terms</h3>
           </div>
 
           <div className="grid grid-cols-1 gap-6">

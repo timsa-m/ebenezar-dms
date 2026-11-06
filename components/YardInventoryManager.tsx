@@ -5,6 +5,7 @@ import type { Vehicle, VehicleCostType, VehicleStatus } from '@/src/types/databa
 import { formatKES } from '@/src/lib/financial-engine';
 import { addVehicle, addVehicleCost, updateVehicleStatusAction, softDeleteVehicle, restoreVehicle, toggleVehiclePublishAction } from '@/lib/actions/vehicle.actions';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
+import SecureActionModal from '@/components/security/SecureActionModal';
 import {
   Car,
   Plus,
@@ -59,10 +60,10 @@ interface YardInventoryManagerProps {
 function StatusBadge({ status }: { status: VehicleStatus }) {
   if (status === 'in_stock') return <span className="badge badge-success">In Stock</span>;
   if (status === 'reserved') return <span className="badge badge-warning">Reserved</span>;
-  if (status === 'financed') return <span className="badge badge-pending" style={{ background: '#EFF6FF', color: '#1D4ED8', borderColor: '#BFDBFE' }}>Credit</span>;
+  if (status === 'financed') return <span className="badge badge-pending bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800/40">Credit</span>;
   if (status === 'repossessed') return <span className="badge badge-error">Repossessed</span>;
   if (status === 'cash_sale') return <span className="badge badge-completed">Cash Sale</span>;
-  if (status === 'deleted') return <span className="badge badge-error" style={{ background: '#FEE2E2', color: '#991B1B', borderColor: '#FCA5A5' }}>Deleted</span>;
+  if (status === 'deleted') return <span className="badge badge-error bg-red-100 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800/40">Deleted</span>;
   return <span className="badge badge-new">{status}</span>;
 }
 
@@ -84,12 +85,12 @@ function WebsiteBadge({
       className={cn(
         "badge badge-primary inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition-all select-none",
         published
-          ? "bg-emerald-50 text-emerald-700 border border-emerald-200/90 shadow-2xs"
-          : "bg-slate-100 text-slate-600 border border-slate-200/80 shadow-2xs",
+          ? "bg-emerald-50 text-emerald-700 border border-emerald-200/90 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50 shadow-2xs"
+          : "bg-slate-100 text-slate-600 border border-slate-200/80 dark:bg-[#18221A] dark:text-[#A1ADA4] dark:border-[#29352D] shadow-2xs",
         isManagerOrAdmin && onToggle && (
           published
-            ? "hover:bg-emerald-100 hover:border-emerald-300"
-            : "hover:bg-slate-200 hover:border-slate-300"
+            ? "hover:bg-emerald-100 dark:hover:bg-emerald-900/50 hover:border-emerald-300"
+            : "hover:bg-slate-200 dark:hover:bg-[#222E25] hover:border-slate-300"
         )
       )}
       title={
@@ -105,9 +106,9 @@ function WebsiteBadge({
       {isToggling ? (
         <Loader2 className="size-3 animate-spin shrink-0" />
       ) : published ? (
-        <Globe className="size-3 text-emerald-600 shrink-0" />
+        <Globe className="size-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
       ) : (
-        <EyeOff className="size-3 text-slate-400 shrink-0" />
+        <EyeOff className="size-3 text-slate-400 dark:text-[#A1ADA4] shrink-0" />
       )}
       <span>{published ? "On Website" : "Off Website"}</span>
     </span>
@@ -236,11 +237,11 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
     );
   }, [vehicleList, query, activeTab]);
 
-  const handleDeleteVehicle = async () => {
+  const handleDeleteVehicle = async (verificationToken?: string) => {
     if (!vehicleToDelete) return;
     setIsDeleting(true);
     try {
-      const res = await softDeleteVehicle(vehicleToDelete.id);
+      const res = await softDeleteVehicle(vehicleToDelete.id, verificationToken);
       if (!res.success) {
         toast.error(res.error || 'Failed to delete vehicle.');
         return;
@@ -409,7 +410,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
 
       {/* Table Toolbar Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2">
-        <div className="status-filter-group w-fit max-w-full overflow-x-auto">
+        <div className="status-filter-group w-fit max-w-full overflow-x-auto dark:bg-[#101612] dark:border dark:border-[#29352D]">
           <Button onClick={() => setActiveTab('all')} className={cn('status-filter-pill', activeTab === 'all' && 'status-filter-pill-active')}>
             <div className="flex items-center gap-2">
               <Car className="size-3.5" />
@@ -448,13 +449,13 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
           </Button>
           <Button onClick={() => setActiveTab('on_website')} className={cn('status-filter-pill', activeTab === 'on_website' && 'status-filter-pill-active')}>
             <div className="flex items-center gap-2">
-              <Globe className="size-3.5 text-emerald-600" />
+              <Globe className="size-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>On Website ({counts.on_website})</span>
             </div>
           </Button>
           <Button onClick={() => setActiveTab('off_website')} className={cn('status-filter-pill', activeTab === 'off_website' && 'status-filter-pill-active')}>
             <div className="flex items-center gap-2">
-              <EyeOff className="size-3.5 text-slate-500" />
+              <EyeOff className="size-3.5 text-slate-500 dark:text-slate-400" />
               <span>Off Website ({counts.off_website})</span>
             </div>
           </Button>
@@ -464,7 +465,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
               className={cn(
                 'status-filter-pill',
                 activeTab === 'deleted' && 'status-filter-pill-active',
-                counts.deleted > 0 && activeTab !== 'deleted' && 'text-rose-600 hover:text-rose-700'
+                counts.deleted > 0 && activeTab !== 'deleted' && 'text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300'
               )}
             >
               <div className="flex items-center gap-2">
@@ -528,10 +529,10 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                           <Car size={18} />
                         </div>
                         <div className="flex flex-col min-w-0">
-                          <span className="font-bold text-slate-900 font-mono tracking-wide">
+                          <span className="font-bold text-slate-900 dark:text-[#F4F7F4] font-mono tracking-wide">
                             {vehicle.registration_no}
                           </span>
-                          <span className="text-13 text-slate-500 font-medium">
+                          <span className="text-13 text-slate-500 dark:text-[#A1ADA4] font-medium">
                             {vehicle.make_model}
                           </span>
                         </div>
@@ -539,8 +540,8 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     </TableCell>
                     <TableCell className="data-td">
                       <div className="flex flex-col gap-1">
-                        <span className="text-13 text-slate-700">{vehicle.type || 'Saloon'}</span>
-                        <span className="text-12 text-gray-500">{vehicle.year || '—'}</span>
+                        <span className="text-13 text-slate-700 dark:text-[#C1CBC3]">{vehicle.type || 'Saloon'}</span>
+                        <span className="text-12 text-gray-500 dark:text-[#A1ADA4]">{vehicle.year || '—'}</span>
                       </div>
                     </TableCell>
                     <TableCell className="data-td">
@@ -563,7 +564,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                       <span className="amount-text">{formatKES(vehicle.purchase_price)}</span>
                     </TableCell>
                     <TableCell className="data-td text-right">
-                      <span className="amount-text text-slate-900 font-bold">{formatKES(vehicle.sale_price)}</span>
+                      <span className="amount-text text-slate-900 dark:text-[#F4F7F4] font-bold">{formatKES(vehicle.sale_price)}</span>
                     </TableCell>
                     <TableCell className="data-td text-right">
                       {vehicle.status === 'deleted' ? (
@@ -602,14 +603,14 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                             <SelectTrigger
                               className={cn(
                                 "inline-flex h-8 w-8 items-center justify-center",
-                                "rounded-lg border border-slate-200",
-                                "bg-white p-0 text-slate-500",
+                                "rounded-lg border border-slate-200 dark:border-[#29352D]",
+                                "bg-white dark:bg-[#18221A] p-0 text-slate-500 dark:text-[#C1CBC3]",
                                 "shadow-sm",
                                 "transition-all duration-200",
-                                "hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800",
-                                "focus:outline-none focus:ring-2 focus:ring-blue-100",
-                                "data-[state=open]:border-blue-200",
-                                "data-[state=open]:bg-slate-50",
+                                "hover:border-slate-300 dark:hover:border-[#38483d] hover:bg-slate-50 dark:hover:bg-[#1D2920] hover:text-slate-800 dark:hover:text-[#F4F7F4]",
+                                "focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-[#B7FF3C]/20",
+                                "data-[state=open]:border-blue-200 dark:data-[state=open]:border-[#B7FF3C]",
+                                "data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-[#1D2920]",
                                 "[&>span]:hidden",
                                 "[&>svg:last-child]:hidden"
                               )}
@@ -623,13 +624,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                               className={cn(
                                 "w-56",
                                 "rounded-xl",
-                                "border border-slate-200",
-                                "bg-white/95",
+                                "border border-slate-200 dark:border-[#29352D]",
+                                "bg-white/95 dark:bg-[#151D17]",
                                 "p-2",
-                                "text-slate-900",
-                                "shadow-xl shadow-slate-200/60",
-                                "backdrop-blur-xl backdrop-saturate-150",
-                                "ring-1 ring-slate-900/[0.03]"
+                                "text-slate-900 dark:text-[#F4F7F4]",
+                                "shadow-xl dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)]",
+                                "backdrop-blur-xl backdrop-saturate-150"
                               )}
                             >
                               {/* PRIMARY ACTIONS */}
@@ -641,12 +641,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                                   className={cn(
                                     "flex w-full items-center justify-center gap-2.5",
                                     "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
+                                    "text-sm font-medium text-slate-700 dark:text-[#C1CBC3]",
                                     "transition-colors duration-150",
-                                    "hover:bg-slate-50 hover:text-slate-950"
+                                    "hover:bg-slate-50 dark:hover:bg-[#18221A] hover:text-slate-950 dark:hover:text-[#F4F7F4]"
                                   )}
                                 >
-                                  <Eye className="size-4 shrink-0 text-slate-500" />
+                                  <Eye className="size-4 shrink-0 text-slate-500 dark:text-[#A1ADA4]" />
                                   <span>View Details</span>
                                 </Link>
 
@@ -791,7 +791,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                                   <span>Repossessed</span>
                                 </button>
 
-                                {isManagerOrAdmin && vehicle.status !== 'deleted' && (
+                                {isManagerOrAdmin && (vehicle.status as string) !== 'deleted' && (
                                   <>
                                     <div className="my-2 border-t border-slate-100" />
                                     <div className="px-2 pb-1.5 pt-1 text-center">
@@ -899,21 +899,21 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
           return (
             <TableResponsiveCard
               key={vehicle.id}
-              className="overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/50 p-5 cursor-pointer"
+              className="overflow-hidden rounded-3xl border border-slate-200/70 dark:border-[#29352D] bg-white dark:bg-[#151D17] shadow-sm transition-all duration-300 hover:shadow-lg dark:hover:shadow-none p-5 cursor-pointer"
             >
               <TableResponsiveCardHeader
                 onClick={() => setExpandedId(isOpen ? null : vehicle.id)}
                 className="p-5 cursor-pointer flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 border border-blue-200">
+                  <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 dark:from-[#18221A] dark:to-[#1D2920] dark:text-[#B7FF3C] border border-blue-200 dark:border-[#29352D]">
                     <Car size={20} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-[16px] text-slate-900 truncate font-mono tracking-wide">
+                    <h3 className="font-bold text-[16px] text-slate-900 dark:text-[#F4F7F4] truncate font-mono tracking-wide">
                       {vehicle.registration_no}
                     </h3>
-                    <p className="text-sm font-medium text-slate-500 truncate mt-0.5">
+                    <p className="text-sm font-medium text-slate-500 dark:text-[#A1ADA4] truncate mt-0.5">
                       {vehicle.make_model}
                     </p>
                     <div className="mt-2.5 flex flex-wrap items-center gap-2">
@@ -932,20 +932,20 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     </div>
                   </div>
                 </div>
-                <div className="shrink-0 text-slate-400">
+                <div className="shrink-0 text-slate-400 dark:text-[#A1ADA4]">
                   {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </div>
               </TableResponsiveCardHeader>
 
               <TableResponsiveCardContent isOpen={isOpen}>
                 <div className="w-full space-y-4 px-4">
-                  <div className="rounded-2xl bg-slate-50 p-4 grid gap-4 translate-y-2">
+                  <div className="rounded-2xl bg-slate-50 dark:bg-[#18221A] p-4 grid gap-4 translate-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">Type</span>
-                      <span className="text-sm font-medium text-slate-700">{vehicle.type || 'Saloon'} ({vehicle.year || '—'})</span>
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Type</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-[#C1CBC3]">{vehicle.type || 'Saloon'} ({vehicle.year || '—'})</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">Website Status</span>
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Website Status</span>
                       <WebsiteBadge
                         isPublished={vehicle.is_published}
                         isManagerOrAdmin={isManagerOrAdmin}
@@ -957,12 +957,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">Purchase Price</span>
-                      <span className="font-semibold text-slate-900">{formatKES(vehicle.purchase_price)}</span>
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Purchase Price</span>
+                      <span className="font-semibold text-slate-900 dark:text-[#F4F7F4]">{formatKES(vehicle.purchase_price)}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">Selling Price</span>
-                      <span className="font-bold text-slate-900">{formatKES(vehicle.sale_price)}</span>
+                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Selling Price</span>
+                      <span className="font-bold text-slate-900 dark:text-[#B7FF3C]">{formatKES(vehicle.sale_price)}</span>
                     </div>
                   </div>
 
@@ -989,10 +989,10 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                         <Button
                           asChild
                           variant="outline"
-                          className="rounded-xl h-10 text-xs font-medium border-slate-200 hover:bg-slate-50 flex items-center justify-center gap-1.5"
+                          className="rounded-xl h-10 text-xs font-medium border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] hover:bg-slate-50 dark:hover:bg-[#1D2920] text-slate-700 dark:text-[#C1CBC3] flex items-center justify-center gap-1.5"
                         >
                           <Link href={`/vehicles/${vehicle.id}`}>
-                            <Eye className="size-3.5 text-gray-500" />
+                            <Eye className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
                             <span>Details</span>
                           </Link>
                         </Button>
@@ -1002,14 +1002,14 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                             setSelectedVehicleForCost(vehicle);
                             setIsAddCostOpen(true);
                           }}
-                          className="rounded-xl h-10 text-xs font-medium border-slate-200 hover:bg-slate-50 flex items-center justify-center gap-1.5"
+                          className="rounded-xl h-10 text-xs font-medium border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] hover:bg-slate-50 dark:hover:bg-[#1D2920] text-slate-700 dark:text-[#C1CBC3] flex items-center justify-center gap-1.5"
                         >
-                          <Wrench className="size-3.5 text-gray-500" />
+                          <Wrench className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
                           <span>Add Expense</span>
                         </Button>
                         <Button
                           asChild
-                          className="rounded-xl h-10 text-xs font-semibold bg-blue-900 hover:bg-blue-800 text-white flex items-center justify-center gap-1.5"
+                          className="rounded-xl h-10 text-xs font-semibold bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] flex items-center justify-center gap-1.5"
                         >
                           <Link href={`/loans/create?vehicleId=${vehicle.id}`}>
                             <Sparkles className="size-3.5" />
@@ -1071,14 +1071,14 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
 
       {/* Modals from original YardInventoryManager */}
       {isAddVehicleOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#151D17] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-[#29352D] animate-in fade-in zoom-in-95">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Car size={18} className="text-blue-900" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-[#F4F7F4] flex items-center gap-2">
+                <Car size={18} className="text-blue-900 dark:text-[#B7FF3C]" />
                 Add Vehicle to Yard
               </h2>
-              <button onClick={() => setIsAddVehicleOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsAddVehicleOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-[#F4F7F4]">
                 <X size={18} />
               </button>
             </div>
@@ -1086,7 +1086,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
             <form onSubmit={handleAddVehicle} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">
                     Registration Plate *
                   </label>
                   <input
@@ -1095,29 +1095,29 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                     placeholder="KBN 253K"
                     value={regNo}
                     onChange={(e) => setRegNo(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 font-mono uppercase"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4] font-mono uppercase"
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Make &amp; Model *</label>
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Make &amp; Model *</label>
                   <input
                     type="text"
                     required
                     placeholder="Toyota Prado TX"
                     value={makeModel}
                     onChange={(e) => setMakeModel(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Vehicle Type</label>
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Vehicle Type</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                   >
                     <option value="SUV">SUV</option>
                     <option value="Compact SUV">Compact SUV</option>
@@ -1131,61 +1131,61 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                   </select>
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Year</label>
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Year</label>
                   <input
                     type="number"
                     value={year}
                     onChange={(e) => setYear(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Purchase Cost (KES) *</label>
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Purchase Cost (KES) *</label>
                   <input
                     type="number"
                     required
                     value={purchasePrice}
                     onChange={(e) => setPurchasePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Selling Price (KES) *</label>
+                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Selling Price (KES) *</label>
                   <input
                     type="number"
                     required
                     value={salePrice}
                     onChange={(e) => setSalePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 font-bold text-blue-950"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] font-bold text-blue-950 dark:text-[#B7FF3C]"
                   />
                 </div>
               </div>
 
               <div className="mt-4">
-                <label className="font-semibold text-slate-700 block mb-1">Purchase Date (Leave default for today)</label>
+                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Purchase Date (Leave default for today)</label>
                 <input
                   type="date"
                   value={purchaseDate}
                   onChange={(e) => setPurchaseDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#29352D]">
                 <button
                   type="button"
                   onClick={() => setIsAddVehicleOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 font-semibold"
+                  className="px-4 py-2 rounded-lg border border-slate-200 dark:border-[#29352D] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-50 dark:hover:bg-[#1D2920] font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isVehicleSaving}
-                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-bold flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] font-bold flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                 >
                   {isVehicleSaving ? <Loader2 size={14} className="animate-spin" /> : null}
                   Save Vehicle
@@ -1197,30 +1197,30 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
       )}
 
       {isAddCostOpen && selectedVehicleForCost && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#151D17] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-[#29352D] animate-in fade-in zoom-in-95">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Wrench size={16} className="text-blue-900" />
+                <h2 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] flex items-center gap-2">
+                  <Wrench size={16} className="text-blue-900 dark:text-[#B7FF3C]" />
                   Add Pre-Sale Expense
                 </h2>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-slate-500 dark:text-[#A1ADA4]">
                   Target: {selectedVehicleForCost.registration_no} ({selectedVehicleForCost.make_model})
                 </span>
               </div>
-              <button onClick={() => setIsAddCostOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsAddCostOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-[#F4F7F4]">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleAddCost} className="space-y-4 text-xs">
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">Cost Category</label>
+                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Cost Category</label>
                 <select
                   value={costType}
                   onChange={(e) => setCostType(e.target.value as VehicleCostType)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                 >
                   <option value="mechanical">Mechanical Repair / Servicing</option>
                   <option value="bodywork">Bodywork / Panel Beating / Paint</option>
@@ -1233,51 +1233,51 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">Expense Amount (KES) *</label>
+                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Expense Amount (KES) *</label>
                 <input
                   type="number"
                   required
                   value={costAmount}
                   onChange={(e) => setCostAmount(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 font-bold"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4] font-bold"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">Description / Item Detail *</label>
+                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Description / Item Detail *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Front suspension bushing & new battery"
                   value={costDescription}
                   onChange={(e) => setCostDescription(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 block mb-1">Garage / Vendor Name</label>
+                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Garage / Vendor Name</label>
                 <input
                   type="text"
                   placeholder="e.g. QuickFit Auto Kisumu"
                   value={vendorName}
                   onChange={(e) => setVendorName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#29352D]">
                 <button
                   type="button"
                   onClick={() => setIsAddCostOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 font-semibold"
+                  className="px-4 py-2 rounded-lg border border-slate-200 dark:border-[#29352D] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-50 dark:hover:bg-[#1D2920] font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isCostSaving}
-                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-bold flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] font-bold flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                 >
                   {isCostSaving ? <Loader2 size={14} className="animate-spin" /> : null}
                   Record Expense
@@ -1287,62 +1287,23 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
           </div>
         </div>
       )}
-      {/* Delete Vehicle Confirmation Modal */}
-      {vehicleToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-slate-100 animate-scale-in">
-            <div className="flex items-start gap-4">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600">
-                <AlertTriangle className="size-6" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-slate-900">
-                  Delete {vehicleToDelete.registration_no}?
-                </h3>
-                <p className="mt-1 text-sm font-medium text-slate-700">
-                  {vehicleToDelete.make_model}
-                </p>
-                <div className="mt-3 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900 leading-relaxed">
-                  <p className="font-semibold text-amber-950 flex items-center gap-1.5 mb-1">
-                    <ShieldCheck className="size-3.5 text-amber-600" />
-                    Manager Revert Archive
-                  </p>
-                  This vehicle will be hidden from the active yard inventory and marketplace website. If deleted mistakenly, you can <strong>revert and restore it at any time</strong> from the <strong>Deleted</strong> tab.
-                </div>
-              </div>
-            </div>
-            <div className="mt-6 flex items-center justify-end gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setVehicleToDelete(null)}
-                disabled={isDeleting}
-                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="button"
-                onClick={handleDeleteVehicle}
-                disabled={isDeleting}
-                className="rounded-xl px-4 py-2 text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-2 shadow-sm"
-              >
-                {isDeleting ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    <span>Deleting...</span>
-                  </>
-                ) : (
-                  <>
-                    <Trash2 className="size-4" />
-                    <span>Confirm Delete</span>
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Security Re-Authentication Modal for Vehicle Deletion */}
+      <SecureActionModal
+        isOpen={!!vehicleToDelete}
+        onClose={() => setVehicleToDelete(null)}
+        onAuthorized={(token) => handleDeleteVehicle(token)}
+        action="VEHICLE_DELETE"
+        resourceId={vehicleToDelete?.id || ''}
+        title="Delete Vehicle Record"
+        description="This vehicle will be hidden from the active yard inventory and public marketplace. Enter your password to authorize moving this record to the deleted archive."
+        confirmLabel="Confirm Delete Vehicle"
+        severity="danger"
+        summaryItems={[
+          { label: 'Registration No', value: vehicleToDelete?.registration_no || '' },
+          { label: 'Make & Model', value: vehicleToDelete?.make_model || '' },
+          { label: 'Sale Price', value: vehicleToDelete?.sale_price ? formatKES(vehicleToDelete.sale_price) : 'N/A' },
+        ]}
+      />
     </div>
   );
 }

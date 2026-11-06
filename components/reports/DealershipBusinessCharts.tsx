@@ -97,20 +97,20 @@ export default function DealershipBusinessCharts({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* ── Expense Distribution Chart ─────────────────────────── */}
-      <div className="card-premium flex flex-col justify-between">
+      <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] flex flex-col justify-between">
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div>
-              <h3 className="text-14 font-bold text-gray-500 uppercase tracking-widest">
+              <h3 className="text-14 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">
                 Dealership Expense Distribution
               </h3>
-              <p className="text-12 text-gray-400 mt-0.5">
-                Total Tracked Outflow: <span className="font-bold text-gray-900">{formatKES(totalExpenseVal)}</span>
+              <p className="text-12 text-gray-400 dark:text-[#A1ADA4] mt-0.5">
+                Total Tracked Outflow: <span className="font-bold text-gray-900 dark:text-[#F4F7F4]">{formatKES(totalExpenseVal)}</span>
               </p>
             </div>
 
             {/* Toggle tabs */}
-            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg text-xs font-semibold">
+            <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#18221A] p-1 rounded-lg text-xs font-semibold">
               <Badge
                 variant={expenseView === "summary" ? "secondary" : "outline"}
                 role="button"
@@ -124,8 +124,8 @@ export default function DealershipBusinessCharts({
                   }
                 }}
                 className={`badge badge-primary p-2 cursor-pointer px-2.5 py-1 rounded-md transition select-none ${expenseView === "summary"
-                  ? "bg-white text-gray-900 shadow-xs hover:bg-white"
-                  : "border-transparent text-gray-500 hover:text-gray-900 hover:bg-blue-400"
+                  ? "bg-white dark:bg-[#B7FF3C] text-gray-900 dark:text-[#090C0A] shadow-xs hover:bg-white dark:hover:bg-[#B7FF3C]"
+                  : "border-transparent text-gray-500 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4] hover:bg-gray-200 dark:hover:bg-[#1D2920]"
                   }`}
               >
                 Overview
@@ -143,8 +143,8 @@ export default function DealershipBusinessCharts({
                   }
                 }}
                 className={`badge badge-primary cursor-pointer p-2 px-2.5 py-1 rounded-md transition select-none ${expenseView === "yard"
-                  ? "bg-white text-gray-900 shadow-xs hover:bg-white"
-                  : "border-transparent text-gray-500 hover:text-gray-900 hover:bg-red-400"
+                  ? "bg-white dark:bg-[#B7FF3C] text-gray-900 dark:text-[#090C0A] shadow-xs hover:bg-white dark:hover:bg-[#B7FF3C]"
+                  : "border-transparent text-gray-500 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4] hover:bg-gray-200 dark:hover:bg-[#1D2920]"
                   }`}
               >
                 Yard Prep ({vehicleCostsByType.length})
@@ -161,9 +161,9 @@ export default function DealershipBusinessCharts({
                     setExpenseView("general");
                   }
                 }}
-                className={`badge badge-primarycursor-pointer px-2.5 py-1 rounded-md transition select-none ${expenseView === "general"
-                  ? "bg-white text-gray-900 shadow-xs hover:bg-white"
-                  : "border-transparent text-gray-500 hover:text-gray-900 hover:bg-amber-400"
+                className={`badge badge-primary cursor-pointer px-2.5 py-1 rounded-md transition select-none ${expenseView === "general"
+                  ? "bg-white dark:bg-[#B7FF3C] text-gray-900 dark:text-[#090C0A] shadow-xs hover:bg-white dark:hover:bg-[#B7FF3C]"
+                  : "border-transparent text-gray-500 dark:text-[#A1ADA4] hover:text-gray-900 dark:hover:text-[#F4F7F4] hover:bg-gray-200 dark:hover:bg-[#1D2920]"
                   }`}
               >
                 Overheads ({generalByCategory.length})
@@ -172,7 +172,7 @@ export default function DealershipBusinessCharts({
           </div>
 
           {currentExpenseChartData.length === 0 ? (
-            <div className="flex items-center justify-center h-64 text-gray-400 text-13">
+            <div className="flex items-center justify-center h-64 text-gray-400 dark:text-[#A1ADA4] text-13">
               No expense records found in this category
             </div>
           ) : (
@@ -186,7 +186,10 @@ export default function DealershipBusinessCharts({
                   innerRadius={55}
                   paddingAngle={3}
                   dataKey="value"
-                  label={({ name, percent }) => `${name.substring(0, 16)}${name.length > 16 ? "..." : ""} ${((percent || 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => {
+                    const str = name || "";
+                    return `${str.substring(0, 16)}${str.length > 16 ? "..." : ""} ${((percent || 0) * 100).toFixed(0)}%`;
+                  }}
                   labelLine={false}
                 >
                   {currentExpenseChartData.map((entry, index) => (
@@ -195,7 +198,7 @@ export default function DealershipBusinessCharts({
                 </Pie>
                 <Tooltip
                   formatter={(val: any) => [formatKES(Number(val)), "Amount"]}
-                  contentStyle={{ borderRadius: "0.75rem", border: "1px solid #e5e7eb", fontSize: 12 }}
+                  contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -203,29 +206,29 @@ export default function DealershipBusinessCharts({
         </div>
 
         {/* Breakdown Key */}
-        <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap items-center justify-around gap-2 text-xs">
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-[#29352D] flex flex-wrap items-center justify-around gap-2 text-xs">
           <div className="flex items-center gap-1.5">
             <span className="size-2.5 rounded-full bg-orange-500" />
-            <span className="text-gray-600 font-medium">General Overheads:</span>
-            <span className="font-bold text-gray-900">{formatKES(generalExpensesTotal)}</span>
+            <span className="text-gray-600 dark:text-[#C1CBC3] font-medium">General Overheads:</span>
+            <span className="font-bold text-gray-900 dark:text-[#F4F7F4]">{formatKES(generalExpensesTotal)}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="size-2.5 rounded-full bg-rose-600" />
-            <span className="text-gray-600 font-medium">Yard Vehicle Prep:</span>
-            <span className="font-bold text-gray-900">{formatKES(vehicleCostsTotal)}</span>
+            <span className="text-gray-600 dark:text-[#C1CBC3] font-medium">Yard Vehicle Prep:</span>
+            <span className="font-bold text-gray-900 dark:text-[#F4F7F4]">{formatKES(vehicleCostsTotal)}</span>
           </div>
         </div>
       </div>
 
       {/* ── Capital Allocation & Portfolio Velocity ────────────── */}
-      <div className="card-premium flex flex-col justify-between">
+      <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D] flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-14 font-bold text-gray-500 uppercase tracking-widest">
+              <h3 className="text-14 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">
                 Business Capital Allocation
               </h3>
-              <p className="text-12 text-gray-400 mt-0.5">
+              <p className="text-12 text-gray-400 dark:text-[#A1ADA4] mt-0.5">
                 Physical Inventory vs. Outstanding Book vs. Collected Capital
               </p>
             </div>
@@ -241,7 +244,7 @@ export default function DealershipBusinessCharts({
                 innerRadius={55}
                 paddingAngle={4}
                 dataKey="value"
-                label={({ name, percent }) => `${name.split(" ")[0]} ${((percent || 0) * 100).toFixed(0)}%`}
+                label={({ name, percent }) => `${(name || "").split(" ")[0]} ${((percent || 0) * 100).toFixed(0)}%`}
                 labelLine={false}
               >
                 {capitalAllocationData.map((entry, index) => (
@@ -250,7 +253,7 @@ export default function DealershipBusinessCharts({
               </Pie>
               <Tooltip
                 formatter={(val: any) => [formatKES(Number(val)), "Value"]}
-                contentStyle={{ borderRadius: "0.75rem", border: "1px solid #e5e7eb", fontSize: 12 }}
+                contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
               />
               <Legend
                 iconType="circle"
@@ -262,18 +265,18 @@ export default function DealershipBusinessCharts({
         </div>
 
         {/* Metric tiles */}
-        <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-3 gap-2 text-center text-xs">
-          <div className="bg-blue-50/70 p-2 rounded-lg">
-            <p className="text-11 text-blue-700 font-medium">Yard Stock</p>
-            <p className="font-bold text-blue-900 mt-0.5">{formatKES(capitalInYardStock)}</p>
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-[#29352D] grid grid-cols-3 gap-2 text-center text-xs">
+          <div className="bg-blue-50/70 dark:bg-blue-950/40 border border-transparent dark:border-blue-900/40 p-2 rounded-lg">
+            <p className="text-11 text-blue-700 dark:text-blue-300 font-medium">Yard Stock</p>
+            <p className="font-bold text-blue-900 dark:text-[#65C8F2] mt-0.5">{formatKES(capitalInYardStock)}</p>
           </div>
-          <div className="bg-purple-50/70 p-2 rounded-lg">
-            <p className="text-11 text-purple-700 font-medium">Receivables</p>
-            <p className="font-bold text-purple-900 mt-0.5">{formatKES(totalFinancingReceivables)}</p>
+          <div className="bg-purple-50/70 dark:bg-purple-950/40 border border-transparent dark:border-purple-900/40 p-2 rounded-lg">
+            <p className="text-11 text-purple-700 dark:text-purple-300 font-medium">Receivables</p>
+            <p className="font-bold text-purple-900 dark:text-purple-200 mt-0.5">{formatKES(totalFinancingReceivables)}</p>
           </div>
-          <div className="bg-emerald-50/70 p-2 rounded-lg">
-            <p className="text-11 text-emerald-700 font-medium">Collected</p>
-            <p className="font-bold text-emerald-900 mt-0.5">{formatKES(totalRevenue)}</p>
+          <div className="bg-emerald-50/70 dark:bg-emerald-950/40 border border-transparent dark:border-emerald-900/40 p-2 rounded-lg">
+            <p className="text-11 text-emerald-700 dark:text-emerald-300 font-medium">Collected</p>
+            <p className="font-bold text-emerald-900 dark:text-[#B7FF3C] mt-0.5">{formatKES(totalRevenue)}</p>
           </div>
         </div>
       </div>

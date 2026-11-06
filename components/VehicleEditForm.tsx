@@ -421,13 +421,13 @@ export default function VehicleEditForm({ vehicle }: VehicleEditFormProps) {
                 value={registrationNo}
                 onChange={e => setRegistrationNo(e.target.value.toUpperCase())}
                 placeholder="e.g. KDA 123A"
-                className="input-class h-11 w-full uppercase tracking-wider font-bold text-gray-900"
+                className="input-class h-11 w-full uppercase tracking-wider font-bold text-gray-900 dark:text-[#F4F7F4]"
               />
             </div>
 
             {/* Make & Model */}
             <div className="space-y-1.5">
-              <label className="text-12 font-bold text-gray-700 uppercase tracking-wider block">
+              <label className="text-12 font-bold text-gray-700 dark:text-[#C1CBC3] uppercase tracking-wider block">
                 Make & Model <span className="text-red-500">*</span>
               </label>
               <input
@@ -436,7 +436,7 @@ export default function VehicleEditForm({ vehicle }: VehicleEditFormProps) {
                 value={makeModel}
                 onChange={e => setMakeModel(e.target.value)}
                 placeholder="e.g. Toyota Prado TX L-Package"
-                className="input-class h-11 w-full font-medium text-gray-900"
+                className="input-class h-11 w-full font-medium text-gray-900 dark:text-[#F4F7F4]"
               />
             </div>
 
@@ -1009,14 +1009,14 @@ export default function VehicleEditForm({ vehicle }: VehicleEditFormProps) {
         </section>
 
         {/* ── STICKY BOTTOM ACTION BAR ── */}
-        <div className="sticky bottom-4 z-20 bg-white/95 backdrop-blur-md h-16 rounded-2xl border border-gray-200/90 shadow-lg px-4 md:px-8 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5 text-13 text-gray-600 font-medium min-w-0">
+        <div className="sticky bottom-4 z-20 bg-white/95 dark:bg-[#151D17]/95 backdrop-blur-md h-16 rounded-2xl border border-gray-200/90 dark:border-[#29352D] shadow-lg px-4 md:px-8 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5 text-13 text-gray-600 dark:text-[#A1ADA4] font-medium min-w-0">
             <span className="hidden sm:inline">Editing:</span>
-            <span className="font-bold text-gray-900 bg-gray-100 px-2.5 py-1 rounded-lg">
+            <span className="font-bold text-gray-900 dark:text-[#F4F7F4] bg-gray-100 dark:bg-[#18221A] border border-gray-200 dark:border-[#29352D] px-2.5 py-1 rounded-lg">
               {registrationNo || vehicle.registration_no}
             </span>
-            <span className="text-gray-400 hidden md:inline">•</span>
-            <span className="text-gray-600 font-semibold hidden md:inline truncate max-w-xs">
+            <span className="text-gray-400 dark:text-[#5d6f62] hidden md:inline">•</span>
+            <span className="text-gray-600 dark:text-[#C1CBC3] font-semibold hidden md:inline truncate max-w-xs">
               {makeModel || vehicle.make_model}
             </span>
           </div>
@@ -1025,14 +1025,14 @@ export default function VehicleEditForm({ vehicle }: VehicleEditFormProps) {
             <button
               type="button"
               onClick={() => router.back()}
-              className="h-10 px-6 text-13 font-bold rounded-xl border border-gray-200 text-gray-700 bg-white hover:bg-gray-50 active:bg-gray-100 transition-colors shadow-2xs"
+              className="h-10 px-6 text-13 font-bold rounded-xl border border-gray-200 dark:border-[#29352D] text-gray-700 dark:text-[#C1CBC3] bg-white dark:bg-[#18221A] hover:bg-gray-50 dark:hover:bg-[#1D2920] active:bg-gray-100 transition-colors shadow-2xs cursor-pointer"
               disabled={isPending || isUploading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="h-10 px-8 text-13 font-semibold rounded-xl gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm transition-all flex items-center justify-center disabled:opacity-50"
+              className="h-10 px-8 text-13 font-semibold rounded-xl gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] shadow-sm transition-all flex items-center justify-center disabled:opacity-50 cursor-pointer"
               disabled={isPending || isUploading}
             >
               {isPending ? (

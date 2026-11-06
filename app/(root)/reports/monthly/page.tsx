@@ -68,53 +68,53 @@ export default async function MonthlyReportsHubPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="card-premium py-4">
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg">
+              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-lg ring-1 ring-blue-100 dark:ring-blue-900/40">
                 <Car className="size-4" />
               </div>
-              <span className="text-11 font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-11 font-semibold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-wider">
                 Active Contracts ({latestReport.periodLabel.split(" ")[0]})
               </span>
             </div>
-            <p className="text-20 font-bold text-gray-900 mt-1">
+            <p className="text-20 font-bold text-gray-900 dark:text-[#F4F7F4] mt-1">
               {latestReport.totalActiveLoans}
-              <span className="text-12 font-normal text-gray-400 ml-1.5"> vehicles</span>
+              <span className="text-12 font-normal text-gray-400 dark:text-[#A1ADA4] ml-1.5"> vehicles</span>
             </p>
           </div>
 
           <div className="card-premium py-4">
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-1.5 bg-green-50 text-green-600 rounded-lg">
+              <div className="p-1.5 bg-green-50 dark:bg-emerald-950/40 text-green-600 dark:text-[#B7FF3C] rounded-lg ring-1 ring-green-100 dark:ring-emerald-900/40">
                 <DollarSign className="size-4" />
               </div>
-              <span className="text-11 font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-11 font-semibold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-wider">
                 Closing Receivables
               </span>
             </div>
-            <p className="text-20 font-bold text-gray-900 mt-1">
+            <p className="text-20 font-bold text-gray-900 dark:text-[#F4F7F4] mt-1">
               {formatAmount(latestReport.closingPortfolioBalance)}
             </p>
           </div>
 
           <div className="card-premium py-4">
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
+              <div className="p-1.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-lg ring-1 ring-indigo-100 dark:ring-indigo-900/40">
                 <TrendingUp className="size-4" />
               </div>
-              <span className="text-11 font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-11 font-semibold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-wider">
                 Monthly Inflow Collected
               </span>
             </div>
-            <p className="text-20 font-bold text-green-600 mt-1">
+            <p className="text-20 font-bold text-green-600 dark:text-[#B7FF3C] mt-1">
               {formatAmount(latestReport.totalRepaymentsCollected)}
             </p>
           </div>
 
           <div className="card-premium py-4">
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg">
+              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-[#B7FF3C] rounded-lg ring-1 ring-emerald-100 dark:ring-emerald-900/40">
                 <Activity className="size-4" />
               </div>
-              <span className="text-11 font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-11 font-semibold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-wider">
                 Collection Efficiency
               </span>
             </div>
@@ -122,10 +122,10 @@ export default async function MonthlyReportsHubPage() {
               className={cn(
                 "text-20 font-bold mt-1",
                 latestReport.collectionRate >= 80
-                  ? "text-green-600"
+                  ? "text-green-600 dark:text-[#B7FF3C]"
                   : latestReport.collectionRate >= 50
-                    ? "text-amber-600"
-                    : "text-red-600"
+                    ? "text-amber-600 dark:text-amber-400"
+                    : "text-red-600 dark:text-rose-400"
               )}
             >
               {latestReport.collectionRate}%
@@ -136,11 +136,11 @@ export default async function MonthlyReportsHubPage() {
 
       {/* Quick Jump to Recent Periods */}
       {reports && reports.length > 0 && (
-        <div className="card-premium mb-6 bg-gradient-to-r from-gray-50/50 to-white">
+        <div className="card-premium mb-6 bg-gradient-to-r from-gray-50/50 to-white dark:from-[#151D17] dark:to-[#18221A] dark:border-[#29352D]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Calendar className="size-4 text-primary" />
-              <span className="text-13 font-bold text-gray-700">
+              <span className="text-13 font-bold text-gray-700 dark:text-[#F4F7F4]">
                 Quick Jump to Recent Periods:
               </span>
             </div>
@@ -149,10 +149,10 @@ export default async function MonthlyReportsHubPage() {
                 <Link
                   key={r.id}
                   href={`/reports/monthly/${r.year}/${r.month}`}
-                  className="badge badge-primary px-3 py-1 bg-white hover:bg-primary hover:text-white text-gray-700 text-12 font-medium rounded-lg border border-gray-200 transition-colors shadow-2xs flex items-center gap-1 group"
+                  className="badge badge-primary px-3 py-1 bg-white dark:bg-[#101612] hover:bg-primary dark:hover:bg-[#B7FF3C] hover:text-white dark:hover:text-[#090C0A] text-gray-700 dark:text-[#C1CBC3] text-12 font-medium rounded-lg border border-gray-200 dark:border-[#29352D] transition-colors shadow-2xs flex items-center gap-1 group"
                 >
                   {r.periodLabel}
-                  <ChevronRight className="size-3 text-gray-400 group-hover:text-white" />
+                  <ChevronRight className="size-3 text-gray-400 dark:text-[#A1ADA4] group-hover:text-white dark:group-hover:text-[#090C0A]" />
                 </Link>
               ))}
             </div>
@@ -169,22 +169,22 @@ export default async function MonthlyReportsHubPage() {
                 <Plus className="size-4" />
               </div>
               <div>
-                <h3 className="text-14 font-bold text-gray-900">
+                <h3 className="text-14 font-bold text-gray-900 dark:text-[#F4F7F4]">
                   Generate / Certify Snapshot
                 </h3>
-                <p className="text-11 text-gray-400">
+                <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">
                   Immutable period-end financial ledger
                 </p>
               </div>
             </div>
 
-            <p className="text-12 text-gray-600 mb-4 leading-relaxed">
+            <p className="text-12 text-gray-600 dark:text-[#A1ADA4] mb-4 leading-relaxed">
               Generate an official month-end audit snapshot for vehicle financing contracts. Captures opening portfolio receivables, new vehicle originations, collections &amp; deposits, penalties, and closing balances.
             </p>
 
             <form action={handleGenerateSnapshot} className="space-y-3.5">
               <div>
-                <label className="form-label text-12 font-semibold text-gray-700">
+                <label className="form-label text-12 font-semibold text-gray-700 dark:text-[#C1CBC3]">
                   Financial Year
                 </label>
                 <input
@@ -199,7 +199,7 @@ export default async function MonthlyReportsHubPage() {
               </div>
 
               <div>
-                <label className="form-label text-12 font-semibold text-gray-700">
+                <label className="form-label text-12 font-semibold text-gray-700 dark:text-[#C1CBC3]">
                   Accounting Month
                 </label>
                 <select
@@ -228,7 +228,7 @@ export default async function MonthlyReportsHubPage() {
                 />
                 <label
                   htmlFor="overwrite"
-                  className="text-12 text-gray-600 cursor-pointer select-none"
+                  className="text-12 text-gray-600 dark:text-[#A1ADA4] cursor-pointer select-none"
                 >
                   Recalculate &amp; overwrite if snapshot already exists
                 </label>
@@ -243,15 +243,15 @@ export default async function MonthlyReportsHubPage() {
               </button>
             </form>
 
-            <div className="mt-5 p-3.5 bg-blue-50/70 border border-blue-200/60 rounded-xl space-y-2">
-              <div className="flex items-center gap-1.5 text-blue-800 text-12 font-bold">
-                <ShieldCheck className="size-4 text-blue-600" />
+            <div className="mt-5 p-3.5 bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/60 dark:border-blue-900/50 rounded-xl space-y-2">
+              <div className="flex items-center gap-1.5 text-blue-800 dark:text-blue-300 text-12 font-bold">
+                <ShieldCheck className="size-4 text-blue-600 dark:text-blue-400" />
                 Dealership Accounting Standards
               </div>
-              <p className="text-11 text-blue-700 leading-relaxed">
+              <p className="text-11 text-blue-700 dark:text-blue-300/90 leading-relaxed">
                 • <strong>Inclusion Rule:</strong> Vehicle agreements are included if originated on or prior to the month-end date and not closed prior to the month start.
               </p>
-              <p className="text-11 text-blue-700 leading-relaxed">
+              <p className="text-11 text-blue-700 dark:text-blue-300/90 leading-relaxed">
                 • <strong>Cash Sales:</strong> Classified separately from hire-purchase contracts to maintain zero recurring receivables.
               </p>
             </div>
@@ -262,10 +262,10 @@ export default async function MonthlyReportsHubPage() {
         <div className="lg:col-span-2">
           <div className="card-premium">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-14 font-bold text-gray-900 tracking-tight flex items-center gap-2">
+              <h3 className="text-14 font-bold text-gray-900 dark:text-[#F4F7F4] tracking-tight flex items-center gap-2">
                 <FileBarChart className="size-4 text-primary" />
                 Dealership Snapshot History
-                <span className="text-12 font-normal text-gray-400">
+                <span className="text-12 font-normal text-gray-400 dark:text-[#A1ADA4]">
                   ({reports?.length || 0} periods available)
                 </span>
               </h3>
@@ -273,11 +273,11 @@ export default async function MonthlyReportsHubPage() {
 
             {!reports || reports.length === 0 ? (
               <div className="data-empty py-16 text-center">
-                <Car className="size-12 text-gray-200 mx-auto mb-2" />
-                <p className="text-14 text-gray-600 font-semibold">
+                <Car className="size-12 text-gray-200 dark:text-gray-700 mx-auto mb-2" />
+                <p className="text-14 text-gray-600 dark:text-[#A1ADA4] font-semibold">
                   No monthly snapshots recorded yet
                 </p>
-                <p className="text-12 text-gray-400 max-w-xs mx-auto mt-1">
+                <p className="text-12 text-gray-400 dark:text-[#A1ADA4]/70 max-w-xs mx-auto mt-1">
                   Select a year and month to generate your first vehicle financing portfolio snapshot.
                 </p>
               </div>
@@ -300,14 +300,14 @@ export default async function MonthlyReportsHubPage() {
                       {reports.map((r: any) => (
                         <tr
                           key={r.id}
-                          className="data-table-row group hover:bg-gray-50/80 transition-colors"
+                          className="data-table-row group hover:bg-gray-50/80 dark:hover:bg-[#1D2920]/80 transition-colors"
                         >
                           <td className="data-td">
                             <div className="flex flex-col">
-                              <span className="font-bold text-gray-900 text-13">
+                              <span className="font-bold text-gray-900 dark:text-[#F4F7F4] text-13">
                                 {r.periodLabel}
                               </span>
-                              <span className="text-11 text-gray-400">
+                              <span className="text-11 text-gray-400 dark:text-[#A1ADA4]">
                                 {new Date(r.generatedAt).toLocaleDateString("en-KE", {
                                   day: "2-digit",
                                   month: "short",
@@ -317,32 +317,32 @@ export default async function MonthlyReportsHubPage() {
                             </div>
                           </td>
 
-                          <td className="data-td text-right tabular-nums font-semibold text-gray-800 text-13">
+                          <td className="data-td text-right tabular-nums font-semibold text-gray-800 dark:text-[#C1CBC3] text-13">
                             {r.totalActiveLoans}
                           </td>
 
                           <td className="data-td text-right tabular-nums text-13">
                             {r.totalNewLoans > 0 ? (
                               <div className="flex flex-col items-end">
-                                <span className="font-semibold text-indigo-600">
+                                <span className="font-semibold text-indigo-600 dark:text-indigo-400">
                                   {r.totalNewLoans} deals
                                 </span>
-                                <span className="text-11 text-gray-400">
+                                <span className="text-11 text-gray-400 dark:text-[#A1ADA4]">
                                   {formatAmount(r.newLoansDisbursed)}
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-gray-300">—</span>
+                              <span className="text-gray-300 dark:text-gray-600">—</span>
                             )}
                           </td>
 
                           <td className="data-td text-right tabular-nums text-13">
-                            <span className="font-semibold text-green-600">
+                            <span className="font-semibold text-green-600 dark:text-[#B7FF3C]">
                               {formatAmount(r.totalRepaymentsCollected)}
                             </span>
                           </td>
 
-                          <td className="data-td text-right tabular-nums font-bold text-gray-900 text-13">
+                          <td className="data-td text-right tabular-nums font-bold text-gray-900 dark:text-[#F4F7F4] text-13">
                             {formatAmount(r.closingPortfolioBalance)}
                           </td>
 

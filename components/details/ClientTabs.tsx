@@ -121,7 +121,7 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
           ) : (
             <div className="card-premium overflow-hidden">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="bg-gray-50 dark:bg-[#18221A] border-b border-gray-100 dark:border-[#29352D]">
                   <tr>
                     <th className="data-th text-left">Date</th>
                     <th className="data-th text-left">Vehicle</th>
@@ -135,15 +135,15 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
                 <tbody>
                   {loans.map((loan) => (
                     <tr key={loan.id} className="data-table-row">
-                      <td className="data-td text-14 text-gray-600">{fmt(loan.created_at)}</td>
+                      <td className="data-td text-14 text-gray-600 dark:text-[#A1ADA4]">{fmt(loan.created_at)}</td>
                       <td className="data-td">
-                        <span className="text-14 font-medium text-gray-700">{loan.vehicle_name || "—"}</span>
+                        <span className="text-14 font-medium text-gray-700 dark:text-[#F4F7F4]">{loan.vehicle_name || "—"}</span>
                       </td>
                       <td className="data-td text-right">
                         <span className="amount-text">{formatAmount(loan.vehicle_price)}</span>
                       </td>
                       <td className="data-td text-right">
-                        <span className={cn("amount-text", loan.balance > 0 ? "text-red-600" : "text-emerald-600")}>
+                        <span className={cn("amount-text", loan.balance > 0 ? "text-red-600 dark:text-rose-400" : "text-emerald-600 dark:text-[#B7FF3C]")}>
                           {formatAmount(loan.balance)}
                         </span>
                       </td>
@@ -153,13 +153,13 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
                           {loan.status}
                         </span>
                       </td>
-                      <td className="data-td text-right text-14 text-gray-600">{fmt(loan.end_date)}</td>
+                      <td className="data-td text-right text-14 text-gray-600 dark:text-[#A1ADA4]">{fmt(loan.end_date)}</td>
                       <td className="data-td text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Link href={`/loans/${loan.id}/contract`} className="inline-flex items-center gap-1 text-11 font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded-md">
+                          <Link href={`/loans/${loan.id}/contract`} className="inline-flex items-center gap-1 text-11 font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 dark:bg-[#1D2920] dark:text-[#F4F7F4] dark:hover:bg-[#29352D] px-2 py-0.5 rounded-md">
                             Contract
                           </Link>
-                          <Link href={`/loans/${loan.id}`} className="inline-flex items-center gap-1 text-12 font-semibold text-blue-600 hover:text-blue-700">
+                          <Link href={`/loans/${loan.id}`} className="inline-flex items-center gap-1 text-12 font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                             View <ExternalLink className="size-3" />
                           </Link>
                         </div>
@@ -181,7 +181,7 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
           ) : (
             <div className="card-premium overflow-hidden">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="bg-gray-50 dark:bg-[#18221A] border-b border-gray-100 dark:border-[#29352D]">
                   <tr>
                     <th className="data-th text-left">Date</th>
                     <th className="data-th text-left">Contract ID</th>
@@ -193,17 +193,17 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
                 <tbody>
                   {repayments.map((r) => (
                     <tr key={r.id} className="data-table-row">
-                      <td className="data-td text-14 text-gray-700">{fmt(r.date)}</td>
+                      <td className="data-td text-14 text-gray-700 dark:text-[#F4F7F4]">{fmt(r.date)}</td>
                       <td className="data-td">
                         <Link href={`/loans/${r.loan_id}`} className="mono-pill hover:border-blue-300 hover:text-blue-600 transition-colors">
                           {r.loan_id?.slice(0, 8)}…
                         </Link>
                       </td>
                       <td className="data-td text-right">
-                        <span className="amount-text text-emerald-600">{formatAmount(r.amount)}</span>
+                        <span className="amount-text text-emerald-600 dark:text-[#B7FF3C]">{formatAmount(r.amount)}</span>
                       </td>
-                      <td className="data-td text-14 text-gray-600">{r.payment_method}</td>
-                      <td className="data-td text-14 text-gray-400 font-mono">{r.reference_id || "—"}</td>
+                      <td className="data-td text-14 text-gray-600 dark:text-[#A1ADA4]">{r.payment_method}</td>
+                      <td className="data-td text-14 text-gray-400 dark:text-[#A1ADA4] font-mono">{r.reference_id || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -221,7 +221,7 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
           ) : (
             <div className="card-premium overflow-hidden">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="bg-gray-50 dark:bg-[#18221A] border-b border-gray-100 dark:border-[#29352D]">
                   <tr>
                     <th className="data-th text-left">Date Applied</th>
                     <th className="data-th text-left">Type</th>
@@ -234,18 +234,18 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
                 <tbody>
                   {penalties.map((p) => (
                     <tr key={p.id} className="data-table-row">
-                      <td className="data-td text-14 text-gray-600">{fmt(p.date_applied)}</td>
-                      <td className="data-td text-14 font-medium text-gray-700">{p.penalty_type}</td>
+                      <td className="data-td text-14 text-gray-600 dark:text-[#A1ADA4]">{fmt(p.date_applied)}</td>
+                      <td className="data-td text-14 font-medium text-gray-700 dark:text-[#F4F7F4]">{p.penalty_type}</td>
                       <td className="data-td text-right">
-                        <span className="amount-text text-red-600">{formatAmount(p.amount)}</span>
+                        <span className="amount-text text-red-600 dark:text-rose-400">{formatAmount(p.amount)}</span>
                       </td>
                       <td className="data-td">
                         <span className={cn("badge", p.status === "Active" ? "badge-error" : "badge-success")}>
                           {p.status}
                         </span>
                       </td>
-                      <td className="data-td text-14 text-gray-500">{p.applied_by}</td>
-                      <td className="data-td text-12 text-gray-400 max-w-xs truncate">{p.comment || "—"}</td>
+                      <td className="data-td text-14 text-gray-500 dark:text-[#A1ADA4]">{p.applied_by}</td>
+                      <td className="data-td text-12 text-gray-400 dark:text-[#A1ADA4] max-w-xs truncate">{p.comment || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -301,7 +301,7 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
           ) : (
             <div className="card-premium overflow-hidden">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="bg-gray-50 dark:bg-[#18221A] border-b border-gray-100 dark:border-[#29352D]">
                   <tr>
                     <th className="data-th text-left">Document Name</th>
                     <th className="data-th text-left">Type</th>
@@ -314,22 +314,22 @@ export default function ClientTabs({ client, loans, repayments, penalties, audit
                     <tr key={doc.id} className="data-table-row">
                       <td className="data-td">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                          <div className="p-2 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-lg ring-1 ring-blue-100 dark:ring-blue-900/40">
                             <File className="size-4" />
                           </div>
-                          <span className="text-14 font-medium text-gray-700">{doc.document_name}</span>
+                          <span className="text-14 font-medium text-gray-700 dark:text-[#F4F7F4]">{doc.document_name}</span>
                         </div>
                       </td>
                       <td className="data-td">
                         <span className="badge badge-success">{doc.document_type}</span>
                       </td>
-                      <td className="data-td text-14 text-gray-600">{fmt(doc.created_at)}</td>
+                      <td className="data-td text-14 text-gray-600 dark:text-[#A1ADA4]">{fmt(doc.created_at)}</td>
                       <td className="data-td text-right">
                         <a 
                           href={doc.file_url} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="inline-flex items-center gap-1 text-12 font-semibold text-blue-600 hover:text-blue-700"
+                          className="inline-flex items-center gap-1 text-12 font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                         >
                           View <ExternalLink className="size-3" />
                         </a>

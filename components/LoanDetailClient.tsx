@@ -18,6 +18,7 @@ import InstallmentsTable from './InstallmentsTable';
 // LoanAgreementModal removed
 import { toast } from '@/lib/toast';
 import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal';
+import SecureActionModal from '@/components/security/SecureActionModal';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import {
   DollarSign, AlertTriangle, FileText, ChevronDown,
@@ -47,30 +48,24 @@ function humanizeAction(a: string) {
 }
 
 // ─── Transaction type styling ─────────────────────────────────────────────────
-const TX_TYPE_STYLE: Record<string, { bg: string; color: string; label: string }> = {
-  'Repayment': { bg: '#ECFDF5', color: '#047857', label: 'Repayment' },
-  'Disbursement': { bg: '#EFF6FF', color: '#1D4ED8', label: 'Disbursement' },
-  'Manual Penalty': { bg: '#FEF2F2', color: '#B91C1C', label: 'Penalty' },
-  'Restructure Adjustment': { bg: '#F5F3FF', color: '#7C3AED', label: 'Restructure' },
-  'Waiver': { bg: '#FEF3C7', color: '#D97706', label: 'Waiver' },
+const TX_TYPE_STYLE: Record<string, { className: string; label: string }> = {
+  'Repayment': { className: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800/40', label: 'Repayment' },
+  'Disbursement': { className: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800/40', label: 'Disbursement' },
+  'Manual Penalty': { className: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800/40', label: 'Penalty' },
+  'Restructure Adjustment': { className: 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-800/40', label: 'Restructure' },
+  'Waiver': { className: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800/40', label: 'Waiver' },
 };
 
 // ─── Lifecycle badge ──────────────────────────────────────────────────────────
 function LifecycleBadge({ state }: { state?: string }) {
   if (!state || state === 'Standard') return null;
-  const cfg: Record<string, { bg: string; color: string; border: string }> = {
-    Restructured: { bg: '#EFF6FF', color: '#1D4ED8', border: '#BFDBFE' },
-    Rollover: { bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE' },
+  const cfg: Record<string, string> = {
+    Restructured: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800/40',
+    Rollover: 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-800/40',
   };
-  const style = cfg[state] ?? cfg.Restructured;
+  const cls = cfg[state] ?? cfg.Restructured;
   return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
-      fontSize: '0.6875rem', fontWeight: 700, padding: '0.125rem 0.5rem',
-      borderRadius: '0.375rem', border: `1px solid ${style.border}`,
-      background: style.bg, color: style.color, letterSpacing: '0.04em',
-      textTransform: 'uppercase',
-    }}>
+    <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md border tracking-wide uppercase ${cls}`}>
       <Layers size={9} />
       {state}
     </span>
@@ -86,30 +81,24 @@ function Tab({ id, label, active, count, icon, onClick }: {
     <button
       id={id}
       onClick={onClick}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '0.375rem',
-        padding: '0.625rem 1rem',
-        fontSize: '0.8125rem', fontWeight: active ? 700 : 500,
-        color: active ? '#111113' : '#6B7280',
-        borderBottom: active ? '2px solid #111113' : '2px solid transparent',
-        background: 'transparent', border: 'none',
-        borderBottomWidth: '2px',
-        borderBottomStyle: 'solid',
-        borderBottomColor: active ? '#111113' : 'transparent',
-        cursor: 'pointer', whiteSpace: 'nowrap', transition: 'color 0.15s',
-      }}
+      className={cn(
+        "flex items-center gap-1.5 px-4 py-2.5 text-xs transition-all border-b-2 cursor-pointer whitespace-nowrap",
+        active
+          ? "font-bold text-gray-900 dark:text-[#B7FF3C] border-gray-900 dark:border-[#B7FF3C]"
+          : "font-medium text-gray-500 dark:text-[#A1ADA4] border-transparent hover:text-gray-900 dark:hover:text-[#F4F7F4]"
+      )}
     >
       {icon}
       {label}
       {count !== undefined && (
-        <span style={{
-          marginLeft: '0.125rem',
-          fontSize: '0.625rem', fontWeight: 700,
-          padding: '0.0625rem 0.375rem',
-          background: active ? '#111113' : '#E5E7EB',
-          color: active ? '#FFF' : '#6B7280',
-          borderRadius: '1rem', transition: 'all 0.15s',
-        }}>
+        <span
+          className={cn(
+            "ml-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full transition-all",
+            active
+              ? "bg-gray-900 dark:bg-[#B7FF3C] text-white dark:text-[#090C0A]"
+              : "bg-gray-200 dark:bg-[#1D2920] text-gray-600 dark:text-[#A1ADA4]"
+          )}
+        >
           {count}
         </span>
       )}
@@ -252,26 +241,30 @@ export default function LoanDetailClient({
       ? (installments.length > 0 ? Math.min(dbContractBalance, installmentBalanceAfterWaivers) : dbContractBalance)
       : (installments.length > 0 ? installmentBalanceAfterWaivers : 0);
 
-  const handleReversePenalty = async (penaltyId: string) => {
-    if (!confirm('Reverse this penalty? This will restore the loan balance.')) return;
+  const [reversePenaltyTarget, setReversePenaltyTarget] = useState<{ id: string; amount?: number } | null>(null);
+
+  const handleReversePenalty = async (penaltyId: string, verificationToken?: string) => {
     setReversingId(penaltyId);
     try {
-      await reversePenalty(penaltyId, loan.$id);
+      await reversePenalty(penaltyId, loan.$id, verificationToken);
+      toast.success('Penalty reversed successfully.');
       router.refresh();
-    } catch {
-      alert('Failed to reverse penalty.');
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to reverse penalty.');
     } finally {
       setReversingId(null);
+      setReversePenaltyTarget(null);
     }
   };
 
   // ── DATA CORRECTION HANDLERS (admin-only, temporary) ─────────────────────
-  const handleDeleteTransaction = async (txId: string) => {
+  const handleDeleteTransaction = async (txId: string, verificationToken?: string) => {
     setDeletingId(txId);
-    const res = await deleteTransaction(txId, loan.$id);
+    const res = await deleteTransaction(txId, loan.$id, verificationToken);
     setDeletingId(null);
     if (!res.success) { toast.error(`Failed: ${res.error}`); return; }
     setDeleteTarget(null);
+    toast.success('Transaction permanently deleted.');
     router.refresh();
   };
 
@@ -342,47 +335,65 @@ export default function LoanDetailClient({
       {/* ── KPI Strip ── */}
       <div className="kpi-strip" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
         <div className="kpi-card">
-          <span className="kpi-label">Total Expected</span>
-          <span className="kpi-value">{formatAmount(totalExpected)}</span>
-          <span className="kpi-sub">Incl. fees & penalties</span>
+          <div className="flex items-center justify-between mb-1">
+            <span className="kpi-label text-gray-500 dark:text-[#A1ADA4]">Total Expected</span>
+            <DollarSign size={14} className="text-gray-400 dark:text-[#A1ADA4]" />
+          </div>
+          <span className="kpi-value text-gray-900 dark:text-[#F4F7F4]">{formatAmount(totalExpected)}</span>
+          <span className="kpi-sub text-gray-500 dark:text-[#A1ADA4]">Incl. fees & penalties</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Total Collected</span>
-          <span className={cn('kpi-value', totalPaid > 0 ? 'kpi-value-success' : '')}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="kpi-label text-gray-500 dark:text-[#A1ADA4]">Total Collected</span>
+            <CheckCircle size={14} className="text-emerald-600 dark:text-emerald-400" />
+          </div>
+          <span className={cn('kpi-value', totalPaid > 0 ? 'kpi-value-success text-emerald-600 dark:text-emerald-400' : 'text-gray-900 dark:text-[#F4F7F4]')}>
             {formatAmount(totalPaid)}
           </span>
-          <span className="kpi-sub">{progressPercent.toFixed(1)}% recovered</span>
+          <span className="kpi-sub text-gray-500 dark:text-[#A1ADA4]">{progressPercent.toFixed(1)}% recovered</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Outstanding Balance</span>
-          <span className={cn('kpi-value', displayBalance > 0 ? 'kpi-value-danger' : 'kpi-value-success')}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="kpi-label text-gray-500 dark:text-[#A1ADA4]">Outstanding Balance</span>
+            <DollarSign size={14} className={displayBalance > 0 ? "text-red-500 dark:text-[#FF626D]" : "text-emerald-500 dark:text-emerald-400"} />
+          </div>
+          <span className={cn('kpi-value', displayBalance > 0 ? 'kpi-value-danger text-red-600 dark:text-[#FF626D]' : 'kpi-value-success text-emerald-600 dark:text-emerald-400')}>
             {formatAmount(displayBalance)}
           </span>
-          <span className="kpi-sub">
+          <span className="kpi-sub text-gray-500 dark:text-[#A1ADA4]">
             {totalWaived > 0 ? `After ${formatAmount(totalWaived)} waived` : 'Current liability'}
           </span>
         </div>
         {totalWaived > 0 && (
-          <div className="kpi-card" style={{ borderColor: '#FDE68A', background: '#FFFDF5' }}>
-            <span className="kpi-label" style={{ color: '#B45309' }}>Total Waived</span>
-            <span className="kpi-value" style={{ color: '#D97706' }}>
+          <div className="kpi-card border-amber-200 dark:border-amber-900/40 bg-amber-50/60 dark:bg-amber-950/20">
+            <div className="flex items-center justify-between mb-1">
+              <span className="kpi-label text-amber-800 dark:text-amber-400">Total Waived</span>
+              <Percent size={14} className="text-amber-600 dark:text-amber-400" />
+            </div>
+            <span className="kpi-value text-amber-600 dark:text-amber-300">
               {formatAmount(totalWaived)}
             </span>
-            <span className="kpi-sub" style={{ color: '#92400E' }}>Approved debt relief</span>
+            <span className="kpi-sub text-amber-700 dark:text-amber-400/80">Approved debt relief</span>
           </div>
         )}
         <div className="kpi-card">
-          <span className="kpi-label">Penalties</span>
-          <span className={cn('kpi-value', totalPenaltiesAmt > 0 ? 'kpi-value-warning' : '')}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="kpi-label text-gray-500 dark:text-[#A1ADA4]">Penalties</span>
+            <AlertTriangle size={14} className={totalPenaltiesAmt > 0 ? "text-amber-500 dark:text-[#F5BD4F]" : "text-gray-400 dark:text-[#A1ADA4]"} />
+          </div>
+          <span className={cn('kpi-value', totalPenaltiesAmt > 0 ? 'kpi-value-warning text-amber-600 dark:text-[#F5BD4F]' : 'text-gray-900 dark:text-[#F4F7F4]')}>
             {formatAmount(totalPenaltiesAmt)}
           </span>
-          <span className="kpi-sub">{activePenalties.length} active</span>
+          <span className="kpi-sub text-gray-500 dark:text-[#A1ADA4]">{activePenalties.length} active</span>
         </div>
         {dpd > 0 && loan.status !== 'Fully Paid' && (
-          <div className="kpi-card" style={{ borderColor: '#FECACA' }}>
-            <span className="kpi-label" style={{ color: '#B91C1C' }}>Days Past Due</span>
-            <span className="kpi-value" style={{ color: dpd >= 90 ? '#7F1D1D' : '#B91C1C' }}>{dpd}</span>
-            <span className="kpi-sub" style={{ color: '#EF4444' }}>{dpd >= 90 ? 'Loss classification' : dpd >= 30 ? 'Defaulting' : 'Overdue'}</span>
+          <div className="kpi-card border-red-200 dark:border-red-900/40 bg-red-50/60 dark:bg-red-950/20">
+            <div className="flex items-center justify-between mb-1">
+              <span className="kpi-label text-red-700 dark:text-red-400">Days Past Due</span>
+              <Calendar size={14} className="text-red-500 dark:text-[#FF626D]" />
+            </div>
+            <span className="kpi-value text-red-700 dark:text-[#FF626D]">{dpd}</span>
+            <span className="kpi-sub text-red-600 dark:text-red-400/80">{dpd >= 90 ? 'Loss classification' : dpd >= 30 ? 'Defaulting' : 'Overdue'}</span>
           </div>
         )}
       </div>
@@ -399,15 +410,11 @@ export default function LoanDetailClient({
             { label: 'Remaining Fees', value: remFees, color: '#7C3AED' },
             { label: 'Waived Relief', value: totalWaived, color: '#D97706', prefix: '-' },
           ].filter(r => r.value > 0).map(row => (
-            <div key={row.label} style={{
-              padding: '0.625rem 0.875rem',
-              background: '#FAFAFA', border: '1px solid #F3F4F6', borderRadius: '0.625rem',
-              borderLeft: `3px solid ${row.color}`,
-            }}>
-              <span style={{ display: 'block', fontSize: '0.625rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+            <div key={row.label} className="p-2.5 sm:p-3 rounded-xl border border-gray-200 dark:border-[#29352D] bg-gray-50 dark:bg-[#18221A]" style={{ borderLeft: `3px solid ${row.color}` }}>
+              <span className="block text-[10px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1">
                 {row.label}
               </span>
-              <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: row.color, fontVariantNumeric: 'tabular-nums' }}>
+              <span className="text-sm font-extrabold tabular-nums" style={{ color: row.color }}>
                 {formatAmount(row.value)}
               </span>
             </div>
@@ -420,8 +427,8 @@ export default function LoanDetailClient({
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }} className="loan-detail-grid">
 
           {/* LEFT: Sale Terms */}
-          <div className="card-premium" style={{ position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: '#111113', borderRadius: '0.875rem 0.875rem 0 0' }} />
+          <div className="card-premium relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gray-900 dark:bg-[#B7FF3C] rounded-t-2xl" />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
                 <h2 className="section-heading" style={{ marginBottom: 0 }}>Sale Details</h2>
@@ -436,32 +443,32 @@ export default function LoanDetailClient({
 
             <div className="detail-grid">
               {(loan as any).vehicleDetails && typeof (loan as any).vehicleDetails === 'object' && (
-                <div className="detail-field" style={{ gridColumn: '1 / -1', background: '#F8FAFC', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #E2E8F0' }}>
-                  <span className="detail-label" style={{ color: '#475569', marginBottom: '0.5rem', display: 'block' }}>Vehicle Details</span>
+                <div className="detail-field col-span-full bg-slate-50 dark:bg-[#18221A] p-3.5 rounded-xl border border-slate-200 dark:border-[#29352D]">
+                  <span className="detail-label text-slate-700 dark:text-[#C1CBC3] mb-2 block">Vehicle Details</span>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem' }}>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Make & Model</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0F172A' }}>{(loan as any).vehicleDetails.make_model || '—'}</div>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Make & Model</span>
+                      <div className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F7F4]">{(loan as any).vehicleDetails.make_model || '—'}</div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Registration No.</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0F172A' }}>{(loan as any).vehicleDetails.registration_no || '—'}</div>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Registration No.</span>
+                      <div className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F7F4]">{(loan as any).vehicleDetails.registration_no || '—'}</div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Year</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#334155' }}>{(loan as any).vehicleDetails.year || '—'}</div>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Year</span>
+                      <div className="text-[13px] font-medium text-slate-700 dark:text-[#C1CBC3]">{(loan as any).vehicleDetails.year || '—'}</div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Color</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#334155' }}>{(loan as any).vehicleDetails.color || '—'}</div>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Color</span>
+                      <div className="text-[13px] font-medium text-slate-700 dark:text-[#C1CBC3]">{(loan as any).vehicleDetails.color || '—'}</div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Mileage</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#334155' }}>{(loan as any).vehicleDetails.mileage ? `${(loan as any).vehicleDetails.mileage.toLocaleString()} km` : '—'}</div>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Mileage</span>
+                      <div className="text-[13px] font-medium text-slate-700 dark:text-[#C1CBC3]">{(loan as any).vehicleDetails.mileage ? `${(loan as any).vehicleDetails.mileage.toLocaleString()} km` : '—'}</div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.625rem', color: '#64748B', textTransform: 'uppercase' }}>Engine / Trans</span>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#334155' }}>
+                      <span className="text-[10px] text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider block">Engine / Trans</span>
+                      <div className="text-[13px] font-medium text-slate-700 dark:text-[#C1CBC3]">
                         {[(loan as any).vehicleDetails.engine_capacity, (loan as any).vehicleDetails.transmission].filter(Boolean).join(' / ') || '—'}
                       </div>
                     </div>
@@ -469,17 +476,17 @@ export default function LoanDetailClient({
                 </div>
               )}
               <div className="detail-field">
-                <span className="detail-label">Contract Type</span>
-                <span className="detail-value">{loan.loanType || '—'}</span>
+                <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Contract Type</span>
+                <span className="detail-value text-sm font-bold text-gray-900 dark:text-[#F4F7F4]">{loan.loanType || '—'}</span>
               </div>
               <div className="detail-field">
-                <span className="detail-label">Sale Price</span>
-                <span className="detail-value detail-value-lg">{formatAmount((loan as any).salePrice || loan.principalAmount || 0)}</span>
+                <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Sale Price</span>
+                <span className="detail-value detail-value-lg text-lg font-extrabold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{formatAmount((loan as any).salePrice || loan.principalAmount || 0)}</span>
               </div>
               {(loan as any).depositPaid != null && (
                 <div className="detail-field">
-                  <span className="detail-label">Deposit Paid</span>
-                  <span className="detail-value detail-value-lg" style={{ color: '#047857' }}>
+                  <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Deposit Paid</span>
+                  <span className="detail-value detail-value-lg text-lg font-extrabold text-emerald-600 dark:text-emerald-400 tabular-nums">
                     {formatAmount((loan as any).depositPaid)}
                   </span>
                 </div>
@@ -487,26 +494,26 @@ export default function LoanDetailClient({
               {(loan as any).depositPaid != null &&
                 (loan as any).salePrice > (loan as any).depositPaid && (
                   <div className="detail-field">
-                    <span className="detail-label">Balance</span>
-                    <span className="detail-value" style={{ color: '#D97706', fontWeight: 700 }}>
+                    <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Balance</span>
+                    <span className="detail-value text-base font-bold text-amber-600 dark:text-amber-400 tabular-nums">
                       {formatAmount((loan as any).salePrice - (loan as any).depositPaid)}
                     </span>
                   </div>
                 )}
               <div className="detail-field">
-                <span className="detail-label">Tenure</span>
-                <span className="detail-value detail-value-lg">{loan.durationInMonths}<span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#9CA3AF' }}> mo</span></span>
+                <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Tenure</span>
+                <span className="detail-value detail-value-lg text-lg font-extrabold text-gray-900 dark:text-[#F4F7F4]">{loan.durationInMonths}<span className="text-gray-400 dark:text-[#A1ADA4] text-xs font-medium"> mo</span></span>
               </div>
               {loan.installmentAmount && (
                 <div className="detail-field">
-                  <span className="detail-label">Expected Installment</span>
-                  <span className="detail-value">{formatAmount(loan.installmentAmount)} /mo</span>
+                  <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Expected Installment</span>
+                  <span className="detail-value text-sm font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{formatAmount(loan.installmentAmount)} /mo</span>
                 </div>
               )}
               {loan.startDate && (
                 <div className="detail-field">
-                  <span className="detail-label">Start Date</span>
-                  <span className="detail-value">
+                  <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Start Date</span>
+                  <span className="detail-value text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
                     {(loan as any).disbursedAt
                       ? new Date((loan as any).disbursedAt).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })
                       : new Date(loan.startDate).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -515,58 +522,51 @@ export default function LoanDetailClient({
               )}
               {loan.dueDate && (
                 <div className="detail-field">
-                  <span className="detail-label">Due Date</span>
-                  <span className="detail-value">{new Date(loan.dueDate).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Due Date</span>
+                  <span className="detail-value text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">{new Date(loan.dueDate).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </div>
               )}
             </div>
 
             {/* Risk & Security */}
             {(loan.comment || loan.guarantorName || loan.documentUrl) && (
-              <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #F3F4F6' }}>
-                <h3 style={{ fontSize: '0.875rem', fontWeight: 600, color: '#111827', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <ShieldCheck size={16} className="text-gray-500" /> More Information
+              <div className="mt-8 pt-6 border-t border-gray-100 dark:border-[#29352D]">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4] mb-4 flex items-center gap-2">
+                  <ShieldCheck size={16} className="text-gray-400 dark:text-[#B7FF3C]" /> More Information
                 </h3>
                 {loan.comment && (
                   <div style={{ marginBottom: '1rem' }}>
-                    <span className="detail-label">Witness & Other Information</span>
-                    <p style={{ fontSize: '0.8125rem', color: '#374151', marginTop: '0.25rem', backgroundColor: '#F9FAFB', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB' }}>
+                    <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Witness & Other Information</span>
+                    <p className="text-[13px] text-gray-700 dark:text-[#C1CBC3] mt-1 bg-gray-50 dark:bg-[#18221A] p-3 rounded-xl border border-gray-200 dark:border-[#29352D] leading-relaxed">
                       {loan.comment}
                     </p>
                   </div>
                 )}
                 {loan.guarantorName && (
                   <div>
-                    <span className="detail-label">Witness Details</span>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginTop: '0.25rem', backgroundColor: '#F9FAFB', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB' }}>
+                    <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Witness Details</span>
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-4 mt-1 bg-gray-50 dark:bg-[#18221A] p-3.5 rounded-xl border border-gray-200 dark:border-[#29352D]">
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.6875rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name</span>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#111827' }}>{loan.guarantorName}</span>
+                        <span className="block text-[11px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Name</span>
+                        <span className="text-[13px] font-semibold text-gray-900 dark:text-[#F4F7F4]">{loan.guarantorName}</span>
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.6875rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone</span>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#111827' }}>{loan.guarantorPhone || '—'}</span>
+                        <span className="block text-[11px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Phone</span>
+                        <span className="text-[13px] font-semibold text-gray-900 dark:text-[#F4F7F4]">{loan.guarantorPhone || '—'}</span>
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.6875rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ID</span>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#111827' }}>{loan.guarantorId || '—'}</span>
+                        <span className="block text-[11px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">ID</span>
+                        <span className="text-[13px] font-semibold text-gray-900 dark:text-[#F4F7F4]">{loan.guarantorId || '—'}</span>
                       </div>
                     </div>
                   </div>
                 )}
                 {loan.documentUrl && (
                   <div style={{ marginTop: '1rem' }}>
-                    <span className="detail-label">Attached Physical Document</span>
+                    <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Attached Physical Document</span>
                     <button
                       onClick={() => openSecureFile('loan-documents', loan.documentUrl!)}
-                      style={{
-                        marginTop: '0.375rem', display: 'flex', alignItems: 'center',
-                        gap: '0.5rem', padding: '0.5rem 0.875rem',
-                        background: '#FFFFFF', border: '1px solid #E5E7EB',
-                        borderRadius: '0.625rem', boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-                        cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600, color: '#111113',
-                        transition: 'background 0.15s',
-                      }}
+                      className="mt-1.5 flex items-center gap-2 px-3.5 py-2 bg-white dark:bg-[#1D2920] border border-gray-200 dark:border-[#29352D] rounded-xl shadow-xs cursor-pointer text-xs font-semibold text-gray-900 dark:text-[#F4F7F4] hover:bg-gray-50 dark:hover:bg-[#222E25] transition-all"
                     >
                       <FileText size={14} />
                       View Uploaded Document
@@ -580,28 +580,28 @@ export default function LoanDetailClient({
             {/* Progress */}
             <div className="progress-wrap">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="detail-label">Payment Progress</span>
-                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: progressPercent >= 100 ? '#047857' : '#111113', fontVariantNumeric: 'tabular-nums' }}>
+                <span className="detail-label text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">Payment Progress</span>
+                <span className={cn("text-[13px] font-bold tabular-nums", progressPercent >= 100 ? "text-emerald-600 dark:text-emerald-400" : "text-gray-900 dark:text-[#F4F7F4]")}>
                   {progressPercent.toFixed(1)}%
                 </span>
               </div>
-              <div className="progress-bar-track">
+              <div className="progress-bar-track bg-gray-200 dark:bg-[#1D2920] border border-transparent dark:border-[#29352D] h-2 rounded-full overflow-hidden my-2.5">
                 <div
-                  className={cn('progress-bar-fill', progressPercent >= 100 ? 'progress-bar-fill-success' : '')}
+                  className={cn('progress-bar-fill h-full rounded-full transition-all duration-700', progressPercent >= 100 ? 'bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-gray-900 dark:bg-[#B7FF3C] dark:shadow-[0_0_10px_rgba(183,255,60,0.4)]')}
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#047857', fontVariantNumeric: 'tabular-nums' }}>
+                <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums">
                   Collected: {formatAmount(totalPaid)}
                 </span>
-                <span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#9CA3AF', fontVariantNumeric: 'tabular-nums' }}>
+                <span className="text-xs font-medium text-gray-500 dark:text-[#A1ADA4] tabular-nums">
                   Target: {formatAmount(loan.totalPayable)}
                 </span>
               </div>
               {((loan.status as string) === 'Written Off') && (
-                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#FEF2F2', borderRadius: '0.375rem', border: '1px solid #FECACA' }}>
-                  <p style={{ fontSize: '0.75rem', color: '#DC2626', fontWeight: 600, textAlign: 'center' }}>This loan has been permanently written off by an Administrator.</p>
+                <div className="mt-3 p-2 bg-red-50 dark:bg-red-950/40 rounded-md border border-red-200 dark:border-red-900/50">
+                  <p className="text-xs text-red-600 dark:text-red-400 font-semibold text-center m-0">This loan has been permanently written off by an Administrator.</p>
                 </div>
               )}
             </div>
@@ -679,9 +679,9 @@ export default function LoanDetailClient({
                         <div className="data-table-scroll">
                           {/* ── DATA CORRECTION banner ── */}
                           {isAdmin && (
-                            <div style={{ marginBottom: '0.75rem', padding: '0.5rem 0.875rem', background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <AlertTriangle size={14} style={{ color: '#C2410C', flexShrink: 0 }} />
-                              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#9A3412' }}>DATA CORRECTION MODE — Admin only. Edit/Delete buttons are visible. Disable via handshake.md when done.</span>
+                            <div className="mb-3 p-2.5 sm:p-3 bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded-xl flex items-center gap-2">
+                              <AlertTriangle size={14} className="text-amber-700 dark:text-amber-400 shrink-0" />
+                              <span className="text-xs font-semibold text-amber-900 dark:text-amber-300">DATA CORRECTION MODE — Admin only. Edit/Delete buttons are visible.</span>
                             </div>
                           )}
                           <table className="data-table" style={{ minWidth: '680px' }}>
@@ -718,32 +718,27 @@ export default function LoanDetailClient({
                                 ) > 0;
 
                                 return (
-                                  <>
+                                  <React.Fragment key={tx.$id}>
                                     <tr
-                                      key={tx.$id}
                                       className="data-table-row"
                                       style={{ cursor: hasAllocation ? 'pointer' : 'default', opacity: tx.status === 'Reversed' ? 0.5 : 1 }}
                                       onClick={() => hasAllocation && setExpandedTx(isExpanded ? null : tx.$id)}
                                     >
-                                      <td className="data-td" style={{ fontSize: '0.8125rem', color: '#6B7280', fontWeight: 500 }}>
+                                      <td className="data-td text-[13px] font-medium text-gray-500 dark:text-[#A1ADA4]">
                                         {new Date(tx.date).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}
                                       </td>
                                       <td className="data-td">
-                                        <span style={{
-                                          display: 'inline-block', fontSize: '0.6875rem', fontWeight: 700,
-                                          padding: '0.125rem 0.5rem', borderRadius: '0.375rem',
-                                          background: typeStyle.bg, color: typeStyle.color,
-                                        }}>
+                                        <span className={`inline-block text-[11px] font-bold px-2 py-0.5 rounded-md border ${typeStyle.className}`}>
                                           {typeStyle.label}
                                         </span>
                                       </td>
-                                      <td className="data-td" style={{ textAlign: 'right', fontWeight: 700, color: tx.type === 'Manual Penalty' ? '#B91C1C' : '#047857', fontVariantNumeric: 'tabular-nums', fontSize: '0.875rem' }}>
+                                      <td className="data-td text-right font-bold tabular-nums text-sm" style={{ color: tx.type === 'Manual Penalty' ? '#EF4444' : '#10B981' }}>
                                         {tx.type === 'Manual Penalty' ? '+' : ''}{formatAmount(tx.amount)}
                                       </td>
-                                      <td className="data-td" style={{ fontSize: '0.8125rem', color: '#374151' }}>
+                                      <td className="data-td text-[13px] text-gray-800 dark:text-[#F4F7F4]">
                                         {tx.paymentMethod || tx.comment || '—'}
                                       </td>
-                                      <td className="data-td" style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.75rem', color: '#9CA3AF' }}>
+                                      <td className="data-td font-mono text-xs text-gray-500 dark:text-[#A1ADA4]">
                                         {tx.referenceId || '—'}
                                       </td>
                                       <td className="data-td">
@@ -765,7 +760,7 @@ export default function LoanDetailClient({
                                           <button
                                             title="Edit transaction"
                                             onClick={() => startEditTx(tx)}
-                                            style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '0.375rem', padding: '0.2rem 0.5rem', cursor: 'pointer', color: '#1D4ED8', marginRight: '0.25rem' }}
+                                            className="inline-flex items-center justify-center p-1 px-2 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 cursor-pointer mr-1"
                                           >
                                             <Pencil size={11} />
                                           </button>
@@ -773,7 +768,7 @@ export default function LoanDetailClient({
                                             title="Delete transaction"
                                             disabled={deletingId === tx.$id}
                                             onClick={() => setDeleteTarget({ type: 'transaction', id: tx.$id, label: `Transaction of ${formatAmount(tx.amount)}` })}
-                                            style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '0.375rem', padding: '0.2rem 0.5rem', cursor: 'pointer', color: '#B91C1C' }}
+                                            className="inline-flex items-center justify-center p-1 px-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50 cursor-pointer"
                                           >
                                             {deletingId === tx.$id ? '...' : <Trash2 size={11} />}
                                           </button>
@@ -784,8 +779,8 @@ export default function LoanDetailClient({
                                     {/* Inline edit form row */}
                                     {isAdmin && editingTx?.$id === tx.$id && (
                                       <tr key={`${tx.$id}-edit`}>
-                                        <td colSpan={8} style={{ padding: '0.875rem 1.25rem', background: '#FFFBEB', borderBottom: '2px solid #FCD34D' }}>
-                                          <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#92400E', textTransform: 'uppercase', marginBottom: '0.625rem' }}>✎ Edit Transaction</p>
+                                        <td colSpan={8} className="p-4 bg-amber-50/80 dark:bg-[#18221A] border-b-2 border-amber-300 dark:border-amber-700">
+                                          <p className="text-[11px] font-bold text-amber-900 dark:text-amber-300 uppercase mb-2.5">✎ Edit Transaction</p>
                                           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.625rem', marginBottom: '0.75rem' }}>
                                             {[
                                               { label: 'Amount (KES)', key: 'amount', type: 'number' },
@@ -795,12 +790,12 @@ export default function LoanDetailClient({
                                               { label: 'Comment / Notes', key: 'comment', type: 'text' },
                                             ].map(f => (
                                               <div key={f.key}>
-                                                <label style={{ display: 'block', fontSize: '0.6875rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>{f.label}</label>
+                                                <label className="block text-[11px] text-amber-900 dark:text-amber-300 font-semibold mb-1">{f.label}</label>
                                                 <input
                                                   type={f.type}
                                                   value={(editForm as any)[f.key]}
                                                   onChange={e => setEditForm(prev => ({ ...prev, [f.key]: e.target.value }))}
-                                                  style={{ width: '100%', padding: '0.375rem 0.625rem', fontSize: '0.8125rem', border: '1px solid #FCD34D', borderRadius: '0.375rem', background: '#FFFDE7', boxSizing: 'border-box' }}
+                                                  className="w-full px-2.5 py-1.5 text-xs rounded-md border border-amber-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4] outline-none"
                                                 />
                                               </div>
                                             ))}
@@ -809,7 +804,7 @@ export default function LoanDetailClient({
                                             <button onClick={handleSaveEditTx} disabled={editSaving} style={{ padding: '0.375rem 0.875rem', fontSize: '0.8125rem', fontWeight: 700, background: '#1D4ED8', color: '#FFF', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }}>
                                               {editSaving ? 'Saving…' : 'Save Changes'}
                                             </button>
-                                            <button onClick={() => setEditingTx(null)} style={{ padding: '0.375rem 0.875rem', fontSize: '0.8125rem', fontWeight: 600, background: '#F3F4F6', color: '#374151', border: '1px solid #E5E7EB', borderRadius: '0.375rem', cursor: 'pointer' }}>
+                                            <button onClick={() => setEditingTx(null)} className="px-3.5 py-1.5 text-[13px] font-semibold bg-gray-100 dark:bg-[#1D2920] text-gray-700 dark:text-[#F4F7F4] border border-gray-200 dark:border-[#29352D] rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-[#222E25]">
                                               Cancel
                                             </button>
                                           </div>
@@ -820,9 +815,9 @@ export default function LoanDetailClient({
                                     {/* Allocation Detail Row */}
                                     {isExpanded && hasAllocation && (
                                       <tr key={`${tx.$id}-alloc`}>
-                                        <td colSpan={isAdmin ? 8 : 7} style={{ padding: 0, background: '#F8FAFC', borderBottom: '1px solid #E5E7EB' }}>
+                                        <td colSpan={isAdmin ? 8 : 7} className="p-0 bg-slate-50 dark:bg-[#18221A] border-b border-gray-200 dark:border-[#29352D]">
                                           <div style={{ padding: '0.875rem 1.5rem' }}>
-                                            <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.625rem' }}>
+                                            <p className="text-[11px] font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-2.5">
                                               {tx.type === 'Waiver' ? 'Waiver Allocation Breakdown' : 'Payment Allocation Breakdown'}
                                             </p>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -835,13 +830,8 @@ export default function LoanDetailClient({
                                                 { label: 'Current Principal', value: tx.allocatedCurrentPrincipal, color: '#1D4ED8' },
                                                 { label: 'Wallet Buffer', value: tx.allocatedToWallet, color: '#6B7280' },
                                               ].filter(a => a.value > 0).map(alloc => (
-                                                <div key={alloc.label} style={{
-                                                  padding: '0.375rem 0.75rem',
-                                                  background: '#FFF', border: `1px solid ${alloc.color}30`,
-                                                  borderLeft: `3px solid ${alloc.color}`,
-                                                  borderRadius: '0.375rem',
-                                                }}>
-                                                  <span style={{ display: 'block', fontSize: '0.625rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{alloc.label}</span>
+                                                <div key={alloc.label} className="px-3 py-1.5 bg-white dark:bg-[#1D2920] rounded-lg shadow-xs" style={{ border: `1px solid ${alloc.color}30`, borderLeft: `3px solid ${alloc.color}` }}>
+                                                  <span className="block text-[10px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider">{alloc.label}</span>
                                                   <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: alloc.color, fontVariantNumeric: 'tabular-nums' }}>{formatAmount(alloc.value)}</span>
                                                 </div>
                                               ))}
@@ -850,7 +840,7 @@ export default function LoanDetailClient({
                                         </td>
                                       </tr>
                                     )}
-                                  </>
+                                  </React.Fragment>
                                 );
                               })}
                             </tbody>
@@ -866,13 +856,9 @@ export default function LoanDetailClient({
               {activeTab === 'penalties' && (
                 <div>
                   {totalPenaltiesAmt > 0 && (
-                    <div style={{
-                      marginBottom: '1rem', padding: '0.625rem 0.875rem',
-                      background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '0.625rem',
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    }}>
-                      <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#991B1B' }}>Active Penalties</span>
-                      <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#B91C1C', fontVariantNumeric: 'tabular-nums' }}>
+                    <div className="mb-4 p-3 bg-red-50/80 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 rounded-xl flex justify-between items-center text-red-900 dark:text-red-300">
+                      <span className="text-[13px] font-semibold text-red-800 dark:text-red-300">Active Penalties</span>
+                      <span className="text-sm font-extrabold text-red-600 dark:text-red-400 tabular-nums">
                         {formatAmount(totalPenaltiesAmt)}
                       </span>
                     </div>
@@ -902,16 +888,16 @@ export default function LoanDetailClient({
                           {penalties.map((pen) => (
                             <React.Fragment key={pen.$id}>
                               <tr className="data-table-row" style={{ opacity: pen.status === 'Reversed' ? 0.5 : 1 }}>
-                                <td className="data-td" style={{ fontSize: '0.8125rem', color: '#6B7280', fontWeight: 500 }}>
+                                <td className="data-td text-[13px] font-medium text-gray-500 dark:text-[#A1ADA4]">
                                   {new Date(pen.dateApplied).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}
                                 </td>
-                                <td className="data-td" style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151' }}>
+                                <td className="data-td text-[13px] font-semibold text-gray-800 dark:text-[#F4F7F4]">
                                   {pen.penaltyType}
                                 </td>
                                 <td className="data-td" style={{ textAlign: 'right', fontWeight: 700, color: '#B91C1C', fontVariantNumeric: 'tabular-nums', fontSize: '0.875rem' }}>
                                   +{formatAmount(pen.amount)}
                                 </td>
-                                <td className="data-td" style={{ fontSize: '0.8125rem', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                <td className="data-td text-[13px] text-gray-500 dark:text-[#A1ADA4] truncate">
                                   {pen.comment || '—'}
                                 </td>
                                 <td className="data-td">
@@ -924,7 +910,7 @@ export default function LoanDetailClient({
                                     <button
                                       title="Edit penalty"
                                       onClick={() => startEditPenalty(pen)}
-                                      style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '0.375rem', padding: '0.2rem 0.5rem', cursor: 'pointer', color: '#1D4ED8', marginRight: '0.25rem' }}
+                                      className="inline-flex items-center justify-center p-1 px-2 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 cursor-pointer mr-1"
                                     >
                                       <Pencil size={11} />
                                     </button>
@@ -933,7 +919,7 @@ export default function LoanDetailClient({
                                     <button
                                       className="btn-secondary row-action-btn"
                                       style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', marginRight: isAdmin ? '0.25rem' : 0 }}
-                                      onClick={() => handleReversePenalty(pen.$id)}
+                                      onClick={() => setReversePenaltyTarget({ id: pen.$id, amount: pen.amount })}
                                       disabled={reversingId === pen.$id}
                                       title="Reverse penalty"
                                     >
@@ -945,7 +931,7 @@ export default function LoanDetailClient({
                                       title="Delete penalty"
                                       disabled={deletingId === pen.$id}
                                       onClick={() => setDeleteTarget({ type: 'penalty', id: pen.$id, label: `${pen.penaltyType} of ${formatAmount(pen.amount)}` })}
-                                      style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '0.375rem', padding: '0.2rem 0.5rem', cursor: 'pointer', color: '#B91C1C' }}
+                                      className="inline-flex items-center justify-center p-1 px-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50 cursor-pointer"
                                     >
                                       {deletingId === pen.$id ? '...' : <Trash2 size={11} />}
                                     </button>
@@ -956,26 +942,26 @@ export default function LoanDetailClient({
                               {/* Inline edit form row */}
                               {isAdmin && editingPenalty?.$id === pen.$id && (
                                 <tr key={`${pen.$id}-edit`}>
-                                  <td colSpan={6} style={{ padding: '0.875rem 1.25rem', background: '#FFFBEB', borderBottom: '2px solid #FCD34D' }}>
-                                    <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#92400E', textTransform: 'uppercase', marginBottom: '0.625rem' }}>✎ Edit Penalty (Backdate / Adjust)</p>
+                                  <td colSpan={6} className="p-4 bg-amber-50/80 dark:bg-[#18221A] border-b-2 border-amber-300 dark:border-amber-700">
+                                    <p className="text-[11px] font-bold text-amber-900 dark:text-amber-300 uppercase mb-2.5">✎ Edit Penalty (Backdate / Adjust)</p>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.625rem', marginBottom: '0.75rem' }}>
                                       <div>
-                                        <label style={{ display: 'block', fontSize: '0.6875rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>Date Applied</label>
+                                        <label className="block text-[11px] text-amber-900 dark:text-amber-300 font-semibold mb-1">Date Applied</label>
                                         <input
                                           type="date"
                                           value={editPenaltyForm.date}
                                           onChange={e => setEditPenaltyForm(prev => ({ ...prev, date: e.target.value }))}
-                                          style={{ width: '100%', padding: '0.375rem 0.625rem', fontSize: '0.8125rem', border: '1px solid #FCD34D', borderRadius: '0.375rem', background: '#FFFDE7', boxSizing: 'border-box' }}
+                                          className="w-full px-2.5 py-1.5 text-xs rounded-md border border-amber-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4] outline-none"
                                         />
                                       </div>
                                       <div>
-                                        <label style={{ display: 'block', fontSize: '0.6875rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>Penalty Type</label>
+                                        <label className="block text-[11px] text-amber-900 dark:text-amber-300 font-semibold mb-1">Penalty Type</label>
                                         <input
                                           type="text"
                                           value={editPenaltyForm.penaltyType}
                                           onChange={e => setEditPenaltyForm(prev => ({ ...prev, penaltyType: e.target.value }))}
                                           list="penalty-types-list"
-                                          style={{ width: '100%', padding: '0.375rem 0.625rem', fontSize: '0.8125rem', border: '1px solid #FCD34D', borderRadius: '0.375rem', background: '#FFFDE7', boxSizing: 'border-box' }}
+                                          className="w-full px-2.5 py-1.5 text-xs rounded-md border border-amber-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4] outline-none"
                                         />
                                         <datalist id="penalty-types-list">
                                           <option value="Late Payment" />
@@ -990,22 +976,22 @@ export default function LoanDetailClient({
                                         </datalist>
                                       </div>
                                       <div>
-                                        <label style={{ display: 'block', fontSize: '0.6875rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>Amount (KES)</label>
+                                        <label className="block text-[11px] text-amber-900 dark:text-amber-300 font-semibold mb-1">Amount (KES)</label>
                                         <input
                                           type="number"
                                           step="0.01"
                                           value={editPenaltyForm.amount}
                                           onChange={e => setEditPenaltyForm(prev => ({ ...prev, amount: e.target.value }))}
-                                          style={{ width: '100%', padding: '0.375rem 0.625rem', fontSize: '0.8125rem', border: '1px solid #FCD34D', borderRadius: '0.375rem', background: '#FFFDE7', boxSizing: 'border-box' }}
+                                          className="w-full px-2.5 py-1.5 text-xs rounded-md border border-amber-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4] outline-none"
                                         />
                                       </div>
                                       <div>
-                                        <label style={{ display: 'block', fontSize: '0.6875rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>Reason / Comment</label>
+                                        <label className="block text-[11px] text-amber-900 dark:text-amber-300 font-semibold mb-1">Reason / Comment</label>
                                         <input
                                           type="text"
                                           value={editPenaltyForm.comment}
                                           onChange={e => setEditPenaltyForm(prev => ({ ...prev, comment: e.target.value }))}
-                                          style={{ width: '100%', padding: '0.375rem 0.625rem', fontSize: '0.8125rem', border: '1px solid #FCD34D', borderRadius: '0.375rem', background: '#FFFDE7', boxSizing: 'border-box' }}
+                                          className="w-full px-2.5 py-1.5 text-xs rounded-md border border-amber-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-gray-900 dark:text-[#F4F7F4] outline-none"
                                         />
                                       </div>
                                     </div>
@@ -1013,7 +999,7 @@ export default function LoanDetailClient({
                                       <button onClick={handleSaveEditPenalty} disabled={editPenaltySaving} style={{ padding: '0.375rem 0.875rem', fontSize: '0.8125rem', fontWeight: 700, background: '#1D4ED8', color: '#FFF', border: 'none', borderRadius: '0.375rem', cursor: 'pointer' }}>
                                         {editPenaltySaving ? 'Saving…' : 'Save Changes'}
                                       </button>
-                                      <button onClick={() => setEditingPenalty(null)} style={{ padding: '0.375rem 0.875rem', fontSize: '0.8125rem', fontWeight: 600, background: '#F3F4F6', color: '#374151', border: '1px solid #E5E7EB', borderRadius: '0.375rem', cursor: 'pointer' }}>
+                                      <button onClick={() => setEditingPenalty(null)} className="px-3.5 py-1.5 text-[13px] font-semibold bg-gray-100 dark:bg-[#1D2920] text-gray-700 dark:text-[#F4F7F4] border border-gray-200 dark:border-[#29352D] rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-[#222E25]">
                                         Cancel
                                       </button>
                                     </div>
@@ -1075,28 +1061,47 @@ export default function LoanDetailClient({
       </div>
 
 
-      {/* Global Delete Confirmation Modal for Tx/Penalty */}
-      <ConfirmDeleteModal
+      {/* Secure Re-Authentication Modal for Tx Deletion */}
+      <SecureActionModal
         isOpen={!!deleteTarget}
         onClose={() => !isDeleting && setDeleteTarget(null)}
-        isPending={isDeleting}
-        onConfirm={async () => {
+        onAuthorized={async (token) => {
           if (!deleteTarget) return;
           setIsDeleting(true);
           if (deleteTarget.type === 'transaction') {
-            await handleDeleteTransaction(deleteTarget.id);
+            await handleDeleteTransaction(deleteTarget.id, token);
           } else if (deleteTarget.type === 'penalty') {
             await handleDeletePenalty(deleteTarget.id);
           }
           setIsDeleting(false);
         }}
-        title={
-          deleteTarget?.type === 'transaction' ? 'Delete Transaction' :
-            'Delete Penalty'
-        }
-        description="This record will be permanently removed and cannot be recovered."
-        confirmLabel="Delete Permanently"
-        itemName={deleteTarget?.label}
+        action="PAYMENT_DELETE"
+        resourceId={deleteTarget?.id || ''}
+        title={deleteTarget?.type === 'transaction' ? 'Delete Financial Transaction' : 'Delete Penalty'}
+        description="Permanently remove this transaction from the loan ledger. Enter your password to authorize."
+        confirmLabel="Confirm Delete Record"
+        severity="danger"
+        summaryItems={[
+          { label: 'Item Description', value: deleteTarget?.label || '' },
+          { label: 'Record ID', value: deleteTarget?.id?.slice(-8).toUpperCase() || '' },
+        ]}
+      />
+
+      {/* Secure Re-Authentication Modal for Penalty Reversal */}
+      <SecureActionModal
+        isOpen={!!reversePenaltyTarget}
+        onClose={() => setReversePenaltyTarget(null)}
+        onAuthorized={(token) => reversePenaltyTarget && handleReversePenalty(reversePenaltyTarget.id, token)}
+        action="PENALTY_REVERSE"
+        resourceId={reversePenaltyTarget?.id || ''}
+        title="Authorize Penalty Reversal"
+        description="Reverse this penalty charge and credit the balance back to the contract. Enter your password to authorize."
+        confirmLabel="Authorize Penalty Reversal"
+        severity="warning"
+        summaryItems={[
+          { label: 'Penalty ID', value: reversePenaltyTarget?.id?.slice(-8).toUpperCase() || '' },
+          { label: 'Penalty Amount', value: reversePenaltyTarget?.amount ? formatAmount(reversePenaltyTarget.amount) : 'N/A' },
+        ]}
       />
     </>
   );
@@ -1136,9 +1141,9 @@ export function ActionPanel({
   const [deleteContract, setDeleteContract] = useState<string | null>(null);
 
   // ── DATA CORRECTION (admin-only, temporary) ───────────────────────────────
-  const handleDeleteLoan = async () => {
+  const handleDeleteLoan = async (verificationToken?: string) => {
     setIsDeleting(true);
-    const res = await deleteFinancingAgreement(loan.$id);
+    const res = await deleteFinancingAgreement(loan.$id, verificationToken);
     setIsDeleting(false);
     if (!res.success) {
       toast.error(`Failed: ${res.error}`);
@@ -1310,12 +1315,12 @@ export function ActionPanel({
 
       {/* ── Credit Administration (ADMIN and MANAGER only) ── */}
       {(canWriteOff || canWaive) && (
-        <div className="info-card" style={{ borderLeft: '3px solid #D97706', background: '#FFFCF5' }}>
+        <div className="info-card bg-amber-50/40 dark:bg-[#151D17] border-l-[3px] border-l-amber-600 dark:border-l-amber-500 border-amber-200 dark:border-[#29352D]">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider m-0">
               Credit Administration
             </p>
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#92400E', background: '#FEF3C7', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>
+            <span className="text-xs font-semibold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
               Bal: {formatAmount(effectiveOutstandingBalance)}
             </span>
           </div>
@@ -1324,10 +1329,9 @@ export function ActionPanel({
             {canWaive && (
               <button
                 id="btn-waive-balance"
-                className="action-btn"
+                className="action-btn w-full justify-center bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50 font-semibold hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
                 onClick={() => setShowWaive(true)}
                 title="Waive loan balance (Principal, Interest, or Penalty) to reduce customer debt"
-                style={{ width: '100%', justifyContent: 'center', background: '#FFFBEB', color: '#D97706', border: '1px solid #FDE68A', fontWeight: 600 }}
               >
                 <Percent size={15} />
                 Waive Balance / Penalties
@@ -1336,17 +1340,16 @@ export function ActionPanel({
             {canWriteOff && (
               <button
                 id="btn-write-off-loan"
-                className="action-btn"
+                className="action-btn w-full justify-center bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 font-semibold hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
                 onClick={() => setShowWriteOff(true)}
                 title="Write off this contract — marks the balance as an uncollectible credit loss (Admin only)"
-                style={{ width: '100%', justifyContent: 'center', background: '#FEF2F2', color: '#DC2626', border: '1px solid #FECACA', fontWeight: 600 }}
               >
                 <Ban size={15} />
                 Write Off Contract ({formatAmount(effectiveOutstandingBalance)})
               </button>
             )}
           </div>
-          <p style={{ fontSize: '0.6875rem', color: '#78716C', marginTop: '0.625rem', lineHeight: 1.5, marginBottom: 0 }}>
+          <p className="text-[11px] text-stone-500 dark:text-[#A1ADA4] mt-2.5 leading-normal mb-0">
             {canWaive && "• Waiver adjusts outstanding balance immediately & records formal credit adjustment."}
             {canWaive && canWriteOff && <br />}
             {canWriteOff && "• Write Off is an irreversible accounting bad debt recognition (Admin only)."}
@@ -1356,28 +1359,26 @@ export function ActionPanel({
 
       {/* ── DATA CORRECTION: Delete Loan (ADMIN ONLY, TEMPORARY) ── */}
       {currentUser?.role === 'ADMIN' && (
-        <div className="info-card" style={{ borderLeft: '3px solid #7F1D1D', background: '#FFF1F2' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9A3412', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.75rem' }}>
+        <div className="info-card bg-red-50/40 dark:bg-[#151D17] border-l-[3px] border-l-red-800 dark:border-l-red-600 border-red-200 dark:border-[#29352D]">
+          <p className="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wider mb-3">
             ⚠ Data Correction (Admin)
           </p>
           <button
             id="btn-delete-loan"
-            className="action-btn"
+            className="action-btn w-full justify-center bg-red-700 hover:bg-red-800 text-white font-bold border-none transition-colors"
             onClick={() => setDeleteContract(loan.$id)}
             title="Permanently delete this loan and all its data"
-            style={{ width: '100%', justifyContent: 'center', background: '#7F1D1D', color: '#FFF', border: 'none', fontWeight: 700 }}
           >
             <Trash2 size={15} />
             Delete Contract
           </button>
 
-          <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #FECDD3' }}>
+          <div className="mt-3 pt-3 border-t border-red-200 dark:border-[#29352D]">
             <button
               id="btn-change-status"
-              className="action-btn"
+              className="action-btn w-full justify-center bg-white dark:bg-[#1D2920] text-red-700 dark:text-red-300 border border-red-200 dark:border-[#29352D] font-semibold hover:bg-red-50 dark:hover:bg-[#222E25] transition-colors"
               onClick={() => setShowChangeStatus(true)}
               title="Force change the status of this loan"
-              style={{ width: '100%', justifyContent: 'center', background: '#FFF', color: '#9A3412', border: '1px solid #FECDD3', fontWeight: 600 }}
             >
               <ArrowDownUp size={15} />
               Change Status
@@ -1388,20 +1389,20 @@ export function ActionPanel({
 
       {/* ── Client Info ── */}
       <div className="info-card">
-        <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.875rem' }}>
+        <p className="text-xs font-bold text-gray-400 dark:text-[#A1ADA4] uppercase tracking-wider mb-3.5">
           Buyer / Client
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', paddingBottom: '0.875rem', borderBottom: '1px solid #F3F4F6' }}>
+        <div className="flex items-center gap-3 mb-4 pb-3.5 border-b border-gray-100 dark:border-[#29352D]">
           <div className="client-avatar" style={{ width: '2.5rem', height: '2.5rem', fontSize: '0.875rem' }}>
             {client?.firstName?.[0] || '?'}
           </div>
           <div>
-            <p style={{ fontSize: '0.9375rem', fontWeight: 700, letterSpacing: '-0.01em' }}>
-              <Link href={`/clients/${client?.$id}`} className="hover:underline" style={{ color: '#111113' }}>
+            <p className="text-[15px] font-bold tracking-tight">
+              <Link href={`/clients/${client?.$id}`} className="hover:underline text-gray-900 dark:text-[#F4F7F4]">
                 {client?.firstName} {client?.lastName}
               </Link>
             </p>
-            <p style={{ fontSize: '0.75rem', color: '#9CA3AF', fontWeight: 500 }}>Buyer</p>
+            <p className="text-xs text-gray-400 dark:text-[#A1ADA4] font-medium">Buyer</p>
           </div>
         </div>
         {[
@@ -1411,8 +1412,8 @@ export function ActionPanel({
           { label: 'Total Purchases', value: client?.totalBorrowed ? `KES ${client.totalBorrowed.toLocaleString()}` : '—' },
         ].map(row => (
           <div key={row.label} className="info-card-row">
-            <span className="info-key">{row.label}</span>
-            <span className="info-value">{row.value}</span>
+            <span className="info-key text-gray-500 dark:text-[#A1ADA4]">{row.label}</span>
+            <span className="info-value text-gray-900 dark:text-[#F4F7F4] font-semibold">{row.value}</span>
           </div>
         ))}
       </div>
@@ -1487,19 +1488,21 @@ export function ActionPanel({
         />
       )}
 
-      {/* Global Delete Confirmation Modal for Contract */}
-      <ConfirmDeleteModal
+      {/* Global Secure Action Modal for Contract Deletion */}
+      <SecureActionModal
         isOpen={!!deleteContract}
         onClose={() => !isDeleting && setDeleteContract(null)}
-        isPending={isDeleting}
-        onConfirm={async () => {
-          if (!deleteContract) return;
-          await handleDeleteLoan();
-        }}
-        title="Delete Contract"
-        description="This will permanently remove the contract, all transactions, installments and penalties. This CANNOT be undone."
-        confirmLabel="Delete"
-        itemName={`Contract ${loan.$id.slice(-8).toUpperCase()}`}
+        onAuthorized={(token) => handleDeleteLoan(token)}
+        action="CONTRACT_DELETE"
+        resourceId={loan.$id}
+        title="Delete Financing Contract"
+        description="Permanently delete this contract, all recorded transactions, installments and history. Enter your administrator password to authorize this irreversible deletion."
+        confirmLabel="Confirm Delete Contract"
+        severity="danger"
+        summaryItems={[
+          { label: 'Contract ID', value: loan.$id.slice(-8).toUpperCase() },
+          { label: 'Status', value: loan.status },
+        ]}
       />
     </>
   );

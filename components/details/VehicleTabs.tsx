@@ -161,13 +161,13 @@ export default function VehicleTabs({
   const tabClass = [
     "h-11 rounded-none px-0",
     "text-sm font-medium",
-    "text-slate-500",
+    "text-slate-500 dark:text-[#A1ADA4]",
     "transition-colors",
-    "hover:text-slate-900",
+    "hover:text-slate-900 dark:hover:text-[#F4F7F4]",
     "data-[state=active]:border-b-2",
-    "data-[state=active]:border-blue-600",
+    "data-[state=active]:border-blue-600 dark:data-[state=active]:border-[#B7FF3C]",
     "data-[state=active]:bg-transparent",
-    "data-[state=active]:text-blue-600",
+    "data-[state=active]:text-blue-600 dark:data-[state=active]:text-[#B7FF3C]",
     "data-[state=active]:shadow-none",
   ].join(" ");
 
@@ -177,7 +177,7 @@ export default function VehicleTabs({
       {/* TABS                                                */}
       {/* -------------------------------------------------- */}
 
-      <div className="mb-6 overflow-x-auto border-b border-slate-200 no-scrollbar">
+      <div className="mb-6 overflow-x-auto border-b border-slate-200 dark:border-[#29352D] no-scrollbar">
         <TabsList className="h-11 w-full min-w-max justify-start gap-7 bg-transparent p-0">
           <TabsTrigger
             value="overview"
@@ -196,7 +196,7 @@ export default function VehicleTabs({
             <div className="flex items-center gap-2">
               <Folder className="size-4" />
               <span>Documents</span>
-              <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
+              <span className="rounded-full bg-slate-100 dark:bg-[#1D2920] px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 dark:text-[#C1CBC3]">
                 {documents.length}
               </span>
             </div>
@@ -237,19 +237,19 @@ export default function VehicleTabs({
             <section className="card-premium overflow-hidden p-0">
 
               {/* Card Header */}
-              <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+              <div className="flex items-start justify-between gap-4 border-b border-slate-100 dark:border-[#29352D] px-5 py-4">
                 <div className="min-w-0">
                   <div className="mb-1 flex items-center gap-2">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-blue-50 dark:bg-[#18221A] text-blue-600 dark:text-[#B7FF3C]">
                       <Car className="size-4" />
                     </div>
 
-                    <h3 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                       Vehicle Overview
                     </h3>
                   </div>
 
-                  <p className="truncate pl-10 text-xs text-slate-500">
+                  <p className="truncate pl-10 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     {vehicle.make_model}
                   </p>
                 </div>
@@ -257,8 +257,8 @@ export default function VehicleTabs({
                 <div className="shrink-0">
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${vehicle.is_published
-                      ? "bg-emerald-50 text-emerald-700"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400"
+                      : "bg-slate-100 dark:bg-[#1D2920] text-slate-500 dark:text-[#A1ADA4]"
                       }`}
                   >
                     <span
@@ -284,7 +284,7 @@ export default function VehicleTabs({
                     vehicle.images.map((img, i) => (
                       <div
                         key={i}
-                        className="relative h-[190px] min-w-[285px] shrink-0 snap-center overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                        className="relative h-[190px] min-w-[285px] shrink-0 snap-center overflow-hidden rounded-xl border border-slate-200 dark:border-[#29352D] bg-slate-100 dark:bg-[#18221A]"
                       >
                         <img
                           src={img}
@@ -301,11 +301,11 @@ export default function VehicleTabs({
                     [1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="relative flex h-[190px] min-w-[285px] shrink-0 snap-center items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+                        className="relative flex h-[190px] min-w-[285px] shrink-0 snap-center items-center justify-center overflow-hidden rounded-xl border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A]"
                       >
-                        <Car className="size-10 text-slate-300" />
+                        <Car className="size-10 text-slate-300 dark:text-slate-600" />
 
-                        <span className="absolute bottom-3 right-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        <span className="absolute bottom-3 right-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400 dark:text-[#A1ADA4]">
                           Photo {i}
                         </span>
                       </div>
@@ -314,20 +314,20 @@ export default function VehicleTabs({
                 </div>
                 <br />
                 {/* Description */}
-                <div className="mt-5 border-t border-slate-100 pt-5">
+                <div className="mt-5 border-t border-slate-100 dark:border-[#29352D] pt-5">
                   <div className="mb-2 flex items-center justify-between gap-3">
-                    <h4 className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-[#A1ADA4]">
                       Description
                     </h4>
 
                     {vehicle.is_new_arrival && (
-                      <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-semibold text-orange-600">
+                      <span className="rounded-full bg-orange-50 dark:bg-orange-950/40 px-2.5 py-1 text-[10px] font-semibold text-orange-600 dark:text-orange-400">
                         New Arrival
                       </span>
                     )}
                   </div>
 
-                  <p className="text-[13px] leading-6 text-slate-600 whitespace-pre-line">
+                  <p className="text-[13px] leading-6 text-slate-600 dark:text-[#C1CBC3] whitespace-pre-line">
                     {vehicle.description && vehicle.description.trim() !== "" ? (
                       vehicle.description
                     ) : (
@@ -338,7 +338,7 @@ export default function VehicleTabs({
 
                   {/* Features */}
                   <div className="mt-4">
-                    <div className="mb-2 text-xs font-semibold text-slate-500">
+                    <div className="mb-2 text-xs font-semibold text-slate-500 dark:text-[#A1ADA4]">
                       Features
                     </div>
 
@@ -347,7 +347,7 @@ export default function VehicleTabs({
                         vehicle.features.map((feature, i) => (
                           <span
                             key={i}
-                            className="rounded-md border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700"
+                            className="rounded-md border border-emerald-100 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-300"
                           >
                             {feature}
                           </span>
@@ -356,7 +356,7 @@ export default function VehicleTabs({
                         ['Air Conditioning', 'Power Steering', 'Alloy Wheels'].map((feature, i) => (
                           <span
                             key={i}
-                            className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600"
+                            className="rounded-md border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A] px-2.5 py-1 text-[11px] font-medium text-slate-600 dark:text-[#C1CBC3]"
                           >
                             {feature}
                           </span>
@@ -367,23 +367,23 @@ export default function VehicleTabs({
                 </div>
                 <br />
                 {/* Website / Hire Status */}
-                <div className="mt-5 border-t border-slate-100 pt-5">
+                <div className="mt-5 border-t border-slate-100 dark:border-[#29352D] pt-5">
                   <div className="mb-3">
-                    <h4 className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-[#A1ADA4]">
                       Availability & Website Status
                     </h4>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-                    <div className="rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                    <div className="rounded-lg border border-slate-100 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#18221A] px-3 py-2.5">
+                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-[#A1ADA4]">
                         Website
                       </span>
 
                       <span
                         className={`mt-1 block text-xs font-semibold ${vehicle.is_published
-                          ? "text-emerald-600"
-                          : "text-slate-500"
+                          ? "text-emerald-600 dark:text-emerald-400"
+                          : "text-slate-500 dark:text-[#A1ADA4]"
                           }`}
                       >
                         {vehicle.is_published
@@ -392,15 +392,15 @@ export default function VehicleTabs({
                       </span>
                     </div>
 
-                    <div className="rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                    <div className="rounded-lg border border-slate-100 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#18221A] px-3 py-2.5">
+                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-[#A1ADA4]">
                         New Arrival
                       </span>
 
                       <span
                         className={`mt-1 block text-xs font-semibold ${vehicle.is_new_arrival
-                          ? "text-orange-600"
-                          : "text-slate-400"
+                          ? "text-orange-600 dark:text-orange-400"
+                          : "text-slate-400 dark:text-[#A1ADA4]"
                           }`}
                       >
                         {vehicle.is_new_arrival
@@ -409,25 +409,25 @@ export default function VehicleTabs({
                       </span>
                     </div>
 
-                    <div className="rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                    <div className="rounded-lg border border-slate-100 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#18221A] px-3 py-2.5">
+                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-[#A1ADA4]">
                         Condition
                       </span>
 
-                      <span className="mt-1 block truncate text-xs font-semibold text-slate-800">
+                      <span className="mt-1 block truncate text-xs font-semibold text-slate-800 dark:text-[#F4F7F4]">
                         {vehicle.condition || "N/A"}
                       </span>
                     </div>
 
-                    <div className="rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                    <div className="rounded-lg border border-slate-100 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#18221A] px-3 py-2.5">
+                      <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-[#A1ADA4]">
                         Hire
                       </span>
 
                       <span
                         className={`mt-1 block text-xs font-semibold ${vehicle.for_hire
-                          ? "text-blue-600"
-                          : "text-slate-400"
+                          ? "text-blue-600 dark:text-blue-400"
+                          : "text-slate-400 dark:text-[#A1ADA4]"
                           }`}
                       >
                         {vehicle.for_hire
@@ -475,16 +475,16 @@ export default function VehicleTabs({
             <section className="card-premium p-5">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#18221A] text-slate-600 dark:text-[#C1CBC3]">
                     <Wrench className="size-4" />
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                       Pre-Sale Expenses
                     </h3>
 
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">
                       Costs recorded before sale or hire
                     </p>
                   </div>
@@ -501,10 +501,10 @@ export default function VehicleTabs({
 
               <div className="space-y-2.5">
                 {costs.length === 0 ? (
-                  <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50/50 px-4 py-8 text-center">
-                    <Wrench className="mx-auto mb-2 size-6 text-slate-300" />
+                  <div className="rounded-lg border border-dashed border-slate-200 dark:border-[#29352D] bg-slate-50/50 dark:bg-[#18221A] px-4 py-8 text-center">
+                    <Wrench className="mx-auto mb-2 size-6 text-slate-300 dark:text-slate-600" />
 
-                    <p className="text-xs font-medium text-slate-500">
+                    <p className="text-xs font-medium text-slate-500 dark:text-[#A1ADA4]">
                       No additional costs recorded yet.
                     </p>
                   </div>
@@ -512,14 +512,14 @@ export default function VehicleTabs({
                   costs.map((cost) => (
                     <div
                       key={cost.id}
-                      className="flex items-center justify-between gap-4 rounded-lg border border-slate-100 bg-slate-50/60 px-3.5 py-3 transition-colors hover:bg-slate-50"
+                      className="flex items-center justify-between gap-4 rounded-lg border border-slate-100 dark:border-[#29352D] bg-slate-50/60 dark:bg-[#18221A] px-3.5 py-3 transition-colors hover:bg-slate-50 dark:hover:bg-[#1D2920]"
                     >
                       <div className="min-w-0">
-                        <p className="truncate text-[13px] font-semibold text-slate-900">
+                        <p className="truncate text-[13px] font-semibold text-slate-900 dark:text-[#F4F7F4]">
                           {cost.description}
                         </p>
 
-                        <p className="mt-0.5 truncate text-[11px] text-slate-500">
+                        <p className="mt-0.5 truncate text-[11px] text-slate-500 dark:text-[#A1ADA4]">
                           {cost.cost_type
                             .replace('_', ' ')
                             .toUpperCase()}{" "}
@@ -528,7 +528,7 @@ export default function VehicleTabs({
                         </p>
                       </div>
 
-                      <span className="shrink-0 text-sm font-semibold text-slate-900">
+                      <span className="shrink-0 text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                         {formatKES(Number(cost.amount))}
                       </span>
                     </div>
@@ -547,12 +547,12 @@ export default function VehicleTabs({
             {/* Specifications */}
             <section className="card-premium p-5">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                <div className="flex size-9 items-center justify-center rounded-lg bg-blue-50 dark:bg-[#18221A] text-blue-600 dark:text-[#B7FF3C]">
                   <Settings2 className="size-4" />
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     Specifications
                   </h3>
 
@@ -560,58 +560,58 @@ export default function VehicleTabs({
                 </div>
               </div>
 
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-[#29352D]">
                 <div className="flex items-center justify-between gap-4 py-3 first:pt-0">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     <Palette className="size-3.5" />
                     Color
                   </div>
 
-                  <span className="text-right text-xs font-semibold text-slate-900">
+                  <span className="text-right text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     {vehicle.color || "—"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     <Gauge className="size-3.5" />
                     Engine
                   </div>
 
-                  <span className="text-right text-xs font-semibold text-slate-900">
+                  <span className="text-right text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     {vehicle.engine_capacity || "—"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     <Settings2 className="size-3.5" />
                     Transmission
                   </div>
 
-                  <span className="text-right text-xs font-semibold text-slate-900">
+                  <span className="text-right text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     {vehicle.transmission || "—"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-3">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     <Fuel className="size-3.5" />
                     Fuel Type
                   </div>
 
-                  <span className="text-right text-xs font-semibold text-slate-900">
+                  <span className="text-right text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     {vehicle.fuel_type || "—"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 pt-3">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
                     <Gauge className="size-3.5" />
                     Mileage
                   </div>
 
-                  <span className="text-right text-xs font-semibold text-slate-900">
+                  <span className="text-right text-xs font-semibold text-slate-900 dark:text-[#F4F7F4]">
                     {vehicle.mileage
                       ? `${vehicle.mileage.toLocaleString()} km`
                       : "—"}
@@ -624,11 +624,11 @@ export default function VehicleTabs({
             <section className="card-premium p-5 mt-5">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400">
                     <FileText className="size-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                       Purchase &amp; Seller
                     </h3>
 
@@ -644,33 +644,33 @@ export default function VehicleTabs({
                 </Badge>
               </div>
 
-              <div className="divide-y divide-slate-100 text-xs">
+              <div className="divide-y divide-slate-100 dark:divide-[#29352D] text-xs">
                 <div className="flex items-center justify-between gap-4 py-2.5 first:pt-0">
-                  <span className="text-slate-500">Seller</span>
-                  <span className="font-semibold text-slate-900 text-right truncate max-w-[140px]">
+                  <span className="text-slate-500 dark:text-[#A1ADA4]">Seller</span>
+                  <span className="font-semibold text-slate-900 dark:text-[#F4F7F4] text-right truncate max-w-[140px]">
                     {(vehicle as any).seller_name || "Record on Contract"}
                   </span>
                 </div>
 
                 {Boolean((vehicle as any).seller_phone || (vehicle as any).seller_id_number) && (
                   <div className="flex items-center justify-between gap-4 py-2.5">
-                    <span className="text-slate-500">Contact / ID</span>
-                    <span className="font-mono text-slate-700 text-right text-[11px]">
+                    <span className="text-slate-500 dark:text-[#A1ADA4]">Contact / ID</span>
+                    <span className="font-mono text-slate-700 dark:text-[#C1CBC3] text-right text-[11px]">
                       {(vehicle as any).seller_phone || (vehicle as any).seller_id_number}
                     </span>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between gap-4 py-2.5">
-                  <span className="text-slate-500">Purchase Price</span>
-                  <span className="font-bold text-slate-900 text-right">
+                  <span className="text-slate-500 dark:text-[#A1ADA4]">Purchase Price</span>
+                  <span className="font-bold text-slate-900 dark:text-[#B7FF3C] text-right">
                     {formatKES(vehicle.purchase_price)}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-2.5">
-                  <span className="text-slate-500">Date Acquired</span>
-                  <span className="text-slate-700 text-right">
+                  <span className="text-slate-500 dark:text-[#A1ADA4]">Date Acquired</span>
+                  <span className="text-slate-700 dark:text-[#C1CBC3] text-right">
                     {fmt(vehicle.date_purchased || vehicle.created_at)}
                   </span>
                 </div>
@@ -678,7 +678,7 @@ export default function VehicleTabs({
 
               <Link
                 href={`/vehicles/${vehicle.id}/purchase-contract`}
-                className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 py-2.5 text-xs font-semibold text-emerald-800 transition-colors hover:bg-emerald-100"
+                className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800/40 bg-emerald-50 dark:bg-emerald-950/30 py-2.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-950/50"
               >
                 <span>View Purchase Agreement</span>
                 <ArrowUpRight className="size-3.5" />
@@ -699,11 +699,11 @@ export default function VehicleTabs({
         <div className="card-premium p-5">
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-[#F4F7F4]">
                 Vehicle Documents
               </h3>
 
-              <p className="mt-0.5 text-xs text-slate-500">
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-[#A1ADA4]">
                 Store and access vehicle-related documentation
               </p>
             </div>
@@ -752,16 +752,16 @@ export default function VehicleTabs({
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
             {documents.length === 0 ? (
-              <div className="col-span-full rounded-xl border border-dashed border-slate-200 bg-slate-50/40 px-5 py-12 text-center">
-                <div className="mx-auto mb-3 flex size-10 items-center justify-center rounded-lg bg-slate-100">
-                  <Folder className="size-5 text-slate-400" />
+              <div className="col-span-full rounded-xl border border-dashed border-slate-200 dark:border-[#29352D] bg-slate-50/40 dark:bg-[#18221A] px-5 py-12 text-center">
+                <div className="mx-auto mb-3 flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#151D17]">
+                  <Folder className="size-5 text-slate-400 dark:text-[#A1ADA4]" />
                 </div>
 
-                <p className="text-sm font-medium text-slate-600">
+                <p className="text-sm font-medium text-slate-600 dark:text-[#C1CBC3]">
                   No documents uploaded yet
                 </p>
 
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-1 text-xs text-slate-400 dark:text-[#A1ADA4]">
                   Upload logbooks, inspection reports,
                   and import documents
                 </p>
@@ -770,9 +770,9 @@ export default function VehicleTabs({
               documents.map((doc, idx) => (
                 <div
                   key={idx}
-                  className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-3.5 transition-colors hover:border-slate-300 hover:bg-slate-50/50"
+                  className="flex items-start gap-3 rounded-lg border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] p-3.5 transition-colors hover:border-slate-300 dark:hover:border-[#38483d] hover:bg-slate-50/50 dark:hover:bg-[#1D2920]"
                 >
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-[#101612] text-blue-600 dark:text-[#B7FF3C]">
                     <File className="size-4" />
                   </div>
 
@@ -781,12 +781,12 @@ export default function VehicleTabs({
                       href={doc.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="block truncate text-xs font-semibold text-slate-800 hover:text-blue-600"
+                      className="block truncate text-xs font-semibold text-slate-800 dark:text-[#F4F7F4] hover:text-blue-600 dark:hover:text-[#B7FF3C]"
                     >
                       {doc.documentName || doc.type}
                     </a>
 
-                    <p className="mt-1 text-[11px] text-slate-500">
+                    <p className="mt-1 text-[11px] text-slate-500 dark:text-[#A1ADA4]">
                       {doc.type} · {fmt(doc.createdAt)}
                     </p>
                   </div>
@@ -825,20 +825,20 @@ export default function VehicleTabs({
           onSubmit={handleAddCost}
           className="space-y-5"
         >
-          <div className="rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-3 text-xs text-slate-500">
+          <div className="rounded-lg border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A] px-3.5 py-3 text-xs text-slate-500 dark:text-[#A1ADA4]">
             You are adding an expense for:
 
-            <strong className="ml-1 font-mono font-semibold text-slate-900">
+            <strong className="ml-1 font-mono font-semibold text-slate-900 dark:text-[#F4F7F4]">
               {vehicle.registration_no}
             </strong>
 
-            <span className="ml-1">
+            <span className="ml-1 text-slate-600 dark:text-[#C1CBC3]">
               ({vehicle.make_model})
             </span>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-700">
+            <label className="mb-1.5 block text-xs font-medium text-slate-700 dark:text-[#C1CBC3]">
               Cost Category
             </label>
 
@@ -862,7 +862,7 @@ export default function VehicleTabs({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-700">
+            <label className="mb-1.5 block text-xs font-medium text-slate-700 dark:text-[#C1CBC3]">
               Expense Amount (KES) *
             </label>
 
@@ -881,7 +881,7 @@ export default function VehicleTabs({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-700">
+            <label className="mb-1.5 block text-xs font-medium text-slate-700 dark:text-[#C1CBC3]">
               Description / Item Detail *
             </label>
 
@@ -898,7 +898,7 @@ export default function VehicleTabs({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-slate-700">
+            <label className="mb-1.5 block text-xs font-medium text-slate-700 dark:text-[#C1CBC3]">
               Garage / Vendor Name
             </label>
 
@@ -913,7 +913,7 @@ export default function VehicleTabs({
             />
           </div>
 
-          <div className="flex justify-end gap-2.5 border-t border-slate-100 pt-5">
+          <div className="flex justify-end gap-2.5 border-t border-slate-100 dark:border-[#29352D] pt-5">
             <button
               type="button"
               onClick={() =>
@@ -927,7 +927,7 @@ export default function VehicleTabs({
             <button
               type="submit"
               disabled={isCostSaving}
-              className="btn-primary h-10 bg-blue-600 px-5 text-xs hover:bg-blue-700 disabled:opacity-50"
+              className="btn-primary h-10 px-5 text-xs disabled:opacity-50"
             >
               {isCostSaving && (
                 <Loader2 className="mr-2 size-3.5 animate-spin" />

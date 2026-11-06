@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { cn } from '@/lib/utils'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 const Footer = ({ user, type = 'desktop' }: FooterProps) => {
   const router = useRouter();
@@ -24,30 +25,33 @@ const Footer = ({ user, type = 'desktop' }: FooterProps) => {
             className="w-full h-full object-cover rounded-full" 
           />
         ) : (
-          <p className="text-14 font-bold text-gray-900">
+          <p className="text-14 font-bold text-gray-900 dark:text-[#F4F7F4]">
             {user?.firstName[0]}
           </p>
         )}
       </div>
       <div className={type === 'mobile' ? 'footer_email-mobile' : 'footer_email'}>
-        <h1 className="text-14 truncate text-gray-900 font-bold">
+        <h1 className="text-14 truncate text-gray-900 dark:text-[#F4F7F4] font-bold">
           {user?.firstName} {user?.lastName}
         </h1>
-        <p className="text-12 truncate font-medium text-gray-500">
+        <p className="text-12 truncate font-medium text-gray-500 dark:text-[#A1ADA4]">
           {user?.email}
         </p>
       </div>
-      <div className="footer_image" onClick={handleLogOut}>
-        <Image
-          src="/icons/logout.svg"
-          width={20}
-          height={20}
-          alt="logout"
-          className="opacity-50"
-          style={{
-            maxWidth: "100%",
-            height: "auto"
-          }} />
+      <div className="flex items-center gap-1.5 flex-shrink-0">
+        <ThemeToggle />
+        <div className="footer_image" onClick={handleLogOut} title="Log out">
+          <Image
+            src="/icons/logout.svg"
+            width={20}
+            height={20}
+            alt="logout"
+            className="opacity-50 dark:invert dark:opacity-75"
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
+        </div>
       </div>
     </footer>
   );

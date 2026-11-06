@@ -62,28 +62,28 @@ export async function calculateClientMetrics(clientId: string): Promise<ClientMe
   
   let healthStatus = "Good";
   let healthMessage = "Your repayment rate is excellent!";
-  let healthColor = "text-emerald-600";
-  let healthBg = "bg-emerald-200";
-  let healthIconBg = "bg-emerald-50";
-  let healthBarBg = "bg-emerald-500";
-  let healthBarContainer = "bg-emerald-100";
+  let healthColor = "text-emerald-600 dark:text-[#B7FF3C]";
+  let healthBg = "bg-emerald-200 dark:bg-emerald-950/40";
+  let healthIconBg = "bg-emerald-50 dark:bg-emerald-950/40";
+  let healthBarBg = "bg-emerald-500 dark:bg-[#B7FF3C]";
+  let healthBarContainer = "bg-emerald-100 dark:bg-[#101612]";
 
   if (activeLoansCount === 0) {
     healthStatus = "No active loans";
     healthMessage = "You have no active loans.";
-    healthColor = "text-gray-600";
-    healthBg = "bg-gray-200";
-    healthIconBg = "bg-gray-50";
-    healthBarBg = "bg-gray-500";
-    healthBarContainer = "bg-gray-100";
+    healthColor = "text-gray-600 dark:text-[#A1ADA4]";
+    healthBg = "bg-gray-200 dark:bg-[#1D2920]";
+    healthIconBg = "bg-gray-50 dark:bg-[#101612]";
+    healthBarBg = "bg-gray-500 dark:bg-[#29352D]";
+    healthBarContainer = "bg-gray-100 dark:bg-[#101612]";
   } else if (hasOverdue) {
     healthStatus = 'Overdue';
     healthMessage = 'You have an overdue payment that needs immediate attention!';
-    healthColor = 'text-red-600';
-    healthBg = 'bg-red-200';
-    healthIconBg = 'bg-red-50';
-    healthBarBg = 'bg-red-500';
-    healthBarContainer = 'bg-red-100';
+    healthColor = 'text-red-600 dark:text-rose-400';
+    healthBg = 'bg-red-200 dark:bg-rose-950/40';
+    healthIconBg = 'bg-red-50 dark:bg-rose-950/40';
+    healthBarBg = 'bg-red-500 dark:bg-rose-500';
+    healthBarContainer = 'bg-red-100 dark:bg-[#101612]';
   } else {
     if (repaymentRate >= 90) {
       healthStatus = 'Good';
@@ -91,35 +91,35 @@ export async function calculateClientMetrics(clientId: string): Promise<ClientMe
     } else if (repaymentRate >= 75) {
       healthStatus = 'On Track';
       healthMessage = 'You are on track with your repayments.';
-      healthColor = 'text-blue-600';
-      healthBg = 'bg-blue-200';
-      healthIconBg = 'bg-blue-50';
-      healthBarBg = 'bg-blue-500';
-      healthBarContainer = 'bg-blue-100';
+      healthColor = 'text-blue-600 dark:text-blue-400';
+      healthBg = 'bg-blue-200 dark:bg-blue-950/40';
+      healthIconBg = 'bg-blue-50 dark:bg-blue-950/40';
+      healthBarBg = 'bg-blue-500 dark:bg-blue-400';
+      healthBarContainer = 'bg-blue-100 dark:bg-[#101612]';
     } else if (repaymentRate >= 50) {
       healthStatus = 'Average';
       healthMessage = 'Your repayment rate is average.';
-      healthColor = 'text-amber-600';
-      healthBg = 'bg-amber-200';
-      healthIconBg = 'bg-amber-50';
-      healthBarBg = 'bg-amber-500';
-      healthBarContainer = 'bg-amber-100';
+      healthColor = 'text-amber-600 dark:text-amber-400';
+      healthBg = 'bg-amber-200 dark:bg-amber-950/40';
+      healthIconBg = 'bg-amber-50 dark:bg-amber-950/40';
+      healthBarBg = 'bg-amber-500 dark:bg-amber-400';
+      healthBarContainer = 'bg-amber-100 dark:bg-[#101612]';
     } else if (repaymentRate >= 20) {
       healthStatus = 'Needs Improvement';
       healthMessage = 'Your repayment rate needs improvement.';
-      healthColor = 'text-orange-600';
-      healthBg = 'bg-orange-200';
-      healthIconBg = 'bg-orange-50';
-      healthBarBg = 'bg-orange-500';
-      healthBarContainer = 'bg-orange-100';
+      healthColor = 'text-orange-600 dark:text-orange-400';
+      healthBg = 'bg-orange-200 dark:bg-orange-950/40';
+      healthIconBg = 'bg-orange-50 dark:bg-orange-950/40';
+      healthBarBg = 'bg-orange-500 dark:bg-orange-400';
+      healthBarContainer = 'bg-orange-100 dark:bg-[#101612]';
     } else {
       healthStatus = 'Bad';
       healthMessage = 'Your repayment rate is poor, please repay your loans in time!';
-      healthColor = 'text-red-600';
-      healthBg = 'bg-red-200';
-      healthIconBg = 'bg-red-50';
-      healthBarBg = 'bg-red-500';
-      healthBarContainer = 'bg-red-100';
+      healthColor = 'text-red-600 dark:text-rose-400';
+      healthBg = 'bg-red-200 dark:bg-rose-950/40';
+      healthIconBg = 'bg-red-50 dark:bg-rose-950/40';
+      healthBarBg = 'bg-red-500 dark:bg-rose-500';
+      healthBarContainer = 'bg-red-100 dark:bg-[#101612]';
     }
   }
 

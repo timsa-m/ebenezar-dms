@@ -9,6 +9,10 @@ import {
 } from "../supabase-storage";
 import { generateClientAssetPath } from "../storage-utils";
 import { autoFlagOverdueLoans } from "./loan.actions";
+import { getLoggedInUser } from "./user.actions";
+import { logSecurityAudit } from "@/lib/security/audit";
+import { enforceActionPermission } from "@/lib/security/rbac";
+import { consumeVerificationGrant } from "@/lib/security/tokens";
 
 /**
  * Upload a client profile photo from a base64 data URL.
@@ -369,9 +373,31 @@ export const uploadClientDocument = async (clientId: string, formData: FormData)
   }
 };
 
-export const deleteClientAction = async (clientId: string) => {
+export const deleteClientAction = async (clientId: string, verificationToken?: string) => {
   try {
+    const currentUser = await getLoggedInUser();
+    enforceActionPermission(currentUser, 'CLIENT_DELETE');
+
+    if (verificationToken) {
+      const consumeRes = await consumeVerificationGrant({
+        token: verificationToken,
+        userId: currentUser!.userId || currentUser!.$id || '',
+        action: 'CLIENT_DELETE',
+        resourceId: clientId,
+      });
+      if (!consumeRes.valid) {
+        throw new Error(`Security Verification Failed: ${consumeRes.error}`);
+      }
+    }
+
     const supabase = createSupabaseAdminClient();
+
+    // Fetch client to record metadata before deletion
+    const { data: client } = await supabase
+      .from('clients')
+      .select('id, full_name, client_id_number, phone')
+      .eq('id', clientId)
+      .maybeSingle();
     
     // Attempt to delete the client
     const { error } = await supabase
@@ -381,10 +407,23 @@ export const deleteClientAction = async (clientId: string) => {
       
     if (error) {
       if (error.code === '23503') {
-        return { success: false, error: 'Cannot delete client with existing contracts or history.' };
+        return { success: false, error: 'Cannot delete client with existing contracts or financial history.' };
       }
       throw error;
     }
+
+    await logSecurityAudit({
+      userId: currentUser!.userId || currentUser!.$id || null,
+      action: 'CLIENT_DELETE',
+      resourceType: 'client',
+      resourceId: clientId,
+      status: 'SUCCESS',
+      reason: 'Client record deleted by administrator.',
+      metadata: {
+        fullName: client?.full_name,
+        idNumber: client?.client_id_number,
+      },
+    });
     
     revalidatePath('/clients');
     return { success: true };

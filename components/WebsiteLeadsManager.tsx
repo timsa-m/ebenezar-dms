@@ -350,33 +350,31 @@ export default function WebsiteLeadsManager({
   const hasActiveFilters = searchQuery.trim() !== '' || statusFilter !== 'all';
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* ========================================================= */}
       {/* 1. Header & Title Section */}
       {/* ========================================================= */}
-      <div className="flex flex-col gap-5 pb-3 md:flex-row md:items-end md:justify-between relative">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-100/40 via-transparent to-transparent dark:from-indigo-900/20 blur-3xl"></div>
-        <div className="space-y-3 z-10">
-          <div className="flex items-center gap-x-4 gap-y-2">
-            <br />
-            <br />
-            <h1 className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 sm:text-3xl">
+      <div className="flex flex-col gap-4 sm:gap-5 pb-1 md:flex-row md:items-end md:justify-between relative">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-100/40 via-transparent to-transparent dark:from-indigo-950/20 blur-3xl"></div>
+        <div className="space-y-2 z-10">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
               Leads Center
             </h1>
             {metrics.totalNew > 0 && (
-              <span className="badge badge-danger inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20 shadow-sm animate-pulse">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2"></span>
+              <span className="badge badge-danger inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 shadow-xs animate-pulse">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
                 {metrics.totalNew} Action(s) Needed
               </span>
             )}
           </div>
-          <p className="max-w-2xl left-3 text-sm font-medium leading-relaxed text-slate-500 dark:text-slate-400">
-            Messages from the Website, Customer inquiries and Vehicle trade-in requests.
+          <p className="max-w-2xl text-xs sm:text-sm font-medium leading-relaxed text-slate-500 dark:text-slate-400">
+            Messages from the website, customer inquiries, and vehicle trade-in requests.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 z-10">
-          <div className="badge badge-primary flex items-center gap-2 px-4 py-2 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 text-sm font-semibold shadow-sm">
+        <div className="flex items-center gap-3 z-10 shrink-0">
+          <div className="badge badge-primary flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/70 dark:bg-[#151D17]/80 backdrop-blur-md border border-slate-200/60 dark:border-[#29352D] text-slate-700 dark:text-[#C1CBC3] text-xs sm:text-sm font-semibold shadow-xs">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -385,30 +383,25 @@ export default function WebsiteLeadsManager({
           </div>
         </div>
       </div>
-      <br />
-
 
       {/* ========================================================= */}
       {/* 2. Executive KPI Summary Cards */}
       {/* ========================================================= */}
-
-      {/* 2. KPI Summary Cards — 4 equal columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
         {/* Total Leads */}
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-18 bg-orange-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Total Leads</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Total Leads</p>
             </div>
-            <div className="p-2 bg-orange-50 rounded-lg text-orange-600 ring-1 ring-orange-100">
+            <div className="p-2 bg-orange-50 dark:bg-orange-950/30 rounded-lg text-orange-600 dark:text-orange-400 ring-1 ring-orange-100 dark:ring-orange-900/30">
               <Inbox className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{metrics.totalLeads}</h2>
-            <div className="mt-3 flex items-center gap-2">
+            <h2 className="text-32 sm:text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{metrics.totalLeads}</h2>
+            <div className="mt-2.5 flex items-center gap-2">
               <span className="badge badge-error">Messages + Trade-ins</span>
             </div>
           </div>
@@ -416,144 +409,138 @@ export default function WebsiteLeadsManager({
 
         {/* Awaiting Action */}
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 dark:bg-emerald-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Awaiting Action</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Awaiting Action</p>
             </div>
-            <div className="p-2 bg-success-50 rounded-lg text-success-600 ring-1 ring-success-100">
+            <div className="p-2 bg-success-50 dark:bg-emerald-950/30 rounded-lg text-success-600 dark:text-emerald-400 ring-1 ring-success-100 dark:ring-emerald-900/30">
               <AlertCircle className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{metrics.totalNew}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              {metrics.totalNew > 0 &&
+            <h2 className="text-32 sm:text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{metrics.totalNew}</h2>
+            <div className="mt-2.5 flex items-center gap-2">
+              {metrics.totalNew > 0 ? (
                 <span className="badge badge-success">NEW</span>
-              }
-              {metrics.totalNew === 0 &&
+              ) : (
                 <span className="badge badge-success">NO ISSUE</span>
-              }
-              <p className="text-12 text-gray-500 font-medium">Pending initial response</p>
+              )}
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Pending initial response</p>
             </div>
           </div>
         </div>
 
         {/* Trade-In Requests */}
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Trade-In Requests</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Trade-In Requests</p>
             </div>
-            <div className="p-2 bg-amber-50 rounded-lg text-amber-600 ring-1 ring-amber-100">
+            <div className="p-2 bg-amber-50 dark:bg-amber-950/30 rounded-lg text-amber-600 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-900/30">
               <Replace className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{tradeInRequests.length}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              {metrics.newTradeIns > 0 &&
+            <h2 className="text-32 sm:text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{tradeInRequests.length}</h2>
+            <div className="mt-2.5 flex items-center gap-2">
+              {metrics.newTradeIns > 0 ? (
                 <span className="badge badge-warning">NEW</span>
-              }
-              {metrics.newTradeIns === 0 &&
+              ) : (
                 <span className="badge badge-success">NO ISSUE</span>
-              }
-              <p className="text-12 text-gray-500 font-medium">Appraisal requests</p>
+              )}
+              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Appraisal requests</p>
             </div>
           </div>
         </div>
 
         {/* Resolution Rate */}
         <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-rose-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
-              <p className="text-12 font-bold text-gray-500 uppercase tracking-widest">Resolution Rate</p>
+              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Resolution Rate</p>
             </div>
-            <div className="p-2 bg-red-50 rounded-lg text-red-600 ring-1 ring-red-100">
+            <div className="p-2 bg-red-50 dark:bg-rose-950/30 rounded-lg text-red-600 dark:text-rose-400 ring-1 ring-red-100 dark:ring-rose-900/30">
               <CheckCircle2 className="size-4" />
             </div>
           </div>
           <div>
-            <h2 className="text-36 font-bold text-gray-900 tabular-nums">{metrics.resolutionRate}%</h2>
-            <div className="mt-3 flex items-center gap-2">
+            <h2 className="text-32 sm:text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{metrics.resolutionRate}%</h2>
+            <div className="mt-2.5 flex items-center gap-2">
               <span className="badge badge-success">Processed or contacted</span>
             </div>
           </div>
         </div>
-
       </div>
-
 
       {/* ========================================================= */}
       {/* 3. Main Card with Tabs & Live Controls */}
       {/* ========================================================= */}
-      <div className="overflow-hidden rounded-xl border border-white/50 dark:border-slate-700/50 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl shadow-2xl relative top-3 z-10">
+      <div className="overflow-hidden rounded-2xl border border-slate-200/80 dark:border-[#29352D] bg-white dark:bg-[#151D17] shadow-sm">
         <Tabs
           value={activeTab}
-          onValueChange={(val) => setActiveTab(val as 'messages' | 'tradein')}
+          onValueChange={(val: string) => setActiveTab(val as 'messages' | 'tradein')}
           className="w-full"
         >
           {/* Top Control Bar: Tabs + Search + Filter */}
-          <div className="space-y-5 border-b border-white/40 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 p-2 lg:p-2 backdrop-blur-md">
-            <div className="flex flex-col md:flex-row md:items-center relative justify-between gap-5">
+          <div className="border-b border-slate-200/70 dark:border-[#29352D] bg-slate-50/60 dark:bg-[#101612]/60 p-3 sm:p-4 lg:p-5">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 sm:gap-4">
               {/* Segmented Control Pill Tabs */}
-              <TabsList className="inline-flex h-9 self-start relative left-3 rounded-2xl bg-slate-200/50 dark:bg-slate-950/50 p-3 md:self-auto backdrop-blur-sm border border-white/20 dark:border-slate-800">
+              <TabsList className="inline-flex h-11 w-full sm:w-auto items-center rounded-xl bg-slate-200/60 dark:bg-[#101612] p-1 border border-slate-200 dark:border-[#29352D]">
                 <TabsTrigger
                   value="messages"
-                  className="badge badge-primary flex h-9.5 items-center gap-2.5 rounded-xl px-5 text-sm font-bold text-slate-600 dark:text-slate-400 transition-all data-[state=active]:bg-purple-50 data-[state=active]:dark:bg-slate-800 data-[state=active]:text-indigo-600 data-[state=active]:dark:text-indigo-400 data-[state=active]:shadow-md"
+                  className="flex-1 sm:flex-initial flex h-9 items-center justify-center gap-2 rounded-lg px-3 sm:px-4 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-400 transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-[#1D2920] data-[state=active]:text-indigo-600 dark:data-[state=active]:text-[#B7FF3C] data-[state=active]:shadow-xs"
                 >
-                  <Mail className="h-4 w-4" />
+                  <Mail className="h-4 w-4 shrink-0" />
                   <span>General Messages</span>
-                  <span className={`badge badge-primary text-[10px] font-black px-2 py-0.5 rounded-xl shadow-sm ${metrics.newMessages > 0
-                    ? 'bg-rose-500 text-white'
-                    : 'bg-purple-100 text-purple-600 dark:text-purple-300'
-                    }`}>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shadow-xs shrink-0 ${
+                    metrics.newMessages > 0
+                      ? 'bg-rose-500 text-white'
+                      : 'bg-slate-200 dark:bg-[#101612] text-slate-700 dark:text-[#A1ADA4]'
+                  }`}>
                     {metrics.newMessages > 0 ? metrics.newMessages : messages.length}
                   </span>
                 </TabsTrigger>
 
                 <TabsTrigger
                   value="tradein"
-                  className="badge badge-primary flex h-9.5 items-center gap-2.5 rounded-xl px-5 text-sm font-bold text-slate-600 dark:text-slate-400 transition-all data-[state=active]:bg-amber-50 data-[state=active]:dark:bg-amber-800 data-[state=active]:text-amber-600 data-[state=active]:dark:text-amber-400 data-[state=active]:shadow-md"
+                  className="flex-1 sm:flex-initial flex h-9 items-center justify-center gap-2 rounded-lg px-3 sm:px-4 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-400 transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-[#1D2920] data-[state=active]:text-amber-600 dark:data-[state=active]:text-[#B7FF3C] data-[state=active]:shadow-xs"
                 >
-                  <Replace className="h-4 w-4" />
+                  <Replace className="h-4 w-4 shrink-0" />
                   <span>Vehicle Trade-Ins</span>
-                  <span className={`badge badge-primary text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm ${metrics.newTradeIns > 0
-                    ? 'bg-amber-500 text-white'
-                    : 'bg-amber-200 dark:bg-amber-700 text-amber-600 dark:text-amber-300'
-                    }`}>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shadow-xs shrink-0 ${
+                    metrics.newTradeIns > 0
+                      ? 'bg-amber-500 text-white'
+                      : 'bg-slate-200 dark:bg-[#101612] text-slate-700 dark:text-[#A1ADA4]'
+                  }`}>
                     {metrics.newTradeIns > 0 ? metrics.newTradeIns : tradeInRequests.length}
                   </span>
                 </TabsTrigger>
               </TabsList>
 
               {/* Search & Status Filter cluster */}
-              <div className="flex gap-3 start-end p-3">
-                {/* Search Bar */}
-                <div className="flex w-full items-center gap-3">
-                  <div className="search-box">
-                    <Search className="search-icon" />
-                    <input
-                      type="text"
-                      placeholder="Search clients..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="search-input"
-                    />
-                  </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+                <div className="search-box w-full sm:w-64 md:w-72">
+                  <Search className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search leads..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-input w-full"
+                  />
                 </div>
 
-                {/* Status Dropdown Filter */}
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-9 rounded-xl justify-center gap-2 border-white/50 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 text-sm font-semibold shadow-sm backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500/50">
-                    <div className="flex items-center gap-1 truncate">
-                      <SlidersHorizontal className="h-4 w-6 text-slate-500 shrink-0" />
+                  <SelectTrigger className="h-10 w-full sm:w-40 rounded-xl justify-between gap-2 border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-800 dark:text-[#F4F7F4] text-xs sm:text-sm font-semibold shadow-xs">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                       <SelectValue placeholder="All Statuses" />
                     </div>
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl shadow-xl border-slate-200 dark:border-slate-800 font-semibold">
+                  <SelectContent className="rounded-xl shadow-xl border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] text-slate-800 dark:text-[#F4F7F4] font-semibold text-xs sm:text-sm">
                     <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="new">New Only</SelectItem>
                     {activeTab === 'messages' ? (
@@ -568,14 +555,13 @@ export default function WebsiteLeadsManager({
                   </SelectContent>
                 </Select>
 
-                {/* Reset Filters Button */}
                 {hasActiveFilters && (
                   <Button
                     variant="ghost"
                     onClick={resetFilters}
-                    className="badge badge-primary h-9 px-4 rounded-xl text-sm font-bold text-red-500 bg-red-100 hover:bg-red-200 dark:hover:bg-red-800 hover:text-red-800 dark:hover:text-red-200 transition-all"
+                    className="h-10 px-3.5 rounded-xl text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 hover:bg-rose-100 dark:hover:bg-rose-950/50 transition-all shrink-0 cursor-pointer"
                   >
-                    <RotateCcw className="h-4 w-4 mr-2" />
+                    <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
                     Reset
                   </Button>
                 )}
@@ -583,322 +569,330 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Active Filter Indicators Bar */}
-            <div className="flex items-center justify-between relative left-6 right-3 max-w-[95%] gap-3 text-xs font-semibold text-slate-500">
+            <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-200/50 dark:border-[#29352D]/60 text-xs font-semibold text-slate-500 dark:text-[#A1ADA4]">
               <div>
                 {activeTab === 'messages' ? (
                   <span>
-                    Showing <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{filteredMessages.length}</strong> of {messages.length} messages
+                    Showing <strong className="text-indigo-600 dark:text-[#B7FF3C] text-xs sm:text-sm">{filteredMessages.length}</strong> of {messages.length} messages
                   </span>
                 ) : (
                   <span>
-                    Showing <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{filteredTradeIns.length}</strong> of {tradeInRequests.length} trade-in inquiries
+                    Showing <strong className="text-indigo-600 dark:text-[#B7FF3C] text-xs sm:text-sm">{filteredTradeIns.length}</strong> of {tradeInRequests.length} trade-in inquiries
                   </span>
                 )}
               </div>
               {hasActiveFilters && (
-                <span className="badge badge-primary rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-[11px] font-bold text-indigo-700 dark:text-indigo-400 shadow-sm">
+                <span className="badge badge-primary rounded-full border border-indigo-500/30 bg-indigo-500/10 dark:bg-indigo-950/40 px-2.5 py-0.5 text-[11px] font-bold text-indigo-700 dark:text-indigo-300">
                   Filters Active
                 </span>
               )}
             </div>
           </div>
 
-
           {/* ======================================================= */}
           {/* TAB 1: MESSAGES STREAM / CARDS */}
           {/* ======================================================= */}
-          <div className="max-w-[95%] pl-4 p-3 mt-0">
-            <TabsContent value="messages" className="m-9 focus-visible:outline-none p-4 lg:p-4 bg-white/20 dark:bg-slate-950/20 mt-0 mb-6 top-0 left-5">
-              {filteredMessages.length === 0 ? (
-                <div className="px-4 py-20 text-center flex flex-col items-center justify-center mb-6 mt-6">
-                  <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-3xl bg-slate-100 dark:bg-slate-800 shadow-inner">
-                    <Inbox className="h-7 w-7 text-slate-400" />
-                  </div>
-                  <h3 className="text-l font-bold text-slate-800 dark:text-slate-200">
-                    {hasActiveFilters ? 'No matching messages found' : 'Inbox Zero!'}
-                  </h3>
-                  <p className="mt-2 max-w-sm text-sm font-medium text-slate-500">
-                    {hasActiveFilters
-                      ? 'Try adjusting your search criteria or clearing active filters to find what you are looking for.'
-                      : 'Customer inquiries submitted via the website contact form will appear here in real time.'}
-                  </p>
-                  {hasActiveFilters && (
-                    <Button
-                      onClick={resetFilters}
-                      className="badge badge-primary mt-6 font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30"
+          <TabsContent value="messages" className="m-0 focus-visible:outline-none p-4 sm:p-5 lg:p-6 bg-slate-50/20 dark:bg-transparent">
+            {filteredMessages.length === 0 ? (
+              <div className="px-4 py-16 sm:py-20 text-center flex flex-col items-center justify-center">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#1D2920] shadow-inner text-slate-400">
+                  <Inbox className="h-6 w-6" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-[#F4F7F4]">
+                  {hasActiveFilters ? 'No matching messages found' : 'Inbox Zero!'}
+                </h3>
+                <p className="mt-1.5 max-w-sm text-xs sm:text-sm font-medium text-slate-500 dark:text-[#A1ADA4]">
+                  {hasActiveFilters
+                    ? 'Try adjusting your search criteria or clearing active filters to find what you are looking for.'
+                    : 'Customer inquiries submitted via the website contact form will appear here in real time.'}
+                </p>
+                {hasActiveFilters && (
+                  <Button
+                    onClick={resetFilters}
+                    className="mt-5 font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 dark:bg-[#B7FF3C] dark:hover:bg-[#a3e635] text-white dark:text-[#090C0A] shadow-md shadow-indigo-500/20 text-xs sm:text-sm cursor-pointer"
+                  >
+                    Clear Search & Filters
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3.5 sm:gap-4">
+                {filteredMessages.map((msg) => {
+                  const isUnread = msg.status === 'new';
+                  const initials = (msg.name || 'User')
+                    .split(' ')
+                    .map(n => n[0])
+                    .slice(0, 2)
+                    .join('')
+                    .toUpperCase();
+
+                  return (
+                    <Card
+                      key={msg.id}
+                      className={`group relative overflow-hidden rounded-2xl transition-all duration-200 border ${
+                        isUnread
+                          ? 'bg-white dark:bg-[#151D17] border-indigo-200 dark:border-indigo-900/60 shadow-xs'
+                          : 'bg-white dark:bg-[#151D17] border-slate-200/80 dark:border-[#29352D] hover:border-slate-300 dark:hover:border-slate-700'
+                      }`}
                     >
-                      Clear Search & Filters
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-4">
-                  {filteredMessages.map((msg) => {
-                    const isUnread = msg.status === 'new';
-                    const initials = (msg.name || 'User')
-                      .split(' ')
-                      .map(n => n[0])
-                      .slice(0, 2)
-                      .join('')
-                      .toUpperCase();
-
-                    return (
-                      <Card
-                        key={msg.id}
-                        className={`group relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-xl ${isUnread
-                          ? 'bg-white dark:bg-slate-900 border-indigo-200 dark:border-indigo-800/50 shadow-md dark:shadow-none'
-                          : 'bg-white/60 dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 shadow-sm'
-                          }`}
-                      >
-                        {isUnread && (
-                          <div className="absolute left-3 top-0 bottom-0 w-1.5"></div>
-                        )}
-                        <CardContent className="flex flex-col justify-between gap-6 p-5 sm:p-6 md:flex-row md:items-center relative z-10">
-                          {/* Left: Contact Info & Message Preview */}
-                          <div
-                            className="flex items-start gap-5 flex-1 min-w-0 cursor-pointer"
-                            onClick={() => setSelectedLead({ type: 'message', data: msg })}
-                          >
-                            {/* Avatar */}
-                            <div className={`absolute left-3 top-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-sm font-bold shadow-sm ${isUnread
-                              ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-indigo-500/30'
-                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
-                              }`}>
-                              {initials}
-                            </div>
-
-                            {/* Content */}
-                            <div className="min-w-0 flex-1 space-y-2 translate-x-18">
-                              <div className="flex flex-wrap items-center gap-3">
-                                <span className="text-base font-bold text-slate-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                                  {msg.name}
-                                </span>
-                                {getStatusBadge(msg.status)}
-                                <span className="text-xs font-semibold text-slate-400">
-                                  • {formatRelativeTime(msg.created_at)}
-                                </span>
-                              </div>
-
-                              <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-                                <Mail className="h-4 w-4 text-slate-400 shrink-0" />
-                                <span className="truncate">{msg.email}</span>
-                              </div>
-
-                              {/* Truncated message text */}
-                              <p className="line-clamp-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
-                                {msg.message}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Right: Actions Cluster */}
-                          <div className="flex items-center gap-3 self-end absolute right-3 md:self-center shrink-0 pt-2 md:pt-0">
-                            {/* Toggle Read/New */}
-                            <Button
-                              variant="ghost"
-                              disabled={isUpdating}
-                              onClick={() => handleMessageStatus(msg.id, isUnread ? 'read' : 'new')}
-                              className="badge badge-primary h-10 rounded-xl px-4 text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all"
-                              title={isUnread ? 'Mark as Read' : 'Mark as New'}
-                            >
-                              {isUnread ? (
-                                <>
-                                  <Check className="h-4 w-4 mr-2 text-emerald-500" />
-                                  Mark Read
-                                </>
-                              ) : (
-                                <>
-                                  <RotateCcw className="h-4 w-4 mr-2 text-slate-400" />
-                                  Mark New
-                                </>
-                              )}
-                            </Button>
-
-                            {/* Quick Mailto */}
-                            <a
-                              href={`mailto:${msg.email}?subject=Ebenezar Motors - In Response to your inquiry`}
-                              className="badge badge-primary inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-slate-900 dark:bg-white px-4 text-sm font-bold text-white dark:text-slate-900 transition-all hover:scale-105 hover:shadow-lg shadow-sm"
-                            >
-                              <Send className="h-4 w-4 mr-2" />
-                              Reply
-                            </a>
-
-                            {/* Full View Drawer Trigger */}
-                            <Button
-                              variant="outline"
-                              onClick={() => setSelectedLead({ type: 'message', data: msg })}
-                              className="badge badge-primary h-10 rounded-xl border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 px-4 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-indigo-600 transition-all backdrop-blur-sm"
-                            >
-                              <Eye className="h-4 w-4 mr-2" />
-                              View
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* ======================================================= */}
-            {/* TAB 2: TRADE-IN REQUESTS STREAM / CARDS */}
-            {/* ======================================================= */}
-            <TabsContent value="tradein" className="m-0 focus-visible:outline-none p-4 lg:p-6 bg-white/20 dark:bg-slate-950/20">
-              {filteredTradeIns.length === 0 ? (
-                <div className="px-4 py-20 text-center flex flex-col items-center justify-center">
-                  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 shadow-inner">
-                    <Replace className="h-10 w-10 text-slate-400" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
-                    {hasActiveFilters ? 'No matching trade-in requests found' : 'No vehicle trade-in requests'}
-                  </h3>
-                  <p className="mt-2 max-w-sm text-sm font-medium text-slate-500">
-                    {hasActiveFilters
-                      ? 'Try adjusting your vehicle model or status filter.'
-                      : 'Customer vehicle trade-in submissions and valuation requests will be cataloged here.'}
-                  </p>
-                  {hasActiveFilters && (
-                    <Button
-                      onClick={resetFilters}
-                      className="badge badge-danger mt-6 font-bold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 cursor-pointer"
-                    >
-                      Clear Search & Filters
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-4">
-                  {filteredTradeIns.map((req) => {
-                    const isNew = req.status === 'new';
-
-                    return (
-                      <div
-                        key={req.id}
-                        className={`group relative overflow-hidden flex flex-col justify-between gap-6 rounded-2xl p-5 transition-all duration-300 hover:shadow-xl hover:scale-[1.005] sm:p-6 lg:flex-row lg:items-center ${isNew
-                          ? 'bg-white dark:bg-slate-900 shadow-md shadow-indigo-100/50 dark:shadow-none'
-                          : 'bg-white/60 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-800 shadow-sm'
-                          }`}
-                      >
-                        {isNew && (
-                          <div className="absolute left-0 top-0 bottom-0 w-1.5 "></div>
-                        )}
-                        {/* Left: Vehicle Specs & Details */}
+                      {isUnread && (
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600 dark:bg-[#B7FF3C]" />
+                      )}
+                      <CardContent className="p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        {/* Left: Contact Info & Message Preview */}
                         <div
-                          className="flex items-start gap-5 flex-1 min-w-0 cursor-pointer relative z-10"
-                          onClick={() => setSelectedLead({ type: 'tradein', data: req })}
+                          className="flex items-start gap-3.5 sm:gap-4 flex-1 min-w-0 cursor-pointer"
+                          onClick={() => setSelectedLead({ type: 'message', data: msg })}
                         >
-                          {/* Vehicle Icon Badge */}
-                          <div className={`flex h-10 w-10 absolute top-3 left-3 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-all duration-300 ${isNew
-                            ? 'bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/40 dark:to-blue-900/40 border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400'
-                            : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
-                            }`}>
-                            <CarFront className="h-7 w-7" />
+                          {/* Avatar */}
+                          <div
+                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs sm:text-sm font-bold shadow-xs ${
+                              isUnread
+                                ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white'
+                                : 'bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3] border border-slate-200 dark:border-[#29352D]'
+                            }`}
+                          >
+                            {initials}
                           </div>
 
-                          {/* Vehicle Details */}
-                          <div className="space-y-2 min-w-0 flex-1 translate-x-18">
-                            <div className="flex flex-wrap items-center gap-3">
-                              <span className="text-lg font-bold text-slate-900 dark:text-white transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                                {req.make_model}
+                          {/* Content */}
+                          <div className="min-w-0 flex-1 space-y-1.5 sm:space-y-2">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                              <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-[#F4F7F4] group-hover:text-indigo-600 dark:group-hover:text-[#B7FF3C] transition-colors truncate">
+                                {msg.name}
                               </span>
-                              {req.year > 0 && (
-                                <span className="rounded-lg px-2.5 py-0.5 text-xs font-bold text-slate-600 dark:text-slate-300">
-                                  {req.year}
-                                </span>
-                              )}
-                              {getStatusBadge(req.status)}
-                            </div>
-
-                            {/* Quick Specs Chips */}
-                            <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-500">
-                              {req.mileage > 0 && (
-                                <span className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold">
-                                  <Gauge className="h-3.5 w-3.5 text-slate-400" />
-                                  {req.mileage.toLocaleString()} km
-                                </span>
-                              )}
-                              <span className="inline-flex items-center gap-1.5 font-bold">
-                                {getConditionBadge(req.condition)}
-                              </span>
-                              <span className="text-slate-300 dark:text-slate-600">•</span>
-                              <span className="text-xs font-semibold text-slate-400">
-                                {formatRelativeTime(req.created_at)}
+                              {getStatusBadge(msg.status)}
+                              <span className="text-xs font-medium text-slate-400 dark:text-[#A1ADA4]">
+                                • {formatRelativeTime(msg.created_at)}
                               </span>
                             </div>
 
-                            {/* Customer Contact Subline */}
-                            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-sm font-bold text-slate-600 dark:text-slate-400">
-                              <span className="flex items-center gap-1.5">
-                                <User className="h-4 w-4 text-slate-400" />
-                                {req.name}
-                              </span>
-                              <span className="text-slate-300 dark:text-slate-600">|</span>
-                              <span className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
-                                <Phone className="h-4 w-4" />
-                                {req.phone}
-                              </span>
+                            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 dark:text-[#A1ADA4]">
+                              <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">{msg.email}</span>
                             </div>
+
+                            <p className="line-clamp-2 text-xs sm:text-sm font-normal leading-relaxed text-slate-600 dark:text-[#C1CBC3]">
+                              {msg.message}
+                            </p>
                           </div>
                         </div>
 
-                        {/* Right: Action Dropdown & Buttons */}
-                        <div className="flex items-center gap-3 self-end lg:self-center right-3 shrink-0 pt-2 lg:pt-0 relative z-10">
-                          {/* Status Select */}
-                          <Select
-                            value={req.status}
-                            onValueChange={(val: string) => handleTradeInStatus(req.id, val as any)}
+                        {/* Right: Actions Cluster */}
+                        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 pt-3 lg:pt-0 border-t border-slate-100 dark:border-slate-800 lg:border-t-0 shrink-0">
+                          {/* Toggle Read/New */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             disabled={isUpdating}
+                            onClick={() => handleMessageStatus(msg.id, isUnread ? 'read' : 'new')}
+                            className="h-9 px-3 rounded-xl text-xs font-bold text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-100 dark:hover:bg-[#1D2920] hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer"
+                            title={isUnread ? 'Mark as Read' : 'Mark as New'}
                           >
-                            <SelectTrigger className="badge badge-primary h-10 w-[140px] rounded-xl justify-center gap-2 border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 text-sm font-bold shadow-sm backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500/50">
-                              <SelectValue placeholder="Status" />
-                            </SelectTrigger>
-                            <SelectContent className="rounded-xl font-bold shadow-xl border-slate-200 dark:border-slate-800">
-                              <SelectItem value="new">New</SelectItem>
-                              <SelectItem value="contacted">Contacted</SelectItem>
-                              <SelectItem value="completed">Completed</SelectItem>
-                              <SelectItem value="cancelled">Cancelled</SelectItem>
-                            </SelectContent>
-                          </Select>
+                            {isUnread ? (
+                              <>
+                                <Check className="h-3.5 w-3.5 mr-1.5 text-emerald-500" />
+                                Mark Read
+                              </>
+                            ) : (
+                              <>
+                                <RotateCcw className="h-3.5 w-3.5 mr-1.5 text-slate-400" />
+                                Mark New
+                              </>
+                            )}
+                          </Button>
 
-                          {/* Direct WhatsApp trigger */}
+                          {/* Quick Mailto */}
                           <a
-                            href={getWhatsAppUrl(req.phone, `Hello ${req.name}, regarding your trade-in appraisal for the ${req.make_model} on Ebenezar Motors:`)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="badge badge-primary inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-sm font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-105 hover:shadow-emerald-500/40"
-                            title="Chat on WhatsApp"
+                            href={`mailto:${msg.email}?subject=Ebenezar Motors - In Response to your inquiry`}
+                            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-[#B7FF3C] dark:hover:bg-[#a3e635] px-3.5 text-xs font-bold text-white dark:text-[#090C0A] transition-all shadow-xs cursor-pointer"
                           >
-                            <MessageCircleCheck className="h-4 w-4 mr-2 scale-x-[-1]" />
-                            WhatsApp
+                            <Send className="h-3.5 w-3.5" />
+                            Reply
                           </a>
 
-                          {/* Call trigger */}
-                          <a
-                            href={`tel:${req.phone}`}
-                            className="badge badge-primary inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 transition-all hover:scale-105 hover:shadow-md shadow-sm backdrop-blur-sm"
-                            title="Call client"
-                          >
-                            <Phone className="h-4 w-4" />
-                          </a>
-
-                          {/* Appraisal Drawer Trigger */}
+                          {/* Full View Drawer Trigger */}
                           <Button
                             variant="outline"
-                            onClick={() => setSelectedLead({ type: 'tradein', data: req })}
-                            className="badge badge-primary h-10 rounded-xl border-slate-200 dark:border-slate-700 bg-white/50 bg-gradient-to-r from-blue-500 to-blue-400 dark:bg-slate-800/50 px-4 text-sm font-bold text-white hover:bg-blue-100 dark:hover:bg-slate-800 hover:text-indigo-600 transition-all shadow-sm backdrop-blur-sm"
+                            size="sm"
+                            onClick={() => setSelectedLead({ type: 'message', data: msg })}
+                            className="h-9 px-3.5 rounded-xl border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-xs font-bold text-slate-700 dark:text-[#F4F7F4] hover:bg-slate-50 dark:hover:bg-[#1D2920] hover:text-indigo-600 dark:hover:text-[#B7FF3C] transition-all cursor-pointer shadow-xs"
                           >
-                            <Eye className="h-4 w-4 mr-2" />
-                            Details
+                            <Eye className="h-3.5 w-3.5 mr-1.5" />
+                            View
                           </Button>
                         </div>
-                      </div>
-                    );
-                  })}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* ======================================================= */}
+          {/* TAB 2: TRADE-IN REQUESTS STREAM / CARDS */}
+          {/* ======================================================= */}
+          <TabsContent value="tradein" className="m-0 focus-visible:outline-none p-4 sm:p-5 lg:p-6 bg-slate-50/20 dark:bg-transparent">
+            {filteredTradeIns.length === 0 ? (
+              <div className="px-4 py-16 sm:py-20 text-center flex flex-col items-center justify-center">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#1D2920] shadow-inner text-slate-400">
+                  <Replace className="h-6 w-6" />
                 </div>
-              )}
-            </TabsContent>
-          </div>
+                <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-[#F4F7F4]">
+                  {hasActiveFilters ? 'No matching trade-in requests found' : 'No vehicle trade-in requests'}
+                </h3>
+                <p className="mt-1.5 max-w-sm text-xs sm:text-sm font-medium text-slate-500 dark:text-[#A1ADA4]">
+                  {hasActiveFilters
+                    ? 'Try adjusting your vehicle model or status filter.'
+                    : 'Customer vehicle trade-in submissions and valuation requests will be cataloged here.'}
+                </p>
+                {hasActiveFilters && (
+                  <Button
+                    onClick={resetFilters}
+                    className="mt-5 font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 dark:bg-[#B7FF3C] dark:hover:bg-[#a3e635] text-white dark:text-[#090C0A] shadow-md shadow-indigo-500/20 text-xs sm:text-sm cursor-pointer"
+                  >
+                    Clear Search & Filters
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3.5 sm:gap-4">
+                {filteredTradeIns.map((req) => {
+                  const isNew = req.status === 'new';
+
+                  return (
+                    <div
+                      key={req.id}
+                      className={`group relative overflow-hidden rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 transition-all duration-200 border ${
+                        isNew
+                          ? 'bg-white dark:bg-[#151D17] border-amber-200 dark:border-amber-900/60 shadow-xs'
+                          : 'bg-white dark:bg-[#151D17] border-slate-200/80 dark:border-[#29352D] hover:border-slate-300 dark:hover:border-slate-700'
+                      }`}
+                    >
+                      {isNew && (
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500" />
+                      )}
+
+                      {/* Left: Vehicle Specs & Details */}
+                      <div
+                        className="flex items-start gap-3.5 sm:gap-4 flex-1 min-w-0 cursor-pointer"
+                        onClick={() => setSelectedLead({ type: 'tradein', data: req })}
+                      >
+                        {/* Vehicle Icon Badge */}
+                        <div
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border shadow-xs transition-all ${
+                            isNew
+                              ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-900/50 text-amber-600 dark:text-amber-400'
+                              : 'bg-slate-100 dark:bg-[#1D2920] border-slate-200 dark:border-[#29352D] text-slate-400 dark:text-[#A1ADA4]'
+                          }`}
+                        >
+                          <CarFront className="h-5 w-5" />
+                        </div>
+
+                        {/* Vehicle Details */}
+                        <div className="space-y-1.5 sm:space-y-2 min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-[#F4F7F4] group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
+                              {req.make_model}
+                            </span>
+                            {req.year > 0 && (
+                              <span className="rounded-md px-2 py-0.5 text-xs font-bold bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3] border border-slate-200/60 dark:border-[#29352D]">
+                                {req.year}
+                              </span>
+                            )}
+                            {getStatusBadge(req.status)}
+                          </div>
+
+                          {/* Quick Specs Chips */}
+                          <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-[#A1ADA4]">
+                            {req.mileage > 0 && (
+                              <span className="inline-flex items-center gap-1 font-semibold">
+                                <Gauge className="h-3.5 w-3.5 text-slate-400" />
+                                {req.mileage.toLocaleString()} km
+                              </span>
+                            )}
+                            <span className="inline-flex items-center gap-1 font-bold">
+                              {getConditionBadge(req.condition)}
+                            </span>
+                            <span className="text-slate-300 dark:text-slate-600">•</span>
+                            <span className="text-xs text-slate-400 dark:text-[#A1ADA4]">
+                              {formatRelativeTime(req.created_at)}
+                            </span>
+                          </div>
+
+                          {/* Customer Contact Subline */}
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm font-semibold text-slate-600 dark:text-[#C1CBC3]">
+                            <span className="flex items-center gap-1.5">
+                              <User className="h-3.5 w-3.5 text-slate-400" />
+                              {req.name}
+                            </span>
+                            <span className="text-slate-300 dark:text-slate-600">|</span>
+                            <span className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
+                              <Phone className="h-3.5 w-3.5" />
+                              {req.phone}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Action Dropdown & Buttons */}
+                      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 pt-3 lg:pt-0 border-t border-slate-100 dark:border-slate-800 lg:border-t-0 shrink-0">
+                        {/* Status Select */}
+                        <Select
+                          value={req.status}
+                          onValueChange={(val: string) => handleTradeInStatus(req.id, val as any)}
+                          disabled={isUpdating}
+                        >
+                          <SelectTrigger className="h-9 w-full sm:w-[130px] rounded-xl justify-between gap-1.5 border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-xs font-bold shadow-xs">
+                            <SelectValue placeholder="Status" />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-xl font-bold shadow-xl border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] text-xs">
+                            <SelectItem value="new">New</SelectItem>
+                            <SelectItem value="contacted">Contacted</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="cancelled">Cancelled</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        {/* Direct WhatsApp trigger */}
+                        <a
+                          href={getWhatsAppUrl(req.phone, `Hello ${req.name}, regarding your trade-in appraisal for the ${req.make_model} on Ebenezar Motors:`)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 px-3.5 text-xs font-bold text-white shadow-xs transition-all cursor-pointer"
+                          title="Chat on WhatsApp"
+                        >
+                          <MessageCircleCheck className="h-3.5 w-3.5 scale-x-[-1]" />
+                          WhatsApp
+                        </a>
+
+                        {/* Call trigger */}
+                        <a
+                          href={`tel:${req.phone}`}
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-700 dark:text-[#C1CBC3] hover:bg-slate-100 dark:hover:bg-[#1D2920] transition-all shadow-xs cursor-pointer"
+                          title="Call client"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                        </a>
+
+                        {/* Appraisal Details Trigger */}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedLead({ type: 'tradein', data: req })}
+                          className="h-9 px-3.5 rounded-xl border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#101612] text-xs font-bold text-slate-700 dark:text-[#F4F7F4] hover:bg-slate-50 dark:hover:bg-[#1D2920] hover:text-amber-600 dark:hover:text-[#B7FF3C] transition-all cursor-pointer shadow-xs"
+                        >
+                          <Eye className="h-3.5 w-3.5 mr-1.5" />
+                          Details
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </div>
 
@@ -918,22 +912,22 @@ export default function WebsiteLeadsManager({
         >
           <div className="flex flex-col gap-4 text-left">
             {/* Top Status & Date Banner */}
-            <div className="flex items-center justify-between pb-3 flex-wrap gap-2">
+            <div className="flex items-center justify-between pb-3 flex-wrap gap-2 border-b border-slate-100 dark:border-[#29352D]">
               <div className="flex items-center gap-2">
                 {selectedLead.type === 'message' ? (
-                  <span className="badge badge-primary inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-11 font-bold uppercase tracking-wider">
+                  <span className="badge badge-primary inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 text-11 font-bold uppercase tracking-wider">
                     <Mail className="size-3" />
                     Website Inquiry
                   </span>
                 ) : (
-                  <span className="badge badge-primary inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-11 font-bold uppercase tracking-wider">
+                  <span className="badge badge-primary inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 text-11 font-bold uppercase tracking-wider">
                     <Car className="size-3" />
                     Trade-In Request
                   </span>
                 )}
                 {getStatusBadge(selectedLead.data.status)}
               </div>
-              <span className="text-12 font-medium text-gray-500">
+              <span className="text-12 font-medium text-gray-500 dark:text-[#A1ADA4]">
                 {selectedLead.data.created_at
                   ? format(new Date(selectedLead.data.created_at), 'MMMM dd, yyyy · hh:mm a')
                   : 'N/A'}
@@ -941,84 +935,84 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Buyer & Vehicle Deal Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
               {/* Contact Card */}
-              <div className="p-3.5 rounded-xl bg-gray-50/60 flex flex-col gap-1.5">
-                <span className="text-10 font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-slate-50 dark:bg-[#101612] border border-slate-200/70 dark:border-[#29352D] flex flex-col gap-1.5">
+                <span className="text-10 font-bold uppercase tracking-wider text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1">
                   <User className="size-3" />
                   Contact Details
                 </span>
-                <p className="text-13 font-bold text-gray-900">{selectedLead.data.name}</p>
-                <div className="text-11 text-gray-600 flex flex-col gap-0.5">
+                <p className="text-13 sm:text-14 font-bold text-gray-900 dark:text-[#F4F7F4]">{selectedLead.data.name}</p>
+                <div className="text-11 sm:text-12 text-gray-600 dark:text-[#C1CBC3] flex flex-col gap-1">
                   {'email' in selectedLead.data && selectedLead.data.email && (
-                    <p className="flex items-center justify-between gap-1">
-                      <span className="text-gray-400">Email:</span>
-                      <span className="font-medium font-roboto max-w-[170px]">{selectedLead.data.email}</span>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-gray-400 dark:text-[#A1ADA4] shrink-0">Email:</span>
+                      <span className="font-medium font-roboto truncate flex-1 text-right">{selectedLead.data.email}</span>
                       <button
                         onClick={() => copyToClipboard((selectedLead.data as { email: string }).email, 'Email')}
-                        className="text-gray-400 hover:text-indigo-600 transition-colors shrink-0"
+                        className="text-gray-400 hover:text-indigo-600 dark:hover:text-[#B7FF3C] transition-colors shrink-0 p-0.5 cursor-pointer"
                         title="Copy email"
                       >
                         <Copy className="size-3" />
                       </button>
-                    </p>
+                    </div>
                   )}
                   {'phone' in selectedLead.data && selectedLead.data.phone && (
-                    <p className="flex justify-between gap-1">
-                      <span className="text-gray-400">Phone: </span>
-                      <span className="font-medium font-roboto">{selectedLead.data.phone}</span>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-gray-400 dark:text-[#A1ADA4] shrink-0">Phone:</span>
+                      <span className="font-medium font-roboto text-right">{selectedLead.data.phone}</span>
                       <button
                         onClick={() => copyToClipboard((selectedLead.data as { phone: string }).phone, 'Phone number')}
-                        className="text-gray-400 hover:text-indigo-600 transition-colors shrink-0"
+                        className="text-gray-400 hover:text-indigo-600 dark:hover:text-[#B7FF3C] transition-colors shrink-0 p-0.5 cursor-pointer"
                         title="Copy phone"
                       >
                         <Copy className="size-3" />
                       </button>
-                    </p>
+                    </div>
                   )}
                 </div>
               </div>
 
               {/* Vehicle / Submission info card */}
-              <div className="p-3.5 rounded-xl bg-gray-50/60 flex  flex-col gap-1.5">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-slate-50 dark:bg-[#101612] border border-slate-200/70 dark:border-[#29352D] flex flex-col gap-1.5">
                 {selectedLead.type === 'tradein' ? (
                   <>
-                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
+                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1">
                       <CarFront className="size-3" />
                       Vehicle & Appraisal Info
                     </span>
-                    <p className="text-13 relative left-2 font-bold text-gray-900 truncate">
+                    <p className="text-13 sm:text-14 font-bold text-gray-900 dark:text-[#F4F7F4] truncate">
                       {(selectedLead.data as TradeInRequest).make_model}
                     </p>
-                    <div className="text-11 text-gray-600 flex flex-col relative left-2 gap-0.5">
+                    <div className="text-11 sm:text-12 text-gray-600 dark:text-[#C1CBC3] flex flex-col gap-1">
                       <p>
-                        <span className="text-gray-400">Year: </span>
-                        <span className="font-bold font-roboto text-gray-800">{(selectedLead.data as TradeInRequest).year || 'N/A'}</span>
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">Year: </span>
+                        <span className="font-bold font-roboto text-gray-800 dark:text-[#F4F7F4]">{(selectedLead.data as TradeInRequest).year || 'N/A'}</span>
                       </p>
                       <p>
-                        <span className="text-gray-400">Mileage: </span>
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">Mileage: </span>
                         <span className="font-medium font-roboto">{(selectedLead.data as TradeInRequest).mileage ? (selectedLead.data as TradeInRequest).mileage.toLocaleString() + ' km' : 'Not stated'}</span>
                       </p>
-                      <p className="flex items-center gap-1">
-                        <span className="text-gray-400">Condition: </span>
+                      <p className="flex items-center gap-1.5">
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">Condition: </span>
                         {getConditionBadge((selectedLead.data as TradeInRequest).condition)}
                       </p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
+                    <span className="text-10 font-bold uppercase tracking-wider text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1">
                       <Inbox className="size-3" />
                       Submission Info
                     </span>
-                    <p className="text-13 font-bold text-gray-900">Website Contact Form</p>
-                    <div className="text-11 text-gray-600 flex flex-col gap-0.5">
+                    <p className="text-13 sm:text-14 font-bold text-gray-900 dark:text-[#F4F7F4]">Website Contact Form</p>
+                    <div className="text-11 sm:text-12 text-gray-600 dark:text-[#C1CBC3] flex flex-col gap-1">
                       <p>
-                        <span className="text-gray-400">Channel: </span>
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">Channel: </span>
                         <span className="font-medium">Direct Inbound Lead</span>
                       </p>
                       <p>
-                        <span className="text-gray-400">Status: </span>
+                        <span className="text-gray-400 dark:text-[#A1ADA4]">Status: </span>
                         <span className="font-medium capitalize">{selectedLead.data.status}</span>
                       </p>
                     </div>
@@ -1028,11 +1022,11 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Quick Contact Actions */}
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {'email' in selectedLead.data && selectedLead.data.email && (
                 <a
                   href={`mailto:${selectedLead.data.email}?subject=Ebenezar Motors - Follow-up on your website submission`}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-12 font-bold bg-white border border-gray-200 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all shadow-sm"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-12 font-bold bg-white dark:bg-[#151D17] border border-gray-200 dark:border-[#29352D] text-gray-700 dark:text-[#C1CBC3] hover:text-indigo-600 dark:hover:text-[#B7FF3C] hover:bg-indigo-50 dark:hover:bg-[#1D2920] transition-all shadow-xs cursor-pointer"
                 >
                   <Mail className="size-3.5 text-indigo-500" />
                   Send Email
@@ -1042,7 +1036,7 @@ export default function WebsiteLeadsManager({
                 <>
                   <a
                     href={`tel:${selectedLead.data.phone}`}
-                    className="flex-1 inline-flex items-center justify-center bg-blue-100 hover:bg-blue-200 gap-1.5 px-3 py-2 rounded-xl text-12 font-bold  border border-blue-400 text-blue-700 hover:bg-blue-50 transition-all shadow-sm"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-12 font-bold bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-all shadow-xs cursor-pointer"
                   >
                     <Phone className="size-3.5 text-blue-500" />
                     Call Client
@@ -1051,7 +1045,7 @@ export default function WebsiteLeadsManager({
                     href={getWhatsAppUrl(selectedLead.data.phone, 'Hello ' + selectedLead.data.name + ', this is Ebenezar Motors regarding your inquiry:')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-12 font-bold bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-12 font-bold bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-all shadow-xs cursor-pointer"
                   >
                     <MessageCircleCheck className="size-3.5 text-emerald-600 scale-x-[-1]" />
                     WhatsApp
@@ -1063,9 +1057,9 @@ export default function WebsiteLeadsManager({
             {/* Interaction Notes & Transcript */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <span className="text-10.5 font-bold text-gray-500 tracking-wider flex items-center gap-1.5">
-                  <FileText className="text-blue-600 size-3.5" />
-                  {selectedLead.type === 'message' ? 'Interaction info & Notes' : 'Appraisal Details & Notes'}
+                <span className="text-10.5 font-bold text-gray-500 dark:text-[#A1ADA4] tracking-wider flex items-center gap-1.5 uppercase">
+                  <FileText className="text-blue-600 dark:text-blue-400 size-3.5" />
+                  {selectedLead.type === 'message' ? 'Interaction Info & Notes' : 'Appraisal Details & Notes'}
                 </span>
                 <button
                   onClick={() =>
@@ -1075,7 +1069,7 @@ export default function WebsiteLeadsManager({
                         : 'Vehicle: ' + (selectedLead.data as TradeInRequest).make_model + ' (' + ((selectedLead.data as TradeInRequest).year || 'N/A') + ')\nMileage: ' + ((selectedLead.data as TradeInRequest).mileage ? String((selectedLead.data as TradeInRequest).mileage.toLocaleString()) + ' km' : 'Not stated') + '\nCondition: ' + ((selectedLead.data as TradeInRequest).condition || 'N/A') + '\nCustomer: ' + selectedLead.data.name + '\nPhone: ' + (selectedLead.data as TradeInRequest).phone
                     )
                   }
-                  className="badge badge-primary text-11 font-semibold text-black hover:text-gray-900 flex items-center gap-1 px-2 py-0.5 rounded border border-gray-200 bg-white cursor-pointer"
+                  className="badge badge-primary text-11 font-semibold text-slate-700 dark:text-[#C1CBC3] hover:text-slate-900 dark:hover:text-white flex items-center gap-1 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] cursor-pointer"
                 >
                   {copiedNotes ? (
                     <>
@@ -1091,23 +1085,21 @@ export default function WebsiteLeadsManager({
                 </button>
               </div>
 
-              <div className="p-4 rounded-xl border border-gray-200 bg-slate-50/70 left-3 text-13 font-medium text-gray-800 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
-                <span className="text-black font-sans relative left-3"> {selectedLead.type === 'message'
+              <div className="p-3.5 sm:p-4 rounded-xl border border-gray-200 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#101612] text-xs sm:text-13 font-medium text-gray-800 dark:text-[#C1CBC3] leading-relaxed whitespace-pre-wrap max-h-52 overflow-y-auto">
+                {selectedLead.type === 'message'
                   ? (selectedLead.data.message || '(No message notes recorded)')
                   : ('Vehicle: ' + (selectedLead.data as TradeInRequest).make_model + ' (' + ((selectedLead.data as TradeInRequest).year || 'N/A') + ')\nMileage: ' + ((selectedLead.data as TradeInRequest).mileage ? String((selectedLead.data as TradeInRequest).mileage.toLocaleString()) + ' km' : 'Not stated') + '\nCondition: ' + ((selectedLead.data as TradeInRequest).condition || 'N/A') + '\nCustomer: ' + selectedLead.data.name + '\nPhone: ' + (selectedLead.data as TradeInRequest).phone)}
-
-                </span>
               </div>
             </div>
 
             {/* Pipeline Status Workflow */}
             <div className="flex flex-col gap-2">
-              <span className="text-10.5 font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-10.5 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider flex items-center gap-1.5">
                 <SlidersHorizontal className="size-3.5 text-indigo-500" />
                 Pipeline Status
               </span>
-              <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-indigo-50/60 border border-indigo-100">
-                <span className="relative left-3 text-12 font-bold text-gray-700">   Update Status:</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40">
+                <span className="text-12 font-bold text-gray-700 dark:text-[#F4F7F4]">Update Status:</span>
                 {selectedLead.type === 'message' ? (
                   <Select
                     modal={false}
@@ -1115,10 +1107,10 @@ export default function WebsiteLeadsManager({
                     onValueChange={(val: string) => handleMessageStatus(selectedLead.data.id, val as any)}
                     disabled={isUpdating}
                   >
-                    <SelectTrigger className="badge badge-primary items-center justify-center gap-2 h-7 w-[160px] rounded-xl border-indigo-200 bg-white text-12 font-bold shadow-sm cursor-pointer">
+                    <SelectTrigger className="h-9 w-full sm:w-[170px] rounded-xl border-indigo-200 dark:border-indigo-900/50 bg-white dark:bg-[#101612] text-slate-800 dark:text-[#F4F7F4] text-12 font-bold shadow-xs cursor-pointer">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="rounded-xl shadow-xl font-bold text-12 z-[99999]">
+                    <SelectContent className="rounded-xl shadow-xl font-bold text-12 border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] z-[99999]">
                       <SelectItem value="new">New (Unread)</SelectItem>
                       <SelectItem value="read">Mark as Read</SelectItem>
                     </SelectContent>
@@ -1130,10 +1122,10 @@ export default function WebsiteLeadsManager({
                     onValueChange={(val: string) => handleTradeInStatus(selectedLead.data.id, val as any)}
                     disabled={isUpdating}
                   >
-                    <SelectTrigger className="badge badge-primary items-center justify-center gap-2 h-7 w-[160px] rounded-xl border-indigo-200 bg-white text-12 font-bold shadow-sm cursor-pointer">
+                    <SelectTrigger className="h-9 w-full sm:w-[170px] rounded-xl border-indigo-200 dark:border-indigo-900/50 bg-white dark:bg-[#101612] text-slate-800 dark:text-[#F4F7F4] text-12 font-bold shadow-xs cursor-pointer">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="rounded-xl shadow-xl font-bold text-12 z-[99999]">
+                    <SelectContent className="rounded-xl shadow-xl font-bold text-12 border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] z-[99999]">
                       <SelectItem value="new">New Lead</SelectItem>
                       <SelectItem value="contacted">Contacted</SelectItem>
                       <SelectItem value="completed">Completed</SelectItem>
@@ -1145,7 +1137,7 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Delivery Metadata & Diagnostics */}
-            <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-11 text-gray-400 font-google-sans">
+            <div className="pt-2.5 border-t border-gray-100 dark:border-[#29352D] flex flex-wrap items-center justify-between gap-2 text-11 text-gray-400 dark:text-[#A1ADA4] font-google-sans">
               <span>Lead ID: {selectedLead.data.id}</span>
               <span>
                 Received:{' '}
@@ -1156,10 +1148,10 @@ export default function WebsiteLeadsManager({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end gap-2 pt-1">
               <button
                 onClick={() => setSelectedLead(null)}
-                className="badge badge-destructive px-4 py-2 rounded-xl border border-red-200 text-13 font-bold bg-red-50 text-red-700 hover:bg-red-200 transition-all cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-red-200 dark:border-rose-900/40 text-13 font-bold bg-red-50 dark:bg-rose-950/20 text-red-700 dark:text-rose-400 hover:bg-red-100 dark:hover:bg-rose-950/40 transition-all cursor-pointer"
               >
                 Close
               </button>

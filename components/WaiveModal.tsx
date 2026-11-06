@@ -3,9 +3,10 @@
 import { useState, useTransition, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { waiveAgreementBalance } from '@/lib/actions/dms.actions';
-import { formatAmount } from '@/lib/utils';
-import { Loader2, X, Percent, AlertTriangle, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { formatAmount, cn } from '@/lib/utils';
+import { Loader2, X, Percent, AlertTriangle, ShieldCheck, CheckCircle2, ArrowRight, Calendar } from 'lucide-react';
 import { toast } from '@/lib/toast';
+import SecureActionModal from '@/components/security/SecureActionModal';
 
 interface WaiveModalProps {
   loanId: string;
@@ -25,6 +26,8 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
   const [waiverType, setWaiverType] = useState<'Principal' | 'Penalty' | 'Interest'>('Principal');
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState('');
+  const [waiverDate, setWaiverDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
 
@@ -43,7 +46,7 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
   // Reset error when inputs change
   useEffect(() => {
     setError('');
-  }, [waiverType, amount]);
+  }, [waiverType, amount, waiverDate]);
 
   const numAmount = Number(amount) || 0;
   const newProjectedBalance = Math.max(0, totalBalance - numAmount);
@@ -52,7 +55,8 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
   const isValid =
     reason.trim().length >= 10 &&
     numAmount > 0 &&
-    numAmount <= availableBalance;
+    numAmount <= availableBalance &&
+    !!waiverDate;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +79,17 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
       return;
     }
 
+    if (!waiverDate) {
+      setError('Please select an effective waiver date.');
+      return;
+    }
+
+    // Require password re-authentication before execution
+    setShowAuthModal(true);
+  };
+
+  const handleAuthorized = async (verificationToken: string) => {
+    setShowAuthModal(false);
     startTransition(async () => {
       try {
         const res = await waiveAgreementBalance({
@@ -82,6 +97,8 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
           waiverType,
           amount: numAmount,
           reason: reason.trim(),
+          waiverDate,
+          verificationToken,
         });
 
         if (!res.success) {
@@ -89,7 +106,7 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
         }
 
         toast.success(
-          `Waiver of ${formatAmount(numAmount)} applied successfully. New balance: ${formatAmount(res.newBalance ?? newProjectedBalance)}.`,
+          `Waiver of ${formatAmount(numAmount)} applied successfully. Effective Date: ${waiverDate}. New balance: ${formatAmount(res.newBalance ?? newProjectedBalance)}.`,
           { duration: 5000 }
         );
         router.refresh();
@@ -108,16 +125,13 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
         
         {/* Header */}
         <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-            <div style={{
-              width: '2rem', height: '2rem', borderRadius: '0.5rem',
-              background: '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Percent size={14} style={{ color: '#D97706' }} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/40 flex items-center justify-center">
+              <Percent size={14} className="text-amber-600 dark:text-amber-400" />
             </div>
             <div>
               <h2 className="modal-title" id="waive-modal-title">Waive Contract Balance</h2>
-              <p style={{ fontSize: '0.75rem', color: '#6B7280', margin: 0 }}>
+              <p className="text-xs text-gray-500 dark:text-[#A1ADA4] m-0">
                 Adjust and relieve outstanding balance
               </p>
             </div>
@@ -128,22 +142,13 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
         </div>
 
         {/* Informative pill */}
-        <div style={{
-          margin: '0.75rem 1.5rem 0',
-          padding: '0.875rem 1rem',
-          background: '#FFFBEB',
-          border: '1px solid #FDE68A',
-          borderRadius: '0.625rem',
-          display: 'flex',
-          gap: '0.75rem',
-          alignItems: 'flex-start',
-        }}>
-          <ShieldCheck size={16} style={{ color: '#D97706', flexShrink: 0, marginTop: '0.125rem' }} />
+        <div className="mx-6 mt-3 p-3.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-xl flex gap-3 items-start">
+          <ShieldCheck size={16} className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
           <div>
-            <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#92400E', marginBottom: '0.25rem' }}>
+            <p className="text-xs font-bold text-amber-900 dark:text-amber-300 mb-1">
               Authorized Credit Adjustment
             </p>
-            <p style={{ fontSize: '0.75rem', color: '#B45309', lineHeight: 1.4 }}>
+            <p className="text-xs text-amber-800 dark:text-amber-400 leading-normal">
               This waiver immediately reduces the contract outstanding balance in the ledger. 
               All waivers are registered as formal repayment adjustments with audit trail compliance.
             </p>
@@ -185,12 +190,12 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
 
             {/* Waiver Amount */}
             <div className="form-field">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                <label className="form-label" htmlFor="waive-amount" style={{ marginBottom: 0 }}>
-                  Waiver Amount (KES) <span style={{ color: '#EF4444' }}>*</span>
+              <div className="flex justify-between items-center mb-1">
+                <label className="form-label mb-0" htmlFor="waive-amount">
+                  Waiver Amount (KES) <span className="text-red-500">*</span>
                 </label>
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6B7280' }}>
-                  Max Available: <strong style={{ color: '#111827' }}>{formatAmount(availableBalance)}</strong>
+                <span className="text-xs font-semibold text-gray-500 dark:text-[#A1ADA4]">
+                  Max Available: <strong className="text-gray-900 dark:text-[#F4F7F4]">{formatAmount(availableBalance)}</strong>
                 </span>
               </div>
               <input
@@ -202,28 +207,18 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
                 placeholder={`e.g. 50000 (Max: ${availableBalance.toFixed(2)})`}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="form-input"
-                style={{ width: '100%', fontSize: '1rem', fontWeight: 600 }}
+                className="form-input w-full text-base font-semibold"
                 disabled={isPending}
                 required
               />
 
               {/* Quick Presets */}
-              <div style={{ display: 'flex', gap: '0.375rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+              <div className="flex gap-1.5 mt-2 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setAmount(availableBalance.toString())}
                   disabled={isPending || availableBalance <= 0}
-                  style={{
-                    background: '#FEF3C7',
-                    border: '1px solid #FCD34D',
-                    borderRadius: '0.375rem',
-                    color: '#92400E',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    padding: '0.25rem 0.625rem',
-                    cursor: 'pointer',
-                  }}
+                  className="bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/50 rounded-md text-amber-900 dark:text-amber-300 text-xs font-bold px-2.5 py-1 cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
                 >
                   Waive Full Balance ({formatAmount(availableBalance)})
                 </button>
@@ -232,16 +227,7 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
                     type="button"
                     onClick={() => setAmount((Math.round(availableBalance * 0.5)).toString())}
                     disabled={isPending}
-                    style={{
-                      background: '#F3F4F6',
-                      border: '1px solid #E5E7EB',
-                      borderRadius: '0.375rem',
-                      color: '#374151',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      padding: '0.25rem 0.5rem',
-                      cursor: 'pointer',
-                    }}
+                    className="bg-gray-100 dark:bg-[#18221A] border border-gray-200 dark:border-[#29352D] rounded-md text-gray-700 dark:text-[#C1CBC3] text-xs font-semibold px-2 py-1 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#222E25] transition-colors"
                   >
                     50% ({formatAmount(Math.round(availableBalance * 0.5))})
                   </button>
@@ -251,16 +237,7 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
                     type="button"
                     onClick={() => setAmount((Math.round(availableBalance * 0.25)).toString())}
                     disabled={isPending}
-                    style={{
-                      background: '#F3F4F6',
-                      border: '1px solid #E5E7EB',
-                      borderRadius: '0.375rem',
-                      color: '#374151',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      padding: '0.25rem 0.5rem',
-                      cursor: 'pointer',
-                    }}
+                    className="bg-gray-100 dark:bg-[#18221A] border border-gray-200 dark:border-[#29352D] rounded-md text-gray-700 dark:text-[#C1CBC3] text-xs font-semibold px-2 py-1 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#222E25] transition-colors"
                   >
                     25% ({formatAmount(Math.round(availableBalance * 0.25))})
                   </button>
@@ -270,35 +247,63 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
 
             {/* Live Calculation Preview Card */}
             {numAmount > 0 && (
-              <div style={{
-                padding: '0.75rem 1rem',
-                borderRadius: '0.5rem',
-                background: isSettlement ? '#F0FDF4' : '#F9FAFB',
-                border: `1px solid ${isSettlement ? '#BBF7D0' : '#E5E7EB'}`,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.375rem',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#6B7280' }}>
+              <div className={cn(
+                "p-3 sm:p-4 rounded-lg border flex flex-col gap-1.5",
+                isSettlement
+                  ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/40"
+                  : "bg-gray-50 dark:bg-[#18221A] border-gray-200 dark:border-[#29352D]"
+              )}>
+                <div className="flex justify-between text-xs text-gray-500 dark:text-[#A1ADA4]">
                   <span>Current Outstanding Balance:</span>
-                  <span style={{ fontWeight: 600, color: '#111827' }}>{formatAmount(totalBalance)}</span>
+                  <span className="font-semibold text-gray-900 dark:text-[#F4F7F4]">{formatAmount(totalBalance)}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#D97706', fontWeight: 600 }}>
+                <div className="flex justify-between text-xs text-amber-600 dark:text-amber-400 font-semibold">
                   <span>Deduction (Waiver):</span>
                   <span>- {formatAmount(numAmount)}</span>
                 </div>
-                <div style={{ borderTop: '1px dashed #D1D5DB', paddingTop: '0.375rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.8125rem', fontWeight: 700 }}>
-                  <span style={{ color: isSettlement ? '#166534' : '#111827' }}>Projected Remaining Balance:</span>
-                  <span style={{ color: isSettlement ? '#166534' : '#111827' }}>{formatAmount(newProjectedBalance)}</span>
+                <div className="border-t border-dashed border-gray-300 dark:border-[#29352D] pt-1.5 flex justify-between text-xs sm:text-[13px] font-bold">
+                  <span className={isSettlement ? "text-emerald-700 dark:text-emerald-400" : "text-gray-900 dark:text-[#F4F7F4]"}>
+                    Projected Remaining Balance:
+                  </span>
+                  <span className={isSettlement ? "text-emerald-700 dark:text-emerald-400" : "text-gray-900 dark:text-[#F4F7F4]"}>
+                    {formatAmount(newProjectedBalance)}
+                  </span>
                 </div>
                 {isSettlement && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginTop: '0.25rem', color: '#15803D', fontSize: '0.75rem', fontWeight: 600 }}>
+                  <div className="flex items-center gap-1.5 mt-1 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
                     <CheckCircle2 size={14} />
                     <span>This full waiver will mark the contract as completely settled & fully paid.</span>
                   </div>
                 )}
               </div>
             )}
+
+            {/* Backdate Option (Effective Date) */}
+            <div className="form-field">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <label className="form-label" htmlFor="waive-date" style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                  <Calendar size={13} style={{ color: '#D97706' }} />
+                  <span>Effective Date (Backdate Option)</span> <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#6B7280' }}>
+                  {waiverDate === new Date().toISOString().split('T')[0] ? 'Today' : 'Backdated'}
+                </span>
+              </div>
+              <input
+                id="waive-date"
+                type="date"
+                value={waiverDate}
+                onChange={(e) => setWaiverDate(e.target.value)}
+                max={new Date().toISOString().split('T')[0]}
+                className="form-input"
+                style={{ width: '100%', fontSize: '0.875rem' }}
+                disabled={isPending}
+                required
+              />
+              <span className="form-hint">
+                Defaults to today. Choose an earlier date if recording a retroactive waiver.
+              </span>
+            </div>
 
             {/* Reason */}
             <div className="form-field">
@@ -355,6 +360,26 @@ export default function WaiveModal({ loanId, currentUser, loan, onClose }: Waive
           </div>
         </form>
       </div>
+
+      {/* Security Re-Authentication Modal */}
+      <SecureActionModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthorized={handleAuthorized}
+        action="BALANCE_WAIVER"
+        resourceId={loanId}
+        title="Authorize Balance Waiver"
+        description="Enter your account password to authorize this debt relief adjustment. This operation directly alters the contractual balance and financial reports."
+        confirmLabel="Confirm & Authorize Waiver"
+        severity="warning"
+        summaryItems={[
+          { label: 'Contract ID', value: loanId.slice(-8).toUpperCase() },
+          { label: 'Category', value: waiverType },
+          { label: 'Amount to Waive', value: formatAmount(numAmount) },
+          { label: 'Effective Date', value: waiverDate },
+          { label: 'New Projected Balance', value: formatAmount(newProjectedBalance) },
+        ]}
+      />
     </div>
   );
 }

@@ -42,7 +42,7 @@ export default function CashFlowChart({ months }: CashFlowChartProps) {
             `KES ${Number(value).toLocaleString()}`,
             name === "disbursed" ? "Disbursed" : "Collected",
           ]}
-          contentStyle={{ borderRadius: "0.75rem", border: "1px solid #e5e7eb", fontSize: 12 }}
+          contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
         />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Bar dataKey="disbursed" name="Disbursed" fill="#6366f1" radius={[4, 4, 0, 0]} />

@@ -24,35 +24,26 @@ export default async function UsersPage() {
   const rejected = allUsers.filter((u: any) => u.userStatus === 'rejected');
 
   const stats = [
-    { label: 'Total Users',     value: allUsers.length, icon: Users,       color: '#1a73e8', bg: '#eff6ff' },
-    { label: 'Active',          value: active.length,   icon: CheckCircle, color: '#15803d', bg: '#f0fdf4' },
-    { label: 'Pending Approval',value: pending.length,  icon: Clock,       color: '#c2410c', bg: '#fff7ed' },
-    { label: 'Rejected',        value: rejected.length, icon: XCircle,     color: '#b91c1c', bg: '#fef2f2' },
+    { label: 'Total Users', value: allUsers.length, icon: Users, colorClass: 'text-blue-600 dark:text-blue-400', bgClass: 'bg-blue-50 dark:bg-blue-950/40' },
+    { label: 'Active', value: active.length, icon: CheckCircle, colorClass: 'text-emerald-600 dark:text-emerald-400', bgClass: 'bg-emerald-50 dark:bg-emerald-950/40' },
+    { label: 'Pending Approval', value: pending.length, icon: Clock, colorClass: 'text-amber-600 dark:text-amber-400', bgClass: 'bg-amber-50 dark:bg-amber-950/40' },
+    { label: 'Rejected', value: rejected.length, icon: XCircle, colorClass: 'text-red-600 dark:text-red-400', bgClass: 'bg-red-50 dark:bg-red-950/40' },
   ];
 
   return (
-    <div style={{
-      padding: '2rem 1.5rem',
-      maxWidth: 1100,
-      margin: '0 auto',
-      fontFamily: 'Inter, system-ui, sans-serif',
-    }}>
+    <div className="py-8 px-4 sm:px-6 max-w-6xl mx-auto font-sans">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '2rem', gap: '1rem', flexWrap: 'wrap' }}>
+      <div className="flex flex-col sm:flex-row items-start justify-between mb-8 gap-4">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
-            <div style={{
-              width: 40, height: 40, borderRadius: 10,
-              background: 'linear-gradient(135deg, #0f4c81, #1a73e8)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <ShieldAlert size={20} color="white" />
+          <div className="flex items-center gap-3 mb-1.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-700 to-blue-500 flex items-center justify-center text-white shrink-0">
+              <ShieldAlert size={20} />
             </div>
-            <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: '#0f1c3f' }}>
+            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-[#F4F7F4] tracking-tight m-0">
               User Management
             </h1>
           </div>
-          <p style={{ margin: 0, color: '#5a6a8a', fontSize: '0.9rem' }}>
+          <p className="text-sm text-gray-500 dark:text-[#A1ADA4] m-0">
             Review and approve access requests for new users.
           </p>
         </div>
@@ -60,30 +51,20 @@ export default async function UsersPage() {
       </div>
 
       {/* Stats */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: '1rem',
-        marginBottom: '2rem',
-      }}>
-        {stats.map(({ label, value, icon: Icon, color, bg }) => (
-          <div key={label} style={{
-            background: 'white',
-            border: '1px solid #e8edf5',
-            borderRadius: 12,
-            padding: '1.25rem 1.5rem',
-            display: 'flex', alignItems: 'center', gap: 14,
-            boxShadow: '0 2px 8px rgba(15, 76, 129, 0.06)',
-          }}>
-            <div style={{
-              width: 42, height: 42, borderRadius: 10,
-              background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <Icon size={20} color={color} />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {stats.map(({ label, value, icon: Icon, colorClass, bgClass }) => (
+          <div
+            key={label}
+            className="bg-white dark:bg-[#151D17] border border-gray-100 dark:border-[#29352D] rounded-xl p-4 sm:p-5 flex items-center gap-3.5 shadow-sm"
+          >
+            <div className={`w-11 h-11 rounded-lg ${bgClass} flex items-center justify-center shrink-0`}>
+              <Icon size={20} className={colorClass} />
             </div>
             <div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f1c3f', lineHeight: 1 }}>{value}</div>
-              <div style={{ fontSize: '0.75rem', color: '#5a6a8a', marginTop: 4 }}>{label}</div>
+              <div className="text-2xl font-extrabold text-gray-900 dark:text-[#F4F7F4] leading-none tabular-nums">
+                {value}
+              </div>
+              <div className="text-xs text-gray-500 dark:text-[#A1ADA4] mt-1 font-medium">{label}</div>
             </div>
           </div>
         ))}
@@ -91,26 +72,17 @@ export default async function UsersPage() {
 
       {/* Pending section */}
       {pending.length > 0 && (
-        <section style={{ marginBottom: '2rem' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            marginBottom: '0.75rem',
-          }}>
-            <Clock size={16} color="#c2410c" />
-            <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f1c3f' }}>
+        <section className="mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <Clock size={16} className="text-amber-600 dark:text-amber-400" />
+            <h2 className="text-base font-bold text-gray-900 dark:text-[#F4F7F4] m-0 flex items-center">
               Pending Approval
-              <span style={{
-                marginLeft: 8, background: '#fff7ed', color: '#c2410c',
-                border: '1px solid #fed7aa', borderRadius: 100,
-                padding: '0.1rem 0.6rem', fontSize: '0.75rem',
-              }}>{pending.length}</span>
+              <span className="ml-2 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 rounded-full px-2.5 py-0.5 text-xs font-semibold">
+                {pending.length}
+              </span>
             </h2>
           </div>
-          <div style={{
-            background: 'white', border: '1px solid #fed7aa',
-            borderRadius: 12, overflow: 'hidden',
-            boxShadow: '0 2px 12px rgba(194, 65, 12, 0.08)',
-          }}>
+          <div className="bg-white dark:bg-[#151D17] border border-amber-200 dark:border-amber-900/40 rounded-xl overflow-hidden shadow-sm">
             <UsersTable users={pending} />
           </div>
         </section>
@@ -118,17 +90,13 @@ export default async function UsersPage() {
 
       {/* All users section */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '0.75rem' }}>
-          <Users size={16} color="#1a73e8" />
-          <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f1c3f' }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Users size={16} className="text-blue-600 dark:text-blue-400" />
+          <h2 className="text-base font-bold text-gray-900 dark:text-[#F4F7F4] m-0">
             All Users
           </h2>
         </div>
-        <div style={{
-          background: 'white', border: '1px solid #e8edf5',
-          borderRadius: 12, overflow: 'hidden',
-          boxShadow: '0 2px 8px rgba(15, 76, 129, 0.06)',
-        }}>
+        <div className="bg-white dark:bg-[#151D17] border border-gray-100 dark:border-[#29352D] rounded-xl overflow-hidden shadow-sm">
           <UsersTable users={allUsers} />
         </div>
       </section>

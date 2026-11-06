@@ -81,7 +81,7 @@ export default function ConfirmDeleteModal({
       <div
         className={cn(
           'relative w-full max-w-[420px] overflow-hidden',
-          'rounded-2xl border border-gray-200 bg-white',
+          'rounded-2xl border border-gray-200 bg-white dark:border-[#29352D] dark:bg-[#151D17]',
           'shadow-[0_24px_80px_-20px_rgba(0,0,0,0.28)]',
           'animate-in fade-in zoom-in-95 duration-200'
         )}
@@ -94,8 +94,8 @@ export default function ConfirmDeleteModal({
             className={cn(
               'absolute right-5 top-5 z-10 flex size-8 items-center justify-center',
               'rounded-lg text-gray-400 transition-colors duration-150',
-              'hover:bg-gray-100 hover:text-gray-700',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300'
+              'hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-[#1D2920] dark:hover:text-[#F4F7F4]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 dark:focus-visible:ring-[#29352D]'
             )}
             aria-label="Close"
           >
@@ -107,9 +107,9 @@ export default function ConfirmDeleteModal({
         <div className="p-6">
           {/* Warning Icon */}
           <div className="mb-4 flex justify-center">
-            <div className="flex size-12 items-center justify-center rounded-xl border border-red-100 bg-red-50">
+            <div className="flex size-12 items-center justify-center rounded-xl border border-red-100 bg-red-50 dark:border-red-950/60 dark:bg-red-950/30">
               <AlertTriangle
-                className="size-6 text-red-600"
+                className="size-6 text-red-600 dark:text-red-400"
                 strokeWidth={1.8}
               />
             </div>
@@ -119,17 +119,17 @@ export default function ConfirmDeleteModal({
           <div className="space-y-2 text-center">
             <h2
               id="delete-modal-title"
-              className="text-lg font-semibold tracking-tight text-gray-950"
+              className="text-lg font-semibold tracking-tight text-gray-950 dark:text-[#F4F7F4]"
             >
               {title}
             </h2>
 
-            <div id="delete-modal-description" className="space-y-1.5 text-sm leading-6 text-gray-600">
+            <div id="delete-modal-description" className="space-y-1.5 text-sm leading-6 text-gray-600 dark:text-[#A1ADA4]">
               <p>
-                Are you sure you want to delete <strong>{itemName}</strong>
+                Are you sure you want to delete <strong className="text-gray-900 dark:text-[#F4F7F4]">{itemName}</strong>
                 ?
               </p>
-              <p className="text-xs leading-5 text-gray-500">
+              <p className="text-xs leading-5 text-gray-500 dark:text-[#A1ADA4]">
                 {description}
               </p>
             </div>
@@ -137,7 +137,7 @@ export default function ConfirmDeleteModal({
         </div>
 
         {/* Footer Actions — matches px-6 horizontal alignment with balanced py-4 */}
-        <div className="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50/70 px-6 py-4 sm:flex-row">
+        <div className="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50/70 dark:border-[#29352D] dark:bg-[#101612] px-6 py-4 sm:flex-row">
           <button
             ref={cancelBtnRef}
             type="button"
@@ -145,7 +145,7 @@ export default function ConfirmDeleteModal({
             disabled={isPending}
             className={cn(
               'inline-flex badge badge-primary h-10 flex-1 items-center justify-center rounded-xl',
-              'border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700',
+              'border border-gray-200 bg-white dark:border-[#29352D] dark:bg-[#1D2920] dark:text-[#F4F7F4] dark:hover:bg-[#29352D] px-4 text-sm font-medium text-gray-700',
               'shadow-sm transition-all duration-150',
               'hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2',

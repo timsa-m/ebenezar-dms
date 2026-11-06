@@ -268,18 +268,18 @@ export default function MonthlyLedgerTable({
   };
 
   return (
-    <div className="card-premium">
+    <div className="card-premium dark:bg-[#151D17] dark:border-[#29352D]">
       {/* Header bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
         <div>
-          <h3 className="text-15 font-bold text-gray-900 tracking-tight flex items-center gap-2">
+          <h3 className="text-15 font-bold text-gray-900 dark:text-[#F4F7F4] tracking-tight flex items-center gap-2">
 
             Monthly Vehicle Contract Ledger
-            <span className="text-12 font-medium text-gray-400">
+            <span className="text-12 font-medium text-gray-400 dark:text-[#A1ADA4]">
               ({filteredEntries.length} of {entries.length} contracts)
             </span>
           </h3>
-          <p className="text-12 text-gray-500 mt-0.5">
+          <p className="text-12 text-gray-500 dark:text-[#A1ADA4] mt-0.5">
             Audit-ready period snapshot for {periodLabel}. Showing asset financing receivables, repayments, and accrued penalties.
           </p>
         </div>
@@ -287,7 +287,7 @@ export default function MonthlyLedgerTable({
         <div className="flex items-center gap-2">
           <button
             onClick={exportToCSV}
-            className="btn-secondary text-12 py-1.5 px-3 flex items-center gap-1.5"
+            className="btn-secondary text-12 py-1.5 px-3 flex items-center gap-1.5 dark:bg-[#18221A] dark:border-[#29352D] dark:text-[#C1CBC3] dark:hover:bg-[#1D2920] dark:hover:text-[#F4F7F4]"
             title="Export filtered ledger to CSV"
           >
             <Download className="size-3.5" />
@@ -297,7 +297,7 @@ export default function MonthlyLedgerTable({
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-gray-100 pb-3 mb-4">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-gray-100 dark:border-[#29352D] pb-3 mb-4">
         {[
           { key: "ALL", label: "All Contracts", count: counts.all },
           { key: "ACTIVE", label: "Active Deals", count: counts.active },
@@ -311,8 +311,8 @@ export default function MonthlyLedgerTable({
             className={cn(
               "badge badge-primary px-3 py-1.5 rounded-lg text-12 font-medium transition-all flex items-center gap-1.5",
               statusFilter === tab.key
-                ? "bg-primary text-white shadow-sm font-semibold"
-                : "text-gray-600 hover:bg-gray-100"
+                ? "bg-primary dark:bg-[#B7FF3C] text-white dark:text-[#090C0A] shadow-sm font-semibold"
+                : "text-gray-600 dark:text-[#C1CBC3] hover:bg-gray-100 dark:hover:bg-[#18221A]"
             )}
           >
             {tab.label}
@@ -320,10 +320,10 @@ export default function MonthlyLedgerTable({
               className={cn(
                 "badge badge-primary text-10 px-1.5 py-0.2 rounded-full font-bold",
                 statusFilter === tab.key
-                  ? "bg-white/20 text-white"
+                  ? "bg-white/20 dark:bg-[#090C0A]/20 text-white dark:text-[#090C0A]"
                   : tab.alert
-                    ? "bg-red-100 text-red-700"
-                    : "bg-gray-200 text-gray-700"
+                    ? "bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300"
+                    : "bg-gray-200 dark:bg-[#101612] text-gray-700 dark:text-[#A1ADA4]"
               )}
             >
               {tab.count}
@@ -335,18 +335,18 @@ export default function MonthlyLedgerTable({
       {/* Search Input Bar */}
       <div className="search-box mb-4">
         <div className="search-input relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400 dark:text-[#A1ADA4]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by client name, phone, contract #, or vehicle plate (e.g. KDD 123X, Premio)..."
-            className="input-class w-full pl-10 pr-9 text-13"
+            className="input-class w-full pl-10 pr-9 text-13 bg-white dark:bg-[#101612] border border-gray-200 dark:border-[#29352D] text-gray-900 dark:text-[#F4F7F4] placeholder:text-gray-400 dark:placeholder:text-[#5d6f62]"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#A1ADA4] hover:text-gray-600 dark:hover:text-[#F4F7F4] p-0.5"
             >
               <X className="size-4" />
             </button>
@@ -454,22 +454,22 @@ export default function MonthlyLedgerTable({
                     <td className="data-td font-medium">
                       <Link
                         href={`/loans/${entry.loanId}`}
-                        className="font-roboto text-12 font-bold text-primary hover:underline inline-flex items-center gap-1"
+                        className="font-roboto text-12 font-bold text-primary dark:text-[#B7FF3C] hover:underline inline-flex items-center gap-1"
                         title="View contract details"
                       >
                         {entry.contractNo || entry.loanId.slice(0, 8)}
-                        <ExternalLink className="size-3 opacity-0 group-hover:opacity-100 text-gray-400 transition-opacity" />
+                        <ExternalLink className="size-3 opacity-0 group-hover:opacity-100 text-gray-400 dark:text-[#A1ADA4] transition-opacity" />
                       </Link>
                     </td>
 
                     {/* Client & Contact */}
                     <td className="data-td">
                       <div className="flex flex-col">
-                        <span className="font-semibold text-gray-900 text-13">
+                        <span className="font-semibold text-gray-900 dark:text-[#F4F7F4] text-13">
                           {entry.clientName}
                         </span>
                         {entry.clientPhone && (
-                          <span className="text-11 text-gray-400 flex items-center gap-1 font-mono">
+                          <span className="text-11 text-gray-400 dark:text-[#A1ADA4] flex items-center gap-1 font-mono">
                             <Phone className="size-2.5" />
                             {entry.clientPhone}
                           </span>
@@ -480,12 +480,11 @@ export default function MonthlyLedgerTable({
                     {/* Vehicle Plate & Model */}
                     <td className="data-td">
                       <div className="flex flex-col">
-                        <span className="badge badge-info  inline-flex items-center gap-1 font-roboto text-12 font-bold text-gray-800 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 w-fit">
-
+                        <span className="badge badge-info inline-flex items-center gap-1 font-roboto text-12 font-bold text-gray-800 dark:text-[#F4F7F4] bg-gray-100 dark:bg-[#18221A] px-2 py-0.5 rounded border border-gray-200 dark:border-[#29352D] w-fit">
                           {entry.vehicleReg || "—"}
                         </span>
                         {entry.vehicleMakeModel && (
-                          <span className="text-11 text-gray-500 mt-0.5 truncate max-w-[160px]">
+                          <span className="text-11 text-gray-500 dark:text-[#A1ADA4] mt-0.5 truncate max-w-[160px]">
                             {entry.vehicleMakeModel}
                           </span>
                         )}
@@ -494,13 +493,13 @@ export default function MonthlyLedgerTable({
 
                     {/* Deal Type */}
                     <td className="data-td">
-                      <span className="text-12 font-medium text-gray-600">
+                      <span className="text-12 font-medium text-gray-600 dark:text-[#C1CBC3]">
                         {entry.loanType || "Hire Purchase"}
                       </span>
                     </td>
 
                     {/* Start Date */}
-                    <td className="data-td text-12 text-gray-500 tabular-nums">
+                    <td className="data-td text-12 text-gray-500 dark:text-[#A1ADA4] tabular-nums">
                       {entry.disbursementDate
                         ? new Date(entry.disbursementDate).toLocaleDateString(
                           "en-KE",
@@ -510,45 +509,45 @@ export default function MonthlyLedgerTable({
                     </td>
 
                     {/* Opening Bal. */}
-                    <td className="data-td text-right tabular-nums text-gray-600 text-13">
+                    <td className="data-td text-right tabular-nums text-gray-600 dark:text-[#C1CBC3] text-13">
                       {formatAmount(entry.openingBalance)}
                     </td>
 
                     {/* New Volume */}
                     <td className="data-td text-right tabular-nums font-semibold text-13">
                       {entry.newLoanAmount > 0 ? (
-                        <span className="text-indigo-600">
+                        <span className="text-indigo-600 dark:text-[#65C8F2]">
                           {formatAmount(entry.newLoanAmount)}
                         </span>
                       ) : (
-                        <span className="text-gray-300">—</span>
+                        <span className="text-gray-300 dark:text-[#5d6f62]">—</span>
                       )}
                     </td>
 
                     {/* Inflow Paid */}
                     <td className="data-td text-right tabular-nums font-semibold text-13">
                       {entry.amountPaidThisMonth > 0 ? (
-                        <span className="text-green-600">
+                        <span className="text-green-600 dark:text-[#B7FF3C]">
                           {formatAmount(entry.amountPaidThisMonth)}
                         </span>
                       ) : (
-                        <span className="text-gray-300">—</span>
+                        <span className="text-gray-300 dark:text-[#5d6f62]">—</span>
                       )}
                     </td>
 
                     {/* Penalties */}
                     <td className="data-td text-right tabular-nums text-13">
                       {entry.penaltiesThisMonth > 0 ? (
-                        <span className="text-orange-500 font-medium">
+                        <span className="text-orange-500 dark:text-[#F5BD4F] font-medium">
                           {formatAmount(entry.penaltiesThisMonth)}
                         </span>
                       ) : (
-                        <span className="text-gray-300">—</span>
+                        <span className="text-gray-300 dark:text-[#5d6f62]">—</span>
                       )}
                     </td>
 
                     {/* Closing Bal. */}
-                    <td className="data-td text-right tabular-nums font-bold text-gray-900 text-13">
+                    <td className="data-td text-right tabular-nums font-bold text-gray-900 dark:text-[#F4F7F4] text-13">
                       {formatAmount(entry.closingBalance)}
                     </td>
 
@@ -564,18 +563,18 @@ export default function MonthlyLedgerTable({
                           className={cn(
                             "text-12 font-bold tabular-nums px-1.5 py-0.5 rounded",
                             entry.daysPastDue > 90
-                              ? "bg-red-100 text-red-800"
+                              ? "bg-red-100 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-transparent dark:border-red-900/40"
                               : entry.daysPastDue > 60
-                                ? "bg-red-50 text-red-600"
+                                ? "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-transparent dark:border-red-900/30"
                                 : entry.daysPastDue > 30
-                                  ? "bg-orange-50 text-orange-600"
-                                  : "bg-amber-50 text-amber-700"
+                                  ? "bg-orange-50 dark:bg-amber-950/40 text-orange-600 dark:text-[#F5BD4F] border border-transparent dark:border-amber-900/40"
+                                  : "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-[#F5BD4F] border border-transparent dark:border-amber-900/30"
                           )}
                         >
                           {entry.daysPastDue}d
                         </span>
                       ) : (
-                        <span className="text-gray-300 text-12">—</span>
+                        <span className="text-gray-300 dark:text-[#5d6f62] text-12">—</span>
                       )}
                     </td>
                   </tr>
@@ -586,31 +585,31 @@ export default function MonthlyLedgerTable({
             {/* Table Totals Footer */}
             {filteredEntries.length > 0 && (
               <tfoot>
-                <tr className="border-t-2 border-gray-200 bg-gray-50/90 font-bold">
-                  <td colSpan={5} className="data-td text-12 text-gray-700 uppercase tracking-wider">
+                <tr className="border-t-2 border-gray-200 dark:border-[#29352D] bg-gray-50/90 dark:bg-[#18221A] font-bold">
+                  <td colSpan={5} className="data-td text-12 text-gray-700 dark:text-[#C1CBC3] uppercase tracking-wider">
                     <span className="font-bold">
                       Subtotal ({filteredEntries.length} {filteredEntries.length === 1 ? "deal" : "deals"}):
                     </span>
                   </td>
-                  <td className="data-td text-right tabular-nums text-gray-700 font-bold">
+                  <td className="data-td text-right tabular-nums text-gray-700 dark:text-[#C1CBC3] font-bold">
                     {formatAmount(filteredTotals.openingBalance)}
                   </td>
-                  <td className="data-td text-right tabular-nums text-indigo-600 font-bold">
+                  <td className="data-td text-right tabular-nums text-indigo-600 dark:text-[#65C8F2] font-bold">
                     {filteredTotals.newLoanAmount > 0
                       ? formatAmount(filteredTotals.newLoanAmount)
                       : "—"}
                   </td>
-                  <td className="data-td text-right tabular-nums text-green-600 font-bold">
+                  <td className="data-td text-right tabular-nums text-green-600 dark:text-[#B7FF3C] font-bold">
                     {filteredTotals.amountPaidThisMonth > 0
                       ? formatAmount(filteredTotals.amountPaidThisMonth)
                       : "—"}
                   </td>
-                  <td className="data-td text-right tabular-nums text-orange-500 font-bold">
+                  <td className="data-td text-right tabular-nums text-orange-500 dark:text-[#F5BD4F] font-bold">
                     {filteredTotals.penaltiesThisMonth > 0
                       ? formatAmount(filteredTotals.penaltiesThisMonth)
                       : "—"}
                   </td>
-                  <td className="data-td text-right tabular-nums text-gray-900 font-extrabold text-14">
+                  <td className="data-td text-right tabular-nums text-gray-900 dark:text-[#F4F7F4] font-extrabold text-14">
                     {formatAmount(filteredTotals.closingBalance)}
                   </td>
                   <td colSpan={2} />

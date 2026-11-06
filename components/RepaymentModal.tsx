@@ -113,12 +113,9 @@ export default function RepaymentModal({ loanId, maxAmount, onClose }: Repayment
 
         {/* Header */}
         <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-            <div style={{
-              width: '2rem', height: '2rem', borderRadius: '0.5rem',
-              background: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <CreditCard size={15} style={{ color: '#047857' }} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/40 flex items-center justify-center">
+              <CreditCard size={15} className="text-emerald-700 dark:text-emerald-400" />
             </div>
             <h2 className="modal-title" id="repayment-modal-title">Log Repayment</h2>
           </div>
@@ -128,17 +125,9 @@ export default function RepaymentModal({ loanId, maxAmount, onClose }: Repayment
         </div>
 
         {/* Outstanding balance chip */}
-        <div style={{
-          margin: '0.75rem 1.5rem 0',
-          padding: '0.625rem 0.875rem',
-          background: '#F9FAFB',
-          borderRadius: '0.5rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-          <span className="form-label" style={{ marginBottom: 0 }}>Outstanding Balance</span>
-          <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#B91C1C', fontVariantNumeric: 'tabular-nums' }}>
+        <div className="mx-6 mt-3 p-2.5 sm:p-3 bg-gray-50 dark:bg-[#18221A] border border-gray-100 dark:border-[#29352D] rounded-lg flex justify-between items-center">
+          <span className="form-label mb-0 text-gray-500 dark:text-[#A1ADA4]">Outstanding Balance</span>
+          <span className="text-sm font-extrabold text-red-600 dark:text-red-400 tabular-nums">
             {formatAmount(maxAmount)}
           </span>
         </div>
@@ -173,25 +162,13 @@ export default function RepaymentModal({ loanId, maxAmount, onClose }: Repayment
             {/* ── Payment Date (backdating support) ── */}
             <div className="form-field">
               <label
-                className="form-label"
+                className="form-label flex items-center gap-1.5"
                 htmlFor="repay-date"
-                style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}
               >
                 <Calendar size={11} />
                 Payment Date
                 {isBackdated && (
-                  <span style={{
-                    marginLeft: '0.25rem',
-                    fontSize: '0.625rem',
-                    fontWeight: 700,
-                    color: '#B45309',
-                    background: '#FEF3C7',
-                    border: '1px solid #FDE68A',
-                    borderRadius: '0.25rem',
-                    padding: '0.0625rem 0.375rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}>
+                  <span className="ml-1 text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/40 rounded px-1.5 py-0.5 uppercase tracking-wider">
                     Backdated
                   </span>
                 )}
@@ -202,7 +179,7 @@ export default function RepaymentModal({ loanId, maxAmount, onClose }: Repayment
                 onChange={setPaymentDate}
               />
               {isBackdated && (
-                <span className="form-hint" style={{ color: '#B45309' }}>
+                <span className="form-hint text-amber-700 dark:text-amber-400">
                   Recording a payment dated{' '}
                   {new Date(paymentDate + 'T12:00:00').toLocaleDateString('en-KE', {
                     day: 'numeric', month: 'long', year: 'numeric',
@@ -254,22 +231,7 @@ export default function RepaymentModal({ loanId, maxAmount, onClose }: Repayment
                     type="button"
                     onClick={() => submit({ ...lastPayloadRef })}
                     disabled={isPending}
-                    style={{
-                      marginTop: '0.5rem',
-                      width: '100%',
-                      padding: '0.5rem',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      color: '#B45309',
-                      background: '#FEF3C7',
-                      border: '1px solid #FDE68A',
-                      borderRadius: '0.5rem',
-                      cursor: isPending ? 'not-allowed' : 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.375rem',
-                    }}
+                    className="mt-2 w-full p-2 text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/40 rounded-lg flex items-center justify-center gap-1.5 cursor-pointer disabled:cursor-not-allowed transition-colors"
                   >
                     {isPending
                       ? <><Loader2 size={12} className="auth-spinner" /> Retrying…</>

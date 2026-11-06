@@ -124,8 +124,8 @@ const Sidebar = ({ user }: SiderbarProps) => {
           flex items-center justify-center
           h-12 w-12
           rounded-2xl
-          border border-slate-200/60
-          bg-white/80
+          border border-slate-200/60 dark:border-[#29352D]
+          bg-white/80 dark:bg-[#151D17]/80
           backdrop-blur-md
           shadow-sm
           transition-all duration-300
@@ -138,7 +138,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
           <Menu
             size={22}
             className="
-            text-slate-700
+            text-slate-700 dark:text-[#F4F7F4]
             transition-transform duration-300
             group-hover:rotate-3
           "
@@ -160,7 +160,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
         ref={sidebarRef}
         style={{ width: `${sidebarWidth}px`, minWidth: `${sidebarWidth}px`, maxWidth: `${sidebarWidth}px` }}
         className={cn(
-          "print:hidden fixed top-5 pt-7 pl-3 bottom-0 left-0 z-50 bg-white border-r border-slate-100 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:z-30",
+          "print:hidden fixed top-5 pt-7 pl-3 bottom-0 left-0 z-50 bg-white dark:bg-[#101612] border-r border-slate-100 dark:border-[#29352D] flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:z-30",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -218,36 +218,34 @@ const Sidebar = ({ user }: SiderbarProps) => {
             })}
         </nav>
 
-        {/* Management & Admin Tools */}
-        {(user?.role === 'ADMIN' || user?.role === 'MANAGER') && (
-          <div style={{ padding: '0 0.75rem', marginBottom: '0.5rem' }}>
-            <div style={{
-              fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase',
-              letterSpacing: '0.08em', color: '#9aa4b8', padding: '0 0.5rem', marginBottom: 4,
-            }}> </div>
+        {/* Management & Tools */}
+        <div style={{ padding: '0 0.75rem', marginBottom: '0.5rem' }}>
+          <div style={{
+            fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase',
+            letterSpacing: '0.08em', color: '#9aa4b8', padding: '0 0.5rem', marginBottom: 4,
+          }}> </div>
 
-            {user?.role === 'ADMIN' && (
-              <Link
-                href="/users"
-                className={cn('sidebar-link', { 'sidebar-link-active': pathname === '/users' || pathname.startsWith('/users/') })}
-              >
-                <UserCog className="sidebar-icon" strokeWidth={pathname.startsWith('/users') ? 2.5 : 2} />
-                <span className="sidebar-label">User Management</span>
-              </Link>
-            )}
-
+          {user?.role === 'ADMIN' && (
             <Link
-              href="/settings"
-              className={cn('sidebar-link', { 'sidebar-link-active': pathname === '/settings' || pathname.startsWith('/settings/') })}
+              href="/users"
+              className={cn('sidebar-link', { 'sidebar-link-active': pathname === '/users' || pathname.startsWith('/users/') })}
             >
-              <Settings className="sidebar-icon" strokeWidth={pathname.startsWith('/settings') ? 2.5 : 2} />
-              <span className="sidebar-label">Settings</span>
+              <UserCog className="sidebar-icon" strokeWidth={pathname.startsWith('/users') ? 2.5 : 2} />
+              <span className="sidebar-label">User Management</span>
             </Link>
-          </div>
-        )}
+          )}
+
+          <Link
+            href="/settings"
+            className={cn('sidebar-link', { 'sidebar-link-active': pathname === '/settings' || pathname.startsWith('/settings/') })}
+          >
+            <Settings className="sidebar-icon" strokeWidth={pathname.startsWith('/settings') ? 2.5 : 2} />
+            <span className="sidebar-label">Settings</span>
+          </Link>
+        </div>
 
         {/* Sidebar Footer Wrapper */}
-        <div className="border-t border-slate-100 bg-white p-4">
+        <div className="border-t border-slate-100 dark:border-[#29352D] bg-white dark:bg-[#101612] p-4">
           <Footer user={user} />
         </div>
       </section>

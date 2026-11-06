@@ -13,7 +13,7 @@ interface ReportCardProps {
 const badgeStyles = {
   default: "badge badge-pending",
   danger:  "badge badge-error",
-  warning: "bg-amber-100 text-amber-700 text-10 font-bold uppercase tracking-widest px-2 py-0.5 rounded-full",
+  warning: "bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-[#F5BD4F] border border-transparent dark:border-amber-900/40 text-10 font-bold uppercase tracking-widest px-2 py-0.5 rounded-full",
   success: "badge badge-success",
 };
 
@@ -28,10 +28,10 @@ export default function ReportCard({
   return (
     <Link
       href={href}
-      className="card-premium group flex flex-col gap-4 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+      className="card-premium dark:bg-[#151D17] dark:border-[#29352D] group flex flex-col gap-4 hover:shadow-lg dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
     >
       <div className="flex items-start justify-between">
-        <div className="p-2.5 bg-primary/5 rounded-xl text-primary group-hover:bg-primary/10 transition-colors">
+        <div className="p-2.5 bg-primary/5 dark:bg-[#18221A] rounded-xl text-primary dark:text-[#B7FF3C] group-hover:bg-primary/10 dark:group-hover:bg-[#1D2920] transition-colors">
           <Icon className="size-5" />
         </div>
         {badge && (
@@ -40,11 +40,11 @@ export default function ReportCard({
       </div>
 
       <div className="flex-1">
-        <h3 className="text-15 font-semibold text-gray-900 tracking-tight">{title}</h3>
-        <p className="text-13 text-gray-500 mt-1 leading-relaxed">{description}</p>
+        <h3 className="text-15 font-semibold text-gray-900 dark:text-[#F4F7F4] tracking-tight">{title}</h3>
+        <p className="text-13 text-gray-500 dark:text-[#A1ADA4] mt-1 leading-relaxed">{description}</p>
       </div>
 
-      <div className="flex items-center gap-1.5 text-primary text-12 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1.5 text-primary dark:text-[#B7FF3C] text-12 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
         <span>Generate Report</span>
         <ArrowRight className="size-3.5" />
       </div>

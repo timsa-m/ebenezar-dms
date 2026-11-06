@@ -26,14 +26,14 @@ function getInstallmentStatus(inst: LoanInstallment) {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, React.CSSProperties> = {
-    Paid: { background: '#ECFDF5', color: '#065F46', border: '1px solid #A7F3D0' },
-    Waived: { background: '#FFFBEB', color: '#D97706', border: '1px solid #FDE68A' },
-    'Waived (Partial)': { background: '#FFFDF5', color: '#B45309', border: '1px solid #FDE68A' },
-    'Rolled Over': { background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE' },
-    Overdue: { background: '#FEF2F2', color: '#991B1B', border: '1px solid #FECACA' },
-    Partial: { background: '#FFFBEB', color: '#92400E', border: '1px solid #FDE68A' },
-    Pending: { background: '#F9FAFB', color: '#6B7280', border: '1px solid #E5E7EB' },
+  const styles: Record<string, string> = {
+    Paid: 'bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800/40',
+    Waived: 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800/40',
+    'Waived (Partial)': 'bg-amber-50 text-amber-900 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/40',
+    'Rolled Over': 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-800/40',
+    Overdue: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800/40',
+    Partial: 'bg-amber-100 text-amber-900 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800/40',
+    Pending: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-[#18221A] dark:text-[#A1ADA4] dark:border-[#29352D]',
   };
   const icons: Record<string, React.ReactNode> = {
     Paid: <CheckCircle2 size={10} />,
@@ -45,14 +45,13 @@ function StatusBadge({ status }: { status: string }) {
     Pending: <Clock size={10} />,
   };
 
+  const badgeClass = styles[status] ?? styles.Pending;
+
   return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
-      fontSize: '0.6875rem', fontWeight: 700, padding: '0.125rem 0.5rem',
-      borderRadius: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.04em',
-      whiteSpace: 'nowrap',
-      ...(styles[status] ?? styles.Pending),
-    }}>
+    <span className={cn(
+      "inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider whitespace-nowrap border",
+      badgeClass
+    )}>
       {icons[status]}
       {status}
     </span>
@@ -111,10 +110,10 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
       });
     } else {
       return (
-        <div className="data-empty" style={{ padding: '3rem 1rem' }}>
-          <CalendarDays size={32} style={{ color: '#D1D5DB', marginBottom: '0.75rem' }} />
-          <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#6B7280' }}>No installments generated yet</p>
-          <p style={{ fontSize: '0.8125rem', color: '#D1D5DB', marginTop: '0.25rem' }}>
+        <div className="data-empty p-12 text-center">
+          <CalendarDays size={32} className="text-gray-400 dark:text-[#A1ADA4] mx-auto mb-3" />
+          <p className="text-sm font-semibold text-gray-700 dark:text-[#F4F7F4]">No installments generated yet</p>
+          <p className="text-xs text-gray-500 dark:text-[#A1ADA4] mt-1">
             The repayment schedule will appear here once the contract is approved.
           </p>
         </div>
@@ -244,41 +243,26 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
   return (
     <div>
       {/* Summary strip */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '1rem'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-          gap: '0.75rem',
-          flex: 1
-        }}>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 flex-1 w-full">
           {[
-            { label: 'Total Installments', value: String(displayInstallments.length), color: '#111113' },
-            { label: 'Settled', value: String(displayInstallments.filter(i => (i.isSettled || i.status === 'Waived') && i.status !== 'Rolled Over').length), color: '#047857' },
+            { label: 'Total Installments', value: String(displayInstallments.length), colorClass: 'text-gray-900 dark:text-[#F4F7F4]' },
+            { label: 'Settled', value: String(displayInstallments.filter(i => (i.isSettled || i.status === 'Waived') && i.status !== 'Rolled Over').length), colorClass: 'text-emerald-600 dark:text-emerald-400' },
             ...(displayInstallments.some(i => getInstallmentStatus(i).startsWith('Waived')) || totalWaived > 0 ? [
-              { label: 'Waived', value: String(displayInstallments.filter(i => getInstallmentStatus(i).startsWith('Waived')).length), color: '#D97706' }
+              { label: 'Waived', value: String(displayInstallments.filter(i => getInstallmentStatus(i).startsWith('Waived')).length), colorClass: 'text-amber-600 dark:text-amber-400' }
             ] : []),
-            { label: 'Overdue', value: String(displayInstallments.filter(i => getInstallmentStatus(i) === 'Overdue').length), color: '#B91C1C' },
-            { label: 'Total Scheduled', value: formatAmount(currentPrincipalSum), color: isEditing && Math.abs(currentPrincipalSum - totals.due) > 0.01 ? '#D97706' : '#111113' },
+            { label: 'Overdue', value: String(displayInstallments.filter(i => getInstallmentStatus(i) === 'Overdue').length), colorClass: 'text-red-600 dark:text-red-400' },
+            { label: 'Total Scheduled', value: formatAmount(currentPrincipalSum), colorClass: isEditing && Math.abs(currentPrincipalSum - totals.due) > 0.01 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-900 dark:text-[#F4F7F4]' },
             ...(totalWaived > 0 ? [
-              { label: 'Total Waived', value: formatAmount(totalWaived), color: '#D97706' }
+              { label: 'Total Waived', value: formatAmount(totalWaived), colorClass: 'text-amber-600 dark:text-amber-400' }
             ] : []),
-            { label: 'Outstanding', value: formatAmount(Math.max(0, totals.due - totals.paid)), color: totals.due - totals.paid > 0 ? '#B91C1C' : '#047857' },
+            { label: 'Outstanding', value: formatAmount(Math.max(0, totals.due - totals.paid)), colorClass: totals.due - totals.paid > 0 ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400' },
           ].map(card => (
-            <div key={card.label} style={{
-              padding: '0.75rem 1rem',
-              background: '#F9FAFB',
-              borderRadius: '0.625rem',
-              border: '1px solid #F3F4F6',
-            }}>
-              <span style={{ display: 'block', fontSize: '0.6875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+            <div key={card.label} className="p-3 bg-gray-50 dark:bg-[#18221A] border border-gray-100 dark:border-[#29352D] rounded-xl">
+              <span className="block text-[11px] text-gray-500 dark:text-[#A1ADA4] uppercase tracking-wider mb-1">
                 {card.label}
               </span>
-              <span style={{ display: 'block', fontSize: '0.9375rem', fontWeight: 800, color: card.color, fontVariantNumeric: 'tabular-nums' }}>
+              <span className={cn("block text-sm font-extrabold tabular-nums", card.colorClass)}>
                 {card.value}
               </span>
             </div>
@@ -286,20 +270,20 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
         </div>
 
         {displayInstallments.length > 0 && (
-          <div style={{ marginLeft: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <div className="flex gap-2 shrink-0">
             {isEditing ? (
               <>
                 <button
                   onClick={() => { setIsEditing(false); setEditDrafts({}); }}
                   disabled={isSaving}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', background: '#FFF', border: '1px solid #E5E7EB', borderRadius: '0.5rem', cursor: 'pointer' }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-[#F4F7F4] bg-white dark:bg-[#1D2920] border border-gray-200 dark:border-[#29352D] rounded-lg hover:bg-gray-50 dark:hover:bg-[#222E25] transition-colors cursor-pointer"
                 >
                   <X size={14} /> Cancel
                 </button>
                 <button
                   onClick={handleSaveSchedule}
                   disabled={isSaving}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', fontSize: '0.8125rem', fontWeight: 600, color: '#FFF', background: '#1D4ED8', border: '1px solid #1D4ED8', borderRadius: '0.5rem', cursor: 'pointer' }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg transition-colors cursor-pointer"
                 >
                   {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Save Schedule
                 </button>
@@ -307,7 +291,7 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', background: '#FFF', border: '1px solid #E5E7EB', borderRadius: '0.5rem', cursor: 'pointer' }}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-[#F4F7F4] bg-white dark:bg-[#1D2920] border border-gray-200 dark:border-[#29352D] rounded-lg hover:bg-gray-50 dark:hover:bg-[#222E25] transition-colors cursor-pointer"
               >
                 <Pencil size={14} /> Edit Schedule
               </button>
@@ -317,9 +301,9 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
       </div>
 
       {isEditing && Math.abs(currentPrincipalSum - totals.due) > 0.01 && (
-        <div style={{ marginBottom: '1rem', padding: '0.75rem 1rem', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <AlertCircle size={16} color="#D97706" />
-          <span style={{ fontSize: '0.8125rem', color: '#92400E', fontWeight: 500 }}>
+        <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-lg flex items-center gap-2 text-xs text-amber-800 dark:text-amber-300 font-medium">
+          <AlertCircle size={16} className="text-amber-600 dark:text-amber-400 shrink-0" />
+          <span>
             Warning: The custom schedule sum ({formatAmount(currentPrincipalSum)}) differs from the original required balance ({formatAmount(totals.due)}).
           </span>
         </div>
@@ -370,55 +354,59 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
                 return (
                   <tr
                     key={inst.$id}
-                    className="data-table-row"
+                    className={cn(
+                      "data-table-row transition-colors",
+                      isOverdue && "bg-red-50/40 dark:bg-red-950/20",
+                      isPaid && "bg-emerald-50/40 dark:bg-emerald-950/20",
+                      isWaived && "bg-amber-50/40 dark:bg-amber-950/20"
+                    )}
                     style={{
-                      background: isOverdue ? '#FFF8F8' : isPaid ? '#F0FDF4' : isWaived ? '#FFFDF5' : 'transparent',
                       opacity: (isPaid || isWaived) ? 0.85 : 1,
                     }}
                   >
-                    <td className="data-td" style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.8125rem', color: '#9CA3AF' }}>
+                    <td className="data-td text-center font-bold text-xs text-gray-400 dark:text-[#A1ADA4]">
                       {inst.installmentNumber}
                     </td>
-                    <td className="data-td" style={{ fontSize: '0.8125rem', color: isOverdue ? '#B91C1C' : '#374151', fontWeight: isOverdue ? 600 : 500 }}>
+                    <td className={cn("data-td text-xs font-medium", isOverdue ? "text-red-600 dark:text-red-400 font-semibold" : "text-gray-700 dark:text-[#C1CBC3]")}>
                       {isEditing && !isPaid ? (
                         <input
                           type="date"
                           value={currentDueDate ? new Date(currentDueDate).toISOString().split('T')[0] : ''}
                           onChange={(e) => handleEditChange(inst.$id, 'dueDate', new Date(e.target.value).toISOString())}
-                          style={{ width: '100%', padding: '0.25rem', fontSize: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '0.25rem' }}
+                          className="w-full p-1 text-xs border border-gray-300 dark:border-[#29352D] rounded bg-white dark:bg-[#18221A] text-gray-900 dark:text-[#F4F7F4]"
                         />
                       ) : (
                         new Date(currentDueDate).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })
                       )}
                     </td>
-                    <td className="data-td" style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontSize: '0.8125rem', color: '#374151' }}>
+                    <td className="data-td text-right tabular-nums text-xs text-gray-700 dark:text-[#C1CBC3]">
                       {isEditing && !isPaid ? (
                         <input
                           type="number"
                           step="0.01"
                           value={currentPrincipalDue}
                           onChange={(e) => handleEditChange(inst.$id, 'principalDue', e.target.value)}
-                          style={{ width: '100%', textAlign: 'right', padding: '0.25rem', fontSize: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '0.25rem' }}
+                          className="w-full text-right p-1 text-xs border border-gray-300 dark:border-[#29352D] rounded bg-white dark:bg-[#18221A] text-gray-900 dark:text-[#F4F7F4]"
                         />
                       ) : (
                         formatAmount(currentPrincipalDue)
                       )}
                     </td>
                     {hasPenalties && (
-                      <td className="data-td" style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontSize: '0.8125rem', color: inst.penaltiesDue > 0 ? '#B91C1C' : '#9CA3AF' }}>
+                      <td className={cn("data-td text-right tabular-nums text-xs", inst.penaltiesDue > 0 ? "text-red-600 dark:text-red-400 font-medium" : "text-gray-400 dark:text-[#A1ADA4]")}>
                         {inst.penaltiesDue > 0 ? formatAmount(inst.penaltiesDue) : '—'}
                       </td>
                     )}
-                    <td className="data-td" style={{ textAlign: 'right', fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontSize: '0.875rem', color: '#111113' }}>
+                    <td className="data-td text-right font-bold tabular-nums text-sm text-gray-900 dark:text-[#F4F7F4]">
                       {formatAmount(computedDue)}
                     </td>
-                    <td className="data-td" style={{ textAlign: 'right', fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontSize: '0.875rem', color: isWaived ? '#D97706' : '#047857' }}>
+                    <td className={cn("data-td text-right font-bold tabular-nums text-sm", isWaived ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400")}>
                       {computedPaid > 0 ? formatAmount(computedPaid) : '—'}
                     </td>
-                    <td className="data-td" style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontSize: '0.8125rem', fontWeight: 600, color: remaining > 0 ? '#B91C1C' : '#047857' }}>
+                    <td className={cn("data-td text-right tabular-nums text-xs font-semibold", remaining > 0 ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400")}>
                       {remaining > 0 ? formatAmount(remaining) : '✓'}
                     </td>
-                    <td className="data-td" style={{ textAlign: 'right' }}>
+                    <td className="data-td text-right">
                       <StatusBadge status={status} />
                     </td>
                   </tr>
@@ -427,17 +415,17 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
             </tbody>
             {/* Footer totals row */}
             <tfoot>
-              <tr style={{ background: '#F9FAFB', borderTop: '2px solid #E5E7EB' }}>
-                <td colSpan={hasPenalties ? 4 : 3} style={{ padding: '0.75rem 0.875rem', fontSize: '0.8125rem', fontWeight: 700, color: '#374151' }}>
+              <tr className="bg-gray-50 dark:bg-[#18221A] border-t-2 border-gray-200 dark:border-[#29352D]">
+                <td colSpan={hasPenalties ? 4 : 3} className="p-3 text-xs font-bold text-gray-700 dark:text-[#C1CBC3]">
                   Totals
                 </td>
-                <td style={{ padding: '0.75rem 0.875rem', textAlign: 'right', fontWeight: 800, fontSize: '0.875rem', color: '#111113', fontVariantNumeric: 'tabular-nums' }}>
+                <td className="p-3 text-right font-extrabold text-sm text-gray-900 dark:text-[#F4F7F4] tabular-nums">
                   {formatAmount(totals.due)}
                 </td>
-                <td style={{ padding: '0.75rem 0.875rem', textAlign: 'right', fontWeight: 800, fontSize: '0.875rem', color: '#047857', fontVariantNumeric: 'tabular-nums' }}>
+                <td className="p-3 text-right font-extrabold text-sm text-emerald-600 dark:text-emerald-400 tabular-nums">
                   {formatAmount(totals.paid)}
                 </td>
-                <td style={{ padding: '0.75rem 0.875rem', textAlign: 'right', fontWeight: 800, fontSize: '0.875rem', color: totals.due - totals.paid > 0 ? '#B91C1C' : '#047857', fontVariantNumeric: 'tabular-nums' }}>
+                <td className={cn("p-3 text-right font-extrabold text-sm tabular-nums", totals.due - totals.paid > 0 ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400")}>
                   {totals.due - totals.paid > 0 ? formatAmount(totals.due - totals.paid) : '✓'}
                 </td>
                 <td />
@@ -448,20 +436,8 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
       </div>
 
       {totalWaived > 0 && (
-        <div style={{
-          marginTop: '0.75rem',
-          padding: '0.625rem 0.875rem',
-          background: '#FFFDF5',
-          border: '1px solid #FDE68A',
-          borderRadius: '0.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          fontSize: '0.75rem',
-          color: '#92400E',
-          fontWeight: 500,
-        }}>
-          <Percent size={14} style={{ color: '#D97706', flexShrink: 0 }} />
+        <div className="mt-3 p-2.5 sm:p-3 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-lg flex items-center gap-2 text-xs text-amber-800 dark:text-amber-300 font-medium">
+          <Percent size={14} className="text-amber-600 dark:text-amber-400 shrink-0" />
           <span>
             Includes <strong>{formatAmount(totalWaived)}</strong> in approved credit waiver relief applied towards settling installment balances.
           </span>

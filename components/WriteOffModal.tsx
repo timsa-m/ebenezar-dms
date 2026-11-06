@@ -6,11 +6,13 @@ import { writeOffAgreement } from '@/lib/actions/dms.actions';
 import { formatAmount } from '@/lib/utils';
 import { Loader2, X, Ban, AlertTriangle } from 'lucide-react';
 import { toast } from '@/lib/toast';
+import SecureActionModal from '@/components/security/SecureActionModal';
 
 export default function WriteOffModal({ loanId, currentUser, loan, onClose }: WriteOffModalProps & { loan: { balance: number; principalAmount?: number } }) {
   const router = useRouter();
   const [reason, setReason] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
 
@@ -27,9 +29,19 @@ export default function WriteOffModal({ loanId, currentUser, loan, onClose }: Wr
       return;
     }
 
+    // Open security re-authentication modal
+    setShowAuthModal(true);
+  };
+
+  const handleAuthorized = async (verificationToken: string) => {
+    setShowAuthModal(false);
     startTransition(async () => {
       try {
-        const res = await writeOffAgreement({ id: loanId, reason: reason.trim() });
+        const res = await writeOffAgreement({
+          id: loanId,
+          reason: reason.trim(),
+          verificationToken,
+        });
         if (!res.success) {
           throw new Error(res.error || 'Failed to write off contract.');
         }
@@ -51,16 +63,13 @@ export default function WriteOffModal({ loanId, currentUser, loan, onClose }: Wr
 
         {/* Header */}
         <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-            <div style={{
-              width: '2rem', height: '2rem', borderRadius: '0.5rem',
-              background: '#FEF2F2', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Ban size={14} style={{ color: '#DC2626' }} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/40 flex items-center justify-center">
+              <Ban size={14} className="text-red-600 dark:text-red-400" />
             </div>
             <div>
               <h2 className="modal-title" id="writeoff-modal-title">Write Off Contract</h2>
-              <p style={{ fontSize: '0.75rem', color: '#6B7280', margin: 0 }}>
+              <p className="text-xs text-gray-500 dark:text-[#A1ADA4] m-0">
                 Accounting bad-debt recognition
               </p>
             </div>
@@ -71,22 +80,13 @@ export default function WriteOffModal({ loanId, currentUser, loan, onClose }: Wr
         </div>
 
         {/* Warning banner */}
-        <div style={{
-          margin: '0.75rem 1.5rem 0',
-          padding: '0.875rem 1rem',
-          background: '#FEF2F2',
-          border: '1px solid #FECACA',
-          borderRadius: '0.625rem',
-          display: 'flex',
-          gap: '0.75rem',
-          alignItems: 'flex-start',
-        }}>
-          <AlertTriangle size={16} style={{ color: '#DC2626', flexShrink: 0, marginTop: '0.125rem' }} />
+        <div className="mx-6 mt-3 p-3.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl flex gap-3 items-start">
+          <AlertTriangle size={16} className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
           <div>
-            <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#991B1B', marginBottom: '0.25rem' }}>
+            <p className="text-xs font-bold text-red-900 dark:text-red-300 mb-1">
               Irreversible Accounting Action
             </p>
-            <p style={{ fontSize: '0.75rem', color: '#B91C1C', lineHeight: 1.5 }}>
+            <p className="text-xs text-red-800 dark:text-red-400 leading-normal">
               Writing off a contract stops interest accrual and removes the remaining balance from active book receivables. 
               (Note: If the account is simply &gt;90 days overdue, use status <strong>Loss</strong> instead of writing off).
             </p>
@@ -97,18 +97,10 @@ export default function WriteOffModal({ loanId, currentUser, loan, onClose }: Wr
           <div className="modal-body">
 
             {/* Contract Balance Pill */}
-            <div style={{
-              padding: '0.875rem 1rem',
-              borderRadius: '0.5rem',
-              background: '#FFF1F2',
-              border: '1px solid #FECDD3',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+            <div className="p-3.5 rounded-lg bg-red-50/60 dark:bg-[#18221A] border border-red-200 dark:border-[#29352D] flex justify-between items-center">
               <div>
-                <p style={{ fontSize: '0.75rem', color: '#9F1239', fontWeight: 600, margin: 0 }}>Outstanding Balance to be Written Off:</p>
-                <p style={{ fontSize: '1.25rem', color: '#881337', fontWeight: 800, margin: '0.125rem 0 0' }}>{formatAmount(loan.balance)}</p>
+                <p className="text-xs text-red-900 dark:text-red-300 font-semibold m-0">Outstanding Balance to be Written Off:</p>
+                <p className="text-xl text-red-700 dark:text-red-400 font-extrabold mt-0.5">{formatAmount(loan.balance)}</p>
               </div>
               <span className="badge badge-error">Credit Loss</span>
             </div>
@@ -190,6 +182,24 @@ export default function WriteOffModal({ loanId, currentUser, loan, onClose }: Wr
           </div>
         </form>
       </div>
+
+      {/* Security Re-Authentication Modal */}
+      <SecureActionModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthorized={handleAuthorized}
+        action="CONTRACT_WRITE_OFF"
+        resourceId={loanId}
+        title="Authorize Contract Write-Off"
+        description="Irreversible accounting action: Enter your administrator password to authorize writing off this loan contract. Outstanding balance will be recognized as credit loss."
+        confirmLabel="Authorize Write Off"
+        severity="danger"
+        summaryItems={[
+          { label: 'Contract ID', value: loanId.slice(-8).toUpperCase() },
+          { label: 'Outstanding Balance', value: formatAmount(loan.balance) },
+          { label: 'Action Reason', value: reason },
+        ]}
+      />
     </div>
   );
 }
