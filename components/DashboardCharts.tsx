@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, AreaChart, Area
@@ -26,29 +26,36 @@ const COLORS = {
 }
 
 export default function DashboardCharts({ metrics }: DashboardChartsProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Bar Chart Data: Balance Exposure by Risk Bucket
   const barData = [
-    { name: '0-30 Days', balance: metrics.agingBuckets.performing.balance, fill: COLORS.performing },
-    { name: '31-60 Days', balance: metrics.agingBuckets.earlyStage.balance, fill: COLORS.earlyStage },
-    { name: '61-90 Days', balance: metrics.agingBuckets.highRisk.balance, fill: COLORS.highRisk },
-    { name: '90+ Days', balance: metrics.agingBuckets.criticalDefault.balance, fill: COLORS.criticalDefault }
+    { name: '0-30 Days', balance: metrics?.agingBuckets?.performing?.balance || 0, fill: COLORS.performing },
+    { name: '31-60 Days', balance: metrics?.agingBuckets?.earlyStage?.balance || 0, fill: COLORS.earlyStage },
+    { name: '61-90 Days', balance: metrics?.agingBuckets?.highRisk?.balance || 0, fill: COLORS.highRisk },
+    { name: '90+ Days', balance: metrics?.agingBuckets?.criticalDefault?.balance || 0, fill: COLORS.criticalDefault }
   ];
 
   // Pie Chart Data: Portfolio Mix
   const mixData = [
-    { name: 'Active Financing', value: metrics.portfolioMix.active, color: COLORS.active },
-    { name: 'Cash Sales', value: metrics.portfolioMix.cashSales, color: COLORS.cashSales },
-    { name: 'Fully Paid', value: metrics.portfolioMix.fullyPaid, color: COLORS.fullyPaid },
-    { name: 'Written Off', value: metrics.portfolioMix.writtenOff, color: COLORS.writtenOff }
+    { name: 'Active Financing', value: metrics?.portfolioMix?.active || 0, color: COLORS.active },
+    { name: 'Cash Sales', value: metrics?.portfolioMix?.cashSales || 0, color: COLORS.cashSales },
+    { name: 'Fully Paid', value: metrics?.portfolioMix?.fullyPaid || 0, color: COLORS.fullyPaid },
+    { name: 'Written Off', value: metrics?.portfolioMix?.writtenOff || 0, color: COLORS.writtenOff }
   ].filter(item => item.value > 0);
 
-  // Cash Flow Trend Data
-  // Reverse the array so it goes from oldest month to newest
-  const flowData = [...(metrics.cashFlow || [])].reverse();
+  // Cash Flow Trend Data: Reverse the array so it goes from oldest month to newest
+  const flowData = [...(metrics?.cashFlow || [])].reverse();
 
   const CustomBarCursor = (props: any) => {
     const { x, y, width, height } = props;
-    if (x == null || y == null || width == null || height == null) return null;
+    if (x == null || y == null || width == null || height == null || width <= 0 || height <= 0) {
+      return null;
+    }
     return (
       <rect
         x={x}
@@ -63,11 +70,11 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
   };
 
   const CustomBarTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
+    if (active && payload && payload.length && payload[0]) {
       return (
         <div className="bg-white dark:bg-[#1D2920] p-3 rounded-xl shadow-xl border border-gray-100 dark:border-[#29352D] transition-colors">
           <p className="font-semibold text-slate-800 dark:text-[#F4F7F4] mb-2">{label}</p>
-          <p style={{ color: payload[0].payload.fill || payload[0].color }} className="text-sm font-bold tabular-nums">
+          <p style={{ color: payload[0].payload?.fill || payload[0].color }} className="text-sm font-bold tabular-nums">
             {payload[0].name === 'amount' ? 'Collected: ' : 'Exposure: '} 
             {formatKES(payload[0].value)}
           </p>
@@ -77,17 +84,53 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
     return null;
   };
 
+  if (!mounted) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+          <div className="mb-6">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
+            <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
+          </div>
+          <div className="h-[300px] w-full animate-pulse bg-slate-50/50 dark:bg-white/5 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-transparent animate-spin" />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+          <div className="mb-2">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Portfolio Distribution</h3>
+            <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">All historical agreements</p>
+          </div>
+          <div className="h-[300px] w-full flex items-center justify-center animate-pulse bg-slate-50/50 dark:bg-white/5 rounded-lg">
+            <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-transparent animate-spin" />
+          </div>
+        </div>
+
+        <div className="lg:col-span-3 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+          <div className="mb-6">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Capital Exposure by Aging Bucket</h3>
+            <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Outstanding portfolio balance distributed by delinquency status</p>
+          </div>
+          <div className="h-[300px] w-full animate-pulse bg-slate-50/50 dark:bg-white/5 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-transparent animate-spin" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       
       {/* Area Chart: Cash Flow Trend */}
-      <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+      <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm min-w-0">
         <div className="mb-6">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
           <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
         </div>
-        <div className="flex-1 min-h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-[300px] w-full min-w-0 relative">
+          <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
             <AreaChart data={flowData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
@@ -117,14 +160,14 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
       </div>
 
       {/* Pie Chart: Portfolio Mix */}
-      <div className="bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm min-w-0">
         <div className="mb-2">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Portfolio Distribution</h3>
           <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">All historical agreements</p>
         </div>
-        <div className="flex-1 min-h-[300px] w-full flex items-center justify-center">
+        <div className="h-[300px] w-full min-w-0 relative flex items-center justify-center">
           {mixData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
               <PieChart>
                 <Pie
                   data={mixData}
@@ -162,14 +205,14 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
         </div>
       </div>
 
-      {/* Bar Chart: Arrears Exposure (Moved to bottom) */}
-      <div className="lg:col-span-3 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
+      {/* Bar Chart: Arrears Exposure */}
+      <div className="lg:col-span-3 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm min-w-0">
         <div className="mb-6">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Capital Exposure by Aging Bucket</h3>
           <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Outstanding portfolio balance distributed by delinquency status</p>
         </div>
-        <div className="flex-1 min-h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-[300px] w-full min-w-0 relative">
+          <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
             <BarChart data={barData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-[#29352D]" />
               <XAxis 
