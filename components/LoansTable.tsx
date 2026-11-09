@@ -107,12 +107,12 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
             {sortBy === 'disbursement' ? ' ' : ' '}
           </Button>
           {/* Status filter pills */}
-          <div className="status-filter-group dark:bg-[#101612] dark:border dark:border-[#29352D]">
+          <div className="status-filter-group bg-slate-100 dark:bg-[#101612] border border-slate-200/80 dark:border-[#29352D]">
             {STATUS_FILTERS.map((f) => (
               <Button
                 key={f.value}
                 onClick={() => setStatusFilter(f.value)}
-                className={cn('status-filter-pill', f.value === statusFilter && 'status-filter-pill-active')}
+                className={cn('status-filter-pill dark:text-[#A1ADA4] dark:hover:text-[#F4F7F4] dark:hover:bg-[#1D2920]', f.value === statusFilter && 'status-filter-pill-active dark:bg-[#1D2920] dark:text-[#B7FF3C] dark:border dark:border-[#B7FF3C]/30')}
               >
                 {f.label}
               </Button>
@@ -120,18 +120,18 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
           </div>
           {/* Search */}
           <div className="search-box">
-            <Search className="search-icon" />
+            <Search className="search-icon dark:text-[#A1ADA4]" />
             <input
               type="text"
               placeholder="Search contracts..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="search-input"
+              className="search-input dark:bg-[#101612] dark:border-[#29352D] dark:text-[#F4F7F4] dark:placeholder-[#5d6f62]"
             />
             {query && (
               <Button
                 onClick={() => setQuery('')}
-                className="search-clear"
+                className="search-clear dark:bg-[#1D2920] dark:text-[#A1ADA4] dark:hover:text-[#F4F7F4]"
                 aria-label="Clear search"
               >
                 Clear
@@ -141,7 +141,7 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
         </div>
       </div>
 
-      <div className="data-table-wrap lg:block hidden">
+      <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] shadow-sm lg:block hidden">
         <div className="data-table-scroll">
           <Table className="data-table">
             <colgroup>
@@ -153,13 +153,13 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
               <col style={{ width: '12%' }} />
             </colgroup>
             <TableHeader>
-              <TableRow className="data-table-head-row">
-                <TableHead className="data-th text-left">Contract ID</TableHead>
-                <TableHead className="data-th text-left">Client</TableHead>
-                <TableHead className="data-th text-left">Vehicle Reg</TableHead>
-                <TableHead className="data-th text-left">Type</TableHead>
-                <TableHead className="data-th text-right">Amount</TableHead>
-                <TableHead className="data-th text-left">Status</TableHead>
+              <TableRow className="data-table-head-row dark:bg-[#101612] dark:border-b-[#29352D]">
+                <TableHead className="data-th text-left dark:text-[#A1ADA4]">Contract ID</TableHead>
+                <TableHead className="data-th text-left dark:text-[#A1ADA4]">Client</TableHead>
+                <TableHead className="data-th text-left dark:text-[#A1ADA4]">Vehicle Reg</TableHead>
+                <TableHead className="data-th text-left dark:text-[#A1ADA4]">Type</TableHead>
+                <TableHead className="data-th text-right dark:text-[#A1ADA4]">Amount</TableHead>
+                <TableHead className="data-th text-left dark:text-[#A1ADA4]">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -167,13 +167,13 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                 <TableRow
                   key={loan.$id}
                   onClick={() => router.push(`/loans/${loan.$id}`)}
-                  className="data-table-row cursor-pointer hover:bg-gray-50/80 dark:hover:bg-[#1D2920]/80 transition-colors"
+                  className="data-table-row cursor-pointer hover:bg-gray-50/80 dark:hover:bg-[#1D2920]/80 dark:border-b-[#29352D] transition-colors"
                 >
                   <TableCell className="data-td">
-                    <span className="mono-pill">{loan.$id.slice(-8).toUpperCase()}</span>
+                    <span className="mono-pill dark:bg-[#1D2920] dark:border-[#29352D] dark:text-[#A1ADA4]">{loan.$id.slice(-8).toUpperCase()}</span>
                   </TableCell>
                   <TableCell className="data-td">
-                    <span className="client-name">{loan.clientName || loan.clientId}</span>
+                    <span className="client-name text-gray-900 dark:text-[#F4F7F4] font-semibold">{loan.clientName || loan.clientId}</span>
                   </TableCell>
                   <TableCell className="data-td">
                     <span className="text-14 text-slate-700 dark:text-[#F4F7F4] font-semibold">{loan.vehicleRegNo || 'N/A'}</span>
@@ -182,7 +182,7 @@ export default function LoansTable({ loans }: { loans: Agreement[] }) {
                     <span className="text-14 text-gray-600 dark:text-[#A1ADA4] font-medium">{loan.loanType}</span>
                   </TableCell>
                   <TableCell className="data-td text-right">
-                    <span className="amount-text">{formatAmount(loan.principalAmount || 0)}</span>
+                    <span className="amount-text text-gray-900 dark:text-[#F4F7F4] font-bold">{formatAmount(loan.principalAmount || 0)}</span>
                   </TableCell>
                   <TableCell className="data-td">
                     <span className={cn('badge', {

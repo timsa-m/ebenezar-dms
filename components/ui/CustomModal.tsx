@@ -134,41 +134,27 @@ export default function CustomModal({
         tabIndex={-1}
         onKeyDown={handleKeyDown}
         onClick={(e) => e.stopPropagation()}
-        className={`bg-card text-card-foreground border border-border ${className}`}
+        className={`bg-white dark:bg-[#151D17] text-gray-900 dark:text-[#F4F7F4] border border-gray-200 dark:border-[#29352D] shadow-2xl ${className}`}
         style={{
           width: typeof width === 'number' ? `${width}px` : width,
           maxWidth: '100%',
           maxHeight: 'calc(100vh - 2rem)',
           overflowY: 'auto',
-          background: 'var(--card)',
+          backgroundColor: 'var(--card, #151D17)',
           borderRadius: '1rem',
           boxShadow:
-            '0 24px 64px -8px rgba(0,0,0,0.3), 0 4px 16px -4px rgba(0,0,0,0.15)',
+            '0 24px 64px -8px rgba(0,0,0,0.5), 0 4px 16px -4px rgba(0,0,0,0.3)',
           outline: 'none',
           animation: 'modal-slide-up 0.18s ease',
         }}
       >
         {/* ── Header ──────────────────────────────────────────────────── */}
         {(title || !hideCloseButton) && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '1.125rem 1.5rem',
-              borderBottom: '1px solid var(--border)',
-            }}
-          >
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-[#29352D]">
             {title ? (
               <h2
                 id="custom-modal-title"
-                style={{
-                  margin: 0,
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  color: 'var(--foreground)',
-                  letterSpacing: '-0.01em',
-                }}
+                className="m-0 text-base font-bold text-gray-900 dark:text-[#F4F7F4] tracking-tight"
               >
                 {title}
               </h2>
@@ -181,27 +167,7 @@ export default function CustomModal({
                 type="button"
                 onClick={onClose}
                 aria-label="Close modal"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '2rem',
-                  height: '2rem',
-                  borderRadius: '50%',
-                  border: '1.5px solid var(--border)',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  color: 'var(--muted-foreground)',
-                  transition: 'background 0.15s, color 0.15s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--secondary)';
-                  e.currentTarget.style.color = 'var(--foreground)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--muted-foreground)';
-                }}
+                className="flex size-8 items-center justify-center rounded-full border border-gray-200 dark:border-[#29352D] bg-transparent text-gray-400 dark:text-[#A1ADA4] hover:bg-gray-100 dark:hover:bg-[#1D2920] hover:text-gray-700 dark:hover:text-[#F4F7F4] transition-colors cursor-pointer"
               >
                 <X size={15} />
               </button>

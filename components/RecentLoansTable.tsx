@@ -28,7 +28,7 @@ export default function RecentLoansTable({ recentLoans }: RecentLoansTableProps)
   return (
     <div className="w-full space-y-5">
       {/* Desktop Table (Visible on lg and up) */}
-      <div className="data-table-wrap lg:block hidden">
+      <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] lg:block hidden">
         <div className="data-table-scroll">
           <Table className="data-table">
             <colgroup>

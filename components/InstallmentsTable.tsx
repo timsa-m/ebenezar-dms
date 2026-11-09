@@ -310,7 +310,7 @@ export default function InstallmentsTable({ installments, loan, repayments, tota
       )}
 
       {/* Table */}
-      <div className="data-table-wrap">
+      <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D]">
         <div className="data-table-scroll">
           <table className="data-table" style={{ minWidth: '600px' }}>
             <colgroup>

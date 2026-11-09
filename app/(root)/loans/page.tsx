@@ -57,7 +57,7 @@ export default async function LoansPage() {
 
       {/* Loan Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 dark:bg-emerald-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Active Agreements</p>
@@ -74,7 +74,7 @@ export default async function LoansPage() {
           </div>
         </div>
 
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -94,7 +94,7 @@ export default async function LoansPage() {
           </div>
         </div>
 
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -114,7 +114,7 @@ export default async function LoansPage() {
           </div>
         </div>
 
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-rose-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -134,7 +134,7 @@ export default async function LoansPage() {
           </div>
         </div>
 
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-sky-50 dark:bg-sky-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-6">
             <div>

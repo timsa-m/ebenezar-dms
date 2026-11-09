@@ -490,7 +490,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         </div>
       </div>
 
-      <div className="data-table-wrap lg:block hidden">
+      <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] lg:block hidden">
         <div className="data-table-scroll">
           <Table className="data-table">
             <colgroup>

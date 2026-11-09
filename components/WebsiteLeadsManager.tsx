@@ -389,7 +389,7 @@ export default function WebsiteLeadsManager({
       {/* ========================================================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
         {/* Total Leads */}
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
@@ -408,7 +408,7 @@ export default function WebsiteLeadsManager({
         </div>
 
         {/* Awaiting Action */}
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 dark:bg-emerald-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
@@ -432,7 +432,7 @@ export default function WebsiteLeadsManager({
         </div>
 
         {/* Trade-In Requests */}
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
@@ -456,7 +456,7 @@ export default function WebsiteLeadsManager({
         </div>
 
         {/* Resolution Rate */}
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
+        <div className="card-premium bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] flex flex-col justify-between group overflow-hidden relative">
           <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-rose-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4 sm:mb-6">
             <div>
