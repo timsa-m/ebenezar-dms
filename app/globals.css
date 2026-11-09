@@ -91,6 +91,8 @@
 }
 
 :root {
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-ibm-plex-serif: 'IBM Plex Serif', Georgia, Cambria, 'Times New Roman', Times, serif;
   --background: #f8fafc;
   --foreground: #111113;
   --card: #ffffff;
@@ -178,6 +180,57 @@
   --sidebar-primary: #B7FF3C;
   --sidebar-primary-foreground: #090C0A;
   --sidebar-ring: #B7FF3C;
+}
+
+/* ==========================================================================
+   Graphite Blue Theme Design Tokens
+   Foundation: Charcoal (#0B0F14, #161F2A, #111820), Electric Blue (#3A82FF)
+   ========================================================================== */
+.graphite {
+  color-scheme: dark;
+
+  --background: #0B0F14;
+  --foreground: #F8FAFC;
+  --card: #161F2A;
+  --card-foreground: #F8FAFC;
+  --popover: #1D2938;
+  --popover-foreground: #F8FAFC;
+  --border: #293647;
+  --input: #111820;
+  --ring: #3A82FF;
+  --radius: 0.75rem;
+
+  --primary: #3A82FF;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #1D2938;
+  --secondary-foreground: #F8FAFC;
+
+  --accent: #3A82FF;
+  --accent-foreground: #FFFFFF;
+
+  --muted: #161F2A;
+  --muted-foreground: #A1ADBC;
+
+  --elevated: #1D2938;
+
+  --destructive: #F87171;
+  --destructive-foreground: #FFFFFF;
+  --warning: #F5B942;
+  --warning-foreground: #0B0F14;
+  --info: #60A5FA;
+  --info-foreground: #0B0F14;
+  --success: #22C55E;
+  --success-foreground: #0B0F14;
+
+  --sidebar: #111820;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-border: #293647;
+  --sidebar-accent: #1D2938;
+  --sidebar-accent-foreground: #3A82FF;
+  --sidebar-primary: #3A82FF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-ring: #3A82FF;
 }
 
 * {
@@ -852,37 +905,20 @@ body {
   top: 0;
   display: flex;
   height: 100vh;
-  width: 256px;
+  width: 240px;
   flex-direction: column;
-  border-right: 1px solid #F3F4F6;
-  background-color: #FFFFFF;
-  padding: 1.25rem 1rem;
-  z-index: 50;
+  border-right: 1px solid var(--sidebar-border, #F3F4F6);
+  background-color: var(--sidebar, #FFFFFF);
+  z-index: 30;
   gap: 0;
 }
 
-/* Sidebar drag-to-resize handle */
-.sidebar-resize-handle {
-  position: absolute;
-  top: 0;
-  right: -3px;
-  width: 6px;
-  height: 100%;
-  cursor: col-resize;
-  z-index: 60;
-  transition: background-color 0.15s ease;
+.sidebar-collapsed {
+  width: 72px;
 }
 
-.sidebar-resize-handle:hover,
-.sidebar-resize-handle:active {
-  background-color: rgba(59, 130, 246, 0.35);
-}
-
-/* Hide resize handle on mobile/tablet */
-@media (max-width: 1023px) {
-  .sidebar-resize-handle {
-    display: none;
-  }
+.sidebar-collapsed .sidebar-link:hover {
+  transform: none;
 }
 
 @media (max-width: 767px) {
@@ -4017,9 +4053,470 @@ path.recharts-tooltip-cursor {
   border-color: #29352D;
 }
 
+/* ==========================================================================
+   GRAPHITE BLUE THEME COMPONENT OVERRIDES
+   Palette: Charcoal Foundation (#0B0F14, #161F2A, #111820), Electric Blue (#3A82FF),
+   Off-White Typography (#F8FAFC, #A1ADBC), Slate Borders (#293647, #202B39)
+   ========================================================================== */
+
+/* Core Canvas & Surfaces */
+html.graphite,
+html.graphite body,
+html.graphite #main-scroll-canvas,
+html.graphite .bg-background {
+  background-color: #0B0F14 !important;
+  color: #F8FAFC !important;
+}
+
+/* Card components */
+.graphite .card-premium {
+  background-color: #161F2A !important;
+  border-color: #293647 !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3), 0px 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.graphite .card-premium:hover {
+  border-color: #3A485B !important;
+  box-shadow: 0px 16px 32px -8px rgba(0, 0, 0, 0.45), 0px 4px 8px -4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.graphite .kpi-card {
+  background-color: #161F2A !important;
+  border-color: #293647 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.graphite .kpi-card:hover {
+  border-color: #3A485B !important;
+}
+
+.graphite .kpi-label {
+  color: #A1ADBC !important;
+}
+
+.graphite .kpi-value {
+  color: #F8FAFC !important;
+}
+
+.graphite .kpi-value-success {
+  color: #22C55E !important;
+}
+
+.graphite .kpi-value-danger {
+  color: #F87171 !important;
+}
+
+.graphite .kpi-value-warning {
+  color: #F5B942 !important;
+}
+
+.graphite .kpi-value-accent {
+  color: #3A82FF !important;
+}
+
+.graphite .kpi-sub {
+  color: #A1ADBC !important;
+}
+
+.graphite .detail-label {
+  color: #A1ADBC !important;
+}
+
+.graphite .detail-value {
+  color: #F8FAFC !important;
+}
+
+.graphite .section-heading {
+  color: #F8FAFC !important;
+}
+
+/* Progress Bars */
+.graphite .progress-bar-track {
+  background-color: #1D2938 !important;
+  border-color: #293647 !important;
+}
+
+.graphite .progress-bar-fill {
+  background: linear-gradient(90deg, #3A82FF 0%, #60A5FA 100%) !important;
+  box-shadow: 0 0 10px rgba(58, 130, 255, 0.35) !important;
+}
+
+.graphite .progress-bar-fill-success {
+  background: linear-gradient(90deg, #16A34A 0%, #22C55E 100%) !important;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.35) !important;
+}
+
+/* Info Cards */
+.graphite .info-card {
+  background-color: #161F2A !important;
+  border-color: #293647 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.graphite .info-card-row {
+  border-bottom-color: #293647 !important;
+}
+
+/* Table System */
+.graphite .data-table-wrap {
+  background-color: #161F2A !important;
+  border-color: #293647 !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.graphite .data-table-head-row {
+  background-color: #111820 !important;
+  border-bottom-color: #293647 !important;
+}
+
+.graphite .data-th {
+  color: #A1ADBC !important;
+}
+
+.graphite .data-table-row {
+  border-bottom-color: #293647 !important;
+}
+
+.graphite .data-table-row:hover {
+  background-color: rgba(29, 41, 56, 0.65) !important;
+}
+
+.graphite .client-name,
+.graphite .amount-text {
+  color: #F8FAFC !important;
+}
+
+.graphite .client-email {
+  color: #A1ADBC !important;
+}
+
+.graphite .mono-pill {
+  color: #A1ADBC !important;
+  background-color: #1D2938 !important;
+  border-color: #293647 !important;
+}
+
+/* Sidebar & Navigation */
+.graphite .sidebar,
+.graphite aside {
+  background-color: #111820 !important;
+  border-right-color: #293647 !important;
+}
+
+.graphite .sidebar-brand-name {
+  color: #3A82FF !important;
+}
+
+.graphite .sidebar-brand-tagline {
+  color: #A1ADBC !important;
+}
+
+.graphite .sidebar-link {
+  color: #A1ADBC !important;
+}
+
+.graphite .sidebar-link:hover {
+  background-color: #1D2938 !important;
+  color: #F8FAFC !important;
+}
+
+.graphite .sidebar-link:hover .sidebar-icon {
+  color: #3A82FF !important;
+}
+
+.graphite .sidebar-link-active {
+  background-color: rgba(58, 130, 255, 0.12) !important;
+  color: #3A82FF !important;
+  border: 1px solid rgba(58, 130, 255, 0.35) !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.graphite .sidebar-link-active .sidebar-icon {
+  color: #3A82FF !important;
+}
+
+.graphite .sidebar-footer {
+  border-top-color: #293647 !important;
+}
+
+/* Modals & Dialogs */
+.graphite .modal-box,
+.graphite .modal-panel,
+.graphite [role="dialog"] {
+  background-color: #161F2A !important;
+  border-color: #293647 !important;
+  color: #F8FAFC !important;
+}
+
+.graphite [role="menu"],
+.graphite [role="listbox"],
+.graphite .popover-content {
+  background-color: #1D2938 !important;
+  border-color: #293647 !important;
+  color: #F8FAFC !important;
+}
+
+/* Form Controls & Inputs */
+.graphite .search-input,
+.graphite .input-class,
+.graphite .form-input,
+.graphite .form-textarea,
+.graphite .form-select {
+  background-color: #111820 !important;
+  border-color: #293647 !important;
+  color: #F8FAFC !important;
+}
+
+.graphite .search-input:focus,
+.graphite .input-class:focus,
+.graphite .form-input:focus,
+.graphite .form-textarea:focus {
+  border-color: #3A82FF !important;
+  box-shadow: 0 0 0 3px rgba(58, 130, 255, 0.25) !important;
+}
+
+.graphite .search-input::placeholder,
+.graphite .input-class::placeholder,
+.graphite .form-input::placeholder,
+.graphite .form-textarea::placeholder {
+  color: #8290A3 !important;
+}
+
+/* Filter Pills */
+.graphite .status-filter-group {
+  background-color: #111820 !important;
+  border: 1px solid #293647 !important;
+}
+
+.graphite .status-filter-pill {
+  color: #A1ADBC !important;
+  background-color: transparent !important;
+}
+
+.graphite .status-filter-pill:hover {
+  color: #F8FAFC !important;
+  background-color: #1D2938 !important;
+}
+
+.graphite .status-filter-pill-active {
+  background-color: rgba(58, 130, 255, 0.15) !important;
+  color: #3A82FF !important;
+  border: 1px solid rgba(58, 130, 255, 0.35) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.graphite .search-icon {
+  color: #A1ADBC !important;
+}
+
+/* Buttons & CTAs — Submit Buttons in Electric Blue */
+.graphite .btn-primary,
+.graphite .btn-submit,
+.graphite .action-btn-primary,
+.graphite .auth-submit-btn,
+.graphite button[type="submit"]:not(.btn-secondary):not(.btn-destructive):not(.action-btn-danger):not(.action-btn-danger-soft):not(.action-btn-outline),
+.graphite input[type="submit"] {
+  background-color: #3A82FF !important;
+  background-image: none !important;
+  color: #FFFFFF !important;
+  border-color: #3A82FF !important;
+  box-shadow: 0px 4px 14px rgba(58, 130, 255, 0.35) !important;
+}
+
+.graphite .btn-primary:hover,
+.graphite .btn-submit:hover,
+.graphite .action-btn-primary:hover,
+.graphite .auth-submit-btn:hover:not(:disabled),
+.graphite button[type="submit"]:hover:not(:disabled):not(.btn-secondary):not(.btn-destructive):not(.action-btn-danger):not(.action-btn-danger-soft):not(.action-btn-outline),
+.graphite input[type="submit"]:hover:not(:disabled) {
+  background-color: #5B9AFF !important;
+  border-color: #5B9AFF !important;
+  box-shadow: 0px 6px 20px rgba(58, 130, 255, 0.5) !important;
+}
+
+.graphite .btn-primary:active,
+.graphite .btn-submit:active,
+.graphite .action-btn-primary:active,
+.graphite button[type="submit"]:active:not(:disabled) {
+  background-color: #286FE6 !important;
+  border-color: #286FE6 !important;
+  transform: translateY(1px);
+}
+
+.graphite .btn-primary:disabled,
+.graphite .btn-submit:disabled,
+.graphite .action-btn-primary:disabled,
+.graphite .auth-submit-btn:disabled,
+.graphite button[type="submit"]:disabled {
+  background-color: rgba(58, 130, 255, 0.45) !important;
+  border-color: transparent !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.graphite .btn-secondary {
+  background-color: #1D2938 !important;
+  color: #F8FAFC !important;
+  border-color: #293647 !important;
+}
+
+.graphite .btn-secondary:hover {
+  background-color: #202B39 !important;
+  border-color: #3A485B !important;
+}
+
+/* Recharts Visualizations */
+.graphite .recharts-default-tooltip {
+  background-color: #161F2A !important;
+  border: 1px solid #293647 !important;
+  color: #F8FAFC !important;
+}
+
+.graphite .recharts-cartesian-grid line {
+  stroke: #202B39 !important;
+  stroke-opacity: 0.8 !important;
+}
+
+.graphite .recharts-cartesian-axis-tick text {
+  fill: #A1ADBC !important;
+}
+
+.graphite .recharts-legend-item-text {
+  color: #A1ADBC !important;
+}
+
+.graphite .recharts-tooltip-cursor,
+.graphite rect.recharts-tooltip-cursor,
+.graphite path.recharts-tooltip-cursor {
+  fill: rgba(58, 130, 255, 0.08) !important;
+  stroke: transparent !important;
+}
+
+/* Universal Graphite Blue Class Cascade Overrides */
+:where(.graphite) .text-gray-900,
+:where(.graphite) .text-slate-900,
+:where(.graphite) .text-zinc-900,
+:where(.graphite) .text-neutral-900,
+:where(.graphite) .text-gray-950,
+:where(.graphite) .text-slate-950,
+:where(.graphite) .text-zinc-950,
+:where(.graphite) .text-neutral-950,
+:where(.graphite) .text-black,
+:where(.graphite) .text-gray-800,
+:where(.graphite) .text-slate-800,
+:where(.graphite) .text-zinc-800,
+:where(.graphite) .text-neutral-800 {
+  color: #F8FAFC !important;
+}
+
+:where(.graphite) .text-gray-700,
+:where(.graphite) .text-slate-700,
+:where(.graphite) .text-zinc-700,
+:where(.graphite) .text-neutral-700 {
+  color: #A1ADBC !important;
+}
+
+:where(.graphite) .text-gray-600,
+:where(.graphite) .text-slate-600,
+:where(.graphite) .text-zinc-600,
+:where(.graphite) .text-neutral-600,
+:where(.graphite) .text-gray-500,
+:where(.graphite) .text-slate-500,
+:where(.graphite) .text-zinc-500,
+:where(.graphite) .text-neutral-500 {
+  color: #64748B !important;
+}
+
+:where(.graphite) .bg-white {
+  background-color: #161F2A !important;
+}
+
+:where(.graphite) [class*="bg-white/"],
+:where(.graphite) [class*="bg-slate-50/"],
+:where(.graphite) [class*="bg-gray-50/"] {
+  background-color: #1D2938 !important;
+}
+
+:where(.graphite) .bg-gray-50,
+:where(.graphite) .bg-slate-50,
+:where(.graphite) .bg-zinc-50,
+:where(.graphite) .bg-neutral-50 {
+  background-color: #111820 !important;
+}
+
+:where(.graphite) .bg-gray-100,
+:where(.graphite) .bg-slate-100,
+:where(.graphite) .bg-zinc-100,
+:where(.graphite) .bg-neutral-100 {
+  background-color: #1D2938 !important;
+}
+
+:where(.graphite) [class*="border-slate-200/"],
+:where(.graphite) [class*="border-gray-200/"],
+:where(.graphite) .border-gray-100,
+:where(.graphite) .border-slate-100,
+:where(.graphite) .border-zinc-100,
+:where(.graphite) .border-gray-200,
+:where(.graphite) .border-slate-200,
+:where(.graphite) .border-zinc-200,
+:where(.graphite) .border-gray-300,
+:where(.graphite) .border-slate-300 {
+  border-color: #293647 !important;
+}
+
+:where(.graphite) .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+:where(.graphite) .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+:where(.graphite) .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+:where(.graphite) .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #293647 !important;
+}
+
+/* Targeted dark utility class remaps for Graphite Blue */
+html.graphite .dark\:bg-\[\#101612\] {
+  background-color: #111820 !important;
+}
+
+html.graphite .dark\:bg-\[\#151D17\] {
+  background-color: #161F2A !important;
+}
+
+html.graphite .dark\:bg-\[\#1D2920\] {
+  background-color: #1D2938 !important;
+}
+
+html.graphite .dark\:bg-\[\#090C0A\] {
+  background-color: #0B0F14 !important;
+}
+
+html.graphite .dark\:border-\[\#29352D\] {
+  border-color: #293647 !important;
+}
+
+html.graphite .dark\:text-\[\#B7FF3C\] {
+  color: #3A82FF !important;
+}
+
+html.graphite .dark\:text-\[\#A1ADA4\] {
+  color: #A1ADBC !important;
+}
+
+html.graphite .dark\:text-\[\#F4F7F4\] {
+  color: #F8FAFC !important;
+}
+
+html.graphite .dark\:ring-\[\#B7FF3C\]\/20,
+html.graphite .dark\:ring-\[\#B7FF3C\]\/25 {
+  --tw-ring-color: rgba(58, 130, 255, 0.25) !important;
+}
+
+html.graphite .dark\:border-\[\#B7FF3C\] {
+  border-color: #3A82FF !important;
+}
+
 /* Document & PDF Printing Isolation: Pure White Paper Layout */
 @media print {
-  html, body, .dark, .dark * {
+  html, body, .dark, .dark *, .graphite, .graphite * {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #000000 !important;

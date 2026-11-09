@@ -54,6 +54,9 @@ async function runTestSuite() {
     const validDark = await updateUserThemePreference('dark');
     assert(validDark.success === true, 'Accepts "dark" theme preference');
 
+    const validGraphite = await updateUserThemePreference('graphite');
+    assert(validGraphite.success === true, 'Accepts "graphite" (Graphite Blue) theme preference');
+
     const validSystem = await updateUserThemePreference('system');
     assert(validSystem.success === true, 'Accepts "system" theme preference');
   } catch (err: any) {
@@ -84,6 +87,15 @@ async function runTestSuite() {
   assert(globalsCss.includes('--muted-foreground: #A1ADA4;') || globalsCss.includes('#A1ADA4'), 'Midnight Lime muted text #A1ADA4 defined');
   assert(globalsCss.includes('--border: #29352D;') || globalsCss.includes('#29352D'), 'Midnight Lime border token #29352D defined');
 
+  // Graphite Blue palette tokens in .graphite
+  assert(globalsCss.includes('--background: #0B0F14;'), 'Graphite Blue background token #0B0F14 defined');
+  assert(globalsCss.includes('--card: #161F2A;'), 'Graphite Blue card token #161F2A defined');
+  assert(globalsCss.includes('--sidebar: #111820;'), 'Graphite Blue sidebar token #111820 defined');
+  assert(globalsCss.includes('--primary: #3A82FF;'), 'Graphite Blue electric blue accent #3A82FF defined');
+  assert(globalsCss.includes('--foreground: #F8FAFC;'), 'Graphite Blue foreground text #F8FAFC defined');
+  assert(globalsCss.includes('--muted-foreground: #A1ADBC;'), 'Graphite Blue secondary text #A1ADBC defined');
+  assert(globalsCss.includes('--border: #293647;'), 'Graphite Blue border token #293647 defined');
+
   // ─────────────────────────────────────────────────────────────
   // 3. Document & PDF Print Isolation (@media print)
   // ─────────────────────────────────────────────────────────────
@@ -107,6 +119,13 @@ async function runTestSuite() {
   assert(globalsCss.includes('.dark .modal-box'), '.modal-box has dark background and border styling');
   assert(globalsCss.includes('.dark .recharts-default-tooltip'), 'Recharts tooltips have scoped dark styling');
   assert(globalsCss.includes('.dark .recharts-cartesian-grid line'), 'Recharts cartesian grid has dark styling');
+
+  // Graphite Blue Scoped Component Rules
+  assert(globalsCss.includes('.graphite .card-premium'), '.card-premium has scoped Graphite Blue styling');
+  assert(globalsCss.includes('.graphite .data-table-wrap'), '.data-table-wrap has scoped Graphite Blue styling');
+  assert(globalsCss.includes('.graphite .sidebar'), '.sidebar has Graphite Blue styling');
+  assert(globalsCss.includes('.graphite .btn-primary'), '.btn-primary has electric blue CTA styling');
+  assert(globalsCss.includes('.graphite .btn-secondary'), '.btn-secondary has Graphite Blue styling');
 
   // ─────────────────────────────────────────────────────────────
   // 5. ThemeProvider and Root Layout Architecture
@@ -137,6 +156,7 @@ async function runTestSuite() {
   assert(settingsLayoutContent.includes("useTheme()"), 'SettingsLayout integrates next-themes useTheme hook');
   assert(settingsLayoutContent.includes("updateUserThemePreference"), 'SettingsLayout persists theme changes to database');
   assert(settingsLayoutContent.includes("Midnight Lime"), 'SettingsLayout highlights Midnight Lime design direction');
+  assert(settingsLayoutContent.includes("Graphite Blue"), 'SettingsLayout highlights Graphite Blue design option');
 
   // ─────────────────────────────────────────────────────────────
   // 7. Public Website Decoupling Verification

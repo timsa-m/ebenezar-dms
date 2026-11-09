@@ -52,11 +52,19 @@ export default function SettingsLayout({
 
   const currentTheme = mounted ? theme : (user?.themePreference || 'system');
 
-  const handleThemeChange = async (newTheme: 'light' | 'dark' | 'system') => {
+  const handleThemeChange = async (newTheme: 'light' | 'dark' | 'graphite' | 'system') => {
     setTheme(newTheme);
     try {
       await updateUserThemePreference(newTheme);
-      toast.success(`Theme preference set to ${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)}`);
+      const label =
+        newTheme === 'graphite'
+          ? 'Graphite Blue'
+          : newTheme === 'dark'
+          ? 'Midnight Lime'
+          : newTheme === 'light'
+          ? 'Light'
+          : 'System';
+      toast.success(`Theme preference set to ${label}`);
     } catch (e) {
       console.error('Failed to sync theme preference:', e);
     }
@@ -200,7 +208,7 @@ export default function SettingsLayout({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
         {/* Settings navigation */}
         <aside className="w-full shrink-0 lg:sticky lg:top-6 lg:w-64">
-          <div className="overflow-hidden rounded-2xl border border-white/70 bg-white/60 p-2 shadow-[0_8px_30px_rgba(15,23,42,0.05)] backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-white/70 bg-white/60 p-2 shadow-[0_8px_30px_rgba(15,23,42,0.05)] backdrop-blur-xl dark:border-border/80 dark:bg-card/75 dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
             <div className="flex flex-col gap-5 p-2">
               {menuGroups.map((group, idx) => {
                 const visibleItems = group.items.filter(
@@ -212,7 +220,7 @@ export default function SettingsLayout({
 
                 return (
                   <div key={idx}>
-                    <h4 className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                    <h4 className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 dark:text-muted-foreground">
                       {group.group}
                     </h4>
 
@@ -226,29 +234,32 @@ export default function SettingsLayout({
                             key={item.name}
                             type="button"
                             onClick={() => setActiveTab(item.name)}
-                            className={`group relative flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition-all duration-200 ${isActive
-                              ? 'bg-white text-gray-950 shadow-sm ring-1 ring-gray-200/80'
-                              : 'text-gray-500 hover:bg-white/70 hover:text-gray-900'
-                              }`}
+                            className={`group relative flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+                              isActive
+                                ? 'bg-white text-gray-950 shadow-sm ring-1 ring-gray-200/80 dark:bg-sidebar-accent dark:text-foreground dark:ring-border/80 dark:shadow-md'
+                                : 'text-gray-500 hover:bg-white/70 hover:text-gray-900 dark:text-muted-foreground dark:hover:bg-white/5 dark:hover:text-foreground'
+                            }`}
                           >
                             <span
-                              className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-all ${isActive
-                                ? 'bg-primary/10 text-primary'
-                                : 'bg-gray-100/70 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600'
-                                }`}
+                              className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-all ${
+                                isActive
+                                  ? 'bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/30 dark:shadow-[0_0_12px_rgba(var(--primary-rgb),0.15)]'
+                                  : 'bg-gray-100/70 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600 dark:bg-white/5 dark:text-muted-foreground dark:border dark:border-white/5 dark:group-hover:bg-white/10 dark:group-hover:text-foreground'
+                              }`}
                             >
-                              <Icon className="size-[17px]" strokeWidth={2} />
+                              <Icon className="size-[17px] transition-colors" strokeWidth={isActive ? 2.2 : 1.8} />
                             </span>
 
                             <span
-                              className={`truncate ${isActive ? 'font-semibold' : 'font-medium'
-                                }`}
+                              className={`truncate ${
+                                isActive ? 'font-semibold text-gray-950 dark:text-foreground' : 'font-medium'
+                              }`}
                             >
                               {item.name}
                             </span>
 
                             {isActive && (
-                              <ChevronRight className="ml-auto size-4 text-primary" />
+                              <ChevronRight className="ml-auto size-4 text-primary shrink-0 transition-transform group-hover:translate-x-0.5" />
                             )}
                           </button>
                         );
@@ -263,21 +274,21 @@ export default function SettingsLayout({
 
         {/* Main panel */}
         <main className="min-w-0 flex-1">
-          <div className="min-h-[520px] rounded-2xl border border-white/70 bg-white/65 p-4 shadow-[0_10px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-6 lg:p-8">
+          <div className="min-h-[520px] rounded-2xl border border-white/70 bg-white/65 p-4 shadow-[0_10px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl dark:border-border/80 dark:bg-card/75 dark:shadow-[0_10px_40px_rgba(0,0,0,0.35)] sm:p-6 lg:p-8">
             {/* Business */}
             {activeTab === 'Business' && (
               <div>
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
                       <Building2 className="size-5" />
                     </div>
 
                     <div>
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">
                         Business Profile
                       </h3>
-                      <p className="mt-1 text-sm leading-6 text-gray-500">
+                      <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-muted-foreground">
                         Company details, branding, and contact information.
                       </p>
                     </div>
@@ -378,7 +389,7 @@ export default function SettingsLayout({
               <div>
                 <div className="mb-8 border-b border-gray-200/70 pb-6 dark:border-[#29352D]">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-[#B7FF3C]/15 dark:text-[#B7FF3C]">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
                       <Palette className="size-5" />
                     </div>
 
@@ -400,11 +411,11 @@ export default function SettingsLayout({
                         Interface theme
                       </h4>
                       <p className="mt-1 text-sm text-gray-500 dark:text-[#A1ADA4]">
-                        Select Light, Dark (Midnight Lime), or System mode. Your preference syncs to your user profile and active session.
+                        Select Light, Midnight Lime, Graphite Blue, or System mode. Your preference syncs to your user profile and active session.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {/* Light */}
                       <button
                         type="button"
@@ -451,7 +462,7 @@ export default function SettingsLayout({
                         </div>
                       </button>
 
-                      {/* Dark */}
+                      {/* Dark (Midnight Lime) */}
                       <button
                         type="button"
                         onClick={() => handleThemeChange('dark')}
@@ -484,11 +495,8 @@ export default function SettingsLayout({
                           <div>
                             <div className="flex items-center gap-1.5">
                               <p className="text-sm font-semibold text-gray-900 dark:text-[#F4F7F4]">
-                                Dark
-                              </p>
-                              <span className="rounded bg-[#B7FF3C]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#B7FF3C] uppercase tracking-wider">
                                 Midnight Lime
-                              </span>
+                              </p>
                             </div>
                             <p className="mt-0.5 text-xs text-gray-500 dark:text-[#A1ADA4]">
                               Deep black & neon lime
@@ -501,6 +509,57 @@ export default function SettingsLayout({
                             </span>
                           ) : (
                             <span className="size-5 rounded-full border border-gray-300 dark:border-[#29352D]" />
+                          )}
+                        </div>
+                      </button>
+
+                      {/* Graphite Blue */}
+                      <button
+                        type="button"
+                        onClick={() => handleThemeChange('graphite')}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+                          currentTheme === 'graphite'
+                            ? 'border-[#3A82FF] bg-[#161F2A] ring-2 ring-[#3A82FF]/25 shadow-lg'
+                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                        }`}
+                      >
+                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-[#293647] bg-[#0B0F14] shadow-inner">
+                          <div className="w-[82%] overflow-hidden rounded-lg border border-[#293647] bg-[#161F2A] shadow-sm">
+                            <div className="flex h-5 items-center justify-between border-b border-[#293647] px-2 bg-[#111820]">
+                              <div className="flex items-center gap-1">
+                                <span className="size-1.5 rounded-full bg-[#293647]" />
+                                <span className="size-1.5 rounded-full bg-[#293647]" />
+                                <span className="size-1.5 rounded-full bg-[#293647]" />
+                              </div>
+                              <span className="h-1.5 w-6 rounded-full bg-[#3A82FF]/80" />
+                            </div>
+                            <div className="flex h-16 bg-[#161F2A]">
+                              <div className="w-1/4 border-r border-[#293647] bg-[#111820]" />
+                              <div className="flex flex-1 items-center justify-center">
+                                <Moon className="size-7 text-[#3A82FF]" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-[#F8FAFC]">
+                                Graphite Blue
+                              </p>
+                            </div>
+                            <p className="mt-0.5 text-xs text-gray-500 dark:text-[#A1ADBC]">
+                              Dark charcoal & electric blue
+                            </p>
+                          </div>
+
+                          {currentTheme === 'graphite' ? (
+                            <span className="flex size-6 items-center justify-center rounded-full bg-[#3A82FF] text-white">
+                              <Check className="size-3.5 stroke-[3]" />
+                            </span>
+                          ) : (
+                            <span className="size-5 rounded-full border border-gray-300 dark:border-[#293647]" />
                           )}
                         </div>
                       </button>
@@ -577,16 +636,16 @@ export default function SettingsLayout({
             {/* Profile */}
             {activeTab === 'Profile' && (
               <div>
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
                       <User className="size-5" />
                     </div>
                     <div>
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">
                         Personal Profile
                       </h3>
-                      <p className="mt-1 text-sm leading-6 text-gray-500">
+                      <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-muted-foreground">
                         Manage your account details and personal preferences.
                       </p>
                     </div>
@@ -649,14 +708,14 @@ export default function SettingsLayout({
             {activeTab === 'Website' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                 {/* Header */}
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <Globe className="size-[18px]" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
+                      <Globe className="size-5" />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">Website & Leads</h3>
-                      <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Configure your public-facing SEO, social links, and lead capture preferences.</p>
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">Website & Leads</h3>
+                      <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-muted-foreground">Configure your public-facing SEO, social links, and lead capture preferences.</p>
                     </div>
                   </div>
                 </div>
@@ -751,17 +810,17 @@ export default function SettingsLayout({
             {activeTab === 'Financing' && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                 {/* Header */}
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <CreditCard className="size-[18px]" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
+                      <CreditCard className="size-5" />
                     </div>
 
                     <div className="min-w-0">
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">
                         Financing Defaults
                       </h3>
-                      <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                      <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-muted-foreground">
                         Configure the default rates and repayment rules used when creating
                         new loan agreements.
                       </p>
@@ -925,35 +984,35 @@ export default function SettingsLayout({
             {/* Communications */}
             {activeTab === 'Communications' && (
               <div>
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
                       <MessageSquare className="size-5" />
                     </div>
                     <div>
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">Communications</h3>
-                      <p className="mt-1 text-sm leading-6 text-gray-500">SMS Gateway routing and automated notifications.</p>
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">Communications</h3>
+                      <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-muted-foreground">SMS Gateway routing and automated notifications.</p>
                     </div>
                   </div>
                 </div>
                 <form className="space-y-7" onSubmit={(e) => { e.preventDefault(); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); toast.success("Communications Updated"); }}>
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">SMS Sender ID</label>
-                      <input type="text" defaultValue="ELELYONLTD" className="input-class w-full rounded-xl border-gray-200/80 bg-white/70 focus:border-primary/40 focus:ring-4 focus:ring-primary/5" />
+                      <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-muted-foreground">SMS Sender ID</label>
+                      <input type="text" defaultValue="ELELYONLTD" className="input-class w-full rounded-xl border-gray-200/80 bg-white/70 dark:border-border dark:bg-input dark:text-foreground focus:border-primary/40 focus:ring-4 focus:ring-primary/5" />
                     </div>
                     <div className="space-y-2 flex items-end">
-                      <label className="flex items-center gap-3 cursor-pointer p-3 border border-gray-200/80 rounded-xl w-full">
-                        <input type="checkbox" defaultChecked className="size-4 text-primary rounded border-gray-300 focus:ring-primary" />
-                        <span className="text-sm font-semibold text-gray-700">Enable Automated Payment Reminders</span>
+                      <label className="flex items-center gap-3 cursor-pointer p-3 border border-gray-200/80 dark:border-border rounded-xl w-full bg-white/50 dark:bg-card">
+                        <input type="checkbox" defaultChecked className="size-4 text-primary rounded border-gray-300 dark:border-border focus:ring-primary" />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-foreground">Enable Automated Payment Reminders</span>
                       </label>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">Default Overdue SMS Template</label>
-                    <textarea rows={4} defaultValue="Dear {client_name}, your vehicle loan installment of KES {amount} was due on {due_date}. Please pay via Paybill 123456 A/c {car_reg} to avoid penalties. Ebenezar." className="input-class w-full resize-none rounded-xl border-gray-200/80 bg-white/70 focus:border-primary/40 focus:ring-4 focus:ring-primary/5" />
+                    <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-muted-foreground">Default Overdue SMS Template</label>
+                    <textarea rows={4} defaultValue="Dear {client_name}, your vehicle loan installment of KES {amount} was due on {due_date}. Please pay via Paybill 123456 A/c {car_reg} to avoid penalties. Ebenezar." className="input-class w-full resize-none rounded-xl border-gray-200/80 bg-white/70 dark:border-border dark:bg-input dark:text-foreground focus:border-primary/40 focus:ring-4 focus:ring-primary/5" />
                   </div>
-                  <div className="flex items-center justify-end border-t border-gray-200/70 pt-6">
+                  <div className="flex items-center justify-end border-t border-gray-200/70 dark:border-border pt-6">
                     <button type="submit" className="btn-submit inline-flex w-auto items-center rounded-xl px-6 shadow-sm transition-all hover:-translate-y-0.5">
                       <Save className="mr-2 size-4" /> Save Preferences
                     </button>
@@ -965,33 +1024,33 @@ export default function SettingsLayout({
             {/* Security */}
             {activeTab === 'Security' && (
               <div>
-                <div className="mb-8 border-b border-gray-200/70 pb-6">
+                <div className="mb-8 border-b border-gray-200/70 dark:border-border pb-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25">
                       <Shield className="size-5" />
                     </div>
                     <div>
-                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">Security</h3>
-                      <p className="mt-1 text-sm leading-6 text-gray-500">Protect your account and organization data.</p>
+                      <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">Security</h3>
+                      <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-muted-foreground">Protect your account and organization data.</p>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 border border-gray-200/80 rounded-xl bg-white/50">
+                  <div className="flex items-center justify-between p-4 border border-gray-200/80 dark:border-border rounded-xl bg-white/50 dark:bg-card">
                     <div>
-                      <p className="font-semibold text-gray-900 text-sm">Two-Factor Authentication</p>
-                      <p className="text-xs text-gray-500 mt-1">Add an extra layer of security to your account.</p>
+                      <p className="font-semibold text-gray-900 dark:text-foreground text-sm">Two-Factor Authentication</p>
+                      <p className="text-xs text-gray-500 dark:text-muted-foreground mt-1">Add an extra layer of security to your account.</p>
                     </div>
-                    <button type="button" className="px-4 py-2 bg-gray-100 text-gray-900 font-semibold rounded-lg text-sm hover:bg-gray-200 transition-colors">
+                    <button type="button" className="px-4 py-2 bg-gray-100 text-gray-900 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80 font-semibold rounded-lg text-sm hover:bg-gray-200 transition-colors">
                       Enable 2FA
                     </button>
                   </div>
-                  <div className="flex items-center justify-between p-4 border border-gray-200/80 rounded-xl bg-white/50">
+                  <div className="flex items-center justify-between p-4 border border-gray-200/80 dark:border-border rounded-xl bg-white/50 dark:bg-card">
                     <div>
-                      <p className="font-semibold text-gray-900 text-sm">Change Password</p>
-                      <p className="text-xs text-gray-500 mt-1">Update your password regularly to keep your account secure.</p>
+                      <p className="font-semibold text-gray-900 dark:text-foreground text-sm">Change Password</p>
+                      <p className="text-xs text-gray-500 dark:text-muted-foreground mt-1">Update your password regularly to keep your account secure.</p>
                     </div>
-                    <button type="button" className="px-4 py-2 bg-gray-100 text-gray-900 font-semibold rounded-lg text-sm hover:bg-gray-200 transition-colors">
+                    <button type="button" className="px-4 py-2 bg-gray-100 text-gray-900 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80 font-semibold rounded-lg text-sm hover:bg-gray-200 transition-colors">
                       Update Password
                     </button>
                   </div>
@@ -1002,11 +1061,11 @@ export default function SettingsLayout({
             {/* Users & Permissions */}
             {activeTab === 'Users & Permissions' && (
               <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4">
-                <div className="size-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-6">
+                <div className="size-16 bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/25 rounded-full flex items-center justify-center mb-6">
                   <Users className="size-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">User Management</h3>
-                <p className="text-gray-500 mb-8 max-w-md">Manage staff accounts, assign roles, and configure system permissions.</p>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-2">User Management</h3>
+                <p className="text-gray-500 dark:text-muted-foreground mb-8 max-w-md">Manage staff accounts, assign roles, and configure system permissions.</p>
                 <a href="/users" className="btn-submit inline-flex w-auto items-center rounded-xl px-8 shadow-sm transition-all hover:-translate-y-0.5">
                   Go to Users Dashboard
                 </a>
@@ -1016,13 +1075,13 @@ export default function SettingsLayout({
             {/* Generic tabs (for Vehicles, Documents, Integrations) */}
             {!['Business', 'Appearance', 'Profile', 'Website', 'Financing', 'Communications', 'Security', 'Users & Permissions'].includes(activeTab) && (
               <div className="flex min-h-[460px] flex-col items-center justify-center px-6 text-center">
-                <div className="mb-5 flex size-12 items-center justify-center rounded-2xl bg-gray-100/80 text-gray-400">
+                <div className="mb-5 flex size-12 items-center justify-center rounded-2xl bg-gray-100/80 text-gray-400 dark:bg-white/5 dark:text-muted-foreground dark:border dark:border-white/10">
                   <SettingsPlaceholderIcon activeTab={activeTab} />
                 </div>
-                <h3 className="text-[18px] font-semibold tracking-tight text-gray-950">
+                <h3 className="text-[18px] font-semibold tracking-tight text-gray-950 dark:text-foreground">
                   {activeTab} Settings
                 </h3>
-                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500">
+                <p className="mt-2 max-w-md text-sm leading-6 text-gray-500 dark:text-muted-foreground">
                   Configuration options for {activeTab.toLowerCase()} will
                   appear here in a future update.
                 </p>

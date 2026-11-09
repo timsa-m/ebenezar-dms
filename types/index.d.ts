@@ -241,6 +241,7 @@ declare interface TabletNavProps {
 declare interface FooterProps {
   user: User;
   type?: "mobile" | "desktop";
+  collapsed?: boolean;
 }
 
 declare interface SiderbarProps {

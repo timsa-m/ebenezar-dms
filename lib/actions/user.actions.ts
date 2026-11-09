@@ -681,10 +681,10 @@ export const updateUserProfile = async (firstName: string, lastName: string): Pr
  * and synchronizes with auth metadata.
  */
 export const updateUserThemePreference = async (
-  theme: 'light' | 'dark' | 'system'
+  theme: 'light' | 'dark' | 'graphite' | 'system'
 ): Promise<{ success: boolean; error?: string }> => {
   try {
-    if (!['light', 'dark', 'system'].includes(theme)) {
+    if (!['light', 'dark', 'graphite', 'system'].includes(theme)) {
       return { success: false, error: 'Invalid theme selection.' };
     }
 

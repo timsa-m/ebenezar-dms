@@ -1,23 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, IBM_Plex_Serif } from "next/font/google";
 import { Toaster } from "sonner";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import ScrollRestorer from "@/components/ScrollRestorer";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const ibmPlexSerif = IBM_Plex_Serif({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  variable: '--font-ibm-plex-serif',
-  display: 'swap',
-});
 
 export const viewport: Viewport = {
   themeColor: "#1e3a8a",
@@ -44,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
-      <body className={`${inter.variable} ${ibmPlexSerif.variable} min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary transition-colors duration-200`}>
+      <body className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary transition-colors duration-200">
         <ThemeProvider>
           <ScrollRestorer />
           {children}

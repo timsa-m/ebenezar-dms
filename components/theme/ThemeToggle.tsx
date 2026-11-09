@@ -21,9 +21,10 @@ export function ThemeToggle({ className }: { className?: string }) {
   }
 
   const cycleTheme = () => {
-    let next: 'light' | 'dark' | 'system' = 'dark';
+    let next: 'light' | 'dark' | 'graphite' | 'system' = 'dark';
     if (theme === 'light') next = 'dark';
-    else if (theme === 'dark') next = 'system';
+    else if (theme === 'dark') next = 'graphite';
+    else if (theme === 'graphite') next = 'system';
     else next = 'light';
 
     setTheme(next);
@@ -34,7 +35,15 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={cycleTheme}
-      title={`Theme: ${theme || 'system'} (Click to cycle Light / Dark / System)`}
+      title={`Theme: ${
+        theme === 'graphite'
+          ? 'Graphite Blue'
+          : theme === 'dark'
+          ? 'Midnight Lime'
+          : theme === 'light'
+          ? 'Light'
+          : 'System'
+      } (Click to cycle Light / Midnight Lime / Graphite Blue / System)`}
       aria-label="Toggle interface theme"
       className={cn(
         "flex size-8 items-center justify-center rounded-lg border border-slate-200 dark:border-[#29352D]",
@@ -46,6 +55,8 @@ export function ThemeToggle({ className }: { className?: string }) {
     >
       {theme === 'system' ? (
         <Monitor className="size-4 text-slate-500 dark:text-[#A1ADA4]" />
+      ) : resolvedTheme === 'graphite' ? (
+        <Moon className="size-4 text-[#3A82FF]" />
       ) : resolvedTheme === 'dark' ? (
         <Moon className="size-4 text-[#B7FF3C]" />
       ) : (
