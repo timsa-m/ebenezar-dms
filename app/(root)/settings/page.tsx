@@ -1,4 +1,6 @@
-import React from 'react';
+export const dynamic = 'force-dynamic';
+
+import React, { Suspense } from 'react';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import { getCompanySettings } from '@/lib/actions/settings.actions';
 import { redirect } from 'next/navigation';
@@ -20,5 +22,9 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   const params = searchParams ? await searchParams : undefined;
   const initialTab = params?.tab || (user.role === 'STAFF' ? 'Appearance' : 'Profile');
 
-  return <SettingsLayout user={user} initialSettings={initialSettings} initialTab={initialTab} />;
+  return (
+    <Suspense fallback={<div className="p-8 flex items-center justify-center min-h-[400px]"><div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-transparent animate-spin" /></div>}>
+      <SettingsLayout user={user} initialSettings={initialSettings} initialTab={initialTab} />
+    </Suspense>
+  );
 }

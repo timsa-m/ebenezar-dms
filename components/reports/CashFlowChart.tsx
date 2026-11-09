@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { CashFlowMonth } from "@/lib/reports/report.types";
+import SafeChartWrapper from "@/components/ui/SafeChartWrapper";
 
 interface CashFlowChartProps {
   months: CashFlowMonth[];
@@ -32,22 +33,24 @@ export default function CashFlowChart({ months }: CashFlowChartProps) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={months} margin={{ top: 4, right: 16, left: 0, bottom: 4 }} barSize={16} barGap={4}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-        <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-        <YAxis tickFormatter={shortAmount} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-        <Tooltip
-          formatter={(value: any, name: any) => [
-            `KES ${Number(value).toLocaleString()}`,
-            name === "disbursed" ? "Disbursed" : "Collected",
-          ]}
-          contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
-        />
-        <Legend wrapperStyle={{ fontSize: 12 }} />
-        <Bar dataKey="disbursed" name="Disbursed" fill="#6366f1" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="collected" name="Collected" fill="#22c55e" radius={[4, 4, 0, 0]} />
-      </BarChart>
-    </ResponsiveContainer>
+    <SafeChartWrapper height={300}>
+      <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300}>
+        <BarChart data={months} margin={{ top: 4, right: 16, left: 0, bottom: 4 }} barSize={16} barGap={4}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={shortAmount} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+          <Tooltip
+            formatter={(value: any, name: any) => [
+              `KES ${Number(value).toLocaleString()}`,
+              name === "disbursed" ? "Disbursed" : "Collected",
+            ]}
+            contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
+          />
+          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Bar dataKey="disbursed" name="Disbursed" fill="#6366f1" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="collected" name="Collected" fill="#22c55e" radius={[4, 4, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </SafeChartWrapper>
   );
 }

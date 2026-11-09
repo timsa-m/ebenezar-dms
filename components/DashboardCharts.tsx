@@ -7,6 +7,7 @@ import {
 } from 'recharts'
 import { formatKES } from '@/src/lib/financial-engine'
 import type { DmsExecutiveMetrics } from '@/lib/actions/dms.actions'
+import SafeChartWrapper from '@/components/ui/SafeChartWrapper'
 
 interface DashboardChartsProps {
   metrics: DmsExecutiveMetrics;
@@ -129,7 +130,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
           <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
         </div>
-        <div className="h-[300px] w-full min-w-0 relative">
+        <SafeChartWrapper height={300}>
           <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
             <AreaChart data={flowData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
@@ -156,7 +157,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
               <Area type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorAmount)" />
             </AreaChart>
           </ResponsiveContainer>
-        </div>
+        </SafeChartWrapper>
       </div>
 
       {/* Pie Chart: Portfolio Mix */}
@@ -167,35 +168,37 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
         </div>
         <div className="h-[300px] w-full min-w-0 relative flex items-center justify-center">
           {mixData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
-              <PieChart>
-                <Pie
-                  data={mixData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={65}
-                  outerRadius={95}
-                  paddingAngle={3}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {mixData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <RechartsTooltip 
-                  formatter={(value: any, name: any) => [`${value} Deals`, name]}
-                  contentStyle={{ borderRadius: '12px', border: '1px solid var(--border-primary, #29352D)', backgroundColor: 'var(--bg-elevated, #1D2920)', color: 'var(--text-primary, #F4F7F4)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.3)' }}
-                  itemStyle={{ fontWeight: 600 }}
-                />
-                <Legend 
-                  verticalAlign="bottom" 
-                  height={40} 
-                  iconType="circle"
-                  wrapperStyle={{ fontSize: '11px', fontWeight: 500 }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            <SafeChartWrapper height={300}>
+              <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
+                <PieChart>
+                  <Pie
+                    data={mixData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={65}
+                    outerRadius={95}
+                    paddingAngle={3}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {mixData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip 
+                    formatter={(value: any, name: any) => [`${value} Deals`, name]}
+                    contentStyle={{ borderRadius: '12px', border: '1px solid var(--border-primary, #29352D)', backgroundColor: 'var(--bg-elevated, #1D2920)', color: 'var(--text-primary, #F4F7F4)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.3)' }}
+                    itemStyle={{ fontWeight: 600 }}
+                  />
+                  <Legend 
+                    verticalAlign="bottom" 
+                    height={40} 
+                    iconType="circle"
+                    wrapperStyle={{ fontSize: '11px', fontWeight: 500 }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </SafeChartWrapper>
           ) : (
             <div className="flex flex-col items-center justify-center text-slate-400">
               <div className="w-24 h-24 rounded-full border-4 border-slate-100 dark:border-[#29352D] mb-3 border-dashed"></div>
@@ -211,7 +214,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Capital Exposure by Aging Bucket</h3>
           <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Outstanding portfolio balance distributed by delinquency status</p>
         </div>
-        <div className="h-[300px] w-full min-w-0 relative">
+        <SafeChartWrapper height={300}>
           <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>
             <BarChart data={barData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-[#29352D]" />
@@ -240,7 +243,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </SafeChartWrapper>
       </div>
 
     </div>

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { getAuditLogReportAction } from "@/lib/actions/report.actions";
 import { redirect } from "next/navigation";

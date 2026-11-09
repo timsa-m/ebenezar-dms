@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import HeaderBox from "@/components/HeaderBox";
 import { getClients, getClientById } from "@/lib/actions/client.actions";
 import { createAdminClient } from "@/src/lib/supabase/admin";

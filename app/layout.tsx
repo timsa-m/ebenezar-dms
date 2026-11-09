@@ -30,6 +30,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('ebenezar_theme')||(document.cookie.match(/ebenezar_theme=([^;]+)/)||[])[1];if(t==='graphite'){document.documentElement.classList.add('dark','graphite');}else if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.classList.remove('graphite');}else if(t==='light'){document.documentElement.classList.remove('dark','graphite');}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary transition-colors duration-200">
         <ThemeProvider>
           <ScrollRestorer />

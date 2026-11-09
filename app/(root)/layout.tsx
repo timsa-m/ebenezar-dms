@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import OfflineBanner from "@/components/OfflineBanner";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import Image from "next/image";

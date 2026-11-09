@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { formatKES } from "@/src/lib/financial-engine";
+import SafeChartWrapper from "@/components/ui/SafeChartWrapper";
 import type {
   DealershipExpenseCategory,
   DealershipVehicleCostType,
@@ -176,32 +177,34 @@ export default function DealershipBusinessCharts({
               No expense records found in this category
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie
-                  data={currentExpenseChartData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={95}
-                  innerRadius={55}
-                  paddingAngle={3}
-                  dataKey="value"
-                  label={({ name, percent }) => {
-                    const str = name || "";
-                    return `${str.substring(0, 16)}${str.length > 16 ? "..." : ""} ${((percent || 0) * 100).toFixed(0)}%`;
-                  }}
-                  labelLine={false}
-                >
-                  {currentExpenseChartData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color || EXPENSE_COLORS[index % EXPENSE_COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(val: any) => [formatKES(Number(val)), "Amount"]}
-                  contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            <SafeChartWrapper height={260}>
+              <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={260}>
+                <PieChart>
+                  <Pie
+                    data={currentExpenseChartData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={95}
+                    innerRadius={55}
+                    paddingAngle={3}
+                    dataKey="value"
+                    label={({ name, percent }) => {
+                      const str = name || "";
+                      return `${str.substring(0, 16)}${str.length > 16 ? "..." : ""} ${((percent || 0) * 100).toFixed(0)}%`;
+                    }}
+                    labelLine={false}
+                  >
+                    {currentExpenseChartData.map((entry, index) => (
+                      <Cell key={index} fill={entry.color || EXPENSE_COLORS[index % EXPENSE_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(val: any) => [formatKES(Number(val)), "Amount"]}
+                    contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </SafeChartWrapper>
           )}
         </div>
 
@@ -234,34 +237,36 @@ export default function DealershipBusinessCharts({
             </div>
           </div>
 
-          <ResponsiveContainer width="100%" height={260}>
-            <PieChart>
-              <Pie
-                data={capitalAllocationData}
-                cx="50%"
-                cy="50%"
-                outerRadius={95}
-                innerRadius={55}
-                paddingAngle={4}
-                dataKey="value"
-                label={({ name, percent }) => `${(name || "").split(" ")[0]} ${((percent || 0) * 100).toFixed(0)}%`}
-                labelLine={false}
-              >
-                {capitalAllocationData.map((entry, index) => (
-                  <Cell key={index} fill={entry.color || CAPITAL_COLORS[index % CAPITAL_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(val: any) => [formatKES(Number(val)), "Value"]}
-                contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
-              />
-              <Legend
-                iconType="circle"
-                iconSize={8}
-                wrapperStyle={{ fontSize: 11, paddingTop: 10 }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          <SafeChartWrapper height={260}>
+            <ResponsiveContainer width="100%" height={260} minWidth={0} minHeight={260}>
+              <PieChart>
+                <Pie
+                  data={capitalAllocationData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={95}
+                  innerRadius={55}
+                  paddingAngle={4}
+                  dataKey="value"
+                  label={({ name, percent }) => `${(name || "").split(" ")[0]} ${((percent || 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                >
+                  {capitalAllocationData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color || CAPITAL_COLORS[index % CAPITAL_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(val: any) => [formatKES(Number(val)), "Value"]}
+                  contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
+                />
+                <Legend
+                  iconType="circle"
+                  iconSize={8}
+                  wrapperStyle={{ fontSize: 11, paddingTop: 10 }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </SafeChartWrapper>
         </div>
 
         {/* Metric tiles */}

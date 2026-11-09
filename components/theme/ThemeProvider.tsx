@@ -46,7 +46,7 @@ export function ThemeProvider({
       value={{
         light: 'light',
         dark: 'dark',
-        graphite: 'dark graphite',
+        graphite: 'graphite',
       }}
     >
       <ThemeClassSync />

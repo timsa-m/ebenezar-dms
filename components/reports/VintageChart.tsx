@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import type { VintageCohort } from "@/lib/reports/report.types";
 import { formatAmount } from "@/lib/utils";
+import SafeChartWrapper from "@/components/ui/SafeChartWrapper";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -66,69 +67,71 @@ export default function VintageChart({ data }: { data: VintageCohort[] }) {
 
   return (
     <div className="w-full h-96">
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-          <XAxis 
-            dataKey="label" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fontSize: 12, fill: "#64748B" }} 
-            dy={10}
-          />
-          <YAxis 
-            yAxisId="left"
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fontSize: 12, fill: "#64748B" }} 
-            dx={-10}
-            tickFormatter={(val) => `${val}%`}
-          />
-          <YAxis 
-            yAxisId="right"
-            orientation="right"
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fontSize: 12, fill: "#64748B" }} 
-            dx={10}
-            tickFormatter={(val) => `KES ${(val / 1000).toFixed(0)}k`}
-          />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(241, 245, 249, 0.5)" }} />
-          <Legend wrapperStyle={{ paddingTop: "20px" }} />
-          
-          {/* Background Bar for Total Volume */}
-          <Bar 
-            yAxisId="right"
-            dataKey="totalDisbursed" 
-            name="Disbursed Volume" 
-            fill="#E2E8F0" 
-            radius={[4, 4, 0, 0]} 
-            barSize={40}
-          />
-          
-          {/* Lines for Risk Rates */}
-          <Line 
-            yAxisId="left"
-            type="monotone" 
-            dataKey="par30Ratio" 
-            name="PAR30 Rate (%)" 
-            stroke="#F97316" 
-            strokeWidth={3}
-            dot={{ r: 4, strokeWidth: 2 }}
-            activeDot={{ r: 6 }}
-          />
-          <Line 
-            yAxisId="left"
-            type="monotone" 
-            dataKey="defaultRatio" 
-            name="Default Rate (%)" 
-            stroke="#DC2626" 
-            strokeWidth={3}
-            dot={{ r: 4, strokeWidth: 2 }}
-            activeDot={{ r: 6 }}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
+      <SafeChartWrapper height="100%">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={384}>
+          <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+            <XAxis 
+              dataKey="label" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 12, fill: "#64748B" }} 
+              dy={10}
+            />
+            <YAxis 
+              yAxisId="left"
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 12, fill: "#64748B" }} 
+              dx={-10}
+              tickFormatter={(val) => `${val}%`}
+            />
+            <YAxis 
+              yAxisId="right"
+              orientation="right"
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fontSize: 12, fill: "#64748B" }} 
+              dx={10}
+              tickFormatter={(val) => `KES ${(val / 1000).toFixed(0)}k`}
+            />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(241, 245, 249, 0.5)" }} />
+            <Legend wrapperStyle={{ paddingTop: "20px" }} />
+            
+            {/* Background Bar for Total Volume */}
+            <Bar 
+              yAxisId="right"
+              dataKey="totalDisbursed" 
+              name="Disbursed Volume" 
+              fill="#E2E8F0" 
+              radius={[4, 4, 0, 0]} 
+              barSize={40}
+            />
+            
+            {/* Lines for Risk Rates */}
+            <Line 
+              yAxisId="left"
+              type="monotone" 
+              dataKey="par30Ratio" 
+              name="PAR30 Rate (%)" 
+              stroke="#F97316" 
+              strokeWidth={3}
+              dot={{ r: 4, strokeWidth: 2 }}
+              activeDot={{ r: 6 }}
+            />
+            <Line 
+              yAxisId="left"
+              type="monotone" 
+              dataKey="defaultRatio" 
+              name="Default Rate (%)" 
+              stroke="#DC2626" 
+              strokeWidth={3}
+              dot={{ r: 4, strokeWidth: 2 }}
+              activeDot={{ r: 6 }}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </SafeChartWrapper>
     </div>
   );
 }

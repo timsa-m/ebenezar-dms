@@ -11,6 +11,7 @@ import {
   Cell,
 } from "recharts";
 import type { ArrearsSummary } from "@/lib/reports/report.types";
+import SafeChartWrapper from "@/components/ui/SafeChartWrapper";
 
 interface ArrearsChartProps {
   summary: ArrearsSummary;
@@ -33,21 +34,23 @@ export default function ArrearsChart({ summary }: ArrearsChartProps) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
-      <BarChart data={data} barSize={40} margin={{ top: 4, right: 8, left: 0, bottom: 4 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-        <XAxis dataKey="bucket" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-        <YAxis tickFormatter={shortAmount} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-        <Tooltip
-          formatter={(value: any) => [`KES ${Number(value).toLocaleString()}`, "Outstanding Balance"]}
-          contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
-        />
-        <Bar dataKey="balance" name="Balance" radius={[6, 6, 0, 0]}>
-          {data.map((_, index) => (
-            <Cell key={index} fill={BUCKET_COLORS[index]} />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <SafeChartWrapper height={250}>
+      <ResponsiveContainer width="100%" height={250} minWidth={0} minHeight={250}>
+        <BarChart data={data} barSize={40} margin={{ top: 4, right: 8, left: 0, bottom: 4 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+          <XAxis dataKey="bucket" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={shortAmount} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+          <Tooltip
+            formatter={(value: any) => [`KES ${Number(value).toLocaleString()}`, "Outstanding Balance"]}
+            contentStyle={{ borderRadius: "0.75rem", border: "1px solid var(--border, #29352D)", backgroundColor: "var(--card-bg, #151D17)", color: "var(--foreground, #F4F7F4)", fontSize: 12 }}
+          />
+          <Bar dataKey="balance" name="Balance" radius={[6, 6, 0, 0]}>
+            {data.map((_, index) => (
+              <Cell key={index} fill={BUCKET_COLORS[index]} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </SafeChartWrapper>
   );
 }
