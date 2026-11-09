@@ -46,6 +46,27 @@ const iconMap: Record<string, React.ElementType> = {
   '/settings': SlidersHorizontal,
 }
 
+const PROD_WEBSITE_URL =
+  process.env.NEXT_PUBLIC_WEBSITE_URL && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes('localhost')
+    ? process.env.NEXT_PUBLIC_WEBSITE_URL
+    : 'https://ebenezarenterprises.com'
+
+const LOCAL_WEBSITE_URL =
+  process.env.NEXT_PUBLIC_DEV_WEBSITE_URL || 'http://localhost:5173'
+
+export const getWebsiteUrl = (): string => {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname
+    const isLocal =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '0.0.0.0' ||
+      hostname.endsWith('.local')
+    return isLocal ? LOCAL_WEBSITE_URL : PROD_WEBSITE_URL
+  }
+  return process.env.NODE_ENV === 'production' ? PROD_WEBSITE_URL : LOCAL_WEBSITE_URL
+}
+
 const getNavIcon = (route: string, label: string): React.ElementType => {
   if (label === 'Website' || route.startsWith('http://') || route.startsWith('https://')) {
     return Globe
@@ -72,12 +93,25 @@ const NavItem = ({
   isExternal,
   onClick,
 }: NavItemProps) => {
+  const isLinkExternal = isExternal || label === 'Website' || href.startsWith('http://') || href.startsWith('https://')
+
+  const LinkComponent = isLinkExternal ? 'a' : Link
+
+  const linkProps = isLinkExternal
+    ? {
+        href,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        onClick,
+      }
+    : {
+        href,
+        onClick,
+      }
+
   const linkContent = (
-    <Link
-      href={href}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noopener noreferrer' : undefined}
-      onClick={onClick}
+    <LinkComponent
+      {...(linkProps as any)}
       className={cn(
         'sidebar-link group flex items-center transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
         isCollapsed
@@ -100,7 +134,7 @@ const NavItem = ({
       ) : (
         <span className="sidebar-label font-medium text-sm truncate">{label}</span>
       )}
-    </Link>
+    </LinkComponent>
   )
 
   if (isCollapsed) {
@@ -204,15 +238,44 @@ const Sidebar = ({ user }: SiderbarProps) => {
     }
   }, [mobileOpen])
 
-  // Filter links according to role permissions (STAFF hides Dashboard and Reports)
-  const visibleLinks = useMemo(() => {
-    return sidebarLinks.filter((item) => {
-      if (user?.role === 'STAFF') {
-        return item.route !== '/' && item.route !== '/reports'
-      }
-      return true
-    })
-  }, [user?.role])
+  // Resolve current website URL based on environment (localhost vs production)
+  const [websiteUrl, setWebsiteUrl] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      const isLocal =
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname === '0.0.0.0' ||
+        hostname.endsWith('.local')
+      return isLocal ? LOCAL_WEBSITE_URL : PROD_WEBSITE_URL
+    }
+    return process.env.NODE_ENV === 'production' ? PROD_WEBSITE_URL : LOCAL_WEBSITE_URL
+  })
+
+  useEffect(() => {
+    setWebsiteUrl(getWebsiteUrl())
+  }, [])
+
+  // Filter links according to role permissions and resolve dynamic website URL
+  const navItems = useMemo(() => {
+    return sidebarLinks
+      .filter((item) => {
+        if (user?.role === 'STAFF') {
+          return item.route !== '/' && item.route !== '/reports'
+        }
+        return true
+      })
+      .map((item) => {
+        const isWebsite = item.label === 'Website'
+        const href = isWebsite ? websiteUrl : item.route
+        const isExternal = isWebsite || href.startsWith('http://') || href.startsWith('https://')
+        return {
+          ...item,
+          href,
+          isExternal,
+        }
+      })
+  }, [user?.role, websiteUrl])
 
   // Route active helper
   const checkIsActive = useCallback(
@@ -294,20 +357,19 @@ const Sidebar = ({ user }: SiderbarProps) => {
 
         {/* Mobile Navigation Links */}
         <nav className="sidebar-nav flex-1 overflow-y-auto space-y-1 py-1">
-          {visibleLinks.map((item) => {
-            const isActive = checkIsActive(item.route)
-            const Icon = getNavIcon(item.route, item.label)
-            const isExternal = item.route.startsWith('http')
+          {navItems.map((item) => {
+            const isActive = checkIsActive(item.href)
+            const Icon = getNavIcon(item.href, item.label)
 
             return (
               <NavItem
                 key={item.label}
-                href={item.route}
+                href={item.href}
                 label={item.label}
                 icon={Icon}
                 isActive={isActive}
                 isCollapsed={false}
-                isExternal={isExternal}
+                isExternal={item.isExternal}
                 onClick={() => setMobileOpen(false)}
               />
             )
@@ -441,20 +503,19 @@ const Sidebar = ({ user }: SiderbarProps) => {
 
         {/* Primary Navigation Links */}
         <nav className="sidebar-nav flex-1 overflow-y-auto overflow-x-hidden space-y-1 py-1 px-0.5">
-          {visibleLinks.map((item) => {
-            const isActive = checkIsActive(item.route)
-            const Icon = getNavIcon(item.route, item.label)
-            const isExternal = item.route.startsWith('http')
+          {navItems.map((item) => {
+            const isActive = checkIsActive(item.href)
+            const Icon = getNavIcon(item.href, item.label)
 
             return (
               <NavItem
                 key={item.label}
-                href={item.route}
+                href={item.href}
                 label={item.label}
                 icon={Icon}
                 isActive={isActive}
                 isCollapsed={isCollapsed}
-                isExternal={isExternal}
+                isExternal={item.isExternal}
               />
             )
           })}

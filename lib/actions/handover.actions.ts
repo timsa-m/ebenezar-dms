@@ -158,9 +158,14 @@ export async function getVehicleHandoverData(vehicleId: string): Promise<Vehicle
 
   const store = getHandoverStore();
 
-  const allHandovers = (handovers && handovers.length > 0
+  const rawHandovers = handovers && handovers.length > 0
     ? handovers
-    : store.handovers.filter(h => h.vehicle_id === vehicleId && !h.is_cancelled)) as VehicleHandoverRecord[];
+    : store.handovers.filter(h => h.vehicle_id === vehicleId && !h.is_cancelled);
+
+  const allHandovers = (rawHandovers || []).map((h: any) => ({
+    ...h,
+    handed_over_by: h.handed_over_by ?? h.handedOverBy ?? null,
+  })) as VehicleHandoverRecord[];
 
   const incoming = allHandovers.find(h => h.handover_type === 'incoming') ?? null;
   const outgoing = allHandovers.find(h => h.handover_type === 'outgoing') ?? null;
@@ -364,7 +369,7 @@ export async function createIncomingHandover(params: CreateIncomingHandoverParam
       previous_owner: params.previousOwner ?? null,
       received_by_user_id: user.$id,
       received_by_name: staffName,
-      handedOverBy: params.handedOverBy ?? null,
+      handed_over_by: params.handedOverBy ?? null,
       odometer_km: params.odometer ?? null,
       fuel_level: params.fuelLevel ?? null,
       storage_location: params.storageLocation ?? null,
@@ -774,7 +779,7 @@ export async function saveIncomingHandoverComplete(
           previous_owner: params.previousOwner ?? null,
           received_by_user_id: user.$id,
           received_by_name: staffName,
-          handedOverBy: params.handedOverBy ?? null,
+          handed_over_by: params.handedOverBy ?? null,
           odometer_km: params.odometer ?? null,
           fuel_level: params.fuelLevel ?? null,
           storage_location: params.storageLocation ?? null,
@@ -788,11 +793,15 @@ export async function saveIncomingHandoverComplete(
           updated_by_name: staffName,
         };
 
-        const { data: inserted } = await supabase
+        const { data: inserted, error: insErr } = await supabase
           .from('vehicle_handover_records')
           .insert(insertPayload)
           .select('id')
           .maybeSingle();
+
+        if (insErr) {
+          console.warn('[saveIncomingHandoverComplete] vehicle_handover_records insert error:', insErr);
+        }
 
         activeHandoverId = inserted?.id || newId;
 
@@ -816,7 +825,7 @@ export async function saveIncomingHandoverComplete(
 
     // 2. Prepare Handover Record update payload
     const updatePayload: any = {
-      handedOverBy: params.handedOverBy ?? null,
+      handed_over_by: params.handedOverBy ?? null,
       odometer_km: params.odometer ?? null,
       fuel_level: params.fuelLevel ?? null,
       storage_location: params.storageLocation ?? null,

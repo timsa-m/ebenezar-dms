@@ -1,3 +1,10 @@
+const PROD_WEBSITE_URL =
+  process.env.NEXT_PUBLIC_WEBSITE_URL && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes("localhost")
+    ? process.env.NEXT_PUBLIC_WEBSITE_URL
+    : "https://ebenezarenterprises.com";
+
+const LOCAL_WEBSITE_URL = process.env.NEXT_PUBLIC_DEV_WEBSITE_URL || "http://localhost:5173";
+
 export const sidebarLinks = [
   {
     imgURL: "/icons/home.svg",
@@ -21,7 +28,7 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/home.svg",
-    route: process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:5173",
+    route: process.env.NODE_ENV === "production" ? PROD_WEBSITE_URL : LOCAL_WEBSITE_URL,
     label: "Website",
   },
   {
