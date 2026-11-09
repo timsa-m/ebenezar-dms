@@ -10,17 +10,22 @@ export interface ThemeProviderProps {
 }
 
 function ThemeClassSync() {
-  const { resolvedTheme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
 
   React.useEffect(() => {
     const root = document.documentElement;
-    if (resolvedTheme === 'graphite') {
+    const current = theme || resolvedTheme;
+    if (current === 'graphite') {
       root.classList.add('dark');
       root.classList.add('graphite');
-    } else {
+    } else if (current === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('graphite');
+    } else if (current === 'light') {
+      root.classList.remove('dark');
       root.classList.remove('graphite');
     }
-  }, [resolvedTheme]);
+  }, [theme, resolvedTheme]);
 
   return null;
 }
@@ -38,11 +43,14 @@ export function ThemeProvider({
       disableTransitionOnChange
       storageKey={storageKey}
       themes={['light', 'dark', 'graphite']}
+      value={{
+        light: 'light',
+        dark: 'dark',
+        graphite: 'dark graphite',
+      }}
     >
       <ThemeClassSync />
       {children}
     </NextThemesProvider>
   );
 }
-
-

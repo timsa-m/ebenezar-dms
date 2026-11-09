@@ -81,7 +81,7 @@ const NavItem = ({
       className={cn(
         'sidebar-link group flex items-center transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
         isCollapsed
-          ? 'justify-center w-10 h-10 mx-auto p-0 rounded-xl hover:translate-x-0'
+          ? 'justify-center size-11 mx-auto p-0 rounded-xl hover:translate-x-0 shrink-0'
           : 'gap-3 px-3 py-2.5 rounded-xl',
         isActive && 'sidebar-link-active'
       )}
@@ -350,31 +350,31 @@ const Sidebar = ({ user }: SiderbarProps) => {
       {/* ── Desktop & Tablet Sidebar (>= md) ── */}
       <aside
         style={{
-          width: isCollapsed ? '72px' : '240px',
-          minWidth: isCollapsed ? '72px' : '240px',
-          maxWidth: isCollapsed ? '72px' : '240px',
+          width: isCollapsed ? '80px' : '256px',
+          minWidth: isCollapsed ? '80px' : '256px',
+          maxWidth: isCollapsed ? '80px' : '256px',
         }}
         className={cn(
           'sidebar print:hidden hidden md:flex flex-col h-screen sticky top-0 shrink-0 z-30 select-none overflow-x-hidden border-r border-sidebar-border bg-sidebar',
-          isCollapsed ? 'sidebar-collapsed px-2 py-3' : 'px-3 py-3.5',
+          isCollapsed ? 'sidebar-collapsed px-2 py-3.5' : 'px-3 py-3.5',
           mounted ? 'transition-[width,padding] duration-300 ease-in-out' : ''
         )}
         aria-label="Main sidebar navigation"
       >
         {/* Brand Header: Logo + Title + Collapse/Expand Toggle */}
         {isCollapsed ? (
-          <div className="flex flex-col items-center gap-2 pb-2 mb-2 border-b border-sidebar-border/60 shrink-0">
+          <div className="flex flex-col items-center gap-2.5 pb-2.5 mb-2.5 border-b border-sidebar-border/60 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
                   href="/"
-                  className="sidebar-logo w-9 h-9 rounded-full overflow-hidden flex items-center justify-center shrink-0 hover:ring-2 hover:ring-primary/40 transition-all"
+                  className="sidebar-logo w-10 h-10 rounded-full overflow-hidden flex items-center justify-center shrink-0 hover:ring-2 hover:ring-primary/40 transition-all"
                 >
                   <Image
                     src="/icons/logo.png"
                     alt="Ebenezar Logo"
-                    width={36}
-                    height={36}
+                    width={40}
+                    height={40}
                     priority
                     className="w-full h-full object-contain"
                   />
@@ -391,9 +391,9 @@ const Sidebar = ({ user }: SiderbarProps) => {
                   onClick={toggleCollapsed}
                   aria-label="Expand sidebar"
                   aria-expanded={false}
-                  className="p-1.5 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors shrink-0"
+                  className="flex size-9 items-center justify-center rounded-xl border border-sidebar-border/80 bg-sidebar-accent/50 text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground hover:border-sidebar-border hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer group"
                 >
-                  <PanelLeftOpen className="w-4 h-4" />
+                  <PanelLeftOpen className="w-[18px] h-[18px] transition-transform group-hover:translate-x-0.5" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={14} className="font-medium text-xs">
@@ -407,12 +407,12 @@ const Sidebar = ({ user }: SiderbarProps) => {
               href="/"
               className="sidebar-brand flex items-center gap-2.5 p-1 rounded-xl min-w-0 group hover:opacity-90 transition-opacity"
             >
-              <div className="sidebar-logo shrink-0 w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
+              <div className="sidebar-logo shrink-0 w-10 h-10 rounded-full overflow-hidden flex items-center justify-center">
                 <Image
                   src="/icons/logo.png"
                   alt="Ebenezar Logo"
-                  width={36}
-                  height={36}
+                  width={40}
+                  height={40}
                   priority
                   className="w-full h-full object-contain"
                 />
@@ -432,7 +432,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
               aria-label="Collapse sidebar"
               aria-expanded={true}
               title="Collapse sidebar (Ctrl+B)"
-              className="p-1.5 rounded-lg text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors shrink-0"
+              className="flex size-8 items-center justify-center rounded-lg border border-transparent text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent hover:border-sidebar-border/60 transition-all shrink-0 cursor-pointer"
             >
               <PanelLeftClose className="w-4 h-4" />
             </button>

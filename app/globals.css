@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@400;600;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark, .dark *));
@@ -67,6 +68,7 @@
   --shadow-card: 0px 4px 12px rgba(0, 0, 0, 0.03), 0px 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-floating: 0px 16px 32px -8px rgba(0, 0, 0, 0.08), 0px 4px 8px -4px rgba(0, 0, 0, 0.04);
 
+  --font-sans: var(--font-inter);
   --font-inter: var(--font-inter);
   --font-ibm-plex-serif: var(--font-ibm-plex-serif);
 
@@ -246,7 +248,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
   letter-spacing: -0.01em;
 }
 
@@ -905,7 +907,7 @@ body {
   top: 0;
   display: flex;
   height: 100vh;
-  width: 240px;
+  width: 256px;
   flex-direction: column;
   border-right: 1px solid var(--sidebar-border, #F3F4F6);
   background-color: var(--sidebar, #FFFFFF);
@@ -914,11 +916,35 @@ body {
 }
 
 .sidebar-collapsed {
-  width: 72px;
+  width: 80px;
 }
 
-.sidebar-collapsed .sidebar-link:hover {
-  transform: none;
+.sidebar-collapsed .sidebar-nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar-collapsed .sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-link {
+  padding: 0 !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  justify-content: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  transform: none !important;
+}
+
+.sidebar-collapsed .sidebar-icon {
+  margin: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 @media (max-width: 767px) {
@@ -2375,7 +2401,7 @@ html {
   max-width: 860px;
   margin: 0 auto;
   padding: 2.5rem 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
   background-color: #FFFFFF;
   color: #111113;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);

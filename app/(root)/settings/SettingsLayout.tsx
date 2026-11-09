@@ -60,10 +60,10 @@ export default function SettingsLayout({
         newTheme === 'graphite'
           ? 'Graphite Blue'
           : newTheme === 'dark'
-          ? 'Midnight Lime'
-          : newTheme === 'light'
-          ? 'Light'
-          : 'System';
+            ? 'Midnight Lime'
+            : newTheme === 'light'
+              ? 'Light'
+              : 'System';
       toast.success(`Theme preference set to ${label}`);
     } catch (e) {
       console.error('Failed to sync theme preference:', e);
@@ -143,7 +143,7 @@ export default function SettingsLayout({
     const formData = new FormData(e.currentTarget);
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
-    
+
     if (!firstName || !lastName) {
       toast.error('First name and last name are required.');
       return;
@@ -234,26 +234,23 @@ export default function SettingsLayout({
                             key={item.name}
                             type="button"
                             onClick={() => setActiveTab(item.name)}
-                            className={`group relative flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
-                              isActive
-                                ? 'bg-white text-gray-950 shadow-sm ring-1 ring-gray-200/80 dark:bg-sidebar-accent dark:text-foreground dark:ring-border/80 dark:shadow-md'
-                                : 'text-gray-500 hover:bg-white/70 hover:text-gray-900 dark:text-muted-foreground dark:hover:bg-white/5 dark:hover:text-foreground'
-                            }`}
+                            className={`group relative flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${isActive
+                              ? 'bg-white text-gray-950 shadow-sm ring-1 ring-gray-200/80 dark:bg-sidebar-accent dark:text-foreground dark:ring-border/80 dark:shadow-md'
+                              : 'text-gray-500 hover:bg-white/70 hover:text-gray-900 dark:text-muted-foreground dark:hover:bg-white/5 dark:hover:text-foreground'
+                              }`}
                           >
                             <span
-                              className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-all ${
-                                isActive
-                                  ? 'bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/30 dark:shadow-[0_0_12px_rgba(var(--primary-rgb),0.15)]'
-                                  : 'bg-gray-100/70 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600 dark:bg-white/5 dark:text-muted-foreground dark:border dark:border-white/5 dark:group-hover:bg-white/10 dark:group-hover:text-foreground'
-                              }`}
+                              className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-all ${isActive
+                                ? 'bg-primary/10 text-primary dark:bg-primary/15 dark:text-primary dark:border dark:border-primary/30 dark:shadow-[0_0_12px_rgba(var(--primary-rgb),0.15)]'
+                                : 'bg-gray-100/70 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600 dark:bg-white/5 dark:text-muted-foreground dark:border dark:border-white/5 dark:group-hover:bg-white/10 dark:group-hover:text-foreground'
+                                }`}
                             >
                               <Icon className="size-[17px] transition-colors" strokeWidth={isActive ? 2.2 : 1.8} />
                             </span>
 
                             <span
-                              className={`truncate ${
-                                isActive ? 'font-semibold text-gray-950 dark:text-foreground' : 'font-medium'
-                              }`}
+                              className={`truncate ${isActive ? 'font-semibold text-gray-950 dark:text-foreground' : 'font-medium'
+                                }`}
                             >
                               {item.name}
                             </span>
@@ -420,11 +417,10 @@ export default function SettingsLayout({
                       <button
                         type="button"
                         onClick={() => handleThemeChange('light')}
-                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
-                          currentTheme === 'light'
-                            ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
-                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
-                        }`}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${currentTheme === 'light'
+                          ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
+                          : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                          }`}
                       >
                         <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200/80 bg-gray-50 shadow-inner">
                           <div className="w-[82%] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -466,11 +462,10 @@ export default function SettingsLayout({
                       <button
                         type="button"
                         onClick={() => handleThemeChange('dark')}
-                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
-                          currentTheme === 'dark'
-                            ? 'border-[#B7FF3C] bg-[#151D17] ring-2 ring-[#B7FF3C]/25 shadow-lg'
-                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
-                        }`}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${currentTheme === 'dark'
+                          ? 'border-[#B7FF3C] bg-[#151D17] ring-2 ring-[#B7FF3C]/25 shadow-lg'
+                          : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                          }`}
                       >
                         <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-[#29352D] bg-[#090C0A] shadow-inner">
                           <div className="w-[82%] overflow-hidden rounded-lg border border-[#29352D] bg-[#151D17] shadow-sm">
@@ -517,11 +512,10 @@ export default function SettingsLayout({
                       <button
                         type="button"
                         onClick={() => handleThemeChange('graphite')}
-                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
-                          currentTheme === 'graphite'
-                            ? 'border-[#3A82FF] bg-[#161F2A] ring-2 ring-[#3A82FF]/25 shadow-lg'
-                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
-                        }`}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${currentTheme === 'graphite'
+                          ? 'border-[#3A82FF] bg-[#161F2A] ring-2 ring-[#3A82FF]/25 shadow-lg'
+                          : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                          }`}
                       >
                         <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-[#293647] bg-[#0B0F14] shadow-inner">
                           <div className="w-[82%] overflow-hidden rounded-lg border border-[#293647] bg-[#161F2A] shadow-sm">
@@ -568,11 +562,10 @@ export default function SettingsLayout({
                       <button
                         type="button"
                         onClick={() => handleThemeChange('system')}
-                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
-                          currentTheme === 'system'
-                            ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
-                            : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
-                        }`}
+                        className={`group rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${currentTheme === 'system'
+                          ? 'border-primary/40 bg-white ring-2 ring-primary/20 shadow-md dark:border-[#B7FF3C] dark:ring-[#B7FF3C]/20 dark:bg-[#1D2920]'
+                          : 'border-gray-200/80 bg-white/70 hover:border-gray-300 dark:border-[#29352D] dark:bg-[#101612]/60 dark:hover:border-[#3b4d40]'
+                          }`}
                       >
                         <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-tr from-[#151D17] via-slate-700 to-slate-200 dark:border-[#29352D] shadow-inner">
                           <div className="w-[82%] overflow-hidden rounded-lg border border-gray-300/80 bg-white/90 shadow-sm backdrop-blur-sm dark:border-[#29352D] dark:bg-[#151D17]/90">
@@ -721,21 +714,21 @@ export default function SettingsLayout({
                 </div>
 
                 <form className="space-y-10" onSubmit={(e) => { e.preventDefault(); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); toast.success("Website Settings Saved"); }}>
-                  
+
                   {/* Lead Capture Settings */}
                   <section>
                     <div className="mb-5">
                       <h4 className="text-sm font-semibold text-gray-900">Lead Capture</h4>
                       <p className="mt-1 text-sm text-gray-500">Manage where and how incoming leads are routed.</p>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
                       <div className="space-y-2">
                         <label className="block text-xs font-medium text-gray-700">Public Support Email</label>
                         <input type="email" defaultValue="support@ebenezarcarbazaar.co.ke" className="input-class w-full rounded-xl border-gray-200 bg-white/70 py-2.5 px-3.5 text-sm transition-all placeholder:text-gray-400 focus:border-primary/40 focus:bg-white focus:ring-4 focus:ring-primary/5" />
                         <p className="text-xs leading-5 text-gray-400">Displayed on your public contact page.</p>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <label className="block text-xs font-medium text-gray-700">Lead Notification Email</label>
                         <input type="email" defaultValue="leads@ebenezarcarbazaar.co.ke" className="input-class w-full rounded-xl border-gray-200 bg-white/70 py-2.5 px-3.5 text-sm transition-all placeholder:text-gray-400 focus:border-primary/40 focus:bg-white focus:ring-4 focus:ring-primary/5" />
@@ -759,7 +752,7 @@ export default function SettingsLayout({
                         <input type="text" defaultValue="Ebenezar Enterprises Car Bazaar | Quality Vehicles & Financing" className="input-class w-full rounded-xl border-gray-200 bg-white/70 py-2.5 px-3.5 text-sm transition-all placeholder:text-gray-400 focus:border-primary/40 focus:bg-white focus:ring-4 focus:ring-primary/5" />
                         <p className="text-xs leading-5 text-gray-400">Appears as the blue link in search engine results (Recommended max 60 chars).</p>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <label className="block text-xs font-medium text-gray-700">Meta Description</label>
                         <textarea rows={3} defaultValue="Leading car dealership offering affordable financing and quality vehicles. Browse our inventory today." className="input-class w-full resize-none rounded-xl border-gray-200 bg-white/70 py-2.5 px-3.5 text-sm transition-all placeholder:text-gray-400 focus:border-primary/40 focus:bg-white focus:ring-4 focus:ring-primary/5" />

@@ -16,7 +16,7 @@ export default async function RootLayout({
   if (loggedIn.userStatus !== 'active') redirect('/pending-approval');
 
   return (
-    <div className="flex h-screen w-full bg-background dark:bg-[#090C0A] text-foreground dark:text-[#F4F7F4] antialiased selection:bg-accent/20 selection:text-accent overflow-hidden">
+    <div className="flex h-screen w-full bg-background text-foreground antialiased selection:bg-accent/20 selection:text-accent overflow-hidden">
       <Sidebar user={loggedIn} />
       
       {/* Main Column */}
@@ -24,7 +24,7 @@ export default async function RootLayout({
         <OfflineBanner />
         
         {/* Main App Canvas — scrollable */}
-        <main id="main-scroll-canvas" data-scroll-container="true" className="flex-1 overflow-y-auto relative z-10 dark:bg-[#090C0A]">
+        <main id="main-scroll-canvas" data-scroll-container="true" className="flex-1 overflow-y-auto relative z-10 bg-background">
           {/* Subtle mesh background for premium feel */}
           <div className="absolute top-0 left-0 w-full h-[500px] bg-mesh-gradient pointer-events-none opacity-30 z-0"></div>
 
