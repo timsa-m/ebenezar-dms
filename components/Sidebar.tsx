@@ -257,7 +257,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
   }, [])
 
   // Filter links according to role permissions and resolve dynamic website URL
-  const navItems = useMemo(() => {
+  const visibleLinks = useMemo(() => {
     return sidebarLinks
       .filter((item) => {
         if (user?.role === 'STAFF') {
@@ -272,10 +272,13 @@ const Sidebar = ({ user }: SiderbarProps) => {
         return {
           ...item,
           href,
+          route: href,
           isExternal,
         }
       })
   }, [user?.role, websiteUrl])
+
+  const navItems = visibleLinks
 
   // Route active helper
   const checkIsActive = useCallback(

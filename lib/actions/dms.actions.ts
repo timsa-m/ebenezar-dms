@@ -537,6 +537,7 @@ export async function recordRepaymentReceipt(params: RecordRepaymentParams) {
 export interface DmsExecutiveMetrics {
   totalPortfolioValue: number;
   totalCollected: number;
+  totalWaived: number;
   totalOutstandingBalance: number;
   activeAgreementsCount: number;
   mrr: number; // Monthly Recurring Revenue / Contractual Monthly Run-Rate
@@ -581,12 +582,25 @@ export async function getDmsExecutiveSummary(): Promise<DmsExecutiveMetrics> {
         vehicle:vehicles(registration_no)
       `),
     supabase.from('vehicles').select('status'),
-    supabase.from('repayments').select('amount_paid, payment_date'),
+    supabase.from('repayments').select('amount_paid, payment_date, payment_method, notes'),
   ]);
 
   const agreementList = agreements || [];
   const inStockCount = (vehicles || []).filter((v) => v.status === 'in_stock').length;
-  const totalCollected = (repayments || []).reduce((sum, r) => sum + Number(r.amount_paid || 0), 0);
+
+  // Filter out non-cash waivers so cash flow charts and total collected reflect actual cash inflows
+  const cashRepayments = (repayments || []).filter((r) => {
+    const method = (r.payment_method || '').toLowerCase().trim();
+    const notes = (r.notes || '').toUpperCase();
+    return method !== 'waiver' && !notes.includes('[WAIVER');
+  });
+
+  const totalCollected = cashRepayments.reduce((sum, r) => sum + Number(r.amount_paid || 0), 0);
+  const totalWaived = (repayments || []).filter((r) => {
+    const method = (r.payment_method || '').toLowerCase().trim();
+    const notes = (r.notes || '').toUpperCase();
+    return method === 'waiver' || notes.includes('[WAIVER');
+  }).reduce((sum, r) => sum + Number(r.amount_paid || 0), 0);
 
   let totalPortfolioValue = 0;
   let totalOutstandingBalance = 0;
@@ -617,7 +631,7 @@ export async function getDmsExecutiveSummary(): Promise<DmsExecutiveMetrics> {
     cashFlowMap.set(label, 0);
   }
 
-  (repayments || []).forEach(r => {
+  cashRepayments.forEach(r => {
     if (r.payment_date && r.amount_paid) {
       const d = new Date(r.payment_date);
       const label = d.toLocaleString('default', { month: 'short', year: '2-digit' });
@@ -688,6 +702,7 @@ export async function getDmsExecutiveSummary(): Promise<DmsExecutiveMetrics> {
   return {
     totalPortfolioValue,
     totalCollected,
+    totalWaived,
     totalOutstandingBalance,
     activeAgreementsCount,
     mrr,

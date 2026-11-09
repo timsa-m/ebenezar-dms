@@ -76,7 +76,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
         <div className="bg-white dark:bg-[#1D2920] p-3 rounded-xl shadow-xl border border-gray-100 dark:border-[#29352D] transition-colors">
           <p className="font-semibold text-slate-800 dark:text-[#F4F7F4] mb-2">{label}</p>
           <p style={{ color: payload[0].payload?.fill || payload[0].color }} className="text-sm font-bold tabular-nums">
-            {payload[0].name === 'amount' ? 'Collected: ' : 'Exposure: '} 
+            {payload[0].name === 'amount' ? 'Cash Collected: ' : 'Exposure: '} 
             {formatKES(payload[0].value)}
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
         <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm">
           <div className="mb-6">
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
-            <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
+            <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly cash collected over the last 6 months (excluding waivers)</p>
           </div>
           <div className="h-[300px] w-full animate-pulse bg-slate-50/50 dark:bg-white/5 rounded-lg flex items-center justify-center">
             <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-transparent animate-spin" />
@@ -128,7 +128,7 @@ export default function DashboardCharts({ metrics }: DashboardChartsProps) {
       <div className="lg:col-span-2 bg-white dark:bg-[#151D17] rounded-xl border border-slate-200 dark:border-[#29352D] flex flex-col p-6 shadow-sm min-w-0">
         <div className="mb-6">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4]">Cash Collection Trend</h3>
-          <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly revenue collected over the last 6 months</p>
+          <p className="text-xs text-slate-500 dark:text-[#A1ADA4]">Total monthly cash collected over the last 6 months (excluding waivers)</p>
         </div>
         <SafeChartWrapper height={300}>
           <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={300} debounce={50}>

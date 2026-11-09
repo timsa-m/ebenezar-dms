@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Table2,
@@ -242,8 +242,59 @@ export const Inventory = ({
   const queryParam = searchParams.get('q') || searchParams.get('search') || initialSearch || '';
   const brandParam = searchParams.get('brand') || (initialBrand === 'All brands' ? 'All' : initialBrand);
 
+  // Determine default view mode: mobile (<768px) defaults to 'compact', desktop defaults to 'wide'
+  const getDefaultViewMode = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = sessionStorage.getItem('ebenezar_inv_viewMode');
+        if (saved && ['wide', 'grid', 'compact', 'sheet'].includes(saved)) {
+          return saved;
+        }
+      } catch {
+        // Ignore
+      }
+      if (window.innerWidth < 768) {
+        return 'compact';
+      }
+    }
+    return 'wide';
+  };
+
   // View mode state ('wide' | 'grid' | 'compact' | 'sheet')
-  const [viewMode, setViewMode] = useState('wide');
+  const [viewMode, setViewMode] = useState(getDefaultViewMode);
+  const userManuallySetViewMode = useRef(false);
+
+  const handleSelectViewMode = (mode) => {
+    userManuallySetViewMode.current = true;
+    setViewMode(mode);
+    try {
+      sessionStorage.setItem('ebenezar_inv_viewMode', mode);
+    } catch {
+      // Ignore
+    }
+  };
+
+  // Auto-adapt view mode when viewport crosses mobile/desktop breakpoint if user hasn't explicitly chosen one
+  useEffect(() => {
+    const handleResize = () => {
+      if (userManuallySetViewMode.current) return;
+      try {
+        const saved = sessionStorage.getItem('ebenezar_inv_viewMode');
+        if (saved) return;
+      } catch {
+        // Ignore
+      }
+      const isMobile = window.innerWidth < 768;
+      setViewMode((current) => {
+        if (isMobile && current !== 'compact') return 'compact';
+        if (!isMobile && current === 'compact') return 'wide';
+        return current;
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Real database vehicles state
   const [vehicles, setVehicles] = useState([]);
@@ -801,7 +852,7 @@ export const Inventory = ({
                 <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-xs">
                   {/* Button 1: Wide Horizontal Stack (2 Columns) */}
                   <button
-                    onClick={() => setViewMode('wide')}
+                    onClick={() => handleSelectViewMode('wide')}
                     title="Wide Horizontal Stack (2 Columns)"
                     aria-label="Wide Horizontal Stack"
                     className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'wide'
@@ -817,7 +868,7 @@ export const Inventory = ({
 
                   {/* Button 2: Standard Grid Stack (3 Columns) */}
                   <button
-                    onClick={() => setViewMode('grid')}
+                    onClick={() => handleSelectViewMode('grid')}
                     title="Standard Grid Stack (3 Columns)"
                     aria-label="Standard Grid Stack"
                     className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'grid'
@@ -840,7 +891,7 @@ export const Inventory = ({
 
                   {/* Button 3: Compact Dense Stack (5 Columns) */}
                   <button
-                    onClick={() => setViewMode('compact')}
+                    onClick={() => handleSelectViewMode('compact')}
                     title="Compact Dense Stack (5 Columns)"
                     aria-label="Compact Dense Stack"
                     className={`p-1.5 rounded-md transition-all cursor-pointer ${viewMode === 'compact'
@@ -860,7 +911,7 @@ export const Inventory = ({
 
                 {/* Sheet View Toggle */}
                 <button
-                  onClick={() => setViewMode('sheet')}
+                  onClick={() => handleSelectViewMode('sheet')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${viewMode === 'sheet'
                       ? 'bg-[#0B4DB7] text-white border-[#0B4DB7]'
                       : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
