@@ -13,6 +13,8 @@ interface ConfirmDeleteModalProps {
   description?: string;
   confirmLabel?: string;
   itemName?: string;
+  children?: React.ReactNode;
+  maxWidth?: number | string;
 }
 
 export default function ConfirmDeleteModal({
@@ -24,6 +26,8 @@ export default function ConfirmDeleteModal({
   description = 'This action cannot be undone and will permanently remove this record.',
   confirmLabel = 'Delete',
   itemName,
+  children,
+  maxWidth,
 }: ConfirmDeleteModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const cancelBtnRef = useRef<HTMLButtonElement>(null);
@@ -79,6 +83,7 @@ export default function ConfirmDeleteModal({
 
       {/* Modal Card */}
       <div
+        style={{ maxWidth: maxWidth ? (typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth) : undefined }}
         className={cn(
           'relative w-full max-w-[420px] overflow-hidden',
           'rounded-2xl border border-gray-200 bg-white dark:border-[#29352D] dark:bg-[#151D17]',
@@ -125,13 +130,18 @@ export default function ConfirmDeleteModal({
             </h2>
 
             <div id="delete-modal-description" className="space-y-1.5 text-sm leading-6 text-gray-600 dark:text-[#A1ADA4]">
-              <p>
-                Are you sure you want to delete <strong className="text-gray-900 dark:text-[#F4F7F4]">{itemName}</strong>
-                ?
-              </p>
-              <p className="text-xs leading-5 text-gray-500 dark:text-[#A1ADA4]">
-                {description}
-              </p>
+              {itemName && (
+                <p>
+                  Are you sure you want to delete <strong className="text-gray-900 dark:text-[#F4F7F4]">{itemName}</strong>
+                  ?
+                </p>
+              )}
+              {description && (
+                <p className="text-xs leading-5 text-gray-500 dark:text-[#A1ADA4]">
+                  {description}
+                </p>
+              )}
+              {children}
             </div>
           </div>
         </div>

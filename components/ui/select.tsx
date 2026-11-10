@@ -23,7 +23,7 @@ const SelectTrigger = React.forwardRef<
         "flex h-10 w-full items-center justify-between",
         "rounded-lg border border-white/10",
         "bg-background/70 backdrop-blur-xl backdrop-saturate-150",
-        "pl-9 py-2 text-sm",
+        "px-3 py-2 text-sm",
         "text-foreground shadow-sm",
         "transition-all duration-200",
         "hover:bg-background/80 hover:border-white/15",
@@ -39,7 +39,7 @@ const SelectTrigger = React.forwardRef<
 
     <SelectPrimitive.Icon asChild>
       <ChevronDown
-        className="h-4 w-4 shrink-0 opacity-50 transition-transform duration-200 pr-10"
+        className="h-4 w-4 shrink-0 opacity-50 transition-transform duration-200"
       />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>

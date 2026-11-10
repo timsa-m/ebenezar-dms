@@ -3,14 +3,14 @@ export const dynamic = 'force-dynamic';
 import HeaderBox from "@/components/HeaderBox";
 import { getFinancingAgreements } from "@/lib/actions/dms.actions";
 import Link from "next/link";
-import { ArrowUpRight, Activity, Clock, AlertTriangle, CheckCircle2, ShieldAlert } from "lucide-react";
-import LoansTable from "@/components/LoansTable";
+import { ArrowUpRight } from "lucide-react";
+import LoansTable, { Agreement } from "@/components/LoansTable";
 
 export default async function AdminContractsPage() {
   const agreements = (await getFinancingAgreements()) || [];
 
-  // Map agreements to the Loan interface expected by LoansTable and the UI
-  const mappedLoans = agreements.map(a => {
+  // Map agreements to the rich Agreement interface expected by LoansTable and the UI
+  const mappedLoans: Agreement[] = agreements.map((a) => {
     let mappedStatus = 'Active';
     const rawStatus = (a.status || '').toLowerCase();
     const dpd = a.days_overdue || 0;
@@ -25,136 +25,50 @@ export default async function AdminContractsPage() {
 
     return {
       $id: a.id,
+      contractNo: a.contract_no || `EBZ-${a.id.slice(-6).toUpperCase()}`,
       clientName: a.client?.full_name || 'Unknown',
       clientId: a.client_id,
-      loanType: 'Hire Purchase',
-      principalAmount: a.principal_amount || 0,
+      clientPhone: a.client?.phone || '',
+      clientIdNumber: a.client?.client_id_number || '',
+      loanType: mappedStatus === 'Cash Sale' ? 'Cash Sale' : 'Hire Purchase',
+      principalAmount: Number(a.principal_amount) || 0,
+      balance: typeof a.balance === 'number' ? Number(a.balance) : (Number(a.principal_amount) || 0),
+      salePrice: Number(a.sale_price) || 0,
+      depositPaid: Number(a.deposit_paid) || 0,
+      monthlyDue: Number(a.monthly_due) || 0,
+      durationMonths: Number(a.duration_months) || 0,
+      daysOverdue: dpd,
+      totalPenalties: Number(a.total_penalties) || 0,
       status: mappedStatus,
       startDate: a.start_date,
+      endDate: a.end_date,
+      lastPaymentDate: a.last_payment_date,
       $createdAt: a.created_at,
       vehicleRegNo: a.vehicle?.registration_no || 'N/A',
+      vehicleMakeModel: a.vehicle?.make_model || '',
     };
   });
 
-  const activeLoans = mappedLoans.filter(l => l.status === 'Active').length;
-  const overdueLoans = mappedLoans.filter(l => l.status === 'Overdue').length;
-  const defaultingLoans = mappedLoans.filter(l => l.status === 'Defaulting').length;
-  const lossLoans = mappedLoans.filter(l => l.status === 'Loss').length;
-  const fullyPaidLoans = mappedLoans.filter(l => l.status === 'Fully Paid').length;
-
   return (
     <section className="home-content">
-      <header className="page-header">
+      {/* Page Heading & Primary Action */}
+      <header className="page-header flex flex-col md:flex-row md:items-center md:justify-between">
         <HeaderBox
           title="Financing Agreements"
-          subtext="Overview and management of client vehicle hire-purchase contracts."
+          subtext="Executive oversight of vehicle hire-purchase portfolios, repayment ledgers, and credit risk."
         />
-        <Link href="/loans/create" className="btn-primary">
-          <span>New Contract</span>
-          <ArrowUpRight className="size-4 opacity-70" />
-        </Link>
+        <div className="flex items-center gap-2.5 mt-4 md:mt-0">
+          <Link
+            href="/loans/create"
+            className="btn-primary flex items-center justify-center gap-2 text-xs px-4 py-2.5 cursor-pointer shadow-sm"
+          >
+            <span>New Contract</span>
+            <ArrowUpRight className="size-4 opacity-70" />
+          </Link>
+        </div>
       </header>
 
-      {/* Contract Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-success-50 dark:bg-emerald-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
-            <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Active Contracts</p>
-            <div className="p-2 bg-success-50 dark:bg-emerald-950/40 rounded-lg text-success-600 dark:text-[#B7FF3C] ring-1 ring-success-100 dark:ring-emerald-900/40">
-              <Activity className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{activeLoans}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-success">Servicing</span>
-              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Interest earning</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 dark:bg-amber-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Overdue Accounts</p>
-              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">7–30 days past due</p>
-            </div>
-            <div className="p-2 bg-amber-50 dark:bg-amber-950/40 rounded-lg text-amber-600 dark:text-amber-400 ring-1 ring-amber-100 dark:ring-amber-900/40">
-              <AlertTriangle className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{overdueLoans}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-warning">Overdue</span>
-              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Payment due</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Defaulting</p>
-              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">60–90 days past due</p>
-            </div>
-            <div className="p-2 bg-orange-50 dark:bg-orange-950/40 rounded-lg text-orange-600 dark:text-orange-400 ring-1 ring-orange-100 dark:ring-orange-900/40">
-              <AlertTriangle className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{defaultingLoans}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-error">Defaulting</span>
-              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Pre-repossession</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-rose-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Loss Accounts</p>
-              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">&gt;90 days past due</p>
-            </div>
-            <div className="p-2 bg-red-50 dark:bg-rose-950/40 rounded-lg text-red-600 dark:text-rose-400 ring-1 ring-red-100 dark:ring-rose-900/40">
-              <ShieldAlert className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{lossLoans}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-error">Loss</span>
-              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Not written off</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-premium flex flex-col justify-between group overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-sky-50 dark:bg-sky-950/20 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <p className="text-12 font-bold text-gray-500 dark:text-[#A1ADA4] uppercase tracking-widest">Fully Paid</p>
-              <p className="text-11 text-gray-400 dark:text-[#A1ADA4]">Settled accounts</p>
-            </div>
-            <div className="p-2 bg-sky-50 dark:bg-sky-950/40 rounded-lg text-sky-600 dark:text-sky-400 ring-1 ring-sky-100 dark:ring-sky-900/40">
-              <CheckCircle2 className="size-4" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-36 font-bold text-gray-900 dark:text-[#F4F7F4] tabular-nums">{fullyPaidLoans}</h2>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="badge badge-completed">Settled</span>
-              <p className="text-12 text-gray-500 dark:text-[#A1ADA4] font-medium">Fully repaid</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      {/* Modernised Business Dashboard & Table */}
       <LoansTable loans={mappedLoans} />
     </section>
   );

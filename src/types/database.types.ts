@@ -362,6 +362,39 @@ export interface Database {
           }
         ];
       };
+      expenses: {
+        Row: {
+          id: string;
+          amount: number;
+          category: string;
+          description: string | null;
+          vendor_name: string | null;
+          expense_date: string;
+          created_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          amount: number;
+          category: string;
+          description?: string | null;
+          vendor_name?: string | null;
+          expense_date?: string;
+          created_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          amount?: number;
+          category?: string;
+          description?: string | null;
+          vendor_name?: string | null;
+          expense_date?: string;
+          created_by?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       crm_leads: {
         Row: {
           id: string;
@@ -572,6 +605,7 @@ export type Vehicle = Tables<'vehicles'>;
 export type FinancingAgreement = Tables<'financing_agreements'>;
 export type RepaymentRecord = Tables<'repayments'>;
 export type VehicleCost = Tables<'vehicle_costs'>;
+export type Expense = Tables<'expenses'>;
 export type CrmLead = Tables<'crm_leads'>;
 export type FinancingInstallment = Tables<'financing_installments'>;
 export type CompanySettings = Tables<'company_settings'>;

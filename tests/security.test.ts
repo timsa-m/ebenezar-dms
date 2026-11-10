@@ -61,17 +61,20 @@ async function runSecurityTestSuite() {
   assert(!hasPermission('STAFF', 'loans.write_off'), 'Staff cannot write off loans');
   assert(!hasPermission('STAFF', 'loans.adjust_balance'), 'Staff cannot waive balances');
   assert(!hasPermission('STAFF', 'financial.reports.view'), 'Staff cannot view financial reports');
+  assert(!hasPermission('STAFF', 'expenses.delete'), 'Staff cannot delete expenses');
 
   assert(hasPermission('MANAGER', 'vehicles.delete'), 'Manager can delete/archive vehicles');
   assert(hasPermission('MANAGER', 'loans.adjust_balance'), 'Manager can waive balances');
   assert(hasPermission('MANAGER', 'financial.reports.view'), 'Manager can view financial reports');
   assert(!hasPermission('MANAGER', 'loans.write_off'), 'Manager CANNOT write off loans (Admin only)');
   assert(!hasPermission('MANAGER', 'loans.delete'), 'Manager CANNOT delete loans (Admin only)');
+  assert(!hasPermission('MANAGER', 'expenses.delete'), 'Manager CANNOT delete expenses (Admin only)');
   assert(!hasPermission('MANAGER', 'users.manage_roles'), 'Manager CANNOT manage user roles (Admin only)');
 
   assert(hasPermission('ADMIN', 'vehicles.delete'), 'Admin can delete vehicles');
   assert(hasPermission('ADMIN', 'loans.write_off'), 'Admin can write off loans');
   assert(hasPermission('ADMIN', 'loans.delete'), 'Admin can delete loans');
+  assert(hasPermission('ADMIN', 'expenses.delete'), 'Admin can delete expenses');
   assert(hasPermission('ADMIN', 'users.manage_roles'), 'Admin can manage user roles');
 
   // ── TEST 2: Password Cannot Override Insufficient Role ─────────────────────

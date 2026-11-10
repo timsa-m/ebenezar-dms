@@ -1,11 +1,19 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Vehicle, VehicleCostType, VehicleStatus } from '@/src/types/database.types';
 import { formatKES } from '@/src/lib/financial-engine';
-import { addVehicle, addVehicleCost, updateVehicleStatusAction, softDeleteVehicle, restoreVehicle, toggleVehiclePublishAction } from '@/lib/actions/vehicle.actions';
+import {
+  addVehicle,
+  addVehicleCost,
+  updateVehicleStatusAction,
+  softDeleteVehicle,
+  restoreVehicle,
+  toggleVehiclePublishAction,
+} from '@/lib/actions/vehicle.actions';
 import { usePersistedState } from '@/lib/hooks/usePersistedState';
 import SecureActionModal from '@/components/security/SecureActionModal';
+import CustomModal from '@/components/ui/CustomModal';
 import {
   Car,
   Plus,
@@ -19,19 +27,26 @@ import {
   DollarSign,
   TrendingUp,
   Search,
-  ListChecks,
   AlertTriangle,
   Sparkles,
   MoreHorizontal,
   Eye,
   ChevronDown,
-  ChevronUp,
-  Settings,
   Trash2,
   RotateCcw,
-  History,
   Globe,
-  EyeOff
+  EyeOff,
+  LayoutGrid,
+  Table as TableIcon,
+  Clock,
+  ArrowUpDown,
+  Image as ImageIcon,
+  Building2,
+  Calendar,
+  Layers,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
 } from 'lucide-react';
 import { toast } from '@/lib/toast';
 import { cn } from '@/lib/utils';
@@ -44,10 +59,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableResponsiveGrid,
-  TableResponsiveCard,
-  TableResponsiveCardHeader,
-  TableResponsiveCardContent,
 } from '@/components/ui/table';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -57,13 +68,93 @@ interface YardInventoryManagerProps {
   currentUser?: any;
 }
 
+type TabType =
+  | 'all'
+  | 'in_stock'
+  | 'reserved'
+  | 'financed'
+  | 'repossessed'
+  | 'cash_sale'
+  | 'on_website'
+  | 'off_website'
+  | 'deleted';
+
+type AttentionType = 'all' | 'missing_photos' | 'unpublished' | 'aging';
+
+type SortOption =
+  | 'newest'
+  | 'oldest'
+  | 'price_desc'
+  | 'price_asc'
+  | 'year_desc'
+  | 'reg_asc';
+
+function fmt(d: string | null | undefined): string {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-KE', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function getDaysInStock(dateStr: string | null | undefined): number {
+  if (!dateStr) return 0;
+  const created = new Date(dateStr).getTime();
+  const now = Date.now();
+  const diffTime = Math.max(0, now - created);
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
+
 function StatusBadge({ status }: { status: VehicleStatus }) {
-  if (status === 'in_stock') return <span className="badge badge-success">In Stock</span>;
-  if (status === 'reserved') return <span className="badge badge-warning">Reserved</span>;
-  if (status === 'financed') return <span className="badge badge-pending bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800/40">Credit</span>;
-  if (status === 'repossessed') return <span className="badge badge-error">Repossessed</span>;
-  if (status === 'cash_sale') return <span className="badge badge-completed">Cash Sale</span>;
-  if (status === 'deleted') return <span className="badge badge-error bg-red-100 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800/40">Deleted</span>;
+  if (status === 'in_stock') {
+    return (
+      <span className="badge badge-success inline-flex items-center gap-1.5 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-emerald-500" />
+        <span>In Stock</span>
+      </span>
+    );
+  }
+  if (status === 'reserved') {
+    return (
+      <span className="badge badge-warning inline-flex items-center gap-1.5 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-amber-500" />
+        <span>Reserved</span>
+      </span>
+    );
+  }
+  if (status === 'financed') {
+    return (
+      <span className="badge badge-pending inline-flex items-center gap-1.5 bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800/40 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-blue-500" />
+        <span>On Credit</span>
+      </span>
+    );
+  }
+  if (status === 'repossessed') {
+    return (
+      <span className="badge badge-error inline-flex items-center gap-1.5 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-rose-500" />
+        <span>Repossessed</span>
+      </span>
+    );
+  }
+  if (status === 'cash_sale') {
+    return (
+      <span className="badge badge-completed inline-flex items-center gap-1.5 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-slate-500" />
+        <span>Cash Sale</span>
+      </span>
+    );
+  }
+  if (status === 'deleted') {
+    return (
+      <span className="badge badge-error inline-flex items-center gap-1.5 bg-red-100 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-800/40 shadow-2xs">
+        <span className="size-1.5 rounded-full bg-red-500" />
+        <span>Archived</span>
+      </span>
+    );
+  }
   return <span className="badge badge-new">{status}</span>;
 }
 
@@ -83,24 +174,24 @@ function WebsiteBadge({
   const badgeContent = (
     <span
       className={cn(
-        "badge badge-primary inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition-all select-none",
+        'inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold transition-all select-none',
         published
-          ? "bg-emerald-50 text-emerald-700 border border-emerald-200/90 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50 shadow-2xs"
-          : "bg-slate-100 text-slate-600 border border-slate-200/80 dark:bg-[#18221A] dark:text-[#A1ADA4] dark:border-[#29352D] shadow-2xs",
+          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50 shadow-2xs'
+          : 'bg-slate-100 text-slate-600 border border-slate-200/80 dark:bg-[#18221A] dark:text-[#A1ADA4] dark:border-[#29352D] shadow-2xs',
         isManagerOrAdmin && onToggle && (
           published
-            ? "hover:bg-emerald-100 dark:hover:bg-emerald-900/50 hover:border-emerald-300"
-            : "hover:bg-slate-200 dark:hover:bg-[#222E25] hover:border-slate-300"
+            ? 'hover:bg-emerald-100 dark:hover:bg-emerald-900/50 hover:border-emerald-300'
+            : 'hover:bg-slate-200 dark:hover:bg-[#222E25] hover:border-slate-300'
         )
       )}
       title={
         isManagerOrAdmin
           ? published
-            ? "Live on website (Click to remove from website)"
-            : "Hidden from website (Click to publish to website)"
+            ? 'Live on website (Click to hide from website)'
+            : 'Hidden from website (Click to publish to website)'
           : published
-            ? "Live on website"
-            : "Hidden from website"
+          ? 'Live on website'
+          : 'Hidden from website'
       }
     >
       {isToggling ? (
@@ -110,7 +201,7 @@ function WebsiteBadge({
       ) : (
         <EyeOff className="size-3 text-slate-400 dark:text-[#A1ADA4] shrink-0" />
       )}
-      <span>{published ? "On Website" : "Off Website"}</span>
+      <span>{published ? 'On Website' : 'Off Website'}</span>
     </span>
   );
 
@@ -121,7 +212,7 @@ function WebsiteBadge({
         onClick={onToggle}
         disabled={isToggling}
         className="focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 rounded-full transition-transform active:scale-95 disabled:opacity-60 cursor-pointer"
-        aria-label={published ? "Remove vehicle from website" : "Publish vehicle to website"}
+        aria-label={published ? 'Remove vehicle from website' : 'Publish vehicle to website'}
       >
         {badgeContent}
       </button>
@@ -131,44 +222,120 @@ function WebsiteBadge({
   return badgeContent;
 }
 
-export default function YardInventoryManager({ vehicles, currentUser }: YardInventoryManagerProps) {
+function AgingBadge({ days }: { days: number }) {
+  if (days >= 60) {
+    return (
+      <span
+        className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200/80 dark:border-amber-900/40 tabular-nums"
+        title={`Vehicle has been in inventory for ${days} days`}
+      >
+        <Clock className="size-2.5" />
+        <span>{days}d in yard</span>
+      </span>
+    );
+  }
+  return (
+    <span
+      className="inline-flex items-center gap-1 text-[11px] text-slate-500 dark:text-[#A1ADA4] tabular-nums"
+      title={`Vehicle has been in inventory for ${days} days`}
+    >
+      <Clock className="size-3 opacity-60" />
+      <span>{days}d</span>
+    </span>
+  );
+}
+
+export default function YardInventoryManager({
+  vehicles,
+  currentUser,
+}: YardInventoryManagerProps) {
   const router = useRouter();
   const [vehicleList, setVehicleList] = useState<Vehicle[]>(vehicles);
-  const isManagerOrAdmin = currentUser?.role === 'MANAGER' || currentUser?.role === 'ADMIN';
+  const isManagerOrAdmin =
+    currentUser?.role === 'MANAGER' || currentUser?.role === 'ADMIN';
+  const isAdmin = currentUser?.role === 'ADMIN';
+
+  // Synchronize state if parent vehicles prop updates
+  useEffect(() => {
+    setVehicleList(vehicles);
+  }, [vehicles]);
+
+  // View Mode: 'table' or 'grid' (Showroom cards)
+  const [viewMode, setViewMode] = usePersistedState<'table' | 'grid'>(
+    'dms_yard_view_mode',
+    'table'
+  );
+
+  // Sorting
+  const [sortBy, setSortBy] = usePersistedState<SortOption>(
+    'dms_yard_sort_by',
+    'newest'
+  );
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 25;
+
+  // Filter States
+  const [query, setQuery] = usePersistedState('dms_yard_query', '');
+  const [activeTab, setActiveTab] = usePersistedState<TabType>(
+    'dms_yard_tab',
+    'all'
+  );
+  const [attentionFilter, setAttentionFilter] = useState<AttentionType>('all');
 
   // Modal States
   const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
   const [isAddCostOpen, setIsAddCostOpen] = useState(false);
-  const [selectedVehicleForCost, setSelectedVehicleForCost] = useState<Vehicle | null>(null);
+  const [selectedVehicleForCost, setSelectedVehicleForCost] =
+    useState<Vehicle | null>(null);
+  const [vehicleToDelete, setVehicleToDelete] = useState<Vehicle | null>(null);
 
-  // Add Vehicle Form State
+  // Form States: Add Vehicle
   const [regNo, setRegNo] = useState('');
   const [makeModel, setMakeModel] = useState('');
   const [type, setType] = useState('SUV');
   const [year, setYear] = useState<number>(new Date().getFullYear() - 5);
-  const [purchasePrice, setPurchasePrice] = useState<number>(1000000);
-  const [salePrice, setSalePrice] = useState<number>(1400000);
-  const [purchaseDate, setPurchaseDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [purchasePrice, setPurchasePrice] = useState<number>(1200000);
+  const [salePrice, setSalePrice] = useState<number>(1650000);
+  const [purchaseDate, setPurchaseDate] = useState<string>(
+    new Date().toISOString().split('T')[0]
+  );
   const [isVehicleSaving, setIsVehicleSaving] = useState(false);
 
-  // Add Cost Form State
+  // Form States: Add Cost
   const [costType, setCostType] = useState<VehicleCostType>('mechanical');
   const [costAmount, setCostAmount] = useState<number>(15000);
   const [costDescription, setCostDescription] = useState('');
   const [vendorName, setVendorName] = useState('');
   const [isCostSaving, setIsCostSaving] = useState(false);
 
-  // Table States
-  const [query, setQuery] = usePersistedState('dms_yard_query', '');
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = usePersistedState<'all' | 'in_stock' | 'reserved' | 'financed' | 'repossessed' | 'cash_sale' | 'on_website' | 'off_website' | 'deleted'>('dms_yard_tab', 'all');
+  // Row Action States
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-  const [vehicleToDelete, setVehicleToDelete] = useState<Vehicle | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [restoringId, setRestoringId] = useState<string | null>(null);
   const [togglingPublishId, setTogglingPublishId] = useState<string | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
 
+  // Click outside to close row menu
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.action-menu-container')) {
+        setOpenMenuId(null);
+      }
+    }
+    if (openMenuId) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [openMenuId]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, activeTab, attentionFilter, sortBy]);
+
+  // Inventory Metrics & KPI Computations
   const counts = useMemo(() => {
     const res = {
       all: 0,
@@ -180,6 +347,9 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
       deleted: 0,
       on_website: 0,
       off_website: 0,
+      missing_photos: 0,
+      aging_60: 0,
+      in_stock_unpublished: 0,
     };
 
     for (const v of vehicleList) {
@@ -187,11 +357,20 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         res.deleted++;
       } else {
         res.all++;
-        if (v.status === 'in_stock') res.in_stock++;
-        else if (v.status === 'financed') res.financed++;
-        else if (v.status === 'reserved') res.reserved++;
-        else if (v.status === 'repossessed') res.repossessed++;
-        else if (v.status === 'cash_sale') res.cash_sale++;
+        if (v.status === 'in_stock') {
+          res.in_stock++;
+          if (!v.images || v.images.length === 0) res.missing_photos++;
+          if (!v.is_published) res.in_stock_unpublished++;
+          if (getDaysInStock(v.date_purchased || v.created_at) >= 60) res.aging_60++;
+        } else if (v.status === 'financed') {
+          res.financed++;
+        } else if (v.status === 'reserved') {
+          res.reserved++;
+        } else if (v.status === 'repossessed') {
+          res.repossessed++;
+        } else if (v.status === 'cash_sale') {
+          res.cash_sale++;
+        }
 
         if (v.is_published) {
           res.on_website++;
@@ -204,39 +383,113 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
     return res;
   }, [vehicleList]);
 
-  const deletedCount = counts.deleted;
+  // Financial intelligence for vehicles currently in stock
+  const inStockFinancials = useMemo(() => {
+    let totalCost = 0;
+    let totalTargetSale = 0;
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpenMenuId(null);
+    for (const v of vehicleList) {
+      if (v.status === 'in_stock') {
+        totalCost += Number(v.purchase_price) || 0;
+        totalTargetSale += Number(v.sale_price) || 0;
       }
     }
-    if (openMenuId) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [openMenuId]);
 
+    const projectedMargin = totalTargetSale - totalCost;
+    const marginPct =
+      totalCost > 0 ? Math.round((projectedMargin / totalCost) * 100) : 0;
+
+    return {
+      totalCost,
+      totalTargetSale,
+      projectedMargin,
+      marginPct,
+    };
+  }, [vehicleList]);
+
+  // Filter & Sort Pipeline
   const filtered = useMemo(() => {
     let result = vehicleList;
 
+    // 1. Tab Status Filter
     if (activeTab === 'all') {
-      result = vehicleList.filter(v => v.status !== 'deleted');
+      result = result.filter((v) => v.status !== 'deleted');
     } else if (activeTab === 'on_website') {
-      result = vehicleList.filter(v => v.status !== 'deleted' && Boolean(v.is_published));
+      result = result.filter(
+        (v) => v.status !== 'deleted' && Boolean(v.is_published)
+      );
     } else if (activeTab === 'off_website') {
-      result = vehicleList.filter(v => v.status !== 'deleted' && !v.is_published);
+      result = result.filter((v) => v.status !== 'deleted' && !v.is_published);
     } else {
-      result = vehicleList.filter(v => v.status === activeTab);
+      result = result.filter((v) => v.status === activeTab);
     }
 
-    if (!query.trim()) return result;
-    const q = query.toLowerCase();
-    return result.filter((v) =>
-      v.registration_no.toLowerCase().includes(q) ||
-      v.make_model.toLowerCase().includes(q)
-    );
-  }, [vehicleList, query, activeTab]);
+    // 2. Attention Filter
+    if (attentionFilter === 'missing_photos') {
+      result = result.filter(
+        (v) => v.status === 'in_stock' && (!v.images || v.images.length === 0)
+      );
+    } else if (attentionFilter === 'unpublished') {
+      result = result.filter((v) => v.status === 'in_stock' && !v.is_published);
+    } else if (attentionFilter === 'aging') {
+      result = result.filter(
+        (v) =>
+          v.status === 'in_stock' &&
+          getDaysInStock(v.date_purchased || v.created_at) >= 60
+      );
+    }
 
+    // 3. Search Query
+    if (query.trim()) {
+      const q = query.toLowerCase().trim();
+      result = result.filter(
+        (v) =>
+          v.registration_no.toLowerCase().includes(q) ||
+          v.make_model.toLowerCase().includes(q) ||
+          (v.type && v.type.toLowerCase().includes(q)) ||
+          (v.year && v.year.toString().includes(q)) ||
+          (v.chassis_no && v.chassis_no.toLowerCase().includes(q))
+      );
+    }
+
+    // 4. Sorting
+    return [...result].sort((a, b) => {
+      if (sortBy === 'newest') {
+        return (
+          new Date(b.created_at || '').getTime() -
+          new Date(a.created_at || '').getTime()
+        );
+      }
+      if (sortBy === 'oldest') {
+        return (
+          new Date(a.created_at || '').getTime() -
+          new Date(b.created_at || '').getTime()
+        );
+      }
+      if (sortBy === 'price_desc') {
+        return (Number(b.sale_price) || 0) - (Number(a.sale_price) || 0);
+      }
+      if (sortBy === 'price_asc') {
+        return (Number(a.sale_price) || 0) - (Number(b.sale_price) || 0);
+      }
+      if (sortBy === 'year_desc') {
+        return (Number(b.year) || 0) - (Number(a.year) || 0);
+      }
+      if (sortBy === 'reg_asc') {
+        return a.registration_no.localeCompare(b.registration_no);
+      }
+      return 0;
+    });
+  }, [vehicleList, activeTab, attentionFilter, query, sortBy]);
+
+  // Paginated records
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const paginatedVehicles = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, currentPage, pageSize]);
+
+  // Handlers
   const handleDeleteVehicle = async (verificationToken?: string) => {
     if (!vehicleToDelete) return;
     setIsDeleting(true);
@@ -246,8 +499,16 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         toast.error(res.error || 'Failed to delete vehicle.');
         return;
       }
-      toast.success(`Vehicle ${vehicleToDelete.registration_no} moved to Deleted archive.`);
-      setVehicleList(prev => prev.map(v => v.id === vehicleToDelete.id ? { ...v, status: 'deleted', is_published: false } : v));
+      toast.success(
+        `Vehicle ${vehicleToDelete.registration_no} moved to Deleted archive.`
+      );
+      setVehicleList((prev) =>
+        prev.map((v) =>
+          v.id === vehicleToDelete.id
+            ? { ...v, status: 'deleted', is_published: false }
+            : v
+        )
+      );
       setVehicleToDelete(null);
       router.refresh();
     } catch (err: any) {
@@ -265,8 +526,20 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         toast.error(res.error || 'Failed to restore vehicle.');
         return;
       }
-      toast.success(`Vehicle ${vehicle.registration_no} restored to active inventory.`);
-      setVehicleList(prev => prev.map(v => v.id === vehicle.id ? { ...v, status: res.vehicle?.status || 'in_stock', is_published: true } : v));
+      toast.success(
+        `Vehicle ${vehicle.registration_no} restored to active inventory.`
+      );
+      setVehicleList((prev) =>
+        prev.map((v) =>
+          v.id === vehicle.id
+            ? {
+                ...v,
+                status: res.vehicle?.status || 'in_stock',
+                is_published: true,
+              }
+            : v
+        )
+      );
       router.refresh();
     } catch (err: any) {
       toast.error(err?.message || 'Error restoring vehicle.');
@@ -275,19 +548,18 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
     }
   };
 
-  // Handlers
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!regNo.trim() || !makeModel.trim()) {
-      toast.error('Registration number and Make/Model are required.');
+      toast.error('Registration plate and Make/Model are required.');
       return;
     }
 
     setIsVehicleSaving(true);
     try {
       const res = await addVehicle({
-        registrationNo: regNo.toUpperCase(),
-        makeModel,
+        registrationNo: regNo.toUpperCase().trim(),
+        makeModel: makeModel.trim(),
         type,
         year,
         purchasePrice,
@@ -301,11 +573,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         setIsAddVehicleOpen(false);
         setRegNo('');
         setMakeModel('');
+        router.refresh();
       } else {
         toast.error(res.error || 'Failed to add vehicle.');
       }
     } catch {
-      toast.error('An error occurred.');
+      toast.error('An error occurred while creating vehicle.');
     } finally {
       setIsVehicleSaving(false);
     }
@@ -314,7 +587,7 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
   const handleAddCost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedVehicleForCost || !costAmount || !costDescription.trim()) {
-      toast.error('Cost amount and description are required.');
+      toast.error('Expense amount and description are required.');
       return;
     }
 
@@ -324,34 +597,53 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         vehicleId: selectedVehicleForCost.id,
         costType,
         amount: costAmount,
-        description: costDescription,
-        vendorName,
+        description: costDescription.trim(),
+        vendorName: vendorName.trim(),
       });
 
       if (res.success) {
-        toast.success(`Cost of ${formatKES(costAmount)} added to ${selectedVehicleForCost.registration_no}`);
+        toast.success(
+          `Cost of ${formatKES(costAmount)} added to ${
+            selectedVehicleForCost.registration_no
+          }`
+        );
         setIsAddCostOpen(false);
         setCostDescription('');
         setVendorName('');
+        router.refresh();
       } else {
         toast.error(res.error || 'Failed to add cost.');
       }
     } catch {
-      toast.error('An error occurred.');
+      toast.error('An error occurred while saving cost.');
     } finally {
       setIsCostSaving(false);
     }
   };
 
-  const handleStatusChange = async (vehicleId: string, newStatus: VehicleStatus) => {
+  const handleStatusChange = async (
+    vehicleId: string,
+    newStatus: VehicleStatus
+  ) => {
     try {
       const res = await updateVehicleStatusAction(vehicleId, newStatus);
       if (res.success) {
-        toast.success(`Vehicle status updated to ${newStatus.replace('_', ' ')}`);
+        toast.success(
+          `Vehicle status updated to ${newStatus.replace('_', ' ')}`
+        );
         setVehicleList((prev) =>
-          prev.map((v) => (v.id === vehicleId ? { ...v, status: newStatus, is_published: newStatus === 'in_stock' } : v))
+          prev.map((v) =>
+            v.id === vehicleId
+              ? {
+                  ...v,
+                  status: newStatus,
+                  is_published: newStatus === 'in_stock' ? v.is_published : false,
+                }
+              : v
+          )
         );
         setOpenMenuId(null);
+        router.refresh();
       } else {
         toast.error(res.error || 'Failed to update status.');
       }
@@ -360,9 +652,14 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
     }
   };
 
-  const handleTogglePublish = async (vehicleId: string, newPublishState: boolean) => {
+  const handleTogglePublish = async (
+    vehicleId: string,
+    newPublishState: boolean
+  ) => {
     if (!isManagerOrAdmin) {
-      toast.error('Only managers or administrators can change website visibility.');
+      toast.error(
+        'Only managers or administrators can change website visibility.'
+      );
       return;
     }
     setTogglingPublishId(vehicleId);
@@ -371,12 +668,15 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
       if (res.success) {
         toast.success(
           newPublishState
-            ? 'Vehicle is now visible on the website!'
-            : 'Vehicle hidden from the website.'
+            ? 'Vehicle is now visible on the public website!'
+            : 'Vehicle hidden from the public website.'
         );
         setVehicleList((prev) =>
-          prev.map((v) => (v.id === vehicleId ? { ...v, is_published: newPublishState } : v))
+          prev.map((v) =>
+            v.id === vehicleId ? { ...v, is_published: newPublishState } : v
+          )
         );
+        router.refresh();
       } else {
         toast.error(res.error || 'Failed to update website status.');
       }
@@ -388,564 +688,926 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
   };
 
   return (
-    <div className="flex flex-col gap-5 mt-6">
-      {/* Top Action Bar 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900">Yard Stock Manager</h1>
-          <p className="text-xs text-slate-500">
-            Track physical vehicles, mechanical expenses, pre-sale preparation, and showroom status.
-          </p>
-        </div>
-
-        <button
-          onClick={() => setIsAddVehicleOpen(true)}
-          className="flex items-center gap-2 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all"
-        >
-          <Plus size={16} />
-          Add Vehicle to Stock
-        </button>
-      </div>
-      */}
-
-      {/* Table Toolbar Area */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2">
-        <div className="status-filter-group w-fit max-w-full overflow-x-auto dark:bg-[#101612] dark:border dark:border-[#29352D]">
-          <Button onClick={() => setActiveTab('all')} className={cn('status-filter-pill', activeTab === 'all' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <Car className="size-3.5" />
-              <span>All Vehicles ({counts.all})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('in_stock')} className={cn('status-filter-pill', activeTab === 'in_stock' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="size-3.5" />
-              <span>In Stock ({counts.in_stock})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('financed')} className={cn('status-filter-pill', activeTab === 'financed' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="size-3.5" />
-              <span>On Credit ({counts.financed})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('reserved')} className={cn('status-filter-pill', activeTab === 'reserved' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="size-3.5" />
-              <span>Reserved ({counts.reserved})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('repossessed')} className={cn('status-filter-pill', activeTab === 'repossessed' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="size-3.5" />
-              <span>Repossessed ({counts.repossessed})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('cash_sale')} className={cn('status-filter-pill', activeTab === 'cash_sale' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <DollarSign className="size-3.5" />
-              <span>Cash Sale ({counts.cash_sale})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('on_website')} className={cn('status-filter-pill', activeTab === 'on_website' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <Globe className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>On Website ({counts.on_website})</span>
-            </div>
-          </Button>
-          <Button onClick={() => setActiveTab('off_website')} className={cn('status-filter-pill', activeTab === 'off_website' && 'status-filter-pill-active')}>
-            <div className="flex items-center gap-2">
-              <EyeOff className="size-3.5 text-slate-500 dark:text-slate-400" />
-              <span>Off Website ({counts.off_website})</span>
-            </div>
-          </Button>
-          {(counts.deleted > 0 || isManagerOrAdmin) && (
-            <Button
-              onClick={() => setActiveTab('deleted')}
-              className={cn(
-                'status-filter-pill',
-                activeTab === 'deleted' && 'status-filter-pill-active',
-                counts.deleted > 0 && activeTab !== 'deleted' && 'text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300'
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <Trash2 className="size-3.5" />
-                <span>Deleted ({counts.deleted})</span>
-              </div>
-            </Button>
+    <div className="flex flex-col gap-6 w-full">
+      {/* ================================================== */}
+      {/* 1. COMMERCIAL INVENTORY KPI OVERVIEW               */}
+      {/* ================================================== */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        {/* KPI 1: In-Stock Available Units */}
+        <div
+          onClick={() => {
+            setActiveTab('in_stock');
+            setAttentionFilter('all');
+          }}
+          className={cn(
+            'card-premium p-4 flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-0.5',
+            activeTab === 'in_stock' &&
+              attentionFilter === 'all' &&
+              'ring-2 ring-emerald-500/50 dark:ring-emerald-400/50 bg-emerald-50/20 dark:bg-emerald-950/20'
           )}
+          title="Click to view In-Stock vehicles ready for sale"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#A1ADA4]">
+              In Yard Stock
+            </span>
+            <span className="badge badge-success text-[10px] px-1.5 py-0.2">
+              Ready
+            </span>
+          </div>
+          <div className="mt-2.5">
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-[#F4F7F4] tabular-nums">
+              {counts.in_stock}
+            </h3>
+            <p className="text-[11px] text-slate-500 dark:text-[#A1ADA4] mt-1 flex items-center gap-1.5">
+              <span>{counts.all} active vehicles in fleet</span>
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="search-box">
-            <Search className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search registration or model..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="search-input"
-            />
+        {/* KPI 2: On Credit / Financed Units */}
+        <div
+          onClick={() => {
+            setActiveTab('financed');
+            setAttentionFilter('all');
+          }}
+          className={cn(
+            'card-premium p-4 flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-0.5',
+            activeTab === 'financed' &&
+              attentionFilter === 'all' &&
+              'ring-2 ring-blue-500/50 dark:ring-blue-400/50 bg-blue-50/20 dark:bg-blue-950/20'
+          )}
+          title="Click to view vehicles financed under client agreements"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#A1ADA4]">
+              On Credit / Financed
+            </span>
+            <span className="badge text-[10px] px-1.5 py-0.2 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
+              Active
+            </span>
+          </div>
+          <div className="mt-2.5">
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400 tabular-nums">
+              {counts.financed}
+            </h3>
+            <p className="text-[11px] text-slate-500 dark:text-[#A1ADA4] mt-1">
+              {counts.reserved > 0 ? `${counts.reserved} reserved` : 'Under financing terms'}
+            </p>
+          </div>
+        </div>
+
+        {/* KPI 3: Total Capital Deployed in Yard */}
+        <div className="card-premium p-4 flex flex-col justify-between border-slate-300 dark:border-[#38483d]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#A1ADA4]">
+              Yard Stock Value
+            </span>
+            <span className="text-[10px] font-semibold text-slate-400 dark:text-[#A1ADA4]">
+              Acquisition
+            </span>
+          </div>
+          <div className="mt-2.5">
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-[#B7FF3C] tabular-nums">
+              {formatKES(inStockFinancials.totalCost)}
+            </h3>
+            <p className="text-[11px] text-slate-500 dark:text-[#A1ADA4] mt-1">
+              Capital tied up in {counts.in_stock} in-stock units
+            </p>
+          </div>
+        </div>
+
+        {/* KPI 4: Target Showroom Value & Spread */}
+        <div className="card-premium p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#A1ADA4]">
+              Target Showroom Value
+            </span>
+            {inStockFinancials.projectedMargin > 0 && (
+              <span className="badge text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                +{inStockFinancials.marginPct}%
+              </span>
+            )}
+          </div>
+          <div className="mt-2.5">
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-[#F4F7F4] tabular-nums">
+              {formatKES(inStockFinancials.totalTargetSale)}
+            </h3>
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-1 tabular-nums">
+              Spread: {formatKES(inStockFinancials.projectedMargin)}
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] lg:block hidden">
-        <div className="data-table-scroll">
-          <Table className="data-table">
-            <colgroup>
-              <col style={{ width: '28%' }} />
-              <col style={{ width: '14%' }} />
-              <col style={{ width: '18%' }} />
-              <col style={{ width: '15%' }} />
-              <col style={{ width: '15%' }} />
-              <col style={{ width: '10%' }} />
-            </colgroup>
-            <TableHeader>
-              <TableRow className="data-table-head-row">
-                <TableHead className="data-th text-left">Vehicle</TableHead>
-                <TableHead className="data-th text-left">Type & Year</TableHead>
-                <TableHead className="data-th text-left">Status & Website</TableHead>
-                <TableHead className="data-th text-right">Purchase Price</TableHead>
-                <TableHead className="data-th text-right">Sale Price</TableHead>
-                <TableHead className="data-th text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((vehicle) => {
-                return (
-                  <TableRow
-                    key={vehicle.id}
-                    className="data-table-row group/row cursor-pointer"
-                    onClick={(e) => {
-                      // Prevent navigation if clicking on the actions dropdown or its contents
-                      if ((e.target as HTMLElement).closest('.action-menu-container')) return;
-                      router.push(`/vehicles/${vehicle.id}`);
-                    }}
-                  >
-                    <TableCell className="data-td">
-                      <div className="flex items-center gap-3">
-                        <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 border border-blue-200">
-                          <Car size={18} />
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="font-bold text-slate-900 dark:text-[#F4F7F4] font-mono tracking-wide">
-                            {vehicle.registration_no}
-                          </span>
-                          <span className="text-13 text-slate-500 dark:text-[#A1ADA4] font-medium">
-                            {vehicle.make_model}
-                          </span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="data-td">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-13 text-slate-700 dark:text-[#C1CBC3]">{vehicle.type || 'Saloon'}</span>
-                        <span className="text-12 text-gray-500 dark:text-[#A1ADA4]">{vehicle.year || '—'}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="data-td">
-                      <div className="flex flex-col items-start gap-1.5" onClick={(e) => e.stopPropagation()}>
-                        <StatusBadge status={vehicle.status} />
-                        {vehicle.status !== 'deleted' && (
-                          <WebsiteBadge
-                            isPublished={vehicle.is_published}
-                            isManagerOrAdmin={isManagerOrAdmin}
-                            isToggling={togglingPublishId === vehicle.id}
-                            onToggle={(e) => {
-                              e.stopPropagation();
-                              handleTogglePublish(vehicle.id, !vehicle.is_published);
-                            }}
-                          />
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="data-td text-right">
-                      <span className="amount-text">{formatKES(vehicle.purchase_price)}</span>
-                    </TableCell>
-                    <TableCell className="data-td text-right">
-                      <span className="amount-text text-slate-900 dark:text-[#F4F7F4] font-bold">{formatKES(vehicle.sale_price)}</span>
-                    </TableCell>
-                    <TableCell className="data-td text-right">
-                      {vehicle.status === 'deleted' ? (
-                        <div className="flex justify-end items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                          {isManagerOrAdmin && (
-                            <Button
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleRestoreVehicle(vehicle);
-                              }}
-                              disabled={restoringId === vehicle.id}
-                              className="h-8 px-3 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5 shadow-sm"
-                              title="Revert / restore mistakenly deleted vehicle"
-                            >
-                              {restoringId === vehicle.id ? (
-                                <Loader2 className="size-3.5 animate-spin" />
-                              ) : (
-                                <RotateCcw className="size-3.5" />
-                              )}
-                              <span>Revert Vehicle</span>
-                            </Button>
-                          )}
-                        </div>
-                      ) : (
-                        <div
-                          className="relative flex justify-end action-menu-container"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Select
-                            open={openMenuId === vehicle.id}
-                            onOpenChange={(open) =>
-                              setOpenMenuId(open ? vehicle.id : null)
-                            }
-                          >
-                            <SelectTrigger
-                              className={cn(
-                                "inline-flex h-8 w-8 items-center justify-center",
-                                "rounded-lg border border-slate-200 dark:border-[#29352D]",
-                                "bg-white dark:bg-[#18221A] p-0 text-slate-500 dark:text-[#C1CBC3]",
-                                "shadow-sm",
-                                "transition-all duration-200",
-                                "hover:border-slate-300 dark:hover:border-[#38483d] hover:bg-slate-50 dark:hover:bg-[#1D2920] hover:text-slate-800 dark:hover:text-[#F4F7F4]",
-                                "focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-[#B7FF3C]/20",
-                                "data-[state=open]:border-blue-200 dark:data-[state=open]:border-[#B7FF3C]",
-                                "data-[state=open]:bg-slate-50 dark:data-[state=open]:bg-[#1D2920]",
-                                "[&>span]:hidden",
-                                "[&>svg:last-child]:hidden"
-                              )}
-                            >
-                              <MoreHorizontal className="!block size-4" />
-                            </SelectTrigger>
+      {/* ================================================== */}
+      {/* 2. OPERATIONAL SIGNALS & EXCEPTIONS STRIP (ADMIN)  */}
+      {/* ================================================== */}
+      {isAdmin &&
+        (counts.missing_photos > 0 ||
+          counts.in_stock_unpublished > 0 ||
+          counts.aging_60 > 0) && (
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#29352D] bg-white/70 dark:bg-[#151D17] p-3 sm:p-4 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="size-4 text-amber-500 shrink-0" />
+              <span className="text-xs font-semibold text-slate-800 dark:text-[#F4F7F4]">
+                Yard Operational Signals:
+              </span>
+            </div>
 
-                            <SelectContent
-                              align="end"
-                              sideOffset={8}
-                              className={cn(
-                                "w-56",
-                                "rounded-xl",
-                                "border border-slate-200 dark:border-[#29352D]",
-                                "bg-white/95 dark:bg-[#151D17]",
-                                "p-2",
-                                "text-slate-900 dark:text-[#F4F7F4]",
-                                "shadow-xl dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)]",
-                                "backdrop-blur-xl backdrop-saturate-150"
-                              )}
-                            >
-                              {/* PRIMARY ACTIONS */}
-                              <div className="space-y-1">
-
-                                <Link
-                                  href={`/vehicles/${vehicle.id}`}
-                                  onClick={() => setOpenMenuId(null)}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700 dark:text-[#C1CBC3]",
-                                    "transition-colors duration-150",
-                                    "hover:bg-slate-50 dark:hover:bg-[#18221A] hover:text-slate-950 dark:hover:text-[#F4F7F4]"
-                                  )}
-                                >
-                                  <Eye className="size-4 shrink-0 text-slate-500 dark:text-[#A1ADA4]" />
-                                  <span>View Details</span>
-                                </Link>
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    setSelectedVehicleForCost(vehicle);
-                                    setIsAddCostOpen(true);
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-blue-600",
-                                    "transition-colors duration-150",
-                                    "hover:bg-blue-50 hover:text-blue-700"
-                                  )}
-                                >
-                                  <Wrench className="size-4 shrink-0" />
-                                  <span>Add Expense</span>
-                                </button>
-
-                                <Link
-                                  href={`/loans/create?vehicleId=${vehicle.id}`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-emerald-600",
-                                    "transition-colors duration-150",
-                                    "hover:bg-emerald-50 hover:text-emerald-700"
-                                  )}
-                                >
-                                  <Sparkles className="size-4 shrink-0" />
-                                  <span>Create Contract</span>
-                                </Link>
-                              </div>
-
-                              {/* STATUS DIVIDER */}
-                              <div className="my-3 border-t border-slate-100" />
-
-                              {/* STATUS LABEL */}
-                              <div className="px-2 pb-2 pt-1 text-center">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-                                  Change Status
-                                </span>
-                              </div>
-
-                              {/* STATUS ACTIONS */}
-                              <div className="space-y-1">
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    handleStatusChange(vehicle.id, "in_stock");
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
-                                    "transition-colors duration-150",
-                                    "hover:bg-emerald-50 hover:text-emerald-700"
-                                  )}
-                                >
-                                  <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
-                                  <span>In Stock</span>
-                                </button>
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    handleStatusChange(vehicle.id, "reserved");
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
-                                    "transition-colors duration-150",
-                                    "hover:bg-amber-50 hover:text-amber-700"
-                                  )}
-                                >
-                                  <ShieldCheck className="size-4 shrink-0 text-amber-500" />
-                                  <span>Reserved</span>
-                                </button>
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    handleStatusChange(vehicle.id, "financed");
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
-                                    "transition-colors duration-150",
-                                    "hover:bg-blue-50 hover:text-blue-700"
-                                  )}
-                                >
-                                  <TrendingUp className="size-4 shrink-0 text-blue-500" />
-                                  <span>On Credit</span>
-                                </button>
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    handleStatusChange(vehicle.id, "cash_sale");
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
-                                    "transition-colors duration-150",
-                                    "hover:bg-emerald-50 hover:text-emerald-700"
-                                  )}
-                                >
-                                  <DollarSign className="size-4 shrink-0 text-emerald-500" />
-                                  <span>Cash Sale</span>
-                                </button>
-
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpenMenuId(null);
-                                    handleStatusChange(vehicle.id, "repossessed");
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-center gap-2.5",
-                                    "rounded-lg px-3 py-3",
-                                    "text-sm font-medium text-slate-700",
-                                    "transition-colors duration-150",
-                                    "hover:bg-rose-50 hover:text-rose-700"
-                                  )}
-                                >
-                                  <AlertTriangle className="size-4 shrink-0 text-rose-500" />
-                                  <span>Repossessed</span>
-                                </button>
-
-                                {isManagerOrAdmin && (vehicle.status as string) !== 'deleted' && (
-                                  <>
-                                    <div className="my-2 border-t border-slate-100" />
-                                    <div className="px-2 pb-1.5 pt-1 text-center">
-                                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
-                                        Website Visibility
-                                      </span>
-                                    </div>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setOpenMenuId(null);
-                                        handleTogglePublish(vehicle.id, !vehicle.is_published);
-                                      }}
-                                      disabled={togglingPublishId === vehicle.id}
-                                      className={cn(
-                                        "flex w-full items-center justify-center gap-2.5",
-                                        "rounded-lg px-3 py-2.5",
-                                        "text-sm font-medium",
-                                        vehicle.is_published
-                                          ? "text-amber-700 hover:bg-amber-50"
-                                          : "text-emerald-700 hover:bg-emerald-50",
-                                        "transition-colors duration-150"
-                                      )}
-                                    >
-                                      {togglingPublishId === vehicle.id ? (
-                                        <Loader2 className="size-4 animate-spin text-slate-500" />
-                                      ) : vehicle.is_published ? (
-                                        <EyeOff className="size-4 shrink-0 text-amber-500" />
-                                      ) : (
-                                        <Globe className="size-4 shrink-0 text-emerald-500" />
-                                      )}
-                                      <span>{vehicle.is_published ? "Remove from Website" : "Publish to Website"}</span>
-                                    </button>
-                                  </>
-                                )}
-
-                                {isManagerOrAdmin && (
-                                  <>
-                                    <div className="my-2 border-t border-slate-100" />
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setOpenMenuId(null);
-                                        setVehicleToDelete(vehicle);
-                                      }}
-                                      className={cn(
-                                        "flex w-full items-center justify-center gap-2.5",
-                                        "rounded-lg px-3 py-2.5",
-                                        "text-sm font-medium text-rose-600",
-                                        "transition-colors duration-150",
-                                        "hover:bg-rose-50 hover:text-rose-700"
-                                      )}
-                                    >
-                                      <Trash2 className="size-4 shrink-0 text-rose-500" />
-                                      <span>Delete Vehicle</span>
-                                    </button>
-                                  </>
-                                )}
-
-                              </div>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="data-empty-cell">
-                    <div className="data-empty">
-                      <Car className="size-8 text-gray-300" />
-                      <p className="text-14 text-gray-600 font-medium mt-2">
-                        {query
-                          ? `No vehicles match "${query}"`
-                          : activeTab === 'on_website'
-                            ? 'No vehicles currently published on the website'
-                            : activeTab === 'off_website'
-                              ? 'All active vehicles are currently published on the website'
-                              : 'No vehicles found in stock'}
-                      </p>
-                      <p className="text-12 text-gray-400">
-                        {query
-                          ? 'Try a different search term or check filters.'
-                          : activeTab === 'on_website'
-                            ? 'Use the "Publish to Website" action on any in-stock vehicle to display it online.'
-                            : activeTab === 'off_website'
-                              ? 'Unpublished or draft vehicles will appear here.'
-                              : 'Add vehicles to see them in the inventory.'}
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
+            <div className="flex flex-wrap items-center gap-2">
+              {counts.missing_photos > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('in_stock');
+                    setAttentionFilter(
+                      attentionFilter === 'missing_photos' ? 'all' : 'missing_photos'
+                    );
+                  }}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                    attentionFilter === 'missing_photos'
+                      ? 'bg-amber-600 text-white font-semibold'
+                      : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/40 hover:bg-amber-100'
+                  )}
+                  title="Vehicles in stock that need showroom photos"
+                >
+                  <ImageIcon className="size-3" />
+                  <span>{counts.missing_photos} Need Photos</span>
+                </button>
               )}
-            </TableBody>
-          </Table>
+
+              {counts.in_stock_unpublished > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('in_stock');
+                    setAttentionFilter(
+                      attentionFilter === 'unpublished' ? 'all' : 'unpublished'
+                    );
+                  }}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                    attentionFilter === 'unpublished'
+                      ? 'bg-blue-600 text-white font-semibold'
+                      : 'bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-900/40 hover:bg-blue-100'
+                  )}
+                  title="Vehicles in stock not published on public website"
+                >
+                  <EyeOff className="size-3" />
+                  <span>{counts.in_stock_unpublished} Hidden from Website</span>
+                </button>
+              )}
+
+              {counts.aging_60 > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('in_stock');
+                    setAttentionFilter(
+                      attentionFilter === 'aging' ? 'all' : 'aging'
+                    );
+                  }}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                    attentionFilter === 'aging'
+                      ? 'bg-rose-600 text-white font-semibold'
+                      : 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200/80 dark:border-rose-900/40 hover:bg-rose-100'
+                  )}
+                  title="Vehicles in yard stock for over 60 days"
+                >
+                  <Clock className="size-3" />
+                  <span>{counts.aging_60} Aging &gt;60d</span>
+                </button>
+              )}
+
+              {attentionFilter !== 'all' && (
+                <button
+                  type="button"
+                  onClick={() => setAttentionFilter('all')}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-[#F4F7F4] px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#1D2920] cursor-pointer"
+                >
+                  <X className="size-3" />
+                  <span>Reset Signal</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================== */}
+      {/* 3. TOOLBAR: FILTERS, SEARCH, SORT & VIEW SWITCHER   */}
+      {/* ================================================== */}
+      <div className="flex flex-col gap-4">
+        {/* Status Filter Tabs */}
+        <div className="w-full overflow-x-auto no-scrollbar py-0.5">
+          <div className="status-filter-group w-fit max-w-full inline-flex items-center gap-1 p-1 rounded-2xl dark:bg-[#101612] dark:border dark:border-[#29352D]">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('all');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'all' && 'status-filter-pill-active'
+              )}
+            >
+              <Car className="size-3.5 mr-1.5" />
+              <span>All Vehicles</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.all})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('in_stock');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'in_stock' && 'status-filter-pill-active'
+              )}
+            >
+              <CheckCircle2 className="size-3.5 mr-1.5 text-emerald-500" />
+              <span>In Stock</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.in_stock})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('financed');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'financed' && 'status-filter-pill-active'
+              )}
+            >
+              <TrendingUp className="size-3.5 mr-1.5 text-blue-500" />
+              <span>On Credit</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.financed})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('reserved');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'reserved' && 'status-filter-pill-active'
+              )}
+            >
+              <ShieldCheck className="size-3.5 mr-1.5 text-amber-500" />
+              <span>Reserved</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.reserved})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('cash_sale');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'cash_sale' && 'status-filter-pill-active'
+              )}
+            >
+              <DollarSign className="size-3.5 mr-1.5 text-slate-500" />
+              <span>Cash Sale</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.cash_sale})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('repossessed');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'repossessed' && 'status-filter-pill-active'
+              )}
+            >
+              <AlertTriangle className="size-3.5 mr-1.5 text-rose-500" />
+              <span>Repossessed</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.repossessed})</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setActiveTab('on_website');
+                setAttentionFilter('all');
+              }}
+              className={cn(
+                'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                activeTab === 'on_website' && 'status-filter-pill-active'
+              )}
+            >
+              <Globe className="size-3.5 mr-1.5 text-emerald-600 dark:text-emerald-400" />
+              <span>On Website</span>
+              <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.on_website})</span>
+            </Button>
+
+            {(counts.deleted > 0 || isManagerOrAdmin) && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setActiveTab('deleted');
+                  setAttentionFilter('all');
+                }}
+                className={cn(
+                  'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
+                  activeTab === 'deleted' && 'status-filter-pill-active',
+                  counts.deleted > 0 &&
+                    activeTab !== 'deleted' &&
+                    'text-rose-600 hover:text-rose-700 dark:text-rose-400'
+                )}
+              >
+                <Trash2 className="size-3.5 mr-1.5" />
+                <span>Archived</span>
+                <span className="ml-1.5 text-[10px] opacity-75 font-mono">({counts.deleted})</span>
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Search, Sort, View Mode, and Quick Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Search Box */}
+          <div className="relative flex-1 min-w-0 max-w-md">
+            <div className="search-box w-full">
+              <Search className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search registration, make, model, type, or year..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="search-input w-full"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-[#F4F7F4] p-0.5 cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="size-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Right Controls: Sort + View Mode + Add Button */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {/* Sort Selector */}
+            <div className="w-[160px] sm:w-[170px]">
+              <Select value={sortBy} onValueChange={(val) => setSortBy(val as SortOption)}>
+                <SelectTrigger className="input-class h-10 w-full text-xs !px-3 font-medium">
+                  <SelectValue placeholder="Sort by..." />
+                </SelectTrigger>
+                <SelectContent className="z-50 min-w-[190px]">
+                  <SelectItem value="newest">Newest Added</SelectItem>
+                  <SelectItem value="oldest">Oldest Added (Aging)</SelectItem>
+                  <SelectItem value="price_desc">Price: High to Low</SelectItem>
+                  <SelectItem value="price_asc">Price: Low to High</SelectItem>
+                  <SelectItem value="year_desc">Year: Newest First</SelectItem>
+                  <SelectItem value="reg_asc">Registration: A - Z</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* View Mode Toggle: Table vs Showroom Grid */}
+            <div className="flex items-center rounded-xl border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A] p-0.5 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setViewMode('table')}
+                className={cn(
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer',
+                  viewMode === 'table'
+                    ? 'bg-white dark:bg-[#151D17] text-slate-900 dark:text-[#F4F7F4] shadow-xs'
+                    : 'text-slate-500 dark:text-[#A1ADA4] hover:text-slate-800 dark:hover:text-[#F4F7F4]'
+                )}
+                title="Switch to detailed table view"
+              >
+                <TableIcon className="size-3.5" />
+                <span className="hidden sm:inline">Table</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer',
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-[#151D17] text-slate-900 dark:text-[#F4F7F4] shadow-xs'
+                    : 'text-slate-500 dark:text-[#A1ADA4] hover:text-slate-800 dark:hover:text-[#F4F7F4]'
+                )}
+                title="Switch to showroom visual card view"
+              >
+                <LayoutGrid className="size-3.5" />
+                <span className="hidden sm:inline">Showroom</span>
+              </button>
+            </div>
+
+            {/* Add Vehicle Button */}
+            <button
+              type="button"
+              onClick={() => setIsAddVehicleOpen(true)}
+              className="btn-primary h-10 px-4 text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-xs whitespace-nowrap"
+            >
+              <Plus className="size-3.5" />
+              <span>Add Vehicle</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Active Filter Info & Count */}
+        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#A1ADA4] px-1">
+          <div>
+            Showing <strong className="text-slate-900 dark:text-[#F4F7F4]">{filtered.length}</strong> of{' '}
+            <strong className="text-slate-900 dark:text-[#F4F7F4]">{counts.all}</strong> active vehicles
+            {query && <span> matching &quot;{query}&quot;</span>}
+            {attentionFilter !== 'all' && (
+              <span className="text-amber-600 dark:text-amber-400 font-semibold ml-1">
+                (Filtered by {attentionFilter.replace('_', ' ')})
+              </span>
+            )}
+          </div>
+
+          {(query || activeTab !== 'all' || attentionFilter !== 'all') && (
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('');
+                setActiveTab('all');
+                setAttentionFilter('all');
+              }}
+              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer"
+            >
+              Reset All Filters
+            </button>
+          )}
         </div>
       </div>
 
-      <TableResponsiveGrid className="lg:hidden mt-8 mb-10 gap-5 p-6">
-        {filtered.map((vehicle) => {
-          const isOpen = expandedId === vehicle.id;
+      {/* ================================================== */}
+      {/* 4. MAIN INVENTORY DISPLAY: TABLE OR GRID VIEW      */}
+      {/* ================================================== */}
+      {viewMode === 'table' ? (
+        /* ── TABLE VIEW ────────────────────────────────── */
+        <div className="data-table-wrap bg-white dark:bg-[#151D17] border border-gray-200/70 dark:border-[#29352D] rounded-2xl overflow-hidden shadow-xs">
+          <div className="data-table-scroll overflow-x-auto">
+            <Table className="data-table w-full">
+              <TableHeader>
+                <TableRow className="data-table-head-row border-b border-slate-200 dark:border-[#29352D] bg-slate-50/70 dark:bg-[#101612]">
+                  <TableHead className="data-th text-left py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Vehicle Profile
+                  </TableHead>
+                  <TableHead className="data-th text-left py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Type &amp; Year
+                  </TableHead>
+                  <TableHead className="data-th text-left py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Status &amp; Website
+                  </TableHead>
+                  <TableHead className="data-th text-right py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Acquisition Cost
+                  </TableHead>
+                  <TableHead className="data-th text-right py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Target Sale Price
+                  </TableHead>
+                  <TableHead className="data-th text-center py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Yard Age
+                  </TableHead>
+                  <TableHead className="data-th text-right py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {paginatedVehicles.map((vehicle) => {
+                  const daysInStock = getDaysInStock(
+                    vehicle.date_purchased || vehicle.created_at
+                  );
+                  const purchase = Number(vehicle.purchase_price) || 0;
+                  const sale = Number(vehicle.sale_price) || 0;
+                  const spread = sale > 0 ? sale - purchase : 0;
+                  const hasImage = vehicle.images && vehicle.images.length > 0;
+                  const primaryImage = hasImage ? vehicle.images![0] : null;
 
-          return (
-            <TableResponsiveCard
-              key={vehicle.id}
-              className="overflow-hidden rounded-3xl border border-slate-200/70 dark:border-[#29352D] bg-white dark:bg-[#151D17] shadow-sm transition-all duration-300 hover:shadow-lg dark:hover:shadow-none p-5 cursor-pointer"
-            >
-              <TableResponsiveCardHeader
-                onClick={() => setExpandedId(isOpen ? null : vehicle.id)}
-                className="p-5 cursor-pointer flex items-center justify-between gap-4"
+                  return (
+                    <TableRow
+                      key={vehicle.id}
+                      className="data-table-row group/row cursor-pointer transition-colors hover:bg-slate-50/80 dark:hover:bg-[#1D2920]/60 border-b border-slate-100 dark:border-[#29352D]"
+                      onClick={(e) => {
+                        if ((e.target as HTMLElement).closest('.action-menu-container'))
+                          return;
+                        router.push(`/vehicles/${vehicle.id}`);
+                      }}
+                    >
+                      {/* Vehicle Identity */}
+                      <TableCell className="data-td py-3.5 px-4">
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* Vehicle Thumbnail or Icon */}
+                          <div className="shrink-0 size-11 rounded-xl overflow-hidden border border-slate-200 dark:border-[#29352D] bg-slate-100 dark:bg-[#18221A] flex items-center justify-center">
+                            {primaryImage ? (
+                              <img
+                                src={primaryImage}
+                                alt={vehicle.make_model}
+                                className="size-full object-cover group-hover/row:scale-105 transition-transform duration-200"
+                              />
+                            ) : (
+                              <Car className="size-5 text-slate-400 dark:text-[#A1ADA4]" />
+                            )}
+                          </div>
+
+                          {/* Plate & Name */}
+                          <div className="flex flex-col min-w-0">
+                            <span className="font-bold text-slate-950 dark:text-[#F4F7F4] font-mono tracking-wide text-sm truncate group-hover/row:text-blue-600 dark:group-hover/row:text-[#B7FF3C] transition-colors">
+                              {vehicle.registration_no}
+                            </span>
+                            <span className="text-xs text-slate-600 dark:text-[#C1CBC3] font-medium truncate mt-0.5">
+                              {vehicle.make_model}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      {/* Type & Year */}
+                      <TableCell className="data-td py-3.5 px-4">
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-xs font-semibold text-slate-800 dark:text-[#F4F7F4]">
+                            {vehicle.type || 'Saloon'}
+                          </span>
+                          <span className="text-[11px] text-slate-400 dark:text-[#A1ADA4]">
+                            Year: {vehicle.year || '—'}
+                          </span>
+                        </div>
+                      </TableCell>
+
+                      {/* Status & Website */}
+                      <TableCell className="data-td py-3.5 px-4">
+                        <div
+                          className="flex flex-col items-start gap-1.5"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <StatusBadge status={vehicle.status} />
+                          {vehicle.status !== 'deleted' && (
+                            <WebsiteBadge
+                              isPublished={vehicle.is_published}
+                              isManagerOrAdmin={isManagerOrAdmin}
+                              isToggling={togglingPublishId === vehicle.id}
+                              onToggle={(e) => {
+                                e.stopPropagation();
+                                handleTogglePublish(
+                                  vehicle.id,
+                                  !vehicle.is_published
+                                );
+                              }}
+                            />
+                          )}
+                        </div>
+                      </TableCell>
+
+                      {/* Acquisition Cost */}
+                      <TableCell className="data-td text-right py-3.5 px-4">
+                        <div className="flex flex-col items-end">
+                          <span className="text-xs font-semibold text-slate-800 dark:text-[#C1CBC3] tabular-nums">
+                            {formatKES(purchase)}
+                          </span>
+                          <span className="text-[10px] text-slate-400 dark:text-[#A1ADA4] mt-0.5">
+                            {fmt(vehicle.date_purchased || vehicle.created_at)}
+                          </span>
+                        </div>
+                      </TableCell>
+
+                      {/* Target Sale Price & Margin */}
+                      <TableCell className="data-td text-right py-3.5 px-4">
+                        <div className="flex flex-col items-end">
+                          <span className="text-xs font-bold text-slate-900 dark:text-[#F4F7F4] tabular-nums">
+                            {sale > 0 ? formatKES(sale) : '—'}
+                          </span>
+                          {spread > 0 && (
+                            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold tabular-nums mt-0.5">
+                              +{formatKES(spread)}
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+
+                      {/* Yard Age */}
+                      <TableCell className="data-td text-center py-3.5 px-4">
+                        <AgingBadge days={daysInStock} />
+                      </TableCell>
+
+                      {/* Actions */}
+                      <TableCell className="data-td text-right py-3.5 px-4">
+                        <div
+                          className="relative flex items-center justify-end gap-1 action-menu-container"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {/* Quick details link */}
+                          <Link
+                            href={`/vehicles/${vehicle.id}`}
+                            className="size-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-[#A1ADA4] dark:hover:text-[#F4F7F4] dark:hover:bg-[#1D2920] transition-colors"
+                            title="View vehicle profile"
+                          >
+                            <Eye className="size-4" />
+                          </Link>
+
+                          {vehicle.status === 'deleted' ? (
+                            isManagerOrAdmin && (
+                              <button
+                                type="button"
+                                onClick={() => handleRestoreVehicle(vehicle)}
+                                disabled={restoringId === vehicle.id}
+                                className="btn-secondary h-8 px-2.5 text-xs inline-flex items-center gap-1.5 cursor-pointer text-emerald-700 dark:text-emerald-400"
+                                title="Revert / restore vehicle to inventory"
+                              >
+                                {restoringId === vehicle.id ? (
+                                  <Loader2 className="size-3.5 animate-spin" />
+                                ) : (
+                                  <RotateCcw className="size-3.5" />
+                                )}
+                                <span className="hidden sm:inline">Restore</span>
+                              </button>
+                            )
+                          ) : (
+                            <div className="relative">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setOpenMenuId(
+                                    openMenuId === vehicle.id ? null : vehicle.id
+                                  )
+                                }
+                                className={cn(
+                                  'size-8 rounded-lg border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 dark:text-[#C1CBC3] dark:hover:bg-[#1D2920] shadow-2xs transition-all cursor-pointer',
+                                  openMenuId === vehicle.id &&
+                                    'ring-2 ring-blue-500/30 border-blue-400'
+                                )}
+                                title="More vehicle operations"
+                              >
+                                <MoreHorizontal className="size-4" />
+                              </button>
+
+                              {/* Dropdown Menu */}
+                              {openMenuId === vehicle.id && (
+                                <div
+                                  className="absolute right-0 top-9 z-50 w-56 rounded-2xl border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#151D17] p-2 text-slate-900 dark:text-[#F4F7F4] shadow-xl dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in-95"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <div className="space-y-1">
+                                    <Link
+                                      href={`/vehicles/${vehicle.id}`}
+                                      onClick={() => setOpenMenuId(null)}
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 dark:text-[#C1CBC3] dark:hover:bg-[#18221A] dark:hover:text-[#F4F7F4] transition-colors"
+                                    >
+                                      <Eye className="size-3.5 text-slate-400" />
+                                      <span>View Vehicle Details</span>
+                                    </Link>
+
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setOpenMenuId(null);
+                                        setSelectedVehicleForCost(vehicle);
+                                        setIsAddCostOpen(true);
+                                      }}
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <Wrench className="size-3.5" />
+                                      <span>Add Pre-Sale Expense</span>
+                                    </button>
+
+                                    <Link
+                                      href={`/loans/create?vehicleId=${vehicle.id}`}
+                                      onClick={() => setOpenMenuId(null)}
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-[#18221A] transition-colors"
+                                    >
+                                      <Sparkles className="size-3.5" />
+                                      <span>Create Loan / Contract</span>
+                                    </Link>
+                                  </div>
+
+                                  <div className="my-2 border-t border-slate-100 dark:border-[#29352D]" />
+                                  <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A1ADA4]">
+                                    Change Status
+                                  </div>
+
+                                  <div className="space-y-0.5">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleStatusChange(vehicle.id, 'in_stock')
+                                      }
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 dark:text-[#C1CBC3] dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <CheckCircle2 className="size-3.5 text-emerald-500" />
+                                      <span>In Stock</span>
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleStatusChange(vehicle.id, 'reserved')
+                                      }
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-[#C1CBC3] dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <ShieldCheck className="size-3.5 text-amber-500" />
+                                      <span>Reserved</span>
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleStatusChange(vehicle.id, 'financed')
+                                      }
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 dark:text-[#C1CBC3] dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <TrendingUp className="size-3.5 text-blue-500" />
+                                      <span>On Credit / Financed</span>
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleStatusChange(vehicle.id, 'cash_sale')
+                                      }
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-[#C1CBC3] dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <DollarSign className="size-3.5 text-slate-500" />
+                                      <span>Cash Sale</span>
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleStatusChange(vehicle.id, 'repossessed')
+                                      }
+                                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50 dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                    >
+                                      <AlertTriangle className="size-3.5 text-rose-500" />
+                                      <span>Repossessed</span>
+                                    </button>
+                                  </div>
+
+                                  {isManagerOrAdmin && (
+                                    <>
+                                      <div className="my-2 border-t border-slate-100 dark:border-[#29352D]" />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenMenuId(null);
+                                          handleTogglePublish(
+                                            vehicle.id,
+                                            !vehicle.is_published
+                                          );
+                                        }}
+                                        className={cn(
+                                          'flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors cursor-pointer',
+                                          vehicle.is_published
+                                            ? 'text-amber-700 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-[#18221A]'
+                                            : 'text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-[#18221A]'
+                                        )}
+                                      >
+                                        {vehicle.is_published ? (
+                                          <EyeOff className="size-3.5 text-amber-500" />
+                                        ) : (
+                                          <Globe className="size-3.5 text-emerald-500" />
+                                        )}
+                                        <span>
+                                          {vehicle.is_published
+                                            ? 'Hide from Website'
+                                            : 'Publish to Website'}
+                                        </span>
+                                      </button>
+
+                                      <div className="my-1 border-t border-slate-100 dark:border-[#29352D]" />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setOpenMenuId(null);
+                                          setVehicleToDelete(vehicle);
+                                        }}
+                                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-[#18221A] transition-colors cursor-pointer"
+                                      >
+                                        <Trash2 className="size-3.5" />
+                                        <span>Delete Vehicle</span>
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+
+                {filtered.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={7} className="py-12 text-center">
+                      <div className="flex flex-col items-center justify-center max-w-sm mx-auto">
+                        <div className="size-12 rounded-2xl bg-slate-100 dark:bg-[#18221A] flex items-center justify-center text-slate-400 mb-3">
+                          <Car className="size-6" />
+                        </div>
+                        <h4 className="text-sm font-semibold text-slate-800 dark:text-[#F4F7F4]">
+                          {query
+                            ? `No vehicles match "${query}"`
+                            : activeTab === 'on_website'
+                            ? 'No vehicles currently published on the website'
+                            : activeTab === 'off_website'
+                            ? 'All active vehicles are currently published'
+                            : 'No vehicles found in this category'}
+                        </h4>
+                        <p className="text-xs text-slate-400 mt-1">
+                          {query
+                            ? 'Try searching by registration plate, make, model, or year.'
+                            : 'Adjust your status filter or click "Add Vehicle" to register new stock.'}
+                        </p>
+                        {(query || activeTab !== 'all' || attentionFilter !== 'all') && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setQuery('');
+                              setActiveTab('all');
+                              setAttentionFilter('all');
+                            }}
+                            className="btn-secondary h-8 px-3 text-xs mt-4 inline-flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <RotateCcw className="size-3" />
+                            <span>Reset Filters</span>
+                          </button>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      ) : (
+        /* ── SHOWROOM GRID VIEW ────────────────────────── */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {paginatedVehicles.map((vehicle) => {
+            const daysInStock = getDaysInStock(
+              vehicle.date_purchased || vehicle.created_at
+            );
+            const purchase = Number(vehicle.purchase_price) || 0;
+            const sale = Number(vehicle.sale_price) || 0;
+            const spread = sale > 0 ? sale - purchase : 0;
+            const hasImage = vehicle.images && vehicle.images.length > 0;
+            const primaryImage = hasImage ? vehicle.images![0] : null;
+
+            return (
+              <div
+                key={vehicle.id}
+                className="card-premium overflow-hidden p-0 flex flex-col justify-between group transition-all duration-300 hover:shadow-md dark:hover:shadow-none"
               >
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-700 dark:from-[#18221A] dark:to-[#1D2920] dark:text-[#B7FF3C] border border-blue-200 dark:border-[#29352D]">
-                    <Car size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-bold text-[16px] text-slate-900 dark:text-[#F4F7F4] truncate font-mono tracking-wide">
-                      {vehicle.registration_no}
-                    </h3>
-                    <p className="text-sm font-medium text-slate-500 dark:text-[#A1ADA4] truncate mt-0.5">
-                      {vehicle.make_model}
-                    </p>
-                    <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                      <StatusBadge status={vehicle.status} />
-                      {vehicle.status !== 'deleted' && (
-                        <WebsiteBadge
-                          isPublished={vehicle.is_published}
-                          isManagerOrAdmin={isManagerOrAdmin}
-                          isToggling={togglingPublishId === vehicle.id}
-                          onToggle={(e) => {
-                            e.stopPropagation();
-                            handleTogglePublish(vehicle.id, !vehicle.is_published);
-                          }}
-                        />
-                      )}
+                {/* Photo & Badges */}
+                <div className="relative aspect-[16/10] bg-slate-950 overflow-hidden border-b border-slate-100 dark:border-[#29352D]">
+                  {primaryImage ? (
+                    <img
+                      src={primaryImage}
+                      alt={vehicle.make_model}
+                      className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="size-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#18221A] text-slate-400">
+                      <Car className="size-10 opacity-40 mb-1" />
+                      <span className="text-[10px] font-medium text-slate-400">
+                        No showroom photo
+                      </span>
                     </div>
-                  </div>
-                </div>
-                <div className="shrink-0 text-slate-400 dark:text-[#A1ADA4]">
-                  {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                </div>
-              </TableResponsiveCardHeader>
+                  )}
 
-              <TableResponsiveCardContent isOpen={isOpen}>
-                <div className="w-full space-y-4 px-4">
-                  <div className="rounded-2xl bg-slate-50 dark:bg-[#18221A] p-4 grid gap-4 translate-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Type</span>
-                      <span className="text-sm font-medium text-slate-700 dark:text-[#C1CBC3]">{vehicle.type || 'Saloon'} ({vehicle.year || '—'})</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Website Status</span>
+                  {/* Top Overlay Badges */}
+                  <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
+                    <StatusBadge status={vehicle.status} />
+                  </div>
+
+                  <div className="absolute top-2.5 right-2.5 z-10">
+                    {vehicle.status !== 'deleted' && (
                       <WebsiteBadge
                         isPublished={vehicle.is_published}
                         isManagerOrAdmin={isManagerOrAdmin}
@@ -955,341 +1617,389 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
                           handleTogglePublish(vehicle.id, !vehicle.is_published);
                         }}
                       />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Purchase Price</span>
-                      <span className="font-semibold text-slate-900 dark:text-[#F4F7F4]">{formatKES(vehicle.purchase_price)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-[#A1ADA4]">Selling Price</span>
-                      <span className="font-bold text-slate-900 dark:text-[#B7FF3C]">{formatKES(vehicle.sale_price)}</span>
+                    )}
+                  </div>
+
+                  {/* Bottom Plate Badge */}
+                  <div className="absolute bottom-2.5 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-white font-mono font-bold text-xs tracking-wider">
+                    {vehicle.registration_no}
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                  <div>
+                    <h3 className="font-bold text-sm text-slate-900 dark:text-[#F4F7F4] truncate">
+                      {vehicle.year ? `${vehicle.year} ` : ''}
+                      {vehicle.make_model}
+                    </h3>
+
+                    <div className="mt-1 flex items-center justify-between text-xs text-slate-500 dark:text-[#A1ADA4]">
+                      <span>{vehicle.type || 'Saloon'}</span>
+                      <AgingBadge days={daysInStock} />
                     </div>
                   </div>
 
-                  {vehicle.status === 'deleted' ? (
-                    <div className="mt-4">
-                      {isManagerOrAdmin && (
-                        <Button
-                          onClick={() => handleRestoreVehicle(vehicle)}
-                          disabled={restoringId === vehicle.id}
-                          className="w-full rounded-xl h-10 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 shadow-sm"
-                        >
-                          {restoringId === vehicle.id ? (
-                            <Loader2 className="size-4 animate-spin" />
-                          ) : (
-                            <RotateCcw className="size-4" />
-                          )}
-                          <span>Revert / Restore to Inventory</span>
-                        </Button>
-                      )}
+                  {/* Financial Bar */}
+                  <div className="rounded-xl bg-slate-50 dark:bg-[#18221A] p-2.5 border border-slate-100 dark:border-[#29352D] space-y-1 text-xs">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-500 dark:text-[#A1ADA4]">
+                        Acquisition:
+                      </span>
+                      <span className="font-medium text-slate-700 dark:text-[#C1CBC3] tabular-nums">
+                        {formatKES(purchase)}
+                      </span>
                     </div>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-3 gap-2 mt-4">
-                        <Button
-                          asChild
-                          variant="outline"
-                          className="rounded-xl h-10 text-xs font-medium border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] hover:bg-slate-50 dark:hover:bg-[#1D2920] text-slate-700 dark:text-[#C1CBC3] flex items-center justify-center gap-1.5"
-                        >
-                          <Link href={`/vehicles/${vehicle.id}`}>
-                            <Eye className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
-                            <span>Details</span>
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setSelectedVehicleForCost(vehicle);
-                            setIsAddCostOpen(true);
-                          }}
-                          className="rounded-xl h-10 text-xs font-medium border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] hover:bg-slate-50 dark:hover:bg-[#1D2920] text-slate-700 dark:text-[#C1CBC3] flex items-center justify-center gap-1.5"
-                        >
-                          <Wrench className="size-3.5 text-gray-500 dark:text-[#A1ADA4]" />
-                          <span>Add Expense</span>
-                        </Button>
-                        <Button
-                          asChild
-                          className="rounded-xl h-10 text-xs font-semibold bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] flex items-center justify-center gap-1.5"
-                        >
-                          <Link href={`/loans/create?vehicleId=${vehicle.id}`}>
-                            <Sparkles className="size-3.5" />
-                            <span>Contract</span>
-                          </Link>
-                        </Button>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-500 dark:text-[#A1ADA4]">
+                        Target Price:
+                      </span>
+                      <span className="font-bold text-slate-950 dark:text-[#F4F7F4] tabular-nums">
+                        {sale > 0 ? formatKES(sale) : 'Unassigned'}
+                      </span>
+                    </div>
+                    {spread > 0 && (
+                      <div className="flex justify-between items-center pt-1 border-t border-slate-200/60 dark:border-[#29352D] text-[11px]">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                          Gross Margin:
+                        </span>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">
+                          +{formatKES(spread)}
+                        </span>
                       </div>
-                      {isManagerOrAdmin && (
-                        <div className="flex flex-col gap-2 mt-2">
-                          <Button
-                            variant="outline"
-                            onClick={() => handleTogglePublish(vehicle.id, !vehicle.is_published)}
-                            disabled={togglingPublishId === vehicle.id}
-                            className={cn(
-                              "w-full rounded-xl h-9 text-xs font-medium border flex items-center justify-center gap-1.5",
-                              vehicle.is_published
-                                ? "text-amber-700 border-amber-200 hover:bg-amber-50"
-                                : "text-emerald-700 border-emerald-200 hover:bg-emerald-50"
-                            )}
-                          >
-                            {togglingPublishId === vehicle.id ? (
-                              <Loader2 className="size-3.5 animate-spin" />
-                            ) : vehicle.is_published ? (
-                              <EyeOff className="size-3.5 text-amber-500" />
-                            ) : (
-                              <Globe className="size-3.5 text-emerald-500" />
-                            )}
-                            <span>{vehicle.is_published ? "Remove from Website" : "Publish to Website"}</span>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => setVehicleToDelete(vehicle)}
-                            className="w-full rounded-xl h-9 text-xs font-medium text-rose-600 border-rose-200 hover:bg-rose-50 flex items-center justify-center gap-1.5"
-                          >
-                            <Trash2 className="size-3.5 text-rose-500" />
-                            <span>Delete Vehicle (Manager)</span>
-                          </Button>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </TableResponsiveCardContent>
-            </TableResponsiveCard>
-          );
-        })}
-        {filtered.length === 0 && (
-          <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm mx-auto mt-10 w-full">
-            <Car className="size-6 mx-auto mb-3 text-slate-300" />
-            <h3 className="font-semibold text-slate-700">
-              {query ? "No vehicles match your search" : "No Vehicles Found"}
-            </h3>
-            <p className="text-sm text-slate-400 mt-1">
-              {query ? "Try adjusting your search or filter." : "Add vehicles to see them in the inventory."}
-            </p>
-          </div>
-        )}
-      </TableResponsiveGrid>
+                    )}
+                  </div>
 
-      {/* Modals from original YardInventoryManager */}
-      {isAddVehicleOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#151D17] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-[#29352D] animate-in fade-in zoom-in-95">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-[#F4F7F4] flex items-center gap-2">
-                <Car size={18} className="text-blue-900 dark:text-[#B7FF3C]" />
-                Add Vehicle to Yard
-              </h2>
-              <button onClick={() => setIsAddVehicleOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-[#F4F7F4]">
-                <X size={18} />
-              </button>
+                  {/* Card Action Buttons */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <Link
+                      href={`/vehicles/${vehicle.id}`}
+                      className="btn-secondary h-9 px-3 text-xs flex-1 inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    >
+                      <Eye className="size-3.5" />
+                      <span>Details</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedVehicleForCost(vehicle);
+                        setIsAddCostOpen(true);
+                      }}
+                      className="size-9 rounded-xl border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] flex items-center justify-center text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-50 dark:hover:bg-[#1D2920] shadow-2xs transition cursor-pointer"
+                      title="Add pre-sale expense"
+                    >
+                      <Wrench className="size-3.5" />
+                    </button>
+
+                    <Link
+                      href={`/loans/create?vehicleId=${vehicle.id}`}
+                      className="btn-primary h-9 px-3 text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                      title="Create Financing Agreement"
+                    >
+                      <Sparkles className="size-3.5" />
+                      <span>Sell</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {filtered.length === 0 && (
+            <div className="col-span-full rounded-2xl border border-dashed border-slate-200 dark:border-[#29352D] bg-slate-50/50 dark:bg-[#18221A] p-12 text-center">
+              <Car className="size-8 mx-auto text-slate-300 dark:text-slate-600 mb-2" />
+              <h4 className="text-sm font-semibold text-slate-700 dark:text-[#C1CBC3]">
+                No vehicles match current criteria
+              </h4>
+              <p className="text-xs text-slate-400 mt-1">
+                Try adjusting your search query, status tabs, or operational signals.
+              </p>
             </div>
+          )}
+        </div>
+      )}
 
-            <form onSubmit={handleAddVehicle} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">
-                    Registration Plate *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="KBN 253K"
-                    value={regNo}
-                    onChange={(e) => setRegNo(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4] font-mono uppercase"
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Make &amp; Model *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Toyota Prado TX"
-                    value={makeModel}
-                    onChange={(e) => setMakeModel(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                  />
-                </div>
-              </div>
+      {/* ================================================== */}
+      {/* 5. PAGINATION CONTROLS                             */}
+      {/* ================================================== */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs text-slate-500 dark:text-[#A1ADA4]">
+          <div>
+            Showing {(currentPage - 1) * pageSize + 1} to{' '}
+            {Math.min(currentPage * pageSize, filtered.length)} of {filtered.length}{' '}
+            records
+          </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Vehicle Type</label>
-                  <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                  >
-                    <option value="SUV">SUV</option>
-                    <option value="Compact SUV">Compact SUV</option>
-                    <option value="Saloon">Saloon</option>
-                    <option value="Hatchback">Hatchback</option>
-                    <option value="Station Wagon">Station Wagon</option>
-                    <option value="Minivan">Minivan</option>
-                    <option value="Pickup / Commercial">Pickup / Commercial</option>
-                    <option value="Van">Van</option>
-                    <option value="Pikipiki">Pikipiki</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Year</label>
-                  <input
-                    type="number"
-                    value={year}
-                    onChange={(e) => setYear(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                  />
-                </div>
-              </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="btn-secondary h-8 px-2.5 text-xs inline-flex items-center gap-1 disabled:opacity-40 cursor-pointer"
+            >
+              <ChevronLeft className="size-3.5" />
+              <span>Previous</span>
+            </button>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Purchase Cost (KES) *</label>
-                  <input
-                    type="number"
-                    required
-                    value={purchasePrice}
-                    onChange={(e) => setPurchasePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Selling Price (KES) *</label>
-                  <input
-                    type="number"
-                    required
-                    value={salePrice}
-                    onChange={(e) => setSalePrice(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] font-bold text-blue-950 dark:text-[#B7FF3C]"
-                  />
-                </div>
-              </div>
+            <span className="px-3 py-1 font-semibold text-slate-800 dark:text-[#F4F7F4]">
+              Page {currentPage} of {totalPages}
+            </span>
 
-              <div className="mt-4">
-                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Purchase Date (Leave default for today)</label>
-                <input
-                  type="date"
-                  value={purchaseDate}
-                  onChange={(e) => setPurchaseDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#29352D]">
-                <button
-                  type="button"
-                  onClick={() => setIsAddVehicleOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-200 dark:border-[#29352D] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-50 dark:hover:bg-[#1D2920] font-semibold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isVehicleSaving}
-                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] font-bold flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
-                >
-                  {isVehicleSaving ? <Loader2 size={14} className="animate-spin" /> : null}
-                  Save Vehicle
-                </button>
-              </div>
-            </form>
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="btn-secondary h-8 px-2.5 text-xs inline-flex items-center gap-1 disabled:opacity-40 cursor-pointer"
+            >
+              <span>Next</span>
+              <ChevronRight className="size-3.5" />
+            </button>
           </div>
         </div>
       )}
 
+      {/* ================================================== */}
+      {/* 6. MODALS: ADD VEHICLE & ADD EXPENSE               */}
+      {/* ================================================== */}
+
+      {/* Add Vehicle to Yard Modal */}
+      <CustomModal
+        isOpen={isAddVehicleOpen}
+        onClose={() => setIsAddVehicleOpen(false)}
+        title="Add Vehicle to Yard Inventory"
+        width={560}
+      >
+        <form onSubmit={handleAddVehicle} className="space-y-4">
+          <div className="rounded-xl border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A] p-3 text-xs text-slate-500 dark:text-[#A1ADA4]">
+            Register a newly acquired motor vehicle into Ebenezar DMS inventory.
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Registration Plate *
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. KDA 450Y"
+                value={regNo}
+                onChange={(e) => setRegNo(e.target.value.toUpperCase())}
+                className="input-class h-10 w-full font-mono uppercase font-bold"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Make &amp; Model *
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Toyota Prado TX"
+                value={makeModel}
+                onChange={(e) => setMakeModel(e.target.value)}
+                className="input-class h-10 w-full font-semibold"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Vehicle Body Type
+              </label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="input-class h-10 w-full text-xs"
+              >
+                <option value="SUV">SUV</option>
+                <option value="Compact SUV">Compact SUV</option>
+                <option value="Saloon">Saloon</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Station Wagon">Station Wagon</option>
+                <option value="Minivan">Minivan</option>
+                <option value="Pickup / Commercial">Pickup / Commercial</option>
+                <option value="Van">Van</option>
+                <option value="Pikipiki">Pikipiki</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Year of Manufacture
+              </label>
+              <input
+                type="number"
+                value={year}
+                onChange={(e) => setYear(Number(e.target.value))}
+                className="input-class h-10 w-full font-semibold"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Acquisition Cost (KES) *
+              </label>
+              <input
+                type="number"
+                required
+                value={purchasePrice}
+                onChange={(e) => setPurchasePrice(Number(e.target.value))}
+                className="input-class h-10 w-full font-bold tabular-nums"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Target Selling Price (KES) *
+              </label>
+              <input
+                type="number"
+                required
+                value={salePrice}
+                onChange={(e) => setSalePrice(Number(e.target.value))}
+                className="input-class h-10 w-full font-bold text-emerald-600 dark:text-[#B7FF3C] tabular-nums"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+              Purchase Date
+            </label>
+            <input
+              type="date"
+              value={purchaseDate}
+              onChange={(e) => setPurchaseDate(e.target.value)}
+              className="input-class h-10 w-full text-xs"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-[#29352D]">
+            <button
+              type="button"
+              onClick={() => setIsAddVehicleOpen(false)}
+              className="btn-secondary h-10 px-4 text-xs cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isVehicleSaving}
+              className="btn-primary h-10 px-5 text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm disabled:opacity-50"
+            >
+              {isVehicleSaving && <Loader2 className="size-3.5 animate-spin" />}
+              <span>Save Vehicle to Yard</span>
+            </button>
+          </div>
+        </form>
+      </CustomModal>
+
+      {/* Add Pre-Sale Expense Modal */}
       {isAddCostOpen && selectedVehicleForCost && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#151D17] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-[#29352D] animate-in fade-in zoom-in-95">
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <h2 className="text-base font-bold text-slate-900 dark:text-[#F4F7F4] flex items-center gap-2">
-                  <Wrench size={16} className="text-blue-900 dark:text-[#B7FF3C]" />
-                  Add Pre-Sale Expense
-                </h2>
-                <span className="text-xs text-slate-500 dark:text-[#A1ADA4]">
-                  Target: {selectedVehicleForCost.registration_no} ({selectedVehicleForCost.make_model})
-                </span>
-              </div>
-              <button onClick={() => setIsAddCostOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-[#F4F7F4]">
-                <X size={18} />
-              </button>
+        <CustomModal
+          isOpen={isAddCostOpen}
+          onClose={() => setIsAddCostOpen(false)}
+          title="Add Pre-Sale Expense"
+          width={480}
+        >
+          <form onSubmit={handleAddCost} className="space-y-4">
+            <div className="rounded-xl border border-slate-200 dark:border-[#29352D] bg-slate-50 dark:bg-[#18221A] p-3 text-xs text-slate-500 dark:text-[#A1ADA4]">
+              Logging repair / reconditioning expense for{' '}
+              <strong className="text-slate-900 dark:text-[#F4F7F4] font-mono">
+                {selectedVehicleForCost.registration_no}
+              </strong>{' '}
+              ({selectedVehicleForCost.make_model}).
             </div>
 
-            <form onSubmit={handleAddCost} className="space-y-4 text-xs">
-              <div>
-                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Cost Category</label>
-                <select
-                  value={costType}
-                  onChange={(e) => setCostType(e.target.value as VehicleCostType)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                >
-                  <option value="mechanical">Mechanical Repair / Servicing</option>
-                  <option value="bodywork">Bodywork / Panel Beating / Paint</option>
-                  <option value="tracking">GPS Tracking Hardware &amp; Installation</option>
-                  <option value="detailing">Interior / Detailing / Buffing</option>
-                  <option value="legal">Logbook Transfer / Legal Inspection</option>
-                  <option value="import_duty">Import Duty / Port Charges</option>
-                  <option value="other">Other Incidentals</option>
-                </select>
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Cost Category
+              </label>
+              <select
+                value={costType}
+                onChange={(e) => setCostType(e.target.value as VehicleCostType)}
+                className="input-class h-10 w-full text-xs"
+              >
+                <option value="mechanical">Mechanical Repair / Servicing</option>
+                <option value="bodywork">Bodywork / Panel Beating / Paint</option>
+                <option value="tracking">GPS Tracking Hardware &amp; Installation</option>
+                <option value="detailing">Interior / Detailing / Buffing</option>
+                <option value="legal">Logbook Transfer / Legal Inspection</option>
+                <option value="import_duty">Import Duty / Port Charges</option>
+                <option value="other">Other Incidentals</option>
+              </select>
+            </div>
 
-              <div>
-                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Expense Amount (KES) *</label>
-                <input
-                  type="number"
-                  required
-                  value={costAmount}
-                  onChange={(e) => setCostAmount(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4] font-bold"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Expense Amount (KES) *
+              </label>
+              <input
+                type="number"
+                required
+                value={costAmount}
+                onChange={(e) => setCostAmount(Number(e.target.value))}
+                className="input-class h-10 w-full font-bold tabular-nums"
+              />
+            </div>
 
-              <div>
-                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Description / Item Detail *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Front suspension bushing & new battery"
-                  value={costDescription}
-                  onChange={(e) => setCostDescription(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Description / Detail *
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Front suspension bushing & new battery"
+                value={costDescription}
+                onChange={(e) => setCostDescription(e.target.value)}
+                className="input-class h-10 w-full"
+              />
+            </div>
 
-              <div>
-                <label className="font-semibold text-slate-700 dark:text-[#C1CBC3] block mb-1">Garage / Vendor Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g. QuickFit Auto Kisumu"
-                  value={vendorName}
-                  onChange={(e) => setVendorName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-[#29352D] bg-white dark:bg-[#101612] text-slate-900 dark:text-[#F4F7F4]"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#C1CBC3] mb-1">
+                Garage / Vendor Name
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. QUICKFIT AUTO KISUMU"
+                value={vendorName}
+                onChange={(e) => setVendorName(e.target.value.toUpperCase())}
+                className="input-class h-10 w-full uppercase"
+              />
+            </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#29352D]">
-                <button
-                  type="button"
-                  onClick={() => setIsAddCostOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-200 dark:border-[#29352D] text-slate-600 dark:text-[#C1CBC3] hover:bg-slate-50 dark:hover:bg-[#1D2920] font-semibold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isCostSaving}
-                  className="px-4 py-2 rounded-lg bg-blue-900 hover:bg-blue-800 dark:bg-[#B7FF3C] dark:hover:bg-[#c9ff66] text-white dark:text-[#090C0A] font-bold flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
-                >
-                  {isCostSaving ? <Loader2 size={14} className="animate-spin" /> : null}
-                  Record Expense
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-[#29352D]">
+              <button
+                type="button"
+                onClick={() => setIsAddCostOpen(false)}
+                className="btn-secondary h-10 px-4 text-xs cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isCostSaving}
+                className="btn-primary h-10 px-5 text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm disabled:opacity-50"
+              >
+                {isCostSaving && <Loader2 className="size-3.5 animate-spin" />}
+                <span>Record Expense</span>
+              </button>
+            </div>
+          </form>
+        </CustomModal>
       )}
-      {/* Security Re-Authentication Modal for Vehicle Deletion */}
+
+      {/* Delete Vehicle Security Re-Authentication Modal (100% Preserved) */}
       <SecureActionModal
-        isOpen={!!vehicleToDelete}
+        isOpen={Boolean(vehicleToDelete)}
         onClose={() => setVehicleToDelete(null)}
         onAuthorized={(token) => handleDeleteVehicle(token)}
         action="VEHICLE_DELETE"
@@ -1301,7 +2011,12 @@ export default function YardInventoryManager({ vehicles, currentUser }: YardInve
         summaryItems={[
           { label: 'Registration No', value: vehicleToDelete?.registration_no || '' },
           { label: 'Make & Model', value: vehicleToDelete?.make_model || '' },
-          { label: 'Sale Price', value: vehicleToDelete?.sale_price ? formatKES(vehicleToDelete.sale_price) : 'N/A' },
+          {
+            label: 'Sale Price',
+            value: vehicleToDelete?.sale_price
+              ? formatKES(vehicleToDelete.sale_price)
+              : 'N/A',
+          },
         ]}
       />
     </div>

@@ -201,7 +201,7 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={handleRestore}
                 disabled={isRestoring}
-                className="badge badge-primary relative right-3 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition disabled:opacity-50 shrink-0 cursor-pointer"
+                className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs transition active:scale-98 disabled:opacity-50 shrink-0 cursor-pointer"
               >
                 {isRestoring ? (
                   <>
@@ -231,7 +231,7 @@ export default function VehicleDetailsHeader({
           {/* Vehicle Icon */}
           <div
             className={cn(
-              "flex size-14 shrink-0 items-center justify-center rounded-xl border sm:size-16",
+              "flex size-14 shrink-0 items-center justify-center rounded-2xl border sm:size-16 shadow-xs",
               isDeleted
                 ? "border-red-200 bg-red-50 text-red-600 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-400"
                 : "border-blue-100 bg-blue-50 text-blue-600 dark:border-[#29352D] dark:bg-[#18221A] dark:text-[#B7FF3C]"
@@ -243,53 +243,58 @@ export default function VehicleDetailsHeader({
           {/* Main Information */}
           <div className="min-w-0 flex-1">
 
-            {/* Registration + Status */}
+            {/* Registration + Status + Stock ID */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 dark:text-[#F4F7F4] sm:text-2xl lg:text-[28px]">
+              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 dark:text-[#F4F7F4] sm:text-2xl lg:text-3xl font-mono">
                 {vehicle.registration_no}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <Badge
                   className={cn(
-                    "badge capitalize",
+                    "badge capitalize font-semibold shadow-xs",
                     statusBadgeClass
                   )}
                 >
+                  <span className="size-1.5 rounded-full mr-1.5 bg-current opacity-80" />
                   {statusLabel}
                 </Badge>
+
+                {vehicle.purchase_id && (
+                  <span className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3] border border-slate-200 dark:border-[#29352D]">
+                    <Hash className="size-3 opacity-60" />
+                    <span>ID: {vehicle.purchase_id}</span>
+                  </span>
+                )}
               </div>
             </div>
 
-            {/* Make / Model */}
-            <p className="mt-1.5 text-sm font-medium text-slate-700 dark:text-[#C1CBC3] sm:text-[15px]">
-              {vehicle.make_model}
+            {/* Make / Model & Year */}
+            <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-[#C1CBC3] sm:text-base">
+              {vehicle.year ? `${vehicle.year} ` : ""}{vehicle.make_model}
             </p>
 
-            {/* Metadata */}
-            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+            {/* Secondary Metadata */}
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500 dark:text-[#A1ADA4]">
+              <div className="flex items-center gap-1.5">
                 <Hash className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   {vehicle.type || "Saloon"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
-                <Calendar className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
-                <span>
-                  {vehicle.year || "N/A"}
-                </span>
-              </div>
+              <span>•</span>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+              <div className="flex items-center gap-1.5">
                 <Tag className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
-                  {vehicle.condition || "Condition not specified"}
+                  {vehicle.condition || "Standard"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#A1ADA4] sm:text-sm">
+              <span>•</span>
+
+              <div className="flex items-center gap-1.5">
                 <Calendar className="size-3.5 text-slate-400 dark:text-[#A1ADA4]" />
                 <span>
                   Added {dateAdded}
@@ -305,10 +310,14 @@ export default function VehicleDetailsHeader({
 
         <div className="flex shrink-0 flex-col gap-3 lg:items-end">
 
-          {/* Cost Basis */}
-          <div className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-slate-50 dark:bg-[#18221A] border border-slate-200/60 dark:border-[#29352D] px-4 shadow-xs sm:w-auto">
-            <span className="text-sm font-medium text-slate-600 dark:text-[#A1ADA4]">Total Cost:</span>
-            <span className="text-sm font-bold text-slate-900 dark:text-[#B7FF3C]">{formatKES(totalCostBasis)}</span>
+          {/* Cost Basis Card */}
+          <div className="flex h-10 w-full items-center justify-between lg:justify-center gap-3 rounded-xl bg-slate-50 dark:bg-[#18221A] border border-slate-200 dark:border-[#29352D] px-4 shadow-xs sm:w-auto">
+            <span className="text-xs font-semibold text-slate-500 dark:text-[#A1ADA4] uppercase tracking-wider">
+              Total Cost Basis:
+            </span>
+            <span className="text-sm font-bold text-slate-900 dark:text-[#B7FF3C] tabular-nums">
+              {formatKES(totalCostBasis)}
+            </span>
           </div>
 
           {/* Actions */}
@@ -317,41 +326,29 @@ export default function VehicleDetailsHeader({
               <button
                 type="button"
                 onClick={() => setIsHandoverModalOpen(true)}
-                className={cn(
-                  "badge badge-primary h-10 px-4",
-                  "w-full sm:w-auto",
-                  "justify-center gap-2 bg-gray-600 hover:bg-gray-700 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D] shadow-xs cursor-pointer"
-                )}
+                className="btn-secondary h-10 px-3.5 text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer shadow-xs w-full sm:w-auto"
                 title="Manage incoming custody, outgoing release inspection, and clearance"
               >
                 <ClipboardCheck className="size-4" />
-                <span>Vehicle Handover & Clearance</span>
+                <span>Handover &amp; Clearance</span>
               </button>
             )}
 
             <Link
               href={`/vehicles/${vehicle.id}/purchase-contract`}
-              className={cn(
-                "badge badge-primary h-10 px-4",
-                "w-full sm:w-auto",
-                "justify-center gap-2 bg-blue-700 hover:bg-blue-800 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D]"
-              )}
+              className="btn-secondary h-10 px-3.5 text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer shadow-xs w-full sm:w-auto"
               title="View and print official Motor Vehicle Purchase Agreement"
             >
-              <FileText className="size-3.5" />
+              <FileText className="size-4" />
               <span>Purchase Agreement</span>
             </Link>
 
             {!isDeleted && (
               <Link
                 href={`/vehicles/${vehicle.id}/edit`}
-                className={cn(
-                  "badge badge-primary h-10 px-4",
-                  "w-full sm:w-auto",
-                  "justify-center gap-2 bg-amber-700 hover:bg-amber-800 dark:bg-[#1D2920] dark:hover:bg-[#29352D] text-white dark:text-[#F4F7F4] border dark:border-[#29352D]"
-                )}
+                className="btn-primary h-10 px-4 text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer shadow-xs w-full sm:w-auto"
               >
-                <Edit className="size-3.5" />
+                <Edit className="size-4" />
                 <span>Edit Vehicle</span>
               </Link>
             )}
@@ -362,9 +359,9 @@ export default function VehicleDetailsHeader({
                 type="button"
                 onClick={handleRestore}
                 disabled={isRestoring}
-                className="inline-flex badge badge-primary items-center justify-center gap-2 h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition cursor-pointer disabled:opacity-50"
+                className="btn-primary h-10 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 transition cursor-pointer disabled:opacity-50 shadow-xs w-full sm:w-auto"
               >
-                {isRestoring ? <Loader2 className="size-3.5 animate-spin" /> : <RotateCcw className="size-3.5" />}
+                {isRestoring ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
                 <span>Revert Vehicle</span>
               </button>
             )}
@@ -374,11 +371,11 @@ export default function VehicleDetailsHeader({
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="badge badge-primary inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-red-200 bg-red-50 text-red-700 hover:text-white hover:bg-red-700 dark:border-red-900/40 dark:bg-red-950/30 dark:text-[#FF626D] dark:hover:bg-red-900/50 text-sm font-medium transition cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 h-10 px-3.5 rounded-xl border border-red-200 bg-red-50 text-red-700 hover:bg-red-600 hover:text-white dark:border-red-900/40 dark:bg-red-950/30 dark:text-[#FF626D] dark:hover:bg-red-900/50 text-xs sm:text-sm font-semibold transition active:scale-98 cursor-pointer shadow-xs w-full sm:w-auto"
                 title="Delete vehicle"
               >
-                <Trash2 className="size-3.5" />
-                <span>Delete Vehicle</span>
+                <Trash2 className="size-4" />
+                <span>Delete</span>
               </button>
             )}
           </div>

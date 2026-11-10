@@ -19,25 +19,25 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ] as const;
 
-/** Returns the Date objects for every cell in the 6-row grid for a month */
+/** Returns the Date objects for every cell in the 6-row grid for a month (anchored to 12:00 noon to prevent UTC midnight date-rollover bugs) */
 function buildCalendarGrid(year: number, month: number): Date[] {
-  const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const daysInPrevMonth = new Date(year, month, 0).getDate();
+  const firstDay = new Date(year, month, 1, 12).getDay(); // 0 = Sunday
+  const daysInMonth = new Date(year, month + 1, 0, 12).getDate();
+  const daysInPrevMonth = new Date(year, month, 0, 12).getDate();
 
   const cells: Date[] = [];
 
   // Trailing days of previous month
   for (let i = firstDay - 1; i >= 0; i--) {
-    cells.push(new Date(year, month - 1, daysInPrevMonth - i));
+    cells.push(new Date(year, month - 1, daysInPrevMonth - i, 12));
   }
   // Current month
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push(new Date(year, month, d));
+    cells.push(new Date(year, month, d, 12));
   }
   // Leading days of next month to fill 42 cells (6 weeks)
   while (cells.length < 42) {
-    cells.push(new Date(year, month + 1, cells.length - firstDay - daysInMonth + 1));
+    cells.push(new Date(year, month + 1, cells.length - firstDay - daysInMonth + 1, 12));
   }
   return cells;
 }
@@ -77,6 +77,8 @@ export interface CustomDatePickerProps {
   style?: React.CSSProperties;
   /** Accessible label for the trigger button */
   'aria-label'?: string;
+  /** Where to position the calendar popover relative to the trigger. Default: 'bottom' */
+  placement?: 'top' | 'bottom' | 'auto';
 }
 
 // ─────────────────────────────────────────────
@@ -92,10 +94,35 @@ export default function CustomDatePicker({
   formatDate,
   disabled = false,
   style,
+  placement = 'bottom',
   'aria-label': ariaLabel = 'Date picker',
 }: CustomDatePickerProps) {
   const today = new Date();
   const [isOpen, setIsOpen] = useState(false);
+  const [actualPlacement, setActualPlacement] = useState<'top' | 'bottom'>(
+    placement === 'top' ? 'top' : 'bottom'
+  );
+
+  useEffect(() => {
+    if (placement === 'top') {
+      setActualPlacement('top');
+      return;
+    }
+    if (placement === 'bottom') {
+      setActualPlacement('bottom');
+      return;
+    }
+    if (isOpen && wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow < 350 && rect.top > 320) {
+        setActualPlacement('top');
+      } else {
+        setActualPlacement('bottom');
+      }
+    }
+  }, [isOpen, placement]);
+
   const [viewYear, setViewYear] = useState(
     selectedDate?.getFullYear() ?? today.getFullYear()
   );
@@ -140,8 +167,8 @@ export default function CustomDatePicker({
   }
 
   function isDisabled(date: Date): boolean {
-    if (minDate && date < new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate())) return true;
-    if (maxDate && date > new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate())) return true;
+    if (minDate && date < new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate(), 0, 0, 0)) return true;
+    if (maxDate && date > new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate(), 23, 59, 59, 999)) return true;
     return false;
   }
 
@@ -239,16 +266,18 @@ export default function CustomDatePicker({
           aria-label="Calendar"
           style={{
             position: 'absolute',
-            top: 'calc(100% + 6px)',
+            ...(actualPlacement === 'top'
+              ? { bottom: 'calc(100% + 6px)', top: 'auto' }
+              : { top: 'calc(100% + 6px)', bottom: 'auto' }),
             left: 0,
-            zIndex: 9000,
+            zIndex: 99999,
             width: '300px',
             background: 'var(--card)',
             border: TOKEN.border,
             borderRadius: '0.875rem',
             boxShadow: '0 12px 40px -8px rgba(0,0,0,0.3)',
             overflow: 'hidden',
-            animation: 'dp-open 0.15s ease',
+            animation: actualPlacement === 'top' ? 'dp-open-top 0.15s ease' : 'dp-open 0.15s ease',
           }}
         >
           {/* ── Navigation header ───────────────────────────────────── */}
@@ -440,6 +469,10 @@ export default function CustomDatePicker({
       <style suppressHydrationWarning>{`
         @keyframes dp-open {
           from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes dp-open-top {
+          from { opacity: 0; transform: translateY(6px); }
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>

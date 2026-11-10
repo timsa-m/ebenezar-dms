@@ -14,6 +14,7 @@ export type SensitiveAction =
   | 'PAYMENT_REVERSE'
   | 'PAYMENT_DELETE'
   | 'PENALTY_REVERSE'
+  | 'EXPENSE_DELETE'
   | 'FINANCIAL_REPORTS_VIEW'
   | 'FINANCIAL_REPORTS_EXPORT'
   | 'USER_ROLE_CHANGE'
@@ -30,6 +31,7 @@ export type SecurityPermission =
   | 'loans.adjust_balance'
   | 'payments.reverse'
   | 'payments.delete'
+  | 'expenses.delete'
   | 'users.manage_roles'
   | 'security.manage';
 

@@ -31,6 +31,8 @@ export interface CustomModalProps {
   disableBackdropClose?: boolean;
   /** Additional class applied to the modal panel */
   className?: string;
+  /** Custom overflow style for modal panel (e.g. 'visible'). Default: 'auto' */
+  overflow?: string;
 }
 
 // ─────────────────────────────────────────────
@@ -46,6 +48,7 @@ export default function CustomModal({
   hideCloseButton = false,
   disableBackdropClose = false,
   className = '',
+  overflow,
 }: CustomModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -139,7 +142,8 @@ export default function CustomModal({
           width: typeof width === 'number' ? `${width}px` : width,
           maxWidth: '100%',
           maxHeight: 'calc(100vh - 2rem)',
-          overflowY: 'auto',
+          overflowY: (overflow as any) || 'auto',
+          overflow: overflow || undefined,
           backgroundColor: 'var(--card, #151D17)',
           borderRadius: '1rem',
           boxShadow:
