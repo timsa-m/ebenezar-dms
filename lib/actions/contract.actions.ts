@@ -134,7 +134,8 @@ export async function getContractData(agreementId: string): Promise<ContractData
 
     const signatures: ContractSignatures = {
       dateText: dateText,
-      sellerName: "EBENEZAR ENTERPRISES CAR BAZAAR",
+      sellerName: "GEORGE DOLA ANDERE",
+      sellerPhone: "0722263192",
       buyerName: buyerDetails.fullName,
       buyerIdNumber: buyerDetails.idNumber,
       buyerPhone: buyerDetails.phoneNumber,

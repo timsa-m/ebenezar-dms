@@ -40,6 +40,7 @@ export interface ContractInstallmentRow {
 export interface ContractSignatures {
   dateText: string;
   sellerName: string;
+  sellerPhone?: string;
   buyerName: string;
   buyerIdNumber: string;
   buyerPhone: string;

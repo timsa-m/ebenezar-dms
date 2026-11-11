@@ -1031,6 +1031,27 @@ body {
   color: #FFFFFF;
 }
 
+/* Sidebar squircle notification badge — Adaptive Multi-Theme */
+.sidebar-squircle-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #0F172A;
+  color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+}
+
+.sidebar-link-active .sidebar-squircle-badge {
+  background-color: #2563EB;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
 /* Sidebar icon */
 .sidebar-icon {
   width: 1.125rem;
@@ -3683,6 +3704,18 @@ html {
   color: #B7FF3C !important;
 }
 
+.dark .sidebar-squircle-badge {
+  background-color: #B7FF3C !important;
+  color: #090C0A !important;
+  box-shadow: 0 0 10px rgba(183, 255, 60, 0.45) !important;
+}
+
+.dark .sidebar-link-active .sidebar-squircle-badge {
+  background-color: #B7FF3C !important;
+  color: #090C0A !important;
+  box-shadow: 0 0 12px rgba(183, 255, 60, 0.65) !important;
+}
+
 .dark .sidebar-footer {
   border-top-color: #29352D;
 }
@@ -4248,6 +4281,22 @@ html.graphite .bg-background {
 
 .graphite .sidebar-link-active .sidebar-icon {
   color: #3A82FF !important;
+}
+
+html.graphite .sidebar-squircle-badge,
+.graphite .sidebar-squircle-badge,
+[data-theme="graphite"] .sidebar-squircle-badge {
+  background-color: #3A82FF !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 10px rgba(58, 130, 255, 0.45) !important;
+}
+
+html.graphite .sidebar-link-active .sidebar-squircle-badge,
+.graphite .sidebar-link-active .sidebar-squircle-badge,
+[data-theme="graphite"] .sidebar-link-active .sidebar-squircle-badge {
+  background-color: #3A82FF !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 12px rgba(58, 130, 255, 0.65) !important;
 }
 
 .graphite .sidebar-footer {

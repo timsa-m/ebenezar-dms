@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { sidebarLinks } from '@/constants'
 import { cn } from '@/lib/utils'
 import Footer from './Footer'
+import { getUnreadWebsiteMessagesCount, getTotalWebsiteMessagesCount } from '@/lib/actions/website.actions'
 import {
   Tooltip,
   TooltipTrigger,
@@ -82,6 +83,8 @@ interface NavItemProps {
   isCollapsed: boolean
   isExternal?: boolean
   onClick?: () => void
+  badgeCount?: number
+  badgeDetails?: { totalNew?: number; totalAll?: number; displayCount?: number }
 }
 
 const NavItem = ({
@@ -92,6 +95,8 @@ const NavItem = ({
   isCollapsed,
   isExternal,
   onClick,
+  badgeCount,
+  badgeDetails,
 }: NavItemProps) => {
   const isLinkExternal = isExternal || label === 'Website' || href.startsWith('http://') || href.startsWith('https://')
 
@@ -115,34 +120,64 @@ const NavItem = ({
       className={cn(
         'sidebar-link group flex items-center transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
         isCollapsed
-          ? 'justify-center size-11 mx-auto p-0 rounded-xl hover:translate-x-0 shrink-0'
-          : 'gap-3 px-3 py-2.5 rounded-xl',
+          ? 'justify-center size-11 mx-auto p-0 rounded-xl hover:translate-x-0 shrink-0 relative'
+          : 'gap-3 px-3 py-2.5 rounded-xl relative',
         isActive && 'sidebar-link-active'
       )}
-      aria-label={label}
+      aria-label={badgeCount && badgeCount > 0 ? `${label} (${badgeCount} messages)` : label}
       aria-current={isActive ? 'page' : undefined}
     >
-      <Icon
-        className={cn(
-          'sidebar-icon shrink-0 w-[18px] h-[18px] transition-colors',
-          isActive && 'text-current'
-        )}
-        strokeWidth={1.8}
-      />
+      <div className="relative inline-flex items-center justify-center shrink-0">
+        <Icon
+          className={cn(
+            'sidebar-icon shrink-0 w-[18px] h-[18px] transition-colors',
+            isActive && 'text-current'
+          )}
+          strokeWidth={1.8}
+        />
+        {/* COLLAPSED SQUIRCLE BADGE: TOP RIGHT OF ICON */}
+        {isCollapsed && typeof badgeCount === 'number' && badgeCount > 0 ? (
+          <span
+            className="sidebar-squircle-badge absolute -top-1.5 -right-2.5 z-20 min-w-[17px] h-[17px] px-1 text-[10px] rounded-[5.5px] ring-2 ring-sidebar pointer-events-none"
+            aria-label={`${badgeCount} messages`}
+          >
+            {badgeCount > 99 ? '99+' : badgeCount}
+          </span>
+        ) : null}
+      </div>
       {isCollapsed ? (
         <span className="sr-only">{label}</span>
       ) : (
-        <span className="sidebar-label font-medium text-sm truncate">{label}</span>
+        <>
+          <span className="sidebar-label font-medium text-sm truncate flex-1">{label}</span>
+          {typeof badgeCount === 'number' && badgeCount > 0 ? (
+            <span
+              className="sidebar-squircle-badge ml-auto min-w-[20px] h-5 px-1.5 text-[11px] rounded-[6px] shrink-0"
+              aria-label={`${badgeCount} messages`}
+            >
+              {badgeCount > 99 ? '99+' : badgeCount}
+            </span>
+          ) : null}
+        </>
       )}
     </LinkComponent>
   )
 
   if (isCollapsed) {
+    const tooltipText = badgeDetails?.totalNew && badgeDetails.totalNew > 0
+      ? `${badgeDetails.totalNew} new (${badgeDetails.totalAll ?? badgeCount} total)`
+      : `${badgeCount} messages`
+
     return (
       <Tooltip>
         <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
-        <TooltipContent side="right" sideOffset={14} className="font-medium text-xs">
-          {label}
+        <TooltipContent side="right" sideOffset={14} className="font-medium text-xs flex items-center gap-1.5">
+          <span>{label}</span>
+          {typeof badgeCount === 'number' && badgeCount > 0 ? (
+            <span className="sidebar-squircle-badge px-1.5 py-0.5 rounded-[5px] text-[10px] font-bold leading-none">
+              {tooltipText}
+            </span>
+          ) : null}
         </TooltipContent>
       </Tooltip>
     )
@@ -151,8 +186,65 @@ const NavItem = ({
   return linkContent
 }
 
-const Sidebar = ({ user }: SiderbarProps) => {
+const Sidebar = ({ user, initialUnreadMessages = 0 }: SiderbarProps) => {
   const pathname = usePathname()
+
+  // Website messages count state (tracks total, new, and display count)
+  const [messagesSummary, setMessagesSummary] = useState<{
+    totalNew: number
+    totalAll: number
+    displayCount: number
+  }>({
+    totalNew: 0,
+    totalAll: initialUnreadMessages || 0,
+    displayCount: initialUnreadMessages || 0,
+  })
+
+  // Fetch count from server
+  const fetchMessagesCount = useCallback(async () => {
+    try {
+      const summary = await getTotalWebsiteMessagesCount()
+      setMessagesSummary(summary)
+    } catch {
+      /* ignore */
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchMessagesCount()
+
+    // Listen to custom updates from WebsiteLeadsManager
+    const handleUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent<{ count?: number; totalNew?: number; totalAll?: number }>
+      if (typeof customEvent.detail?.count === 'number') {
+        const count = customEvent.detail.count
+        const totalNew = customEvent.detail.totalNew ?? count
+        const totalAll = customEvent.detail.totalAll ?? count
+        setMessagesSummary({ totalNew, totalAll, displayCount: count })
+      } else {
+        fetchMessagesCount()
+      }
+    }
+
+    window.addEventListener('website-messages-updated', handleUpdate)
+
+    // Periodic refresh (every 30 seconds when window is active)
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        fetchMessagesCount()
+      }
+    }, 30000)
+
+    return () => {
+      window.removeEventListener('website-messages-updated', handleUpdate)
+      clearInterval(interval)
+    }
+  }, [fetchMessagesCount])
+
+  // Also refresh when pathname changes (e.g. user navigated to or from /website-leads)
+  useEffect(() => {
+    fetchMessagesCount()
+  }, [pathname, fetchMessagesCount])
 
   // Desktop collapsed preference persistence
   const userKey = user?.userId || user?.$id || 'default'
@@ -363,6 +455,9 @@ const Sidebar = ({ user }: SiderbarProps) => {
           {navItems.map((item) => {
             const isActive = checkIsActive(item.href)
             const Icon = getNavIcon(item.href, item.label)
+            const isWebsiteMessages = item.href === '/website-leads' || item.label === 'Website Messages'
+            const badgeCount = isWebsiteMessages ? messagesSummary.displayCount : undefined
+            const badgeDetails = isWebsiteMessages ? messagesSummary : undefined
 
             return (
               <NavItem
@@ -374,6 +469,8 @@ const Sidebar = ({ user }: SiderbarProps) => {
                 isCollapsed={false}
                 isExternal={item.isExternal}
                 onClick={() => setMobileOpen(false)}
+                badgeCount={badgeCount}
+                badgeDetails={badgeDetails}
               />
             )
           })}
@@ -509,6 +606,9 @@ const Sidebar = ({ user }: SiderbarProps) => {
           {navItems.map((item) => {
             const isActive = checkIsActive(item.href)
             const Icon = getNavIcon(item.href, item.label)
+            const isWebsiteMessages = item.href === '/website-leads' || item.label === 'Website Messages'
+            const badgeCount = isWebsiteMessages ? messagesSummary.displayCount : undefined
+            const badgeDetails = isWebsiteMessages ? messagesSummary : undefined
 
             return (
               <NavItem
@@ -519,6 +619,8 @@ const Sidebar = ({ user }: SiderbarProps) => {
                 isActive={isActive}
                 isCollapsed={isCollapsed}
                 isExternal={item.isExternal}
+                badgeCount={badgeCount}
+                badgeDetails={badgeDetails}
               />
             )
           })}

@@ -245,7 +245,7 @@ export default function VehicleDetailsHeader({
 
             {/* Registration + Status + Stock ID */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 dark:text-[#F4F7F4] sm:text-2xl lg:text-3xl font-mono">
+              <h1 className="truncate text-xl font-bold tracking-tight text-slate-950 dark:text-[#F4F7F4] sm:text-2xl lg:text-3xl">
                 {vehicle.registration_no}
               </h1>
 
@@ -261,7 +261,7 @@ export default function VehicleDetailsHeader({
                 </Badge>
 
                 {vehicle.purchase_id && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3] border border-slate-200 dark:border-[#29352D]">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1D2920] text-slate-600 dark:text-[#C1CBC3] border border-slate-200 dark:border-[#29352D]">
                     <Hash className="size-3 opacity-60" />
                     <span>ID: {vehicle.purchase_id}</span>
                   </span>

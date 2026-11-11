@@ -246,6 +246,7 @@ declare interface FooterProps {
 
 declare interface SiderbarProps {
   user: User;
+  initialUnreadMessages?: number;
 }
 
 declare interface AuthFormProps {

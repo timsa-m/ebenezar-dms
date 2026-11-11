@@ -129,7 +129,8 @@ export default function WebsiteLeadsManager({
     try {
       const res = await updateMessageStatus(id, status);
       if (res.success) {
-        setMessages(prev => prev.map(m => m.id === id ? { ...m, status } : m));
+        const nextMessages = messages.map(m => m.id === id ? { ...m, status } : m);
+        setMessages(nextMessages);
         if (selectedLead && selectedLead.type === 'message' && selectedLead.data.id === id) {
           setSelectedLead({
             type: 'message',
@@ -137,6 +138,15 @@ export default function WebsiteLeadsManager({
           });
         }
         toast.success(status === 'read' ? 'Message marked as read' : 'Message marked as new');
+        if (typeof window !== 'undefined') {
+          const newMsg = nextMessages.filter(m => m.status === 'new').length;
+          const newTrade = tradeInRequests.filter(t => t.status === 'new').length;
+          const newHire = hireRequests.filter(h => h.status === 'new').length;
+          const totalNew = newMsg + newTrade + newHire;
+          const totalAll = nextMessages.length + tradeInRequests.length + hireRequests.length;
+          const displayCount = totalNew > 0 ? totalNew : totalAll;
+          window.dispatchEvent(new CustomEvent('website-messages-updated', { detail: { count: displayCount, totalNew, totalAll } }));
+        }
       } else {
         toast.error('Failed to update status');
       }
@@ -153,7 +163,8 @@ export default function WebsiteLeadsManager({
     try {
       const res = await updateTradeInRequestStatus(id, status);
       if (res.success) {
-        setTradeInRequests(prev => prev.map(t => t.id === id ? { ...t, status } : t));
+        const nextTradeIns = tradeInRequests.map(t => t.id === id ? { ...t, status } : t);
+        setTradeInRequests(nextTradeIns);
         if (selectedLead && selectedLead.type === 'tradein' && selectedLead.data.id === id) {
           setSelectedLead({
             type: 'tradein',
@@ -161,6 +172,15 @@ export default function WebsiteLeadsManager({
           });
         }
         toast.success(`Trade-in status updated to ${status}`);
+        if (typeof window !== 'undefined') {
+          const newMsg = messages.filter(m => m.status === 'new').length;
+          const newTrade = nextTradeIns.filter(t => t.status === 'new').length;
+          const newHire = hireRequests.filter(h => h.status === 'new').length;
+          const totalNew = newMsg + newTrade + newHire;
+          const totalAll = messages.length + nextTradeIns.length + hireRequests.length;
+          const displayCount = totalNew > 0 ? totalNew : totalAll;
+          window.dispatchEvent(new CustomEvent('website-messages-updated', { detail: { count: displayCount, totalNew, totalAll } }));
+        }
       } else {
         toast.error('Failed to update status');
       }
@@ -174,20 +194,36 @@ export default function WebsiteLeadsManager({
 
   const handleHireStatus = async (id: string, status: 'new' | 'contacted' | 'completed' | 'cancelled') => {
     setIsUpdating(true);
-    const res = await updateHireRequestStatus(id, status);
-    if (res.success) {
-      setHireRequests(prev => prev.map(h => h.id === id ? { ...h, status } : h));
-      if (selectedLead && selectedLead.type === 'hire' && selectedLead.data.id === id) {
-        setSelectedLead({
-          type: 'hire',
-          data: { ...selectedLead.data, status }
-        });
+    try {
+      const res = await updateHireRequestStatus(id, status);
+      if (res.success) {
+        const nextHires = hireRequests.map(h => h.id === id ? { ...h, status } : h);
+        setHireRequests(nextHires);
+        if (selectedLead && selectedLead.type === 'hire' && selectedLead.data.id === id) {
+          setSelectedLead({
+            type: 'hire',
+            data: { ...selectedLead.data, status }
+          });
+        }
+        toast.success(`Hire request updated to ${status}`);
+        if (typeof window !== 'undefined') {
+          const newMsg = messages.filter(m => m.status === 'new').length;
+          const newTrade = tradeInRequests.filter(t => t.status === 'new').length;
+          const newHire = nextHires.filter(h => h.status === 'new').length;
+          const totalNew = newMsg + newTrade + newHire;
+          const totalAll = messages.length + tradeInRequests.length + nextHires.length;
+          const displayCount = totalNew > 0 ? totalNew : totalAll;
+          window.dispatchEvent(new CustomEvent('website-messages-updated', { detail: { count: displayCount, totalNew, totalAll } }));
+        }
+      } else {
+        toast.error('Failed to update status');
       }
-      toast.success(`Hire request updated to ${status}`);
-    } else {
+    } catch (error) {
+      console.error(error);
       toast.error('Failed to update status');
+    } finally {
+      setIsUpdating(false);
     }
-    setIsUpdating(false);
   };
 
   // ---------------------------------------------------------
@@ -1102,9 +1138,8 @@ export default function WebsiteLeadsManager({
                 <span className="text-12 font-bold text-gray-700 dark:text-[#F4F7F4]">Update Status:</span>
                 {selectedLead.type === 'message' ? (
                   <Select
-                    modal={false}
                     value={selectedLead.data.status}
-                    onValueChange={(val: string) => handleMessageStatus(selectedLead.data.id, val as any)}
+                    onValueChange={(val: string) => { void handleMessageStatus(selectedLead.data.id, val as any) }}
                     disabled={isUpdating}
                   >
                     <SelectTrigger className="h-9 w-full sm:w-[170px] rounded-xl border-indigo-200 dark:border-indigo-900/50 bg-white dark:bg-[#101612] text-slate-800 dark:text-[#F4F7F4] text-12 font-bold shadow-xs cursor-pointer">
@@ -1117,9 +1152,8 @@ export default function WebsiteLeadsManager({
                   </Select>
                 ) : (
                   <Select
-                    modal={false}
                     value={selectedLead.data.status}
-                    onValueChange={(val: string) => handleTradeInStatus(selectedLead.data.id, val as any)}
+                    onValueChange={(val: string) => { void handleTradeInStatus(selectedLead.data.id, val as any) }}
                     disabled={isUpdating}
                   >
                     <SelectTrigger className="h-9 w-full sm:w-[170px] rounded-xl border-indigo-200 dark:border-indigo-900/50 bg-white dark:bg-[#101612] text-slate-800 dark:text-[#F4F7F4] text-12 font-bold shadow-xs cursor-pointer">

@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import OfflineBanner from "@/components/OfflineBanner";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getUnreadWebsiteMessagesCount } from "@/lib/actions/website.actions";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -17,9 +18,11 @@ export default async function RootLayout({
   if (!loggedIn) redirect('/sign-in');
   if (loggedIn.userStatus !== 'active') redirect('/pending-approval');
 
+  const unreadMessagesCount = await getUnreadWebsiteMessagesCount().catch(() => 0);
+
   return (
     <div className="flex h-screen w-full bg-background text-foreground antialiased selection:bg-accent/20 selection:text-accent overflow-hidden">
-      <Sidebar user={loggedIn} />
+      <Sidebar user={loggedIn} initialUnreadMessages={unreadMessagesCount} />
       
       {/* Main Column */}
       <div className="flex size-full flex-col overflow-hidden relative">
