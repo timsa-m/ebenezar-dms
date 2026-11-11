@@ -19,12 +19,9 @@ export default async function VehiclesPage() {
       <header className="page-header">
         <HeaderBox
           title="Yard Inventory "
-          subtext="Comprehensive fleet monitoring, valuation, and yard operations."
+          subtext="Comprehensive stock monitoring, valuation, and yard operations."
         />
-        <Link href="/vehicles/create" className="btn-primary">
-          <span>Add New Vehicle</span>
-          <PlusCircle className="size-4 opacity-70" />
-        </Link>
+
       </header>
 
       <YardInventoryManager vehicles={vehicles} currentUser={currentUser} />

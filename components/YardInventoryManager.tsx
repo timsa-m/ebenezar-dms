@@ -190,8 +190,8 @@ function WebsiteBadge({
             ? 'Live on website (Click to hide from website)'
             : 'Hidden from website (Click to publish to website)'
           : published
-          ? 'Live on website'
-          : 'Hidden from website'
+            ? 'Live on website'
+            : 'Hidden from website'
       }
     >
       {isToggling ? (
@@ -533,10 +533,10 @@ export default function YardInventoryManager({
         prev.map((v) =>
           v.id === vehicle.id
             ? {
-                ...v,
-                status: res.vehicle?.status || 'in_stock',
-                is_published: true,
-              }
+              ...v,
+              status: res.vehicle?.status || 'in_stock',
+              is_published: true,
+            }
             : v
         )
       );
@@ -603,8 +603,7 @@ export default function YardInventoryManager({
 
       if (res.success) {
         toast.success(
-          `Cost of ${formatKES(costAmount)} added to ${
-            selectedVehicleForCost.registration_no
+          `Cost of ${formatKES(costAmount)} added to ${selectedVehicleForCost.registration_no
           }`
         );
         setIsAddCostOpen(false);
@@ -635,10 +634,10 @@ export default function YardInventoryManager({
           prev.map((v) =>
             v.id === vehicleId
               ? {
-                  ...v,
-                  status: newStatus,
-                  is_published: newStatus === 'in_stock' ? v.is_published : false,
-                }
+                ...v,
+                status: newStatus,
+                is_published: newStatus === 'in_stock' ? v.is_published : false,
+              }
               : v
           )
         );
@@ -702,8 +701,8 @@ export default function YardInventoryManager({
           className={cn(
             'card-premium p-4 flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-0.5',
             activeTab === 'in_stock' &&
-              attentionFilter === 'all' &&
-              'ring-2 ring-emerald-500/50 dark:ring-emerald-400/50 bg-emerald-50/20 dark:bg-emerald-950/20'
+            attentionFilter === 'all' &&
+            'ring-2 ring-emerald-500/50 dark:ring-emerald-400/50 bg-emerald-50/20 dark:bg-emerald-950/20'
           )}
           title="Click to view In-Stock vehicles ready for sale"
         >
@@ -734,8 +733,8 @@ export default function YardInventoryManager({
           className={cn(
             'card-premium p-4 flex flex-col justify-between cursor-pointer transition-all duration-200 hover:-translate-y-0.5',
             activeTab === 'financed' &&
-              attentionFilter === 'all' &&
-              'ring-2 ring-blue-500/50 dark:ring-blue-400/50 bg-blue-50/20 dark:bg-blue-950/20'
+            attentionFilter === 'all' &&
+            'ring-2 ring-blue-500/50 dark:ring-blue-400/50 bg-blue-50/20 dark:bg-blue-950/20'
           )}
           title="Click to view vehicles financed under client agreements"
         >
@@ -764,7 +763,7 @@ export default function YardInventoryManager({
               Yard Stock Value
             </span>
             <span className="text-[10px] font-semibold text-slate-400 dark:text-[#A1ADA4]">
-              Acquisition
+              Purchase
             </span>
           </div>
           <div className="mt-2.5">
@@ -807,96 +806,96 @@ export default function YardInventoryManager({
         (counts.missing_photos > 0 ||
           counts.in_stock_unpublished > 0 ||
           counts.aging_60 > 0) && (
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#29352D] bg-white/70 dark:bg-[#151D17] p-3 sm:p-4 shadow-2xs">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="size-4 text-amber-500 shrink-0" />
-              <span className="text-xs font-semibold text-slate-800 dark:text-[#F4F7F4]">
-                Yard Operational Signals:
-              </span>
-            </div>
+          <div className="rounded-2xl border border-slate-200/80 dark:border-[#29352D] bg-white/70 dark:bg-[#151D17] p-3 sm:p-4 shadow-2xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="size-4 text-amber-500 shrink-0" />
+                <span className="text-xs font-semibold text-slate-800 dark:text-[#F4F7F4]">
+                  Yard Operational Signals:
+                </span>
+              </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              {counts.missing_photos > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab('in_stock');
-                    setAttentionFilter(
-                      attentionFilter === 'missing_photos' ? 'all' : 'missing_photos'
-                    );
-                  }}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
-                    attentionFilter === 'missing_photos'
-                      ? 'bg-amber-600 text-white font-semibold'
-                      : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/40 hover:bg-amber-100'
-                  )}
-                  title="Vehicles in stock that need showroom photos"
-                >
-                  <ImageIcon className="size-3" />
-                  <span>{counts.missing_photos} Need Photos</span>
-                </button>
-              )}
+              <div className="flex flex-wrap items-center gap-2">
+                {counts.missing_photos > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveTab('in_stock');
+                      setAttentionFilter(
+                        attentionFilter === 'missing_photos' ? 'all' : 'missing_photos'
+                      );
+                    }}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                      attentionFilter === 'missing_photos'
+                        ? 'bg-amber-600 text-white font-semibold'
+                        : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/40 hover:bg-amber-100'
+                    )}
+                    title="Vehicles in stock that need showroom photos"
+                  >
+                    <ImageIcon className="size-3" />
+                    <span>{counts.missing_photos} Need Photos</span>
+                  </button>
+                )}
 
-              {counts.in_stock_unpublished > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab('in_stock');
-                    setAttentionFilter(
-                      attentionFilter === 'unpublished' ? 'all' : 'unpublished'
-                    );
-                  }}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
-                    attentionFilter === 'unpublished'
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-900/40 hover:bg-blue-100'
-                  )}
-                  title="Vehicles in stock not published on public website"
-                >
-                  <EyeOff className="size-3" />
-                  <span>{counts.in_stock_unpublished} Hidden from Website</span>
-                </button>
-              )}
+                {counts.in_stock_unpublished > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveTab('in_stock');
+                      setAttentionFilter(
+                        attentionFilter === 'unpublished' ? 'all' : 'unpublished'
+                      );
+                    }}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                      attentionFilter === 'unpublished'
+                        ? 'bg-blue-600 text-white font-semibold'
+                        : 'bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-900/40 hover:bg-blue-100'
+                    )}
+                    title="Vehicles in stock not published on public website"
+                  >
+                    <EyeOff className="size-3" />
+                    <span>{counts.in_stock_unpublished} Hidden from Website</span>
+                  </button>
+                )}
 
-              {counts.aging_60 > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab('in_stock');
-                    setAttentionFilter(
-                      attentionFilter === 'aging' ? 'all' : 'aging'
-                    );
-                  }}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
-                    attentionFilter === 'aging'
-                      ? 'bg-rose-600 text-white font-semibold'
-                      : 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200/80 dark:border-rose-900/40 hover:bg-rose-100'
-                  )}
-                  title="Vehicles in yard stock for over 60 days"
-                >
-                  <Clock className="size-3" />
-                  <span>{counts.aging_60} Aging &gt;60d</span>
-                </button>
-              )}
+                {counts.aging_60 > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveTab('in_stock');
+                      setAttentionFilter(
+                        attentionFilter === 'aging' ? 'all' : 'aging'
+                      );
+                    }}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition cursor-pointer',
+                      attentionFilter === 'aging'
+                        ? 'bg-rose-600 text-white font-semibold'
+                        : 'bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200/80 dark:border-rose-900/40 hover:bg-rose-100'
+                    )}
+                    title="Vehicles in yard stock for over 60 days"
+                  >
+                    <Clock className="size-3" />
+                    <span>{counts.aging_60} Aging &gt;60d</span>
+                  </button>
+                )}
 
-              {attentionFilter !== 'all' && (
-                <button
-                  type="button"
-                  onClick={() => setAttentionFilter('all')}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-[#F4F7F4] px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#1D2920] cursor-pointer"
-                >
-                  <X className="size-3" />
-                  <span>Reset Signal</span>
-                </button>
-              )}
+                {attentionFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setAttentionFilter('all')}
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-[#F4F7F4] px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#1D2920] cursor-pointer"
+                  >
+                    <X className="size-3" />
+                    <span>Reset Signal</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* ================================================== */}
       {/* 3. TOOLBAR: FILTERS, SEARCH, SORT & VIEW SWITCHER   */}
@@ -1036,8 +1035,8 @@ export default function YardInventoryManager({
                   'status-filter-pill text-xs font-semibold px-3 py-2 h-9 cursor-pointer',
                   activeTab === 'deleted' && 'status-filter-pill-active',
                   counts.deleted > 0 &&
-                    activeTab !== 'deleted' &&
-                    'text-rose-600 hover:text-rose-700 dark:text-rose-400'
+                  activeTab !== 'deleted' &&
+                  'text-rose-600 hover:text-rose-700 dark:text-rose-400'
                 )}
               >
                 <Trash2 className="size-3.5 mr-1.5" />
@@ -1187,7 +1186,7 @@ export default function YardInventoryManager({
                     Status &amp; Website
                   </TableHead>
                   <TableHead className="data-th text-right py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
-                    Acquisition Cost
+                    Purchase Cost
                   </TableHead>
                   <TableHead className="data-th text-right py-3.5 px-4 font-semibold text-xs text-slate-600 dark:text-[#C1CBC3]">
                     Target Sale Price
@@ -1360,7 +1359,7 @@ export default function YardInventoryManager({
                                 className={cn(
                                   'size-8 rounded-lg border border-slate-200 dark:border-[#29352D] bg-white dark:bg-[#18221A] flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 dark:text-[#C1CBC3] dark:hover:bg-[#1D2920] shadow-2xs transition-all cursor-pointer',
                                   openMenuId === vehicle.id &&
-                                    'ring-2 ring-blue-500/30 border-blue-400'
+                                  'ring-2 ring-blue-500/30 border-blue-400'
                                 )}
                                 title="More vehicle operations"
                               >
@@ -1534,10 +1533,10 @@ export default function YardInventoryManager({
                           {query
                             ? `No vehicles match "${query}"`
                             : activeTab === 'on_website'
-                            ? 'No vehicles currently published on the website'
-                            : activeTab === 'off_website'
-                            ? 'All active vehicles are currently published'
-                            : 'No vehicles found in this category'}
+                              ? 'No vehicles currently published on the website'
+                              : activeTab === 'off_website'
+                                ? 'All active vehicles are currently published'
+                                : 'No vehicles found in this category'}
                         </h4>
                         <p className="text-xs text-slate-400 mt-1">
                           {query
